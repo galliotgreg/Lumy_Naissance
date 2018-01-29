@@ -54,7 +54,7 @@ public class ABActionFactory {
                 action =  new ABLayAction();
                 break;
             case ActionType.Pick:
-                throw new NotImplementedException();
+				action = new ABPickAction();
                 break;
             case ActionType.Spread:
                 throw new NotImplementedException();

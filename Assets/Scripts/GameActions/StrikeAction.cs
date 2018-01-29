@@ -19,7 +19,7 @@ public class StrikeAction : GameAction {
 	protected override void initAction ()
 	{
 		this.CoolDownActivate = true;
-		this.CoolDownTime = this.agentAttr.ActSpd/(float)5;
+		this.CoolDownTime = 1/(this.agentAttr.ActSpd*5);
 	}
 
 	protected override void executeAction ()
@@ -29,7 +29,6 @@ public class StrikeAction : GameAction {
 		// Check if the player hits some other
 		// Get unit's hit position
 		// TODO check object rotation
-		throw new System.NotImplementedException();
 		if( target != null && (this.agentAttr.CurPos - target.GetComponent<AgentScript>().CurPos).magnitude <= this.agentAttr.AtkRange ){
 			hitObject = target.GetComponent<AgentScript>();
 		}
@@ -43,6 +42,7 @@ public class StrikeAction : GameAction {
 			// Kill unit
 			if( hitObject.Vitality <= 0 ){
 				// Reduce enemmies
+				// TODO destroy is enough?
 				GameObject.Destroy( target );
 				target = null;
 

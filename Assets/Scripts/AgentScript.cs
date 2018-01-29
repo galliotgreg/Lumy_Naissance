@@ -41,7 +41,7 @@ public class AgentScript : MonoBehaviour {
     private float atkRange;
     [AttrName(Identifier = "pickRange ")]
     [SerializeField]
-    private Vector2 pickRange;
+	private float pickRange;
 
     public string Cast
     {
@@ -199,7 +199,7 @@ public class AgentScript : MonoBehaviour {
         }
     }
 
-    public Vector2 PickRange
+	public float PickRange
     {
         get
         {
