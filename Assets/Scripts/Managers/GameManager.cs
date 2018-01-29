@@ -266,4 +266,15 @@ public class GameManager : MonoBehaviour {
             return p2_home.GetComponent<HomeScript>();
         }
     }
+
+	public HomeScript GetEnemyHome(PlayerAuthority authority)
+	{
+		if (authority == PlayerAuthority.Player1)
+		{
+			return p2_home.GetComponent<HomeScript>();
+		} else
+		{
+			return p1_home.GetComponent<HomeScript>();
+		}
+	}
 }

@@ -12,5 +12,6 @@ public enum ActionType
     Lay,
     Spread,
     Trace,
+	Strike,
     None
 }

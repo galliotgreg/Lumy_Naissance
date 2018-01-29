@@ -27,6 +27,8 @@ public class ABActionFactory {
                 return ActionType.Spread;
             case "trace":
                 return ActionType.Trace;
+			case "strike":
+				return ActionType.Strike;
         }
         return ActionType.None;
     }
@@ -60,6 +62,9 @@ public class ABActionFactory {
             case ActionType.Trace:
                 action = new ABTraceAction();
                 break;
+			case ActionType.Strike:
+				action = new ABStrikeAction();
+				break;
         }
 
         return action;

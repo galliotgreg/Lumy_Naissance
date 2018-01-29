@@ -20,6 +20,7 @@ public class AgentBehavior : MonoBehaviour
     private GotoAction gotoAction;
     private TraceAction traceAction;
     private LayAction layAction;
+	private StrikeAction strikeAction;
 
     /// <summary>
     /// The current Atomic Action being presseced by the agent
@@ -85,6 +86,7 @@ public class AgentBehavior : MonoBehaviour
         gotoAction = GetComponent<GotoAction>();
         traceAction = GetComponent<TraceAction>();
         layAction = GetComponent<LayAction>();
+		strikeAction = GetComponent<StrikeAction>();
     }
 
     // Update is called once per frame
@@ -132,6 +134,15 @@ public class AgentBehavior : MonoBehaviour
                 break;
             case ActionType.Trace:
                 break;
+			case ActionType.Strike:
+				ABRef target = ((ABRef)curActionParams[0]);
+				// TODO key
+				throw new System.NotImplementedException();
+				//strikeAction.Target = target.GetAttr();
+
+				DisableActions();
+				strikeAction.activated = true;
+				break;
             case ActionType.None:
                 break;
         }
@@ -142,5 +153,6 @@ public class AgentBehavior : MonoBehaviour
         gotoAction.activated = false;
         traceAction.activated = false;
         layAction.activated = false;
+		strikeAction.activated = false;
     }
 }
