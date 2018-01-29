@@ -42,6 +42,8 @@ public class PickAction : GameAction {
 			// Carry it
 			this.agentEntity.Context.Resources[ this.agentAttr.NbItem ] = item;
 			this.agentAttr.NbItem++;
+			// Associate gameobject
+			item.transform.parent = this.agentEntity.transform;
 
 			// TODO Remove from map
 		}
