@@ -10,6 +10,20 @@ public class ResourceScript : MonoBehaviour {
     [SerializeField]
     private Color32 color;
 
+    public Color32 Color
+    {
+        get
+        {
+            return color; 
+        }
+
+        set
+        {
+            color = value; 
+        }
+    } 
+
+
     // Use this for initialization
     void Start () {
 		
