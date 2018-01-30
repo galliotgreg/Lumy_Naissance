@@ -47,41 +47,32 @@ public class DropAction : MonoBehaviour {
     {
         //Get the ref of the ressources || Passed in args ? --> Add the Getter and Setter to the
         //ResourcesScript ? 
-        ressource.GetComponent<ResourceScript>(); 
+        ressource.GetComponent<ResourceScript>();
         //Destroy if close to home and increment the amount
+        //Increase the amount ok ! Get the reference from the pick action 
         //What is the range ? Now hard coded : 10
-        if(Vector3.Distance(
+        HomeScript home = GameManager.instance.GetHome(agentEntity.Authority);
+        if (Vector3.Distance(
             agentContext.Self.GetComponent<AgentScript>().CurPos,
             agentContext.Home.GetComponent<Transform>().position) < 10)
         {
            Color32 color = ressource.GetComponent<ResourceScript>().Color;
-            
+          
             if (color.Equals(new Color32(255, 0, 0, 1)))
-              
+                home.RedResAmout += 1;
             else if (color.Equals(new Color32(0, 255, 0, 1)))
-                unitBlueCost += component.ProdCost;
+                home.GreenResAmout += 1;
             else if (color.Equals(new Color32(0, 0, 255, 1)))
-                unitGreenCost += component.ProdCost;
-            else
-                unitIncoCost += component.ProdCost;
+                home.BlueResAmout += 1;
+            //else ?? What to do for incolore ? 
+            Destroy(ressource);
         }
-
-        unitIncoCost += unitRedCost + unitGreenCost + unitBlueCost;
-
-        HomeScript home = GameManager.instance.GetHome(agentEntity.Authority);
-        
-        //Get ressources from Home || Change the method to calculate ressources 
-        float resAmount = home.RedResAmout + home.GreenResAmout + home.BlueResAmout;
-
-
-
-        GameManager.instance.GetHome(agentEntity.Authority); 
+        else
+        {
+            Instantiate(gameObject, this.transform);
         }
-
-        //Instantiate ressources if not close to home
-
         //Decrement the number of item
-        if(agentContext.Self.GetComponent<AgentScript>().NbItem >0)
+        if(agentContext.Self.GetComponent<AgentScript>().NbItem > 0)
             agentContext.Self.GetComponent<AgentScript>().NbItem -= 1; 
 
 
