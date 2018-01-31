@@ -37,6 +37,7 @@ public class GotoAction : GameAction {
 
 		// Moving to target
 			// If it is too close, move directly
+		// TODO replace by Unity A*
 		if (Vector3.Distance( agentAttr.TrgPos, agentAttr.CurPos ) < 0.1f)
 		{
 			this.transform.position = new Vector3(
@@ -58,7 +59,28 @@ public class GotoAction : GameAction {
 
 			agentAttr.CurPos = this.transform.position;
 		}
+
+		// Use Unity A* to move
+		/*UnityEngine.AI.NavMeshAgent movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+		agentAttr.CurPos = moveTo( agentAttr, movingAgent );*/
 	}
 
 	#endregion
+
+	public static Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
+		// Use Unity A* to move
+		if( navMeshAgent != null ){
+			//navMeshAgent.acceleration = 1;
+			//navMeshAgent.speed = agentAttr.MoveSpd;
+			navMeshAgent.destination = new Vector3( agentAttr.TrgPos.x, 0f, agentAttr.TrgPos.y);
+			navMeshAgent.updatePosition = false;
+
+			UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
+			navMeshAgent.CalculatePath( agentAttr.gameObject.transform.position, path );
+
+			// move towards next corner
+			return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (path.corners[0] - agentAttr.transform.position).normalized;
+		}
+		return agentAttr.transform.position;
+	}
 }
