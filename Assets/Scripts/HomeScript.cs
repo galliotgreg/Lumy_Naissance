@@ -18,6 +18,18 @@ public class HomeScript : MonoBehaviour {
     [AttrName(Identifier = "population")]
     private Dictionary<string, int> population = new Dictionary<string, int>();
 
+    public Vector2 Location
+    {
+        get
+        {
+            return location; 
+        }
+        set
+        {
+            location = value; 
+        }
+    }
+
     public float RedResAmout
     {
         get

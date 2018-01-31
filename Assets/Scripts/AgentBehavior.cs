@@ -22,6 +22,7 @@ public class AgentBehavior : MonoBehaviour
     private LayAction layAction;
 	private StrikeAction strikeAction;
 	private PickAction pickAction;
+	private DropAction dropAction;
 
     /// <summary>
     /// The current Atomic Action being presseced by the agent
@@ -89,6 +90,7 @@ public class AgentBehavior : MonoBehaviour
         layAction = GetComponent<LayAction>();
 		strikeAction = GetComponent<StrikeAction>();
 		pickAction = GetComponent<PickAction>();
+		dropAction = GetComponent<DropAction>();
     }
 
     // Update is called once per frame
@@ -104,7 +106,8 @@ public class AgentBehavior : MonoBehaviour
         switch (curActionType)
         {
             case ActionType.Drop:
-                throw new NotImplementedException();
+				DisableActions();
+				dropAction.Activated = true;
                 break;
             case ActionType.Goto:
                 ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams[0]);
@@ -128,7 +131,7 @@ public class AgentBehavior : MonoBehaviour
                 layAction.CastName = castName.Value;
 
                 DisableActions();
-                layAction.activated = true;
+				layAction.Activated = true;
                 break;
             case ActionType.Pick:
 				ABRef item = ((ABRef)curActionParams[0]);
@@ -187,8 +190,9 @@ public class AgentBehavior : MonoBehaviour
     {
 		gotoAction.Activated = false;
 		traceAction.Activated = false;
-        layAction.activated = false;
+		layAction.Activated = false;
 		strikeAction.Activated = false;
 		pickAction.Activated = false;
+		dropAction.Activated = false;
     }
 }

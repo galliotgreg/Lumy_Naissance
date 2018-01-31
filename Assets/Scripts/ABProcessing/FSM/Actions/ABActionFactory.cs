@@ -39,7 +39,7 @@ public class ABActionFactory {
         switch(type)
         {
             case ActionType.Drop:
-                throw new NotImplementedException();
+				action = new ABDropAction();
                 break;
             case ActionType.Goto:
                 action = new ABGotoAction();

@@ -19,6 +19,20 @@ public class ResourceScript : MonoBehaviour {
 		}
 	}
 
+    public Color32 Color
+    {
+        get
+        {
+            return color; 
+        }
+
+        set
+        {
+            color = value; 
+        }
+    } 
+
+
     // Use this for initialization
     void Start () {
 		
