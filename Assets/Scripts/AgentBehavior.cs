@@ -117,7 +117,7 @@ public class AgentBehavior : MonoBehaviour
                 }
 
                 DisableActions();
-                gotoAction.activated = true;
+				gotoAction.Activated = true;
                 break;
             case ActionType.Hit:
                 break;
@@ -159,7 +159,7 @@ public class AgentBehavior : MonoBehaviour
 
     private void DisableActions()
     {
-        gotoAction.activated = false;
+		gotoAction.Activated = false;
         traceAction.activated = false;
         layAction.activated = false;
 		strikeAction.Activated = false;
