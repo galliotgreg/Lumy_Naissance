@@ -17,6 +17,13 @@ public class LayAction : MonoBehaviour {
 
     private AgentEntity agentEntity;
 
+    //All Ressources 
+    private float unitRedCost = 0;
+    private float unitBlueCost = 0;
+    private float unitGreenCost = 0;
+    private float unitIncoCost = 0;
+
+
     public string CastName
     {
         get
@@ -43,7 +50,8 @@ public class LayAction : MonoBehaviour {
         }
 
         if (coolDownElapsed && CheckRes())
-        {
+        {     
+            //Decrease Ressources & Drop new Instance
             Lay();
             coolDownElapsed = false;
             // Get CoolDown 
@@ -53,7 +61,8 @@ public class LayAction : MonoBehaviour {
 
     private void Lay()
     {
-       //Decrease Res  
+        //Decrease Ressources
+        DecreaseAmount();
         GameObject child = Instantiate(
             childTemplate, this.transform.position, this.transform.rotation);
         child.SetActive(true);
@@ -75,10 +84,6 @@ public class LayAction : MonoBehaviour {
         AgentContext childContext = childTemplate.GetComponent<AgentContext>();
         AgentComponent[] agentComponents = childContext.GetComponents<AgentComponent>();
 
-        float unitRedCost = 0;
-        float unitBlueCost = 0;
-        float unitGreenCost = 0;
-        float unitIncoCost = 0;
 
         foreach (AgentComponent component in agentComponents)
         {
@@ -105,15 +110,30 @@ public class LayAction : MonoBehaviour {
             && unitBlueCost <= home.BlueResAmout
             && unitIncoCost <= resAmount)  
         {
-            //How to decrease the incolore Amount ? 
-            home.GreenResAmout -= unitGreenCost;
-            home.RedResAmout -= unitRedCost;
-            home.BlueResAmout -= unitBlueCost; 
-
             return true; 
         }
+        unitBlueCost = 0;
+        unitGreenCost = 0;
+        unitIncoCost = 0;
+        unitRedCost = 0;
         return false; 
     }
 
+    private void DecreaseAmount ()
+    {
+       
+     
+        //How to decrease the incolore Amount ? 
+        home.GreenResAmout -= unitGreenCost;
+        home.RedResAmout -= unitRedCost;
+        home.BlueResAmout -= unitBlueCost;
+
+        unitBlueCost = 0;
+        unitGreenCost = 0;
+        unitIncoCost = 0;
+        unitRedCost = 0;
+    }
+
+  
     
 }
