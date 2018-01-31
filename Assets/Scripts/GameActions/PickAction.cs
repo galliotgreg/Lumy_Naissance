@@ -45,7 +45,7 @@ public class PickAction : GameAction {
 			// Associate gameobject
 			item.transform.parent = this.agentEntity.transform;
 
-			// TODO Remove from map
+			// TODO Remove from map : normally the parent must be enough
 		}
 	}
 	#endregion

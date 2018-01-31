@@ -62,7 +62,8 @@ public class GotoAction : GameAction {
 
 		// Use Unity A* to move
 		/*UnityEngine.AI.NavMeshAgent movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-		agentAttr.CurPos = moveTo( agentAttr, movingAgent );*/
+		agentAttr.transform.position = moveTo( agentAttr, movingAgent );
+		agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );*/
 	}
 
 	#endregion

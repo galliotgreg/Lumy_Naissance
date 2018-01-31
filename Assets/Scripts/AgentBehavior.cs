@@ -142,6 +142,32 @@ public class AgentBehavior : MonoBehaviour
             case ActionType.Spread:
                 break;
             case ActionType.Trace:
+				// color
+				ABColor traceColor = ((ABColor)CurActionParams[0]);
+				switch( traceColor.Value ){
+					case ABColor.Color.Red:
+						traceAction.Color = Color.red;
+						break;
+					case ABColor.Color.Green:
+						traceAction.Color = Color.green;
+						break;
+					case ABColor.Color.Blue:
+						traceAction.Color = Color.blue;
+						break;
+				}
+
+				// path
+				ABTable<ABVec> tracePath = ((ABTable<ABVec>)curActionParams[1]);
+				traceAction.Path = new Vector3[tracePath.Values.Length];
+				for (int i = 0; i < tracePath.Values.Length; i++)
+				{
+					ABVec abVec = tracePath.Values[i];
+					Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
+					traceAction.Path[i] = vec3;
+				}
+
+				DisableActions();
+				traceAction.Activated = true;
                 break;
 			case ActionType.Strike:
 				ABRef target = ((ABRef)curActionParams[0]);
@@ -160,7 +186,7 @@ public class AgentBehavior : MonoBehaviour
     private void DisableActions()
     {
 		gotoAction.Activated = false;
-        traceAction.activated = false;
+		traceAction.Activated = false;
         layAction.activated = false;
 		strikeAction.Activated = false;
 		pickAction.Activated = false;
