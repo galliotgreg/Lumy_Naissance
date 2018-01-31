@@ -137,7 +137,7 @@ public class AgentBehavior : MonoBehaviour
 				//pickAction.Item = item.GetAttr();
 
 				DisableActions();
-				pickAction.activated = true;
+				pickAction.Activated = true;
                 break;
             case ActionType.Spread:
                 break;
@@ -150,7 +150,7 @@ public class AgentBehavior : MonoBehaviour
 				//strikeAction.Target = target.GetAttr();
 
 				DisableActions();
-				strikeAction.activated = true;
+				strikeAction.Activated = true;
 				break;
             case ActionType.None:
                 break;
@@ -162,7 +162,7 @@ public class AgentBehavior : MonoBehaviour
         gotoAction.activated = false;
         traceAction.activated = false;
         layAction.activated = false;
-		strikeAction.activated = false;
-		pickAction.activated = false;
+		strikeAction.Activated = false;
+		pickAction.Activated = false;
     }
 }

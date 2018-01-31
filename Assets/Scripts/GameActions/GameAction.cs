@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class GameAction : MonoBehaviour {
 	// Workaround for script enabling issues
-	public bool activated;
+	protected bool activated;
 
 	private bool coolDownElapsed = true;
 
@@ -36,6 +36,19 @@ public abstract class GameAction : MonoBehaviour {
 		}
 		set {
 			coolDownTime = value;
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets a value indicating whether this <see cref="GameAction"/> is activated.
+	/// </summary>
+	/// <value><c>true</c> if activated; otherwise, <c>false</c>.</value>
+	public bool Activated {
+		get {
+			return activated;
+		}
+		set {
+			activated = value;
 		}
 	}
 
@@ -79,6 +92,13 @@ public abstract class GameAction : MonoBehaviour {
 		coolDownElapsed = true;
 	}
 
+	/// <summary>
+	/// Inits the action during Start method.
+	/// </summary>
 	protected abstract void initAction();
+
+	/// <summary>
+	/// Executes the action during Update method (Considers the cooldownTime and activated attributes)
+	/// </summary>
 	protected abstract void executeAction();
 }
