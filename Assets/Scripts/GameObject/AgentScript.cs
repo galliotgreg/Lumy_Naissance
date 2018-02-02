@@ -48,6 +48,8 @@ public class AgentScript : MonoBehaviour {
     [SerializeField]
 	private float pickRange;
 
+	private List<ResourceScript> carryingResources = new List<ResourceScript>();
+
 	#region Properties
     public string Cast
     {
@@ -183,12 +185,7 @@ public class AgentScript : MonoBehaviour {
     {
         get
         {
-            return nbItem;
-        }
-
-        set
-        {
-            nbItem = value;
+			return this.carryingResources.Count;
         }
     }
 
@@ -224,6 +221,18 @@ public class AgentScript : MonoBehaviour {
 		}
 	}
 	#endregion
+
+	public void addResource( ResourceScript resource ){
+		this.carryingResources.Add( resource );
+	}
+	public ResourceScript removeLastResource(){
+		if( this.carryingResources.Count > 0 ){
+			ResourceScript result = this.carryingResources[ this.carryingResources.Count-1 ];
+			this.carryingResources.Remove( result );
+			return result;
+		}
+		return null;
+	}
 
 	void Awake(){
 		key = this.GetHashCode();

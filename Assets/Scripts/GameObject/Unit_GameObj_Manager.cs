@@ -28,7 +28,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	Dictionary<PlayerAuthority,HomeScript> homes = new Dictionary<PlayerAuthority, HomeScript>();
-	List<ResourceScript> resources;
+	List<ResourceScript> resources = new List<ResourceScript>();
 	List<TraceGameObject> traces;
 
 	#region Properties
@@ -48,6 +48,9 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	public List<ResourceScript> Resources {
 		get {
 			return resources;
+		}
+		set {
+			resources = value;
 		}
 	}
 
@@ -72,6 +75,26 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 		return damageResult;
 	}
+
+	public bool pickResource( ResourceScript resource ){
+		if( this.resources.Remove( resource ) ){
+			// Disabling resource when picking
+			resource.gameObject.SetActive( false );
+			return true;
+		}
+		return false;
+	}
+	public bool dropResource( ResourceScript resource ){
+		if( !this.resources.Contains( resource ) ){
+			this.resources.Add( resource );
+
+			// Enabling resource when droping
+			resource.gameObject.SetActive( true );
+			resource.transform.SetParent( this.transform );
+			return true;
+		}
+		return false;
+	}
 	#endregion
 
 	public GameObject getUnit( int key ){
@@ -83,6 +106,14 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		foreach( AgentEntity unit in homes[ PlayerAuthority.Player2 ].getPopulation() ){
 			if( unit.Context.Key == key ){
 				return unit.gameObject;
+			}
+		}
+		return null;
+	}
+	public GameObject getResource( int key ){
+		foreach( ResourceScript resource in resources ){
+			if( resource.Key == key ){
+				return resource.gameObject;
 			}
 		}
 		return null;

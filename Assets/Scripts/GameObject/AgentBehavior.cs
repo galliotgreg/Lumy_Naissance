@@ -128,9 +128,7 @@ public class AgentBehavior : MonoBehaviour
 			break;
 		case ActionType.Pick:
 			ABRef item = ((ABRef)curActionParams[0]);
-			// TODO key
-			throw new System.NotImplementedException();
-			//pickAction.Item = item.GetAttr();
+			pickAction.Item = Unit_GameObj_Manager.instance.getResource( Mathf.FloorToInt( ((ABScalar)item.GetAttr( "key" )).Value ) );
 
 			pickAction.Activated = true;
 			break;
