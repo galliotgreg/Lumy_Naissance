@@ -220,7 +220,7 @@ public class GameManager : MonoBehaviour {
         {
             p2_hiveScript.Population.Add(key, 0);
         }
-
+		Unit_GameObj_Manager.instance.Homes = new List<HomeScript>(){ p1_hiveScript, p2_hiveScript };
 
         //Queens
         GameObject p1_queen = Instantiate(p1_unitTemplates[0], new Vector3(-30f, 0f, 0f), Quaternion.identity);
@@ -233,6 +233,7 @@ public class GameManager : MonoBehaviour {
         p2_hiveScript.Population[p2_specie.QueenCastName]++;
 
 		p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
+		p2_hiveScript.addUnit( p2_queen.GetComponent<AgentEntity>() );
     }
 
     public GameObject GetUnitTemplate(PlayerAuthority authority, string castName)

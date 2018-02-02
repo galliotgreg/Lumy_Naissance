@@ -59,7 +59,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	#endregion
 
 	#region Actions
-	public void hitUnit( float damage ){
+	public void strikeUnit( float damage ){
 		//TODO
 		throw new System.NotImplementedException();
 	}
