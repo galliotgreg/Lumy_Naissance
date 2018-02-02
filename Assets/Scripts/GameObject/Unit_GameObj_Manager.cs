@@ -74,14 +74,14 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 	#endregion
 
-	public GameObject getUnit( int id ){
+	public GameObject getUnit( int key ){
 		foreach( AgentEntity unit in homes[ PlayerAuthority.Player1 ].getPopulation() ){
-			if( unit.Id == id ){
+			if( unit.Context.Key == key ){
 				return unit.gameObject;
 			}
 		}
 		foreach( AgentEntity unit in homes[ PlayerAuthority.Player2 ].getPopulation() ){
-			if( unit.Id == id ){
+			if( unit.Context.Key == key ){
 				return unit.gameObject;
 			}
 		}

@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceScript : MonoBehaviour {
+	// GameObject Identification
+	[AttrName(Identifier = "key")]
+	[SerializeField]
+	private int key;
+
     [AttrName(Identifier = "pos")]
     [SerializeField]
 	private Vector2 location;
@@ -30,8 +35,17 @@ public class ResourceScript : MonoBehaviour {
         {
             color = value; 
         }
-    } 
+    }
 
+	public int Key {
+		get {
+			return key;
+		}
+	}
+
+	void Awake(){
+		key = this.GetHashCode();
+	}
 
     // Use this for initialization
     void Start () {

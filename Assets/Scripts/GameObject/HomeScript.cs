@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HomeScript : MonoBehaviour {
+	// GameObject Identification
+	[AttrName(Identifier = "key")]
+	[SerializeField]
+	private int key;
+
     [AttrName(Identifier = "pos")]
     [SerializeField]
     private Vector2 location;
@@ -101,6 +106,12 @@ public class HomeScript : MonoBehaviour {
 			gameObjectManager = value;
 		}
 	}
+
+	public int Key {
+		get {
+			return key;
+		}
+	}
 	#endregion
 
 	public List<AgentEntity> getPopulation(){
@@ -137,6 +148,7 @@ public class HomeScript : MonoBehaviour {
 	}
 
 	void Awake(){
+		key = this.GetHashCode();
 		populationGameObj = new Dictionary<string, List<AgentEntity>>();
 	}
 

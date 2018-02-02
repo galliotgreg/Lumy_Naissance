@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class AgentContext : MonoBehaviour
 {
+	// GameObject Identification
+	[BindParam(Identifier = "key")]
+	[SerializeField]
+	private int key;
+
     [BindParam(Identifier = "self")]
     [SerializeField]
     private GameObject self;
@@ -122,7 +127,17 @@ public class AgentContext : MonoBehaviour
             traces = value;
         }
     }
+
+	public int Key {
+		get {
+			return key;
+		}
+	}
 	#endregion
+
+	void Awake(){
+		key = this.GetHashCode();
+	}
 
     // Use this for initialization
     void Start()
@@ -136,6 +151,7 @@ public class AgentContext : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+		// TODO fill enemies and allies ?
+		Debug.LogWarning( "TODO" );
     }
 }

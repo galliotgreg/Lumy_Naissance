@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentScript : MonoBehaviour {
+	// GameObject Identification
+	[AttrName(Identifier = "key")]
+	[SerializeField]
+	private int key;
+
     [AttrName(Identifier = "cast")]
     [SerializeField]
     private string cast;
@@ -43,6 +48,7 @@ public class AgentScript : MonoBehaviour {
     [SerializeField]
 	private float pickRange;
 
+	#region Properties
     public string Cast
     {
         get
@@ -211,6 +217,17 @@ public class AgentScript : MonoBehaviour {
             pickRange = value;
         }
     }
+
+	public int Key {
+		get {
+			return key;
+		}
+	}
+	#endregion
+
+	void Awake(){
+		key = this.GetHashCode();
+	}
 
     // Use this for initialization
     void Start () {
