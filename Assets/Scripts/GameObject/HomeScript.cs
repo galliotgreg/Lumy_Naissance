@@ -18,6 +18,11 @@ public class HomeScript : MonoBehaviour {
     [AttrName(Identifier = "population")]
     private Dictionary<string, int> population = new Dictionary<string, int>();
 
+	Unit_GameObj_Manager gameObjectManager;
+	PlayerAuthority authority;
+	Dictionary<string,List<AgentEntity>> populationGameObj;
+
+	#region Properties
     public Vector2 Location
     {
         get
@@ -81,6 +86,46 @@ public class HomeScript : MonoBehaviour {
             population = value;
         }
     }
+
+	public PlayerAuthority Authority {
+		get {
+			return authority;
+		}
+		set {
+			authority = value;
+		}
+	}
+
+	public Unit_GameObj_Manager GameObjectManager {
+		set {
+			gameObjectManager = value;
+		}
+	}
+	#endregion
+
+	public List<AgentEntity> getPopulation(){
+		List<AgentEntity> result = new List<AgentEntity>();
+		foreach( List<AgentEntity> agent in this.populationGameObj.Values ){
+			result.AddRange(agent);
+		}
+		return result;
+	}
+
+	public List<AgentEntity> getPopulation(string cast){
+		return this.populationGameObj[ cast ];
+	}
+
+	public void addUnit( AgentEntity unit ){
+		if( !this.populationGameObj.ContainsKey( unit.Context.Model.Cast ) ){
+			this.populationGameObj.Add( unit.Context.Model.Cast, new List<AgentEntity>() );
+		}
+		this.populationGameObj[ unit.Context.Model.Cast ].Add( unit );
+		unit.Home = this;
+	}
+
+	void Awake(){
+		populationGameObj = new Dictionary<string, List<AgentEntity>>();
+	}
 
     // Use this for initialization
     void Start () {
