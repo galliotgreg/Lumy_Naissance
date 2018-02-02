@@ -119,8 +119,21 @@ public class HomeScript : MonoBehaviour {
 		if( !this.populationGameObj.ContainsKey( unit.Context.Model.Cast ) ){
 			this.populationGameObj.Add( unit.Context.Model.Cast, new List<AgentEntity>() );
 		}
+		if( !this.population.ContainsKey( unit.Context.Model.Cast ) ){
+			this.population.Add( unit.Context.Model.Cast, 0 );
+		}
 		this.populationGameObj[ unit.Context.Model.Cast ].Add( unit );
+		this.population[ unit.Context.Model.Cast ]++;
 		unit.Home = this;
+	}
+
+	public void removeUnit( AgentEntity unit ){
+		if( this.populationGameObj.ContainsKey( unit.Context.Model.Cast ) ){
+			this.populationGameObj[ unit.Context.Model.Cast ].Remove( unit );
+		}
+		if( this.population.ContainsKey( unit.Context.Model.Cast ) ){
+			this.population[ unit.Context.Model.Cast ]--;
+		}
 	}
 
 	void Awake(){

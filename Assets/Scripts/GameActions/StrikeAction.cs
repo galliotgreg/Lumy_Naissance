@@ -24,30 +24,19 @@ public class StrikeAction : GameAction {
 
 	protected override void executeAction ()
 	{
-		AgentScript hitObject = null;
+		if( target is GameObject ){
+			AgentEntity targetAgent = target.GetComponent<AgentEntity>();
 
-		// Check if the player hits some other
-		// Get unit's hit position
-		// TODO check object rotation
-		if( target != null && (this.agentAttr.CurPos - target.GetComponent<AgentScript>().CurPos).magnitude <= this.agentAttr.AtkRange ){
-			hitObject = target.GetComponent<AgentScript>();
-		}
+			if( targetAgent != null ){
+				AgentScript targetModel = targetAgent.Context.Model;
 
-		if( hitObject != null ){
-			// Apply damage
-			float damageValue = this.agentAttr.Strength;
-			float damageResult = Mathf.Max( hitObject.Vitality - damageValue, 0 );
+				// Check if the player hits some other
+				if( (this.agentAttr.CurPos - targetModel.CurPos).magnitude <= this.agentAttr.AtkRange ){
+					// Apply damage
+					float damageValue = this.agentAttr.Strength;
 
-			hitObject.Vitality = hitObject.Vitality - damageResult;
-			// Kill unit
-			if( hitObject.Vitality <= 0 ){
-				// Reduce enemmies
-				// TODO destroy is enough?
-				GameObject.Destroy( target );
-				target = null;
-
-				HomeScript enemyHome = GameManager.instance.GetEnemyHome(agentEntity.Authority);
-				enemyHome.Population[hitObject.Cast]--;
+					float damageCaused = Unit_GameObj_Manager.instance.strikeUnit( targetAgent, damageValue );
+				}
 			}
 		}
 	}

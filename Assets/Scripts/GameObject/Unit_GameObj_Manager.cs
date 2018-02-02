@@ -59,11 +59,39 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	#endregion
 
 	#region Actions
-	public void strikeUnit( float damage ){
-		//TODO
-		throw new System.NotImplementedException();
+	public float strikeUnit( AgentEntity target, float damage ){
+		float vitalityResult = Mathf.Max( target.Context.Model.Vitality - damage, 0 );
+		float damageResult = target.Context.Model.Vitality - vitalityResult;
+		target.Context.Model.Vitality -= damageResult;
+
+		// Kill unit
+		if( target.Context.Model.Vitality <= 0 ){
+			// Reduce enemmies
+			KillUnit( target );
+		}
+
+		return damageResult;
 	}
 	#endregion
+
+	public GameObject getUnit( int id ){
+		foreach( AgentEntity unit in homes[ PlayerAuthority.Player1 ].getPopulation() ){
+			if( unit.Id == id ){
+				return unit.gameObject;
+			}
+		}
+		foreach( AgentEntity unit in homes[ PlayerAuthority.Player2 ].getPopulation() ){
+			if( unit.Id == id ){
+				return unit.gameObject;
+			}
+		}
+		return null;
+	}
+
+	public void KillUnit( AgentEntity unit ){
+		homes[ unit.Authority ].removeUnit( unit );
+		GameObject.Destroy( unit.gameObject );
+	}
 
 	// Use this for initialization
 	void Start () {
