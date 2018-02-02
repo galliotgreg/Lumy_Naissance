@@ -6,32 +6,42 @@ public class LayAction : GameAction {
     [SerializeField]
     private string castName;
 
-	[SerializeField]
-    private GameObject childTemplate;
+	public string CastName
+	{
+		get
+		{
+			return castName;
+		}
 
-	// Resource Cost
-	float unitRedCost = 0;
-	float unitBlueCost = 0;
-	float unitGreenCost = 0;
-	float unitIncoCost = 0;
+		set
+		{
+			castName = value;
+		}
+	}
 
-    public string CastName
-    {
-        get
-        {
-            return castName;
-        }
+	class ResourceCost{
+		public float red;
+		public float green;
+		public float blue;
+		public float incolore;
 
-        set
-        {
-            castName = value;
-        }
-    }
+		public ResourceCost(){
+			red = 0;
+			green = 0;
+			blue = 0;
+			incolore = 0;
+		}
+	}
 
-    private void Lay()
+	/// <summary>
+	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
+	/// </summary>
+	/// <param name="childTemplate">Child template</param>
+	/// <param name="cost">Cost</param>
+	private void Lay( GameObject childTemplate, ResourceCost cost )
     {
         //Decrease Ressources
-        DecreaseResourcesAmount();
+		DecreaseResources( cost );
         GameObject child = Instantiate(
             childTemplate, this.transform.position, this.transform.rotation);
         child.SetActive(true);
@@ -39,70 +49,72 @@ public class LayAction : GameAction {
 		this.agentEntity.Home.addUnit( child.GetComponent<AgentEntity>() );
     }
 
-	// Check if there is enough Resource
-    private bool CheckResources ()
-    {
-        childTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
-
-        //Get Cost of the child
-        //Change Cost Evaluation Method
-        AgentEntity child = childTemplate.GetComponent<AgentEntity>();
-		AgentComponent[] agentComponents = child.gameObject.GetComponents<AgentComponent>();
-
-		unitRedCost = 0;
-		unitBlueCost = 0;
-		unitGreenCost = 0;
-		unitIncoCost = 0;
-
-        foreach (AgentComponent component in agentComponents)
-        {
-            Color32 color = component.Color;
-            if (color.Equals(new Color32(255, 0, 0, 1)))
-                unitRedCost += component.ProdCost; 
-            else if (color.Equals(new Color32(0, 255, 0, 1)))
-                unitBlueCost += component.ProdCost;
-            else if (color.Equals(new Color32(0, 0, 255, 1)))
-                unitGreenCost += component.ProdCost;
-            else
-                unitIncoCost += component.ProdCost; 
-        }
-        unitIncoCost += unitRedCost + unitGreenCost + unitBlueCost; 
-
-		HomeScript home = agentEntity.Home;
-        //Get ressources from Home || Change the method to calculate ressources 
-        float resAmount = home.RedResAmout + home.GreenResAmout + home.BlueResAmout;
-
-        //Compare them and return bool
-        if (unitRedCost <= home.RedResAmout
-            && unitGreenCost <= home.GreenResAmout
-            && unitBlueCost <= home.BlueResAmout
-            && unitIncoCost <= resAmount)  
-        {
-            return true; 
-        }
-
-		unitRedCost = 0;
-		unitBlueCost = 0;
-		unitGreenCost = 0;
-		unitIncoCost = 0;
-
-        return false; 
-    }
-
-    private void DecreaseResourcesAmount ()
+	/// <summary>
+	/// Decreases the resources from the home.
+	/// </summary>
+	/// <param name="cost">Cost of the unit</param>
+	private void DecreaseResources ( ResourceCost cost )
     {
 		HomeScript home = agentEntity.Home;
 
         //How to decrease the incolore Amount ?
-        home.GreenResAmout -= unitGreenCost;
-        home.RedResAmout -= unitRedCost;
-        home.BlueResAmout -= unitBlueCost;
+		home.RedResAmout -= cost.red;
+		home.GreenResAmout -= cost.green;
+		home.BlueResAmout -= cost.blue;
+		// TODO incolore?
+		Debug.LogWarning( "TODO" );
+    }
 
-        unitBlueCost = 0;
-        unitGreenCost = 0;
-        unitIncoCost = 0;
-        unitRedCost = 0;
-    }  
+	/// <summary>
+	/// Obtains the cost associated to a template
+	/// </summary>
+	/// <returns>The cost.</returns>
+	/// <param name="childTemplate">Child template.</param>
+	ResourceCost getCost( GameObject childTemplate ){
+		//Get Cost of the child
+		//Change Cost Evaluation Method
+		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
+		AgentComponent[] agentComponents = child.gameObject.GetComponents<AgentComponent>();
+
+		ResourceCost resultCost = new ResourceCost();
+
+		foreach (AgentComponent component in agentComponents)
+		{
+			Color32 color = component.Color;
+			if (color.Equals(new Color32(255, 0, 0, 1)))
+				resultCost.red += component.ProdCost; 
+			else if (color.Equals(new Color32(0, 255, 0, 1)))
+				resultCost.green += component.ProdCost;
+			else if (color.Equals(new Color32(0, 0, 255, 1)))
+				resultCost.blue += component.ProdCost;
+			else
+				resultCost.incolore += component.ProdCost; 
+		}
+		// TODO how to calculate incolore?
+		Debug.LogWarning("TODO");
+		resultCost.incolore += resultCost.red + resultCost.green + resultCost.blue; 
+
+		return resultCost;
+	}
+
+	/// <summary>
+	/// Check if the home has enough Resource
+	/// </summary>
+	/// <returns><c>true</c>, if there is enough resource, <c>false</c> otherwise.</returns>
+	/// <param name="childTemplate">Child template.</param>
+	/// <param name="cost">Cost of the template.</param>
+	private bool CheckResources ( GameObject childTemplate, ResourceCost cost )
+	{
+		HomeScript home = agentEntity.Home;
+		// Get ressources from Home || Change the method to calculate ressources 
+		float resAmount = home.RedResAmout + home.GreenResAmout + home.BlueResAmout;
+
+		//Compare them and return bool
+		return (cost.red <= home.RedResAmout
+			&& cost.green <= home.GreenResAmout
+			&& cost.blue <= home.BlueResAmout
+			&& cost.incolore <= resAmount);
+	}
     
 	#region implemented abstract members of GameAction
 	protected override void initAction ()
@@ -112,8 +124,11 @@ public class LayAction : GameAction {
 	}
 	protected override void executeAction ()
 	{
-		if( CheckResources() ){
-			Lay();
+		GameObject childTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
+		ResourceCost cost = getCost( childTemplate );
+
+		if( CheckResources( childTemplate, cost ) ){
+			Lay( childTemplate, cost );
 		}
 	}
 	#endregion
