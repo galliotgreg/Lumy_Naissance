@@ -34,7 +34,7 @@ public class AgentBehavior : MonoBehaviour
         set
         {
             curAction = value;
-            CurActionType = value.Type;
+            curActionType = value.Type;
         }
     }
 
@@ -57,11 +57,6 @@ public class AgentBehavior : MonoBehaviour
         {
             return curActionType;
         }
-
-        set
-        {
-            curActionType = value;
-        }
     }
 	#endregion
 
@@ -79,94 +74,7 @@ public class AgentBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //We arre between 2 IA frames
-        if (curActionParams == null)
-        {
-            return;
-        }
-
-        // Inject Param on corresponding Action Script then enable it
-        switch (curActionType)
-        {
-            case ActionType.Drop:
-				DisableActions();
-				dropAction.Activated = true;
-                break;
-            case ActionType.Goto:
-                ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams[0]);
-                gotoAction.Path = new Vector3[path.Values.Length];
-                for (int i = 0; i < path.Values.Length; i++)
-                {
-                    ABVec abVec = path.Values[i];
-                    Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
-                    gotoAction.Path[i] = vec3;
-                }
-
-                DisableActions();
-				gotoAction.Activated = true;
-                break;
-            case ActionType.Hit:
-                break;
-            case ActionType.Hold:
-                break;
-            case ActionType.Lay:
-                ABText castName = ((ABText)curActionParams[0]);
-                layAction.CastName = castName.Value;
-
-                DisableActions();
-				layAction.Activated = true;
-                break;
-            case ActionType.Pick:
-				ABRef item = ((ABRef)curActionParams[0]);
-				// TODO key
-				throw new System.NotImplementedException();
-				//pickAction.Item = item.GetAttr();
-
-				DisableActions();
-				pickAction.Activated = true;
-                break;
-            case ActionType.Spread:
-                break;
-            case ActionType.Trace:
-				// color
-				ABColor traceColor = ((ABColor)CurActionParams[0]);
-				switch( traceColor.Value ){
-					case ABColor.Color.Red:
-						traceAction.Color = Color.red;
-						break;
-					case ABColor.Color.Green:
-						traceAction.Color = Color.green;
-						break;
-					case ABColor.Color.Blue:
-						traceAction.Color = Color.blue;
-						break;
-				}
-
-				// path
-				ABTable<ABVec> tracePath = ((ABTable<ABVec>)curActionParams[1]);
-				traceAction.Path = new Vector3[tracePath.Values.Length];
-				for (int i = 0; i < tracePath.Values.Length; i++)
-				{
-					ABVec abVec = tracePath.Values[i];
-					Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
-					traceAction.Path[i] = vec3;
-				}
-
-				DisableActions();
-				traceAction.Activated = true;
-                break;
-			case ActionType.Strike:
-				ABRef target = ((ABRef)curActionParams[0]);
-				// TODO key
-				throw new System.NotImplementedException();
-				//strikeAction.Target = target.GetAttr();
-
-				DisableActions();
-				strikeAction.Activated = true;
-				break;
-            case ActionType.None:
-                break;
-        }
+		executeAction();
     }
 
     private void DisableActions()
@@ -178,4 +86,94 @@ public class AgentBehavior : MonoBehaviour
 		pickAction.Activated = false;
 		dropAction.Activated = false;
     }
+
+	private void executeAction(){
+		//We arre between 2 IA frames
+		// TODO clear curActionParams ?
+		if (curActionParams == null)
+		{
+			return;
+		}
+
+		// Inject Param on corresponding Action Script then enable it
+		DisableActions();
+		switch (curActionType)
+		{
+		case ActionType.Drop:
+			dropAction.Activated = true;
+			break;
+		case ActionType.Goto:
+			ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams[0]);
+			gotoAction.Path = new Vector3[path.Values.Length];
+			for (int i = 0; i < path.Values.Length; i++)
+			{
+				ABVec abVec = path.Values[i];
+				Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
+				gotoAction.Path[i] = vec3;
+			}
+
+			gotoAction.Activated = true;
+			break;
+		case ActionType.Hit:
+			throw new System.NotImplementedException();
+			break;
+		case ActionType.Hold:
+			throw new System.NotImplementedException();
+			break;
+		case ActionType.Lay:
+			ABText castName = ((ABText)curActionParams[0]);
+			layAction.CastName = castName.Value;
+
+			layAction.Activated = true;
+			break;
+		case ActionType.Pick:
+			ABRef item = ((ABRef)curActionParams[0]);
+			// TODO key
+			throw new System.NotImplementedException();
+			//pickAction.Item = item.GetAttr();
+
+			pickAction.Activated = true;
+			break;
+		case ActionType.Spread:
+			throw new System.NotImplementedException();
+			break;
+		case ActionType.Trace:
+			// color
+			ABColor traceColor = ((ABColor)CurActionParams[0]);
+			switch( traceColor.Value ){
+			case ABColor.Color.Red:
+				traceAction.Color = Color.red;
+				break;
+			case ABColor.Color.Green:
+				traceAction.Color = Color.green;
+				break;
+			case ABColor.Color.Blue:
+				traceAction.Color = Color.blue;
+				break;
+			}
+
+			// path
+			ABTable<ABVec> tracePath = ((ABTable<ABVec>)curActionParams[1]);
+			traceAction.Path = new Vector3[tracePath.Values.Length];
+			for (int i = 0; i < tracePath.Values.Length; i++)
+			{
+				ABVec abVec = tracePath.Values[i];
+				Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
+				traceAction.Path[i] = vec3;
+			}
+
+			traceAction.Activated = true;
+			break;
+		case ActionType.Strike:
+			ABRef target = ((ABRef)curActionParams[0]);
+			// TODO key
+			throw new System.NotImplementedException();
+			//strikeAction.Target = target.GetAttr();
+
+			strikeAction.Activated = true;
+			break;
+		case ActionType.None:
+			break;
+		}
+	}
 }

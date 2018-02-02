@@ -87,6 +87,11 @@ public class AgentEntity : MonoBehaviour
     }
 	#endregion
 
+	public void setAction( ABAction action, IABType[] actionParams ){
+		this.behaviour.CurAction = action;
+		this.behaviour.CurActionParams = actionParams;
+	}
+
     // Use this for initialization
     void Awake()
     {

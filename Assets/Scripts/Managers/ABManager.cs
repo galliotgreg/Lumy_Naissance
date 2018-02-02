@@ -69,7 +69,6 @@ public class ABManager : MonoBehaviour {
             ABInstance instance = FindABInstance(agent.Id);
             ABContext context = CreateABContextFromAgentContext(agent.Context);
             ABAction action = processor.ProcessABInstance(instance, context);
-            agent.Behaviour.CurAction = action;
 
             //Compute Action Parameters
             List<IABType> actionParams = new List<IABType>();
@@ -89,7 +88,7 @@ public class ABManager : MonoBehaviour {
                 }
             }
 
-            agent.Behaviour.CurActionParams = actionParams.ToArray();
+			agent.setAction( action, actionParams.ToArray() );
         }
     }
 
