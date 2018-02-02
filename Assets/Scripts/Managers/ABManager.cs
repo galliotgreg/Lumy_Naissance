@@ -125,12 +125,12 @@ public class ABManager : MonoBehaviour {
     {
         agent.Id = lastId++;
         agents.Add(agent);
-        ABModel model = FindABModel(agent.Behaviour.BehaviorModelIdentifier);
+        ABModel model = FindABModel(agent.BehaviorModelIdentifier);
         if (model == null)
         {
             model = LoadABModelFromFile(GameManager.instance.INPUTS_FOLDER_PATH
                 + GetInputSubFolder(agent)
-                + agent.Behaviour.BehaviorModelIdentifier
+                + agent.BehaviorModelIdentifier
                 + ".csv");
         }
         ABInstance instance = CreateABInstanceFromModel(model);

@@ -14,7 +14,12 @@ public class AgentEntity : MonoBehaviour
     [SerializeField]
     private AgentContext context;
 
+	/// <summary>
+	/// Name of the ABM the agent engages in
+	/// </summary>
+	[SerializeField]
 	private string behaviorModelIdentifier;
+
 	#region Properties
 	public HomeScript Home {
 		get {
@@ -80,7 +85,7 @@ public class AgentEntity : MonoBehaviour
 			return this.context.Model.Cast;
         }
     }
-	#endregion Properties
+	#endregion
 
     // Use this for initialization
     void Awake()

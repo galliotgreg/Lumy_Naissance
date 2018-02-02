@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class AgentBehavior : MonoBehaviour
 {
-    /// <summary>
-    /// Name of the ABM the agent engages in
-    /// </summary>
-    [SerializeField]
-    private string behaviorModelIdentifier;
-
     [SerializeField]
     private ActionType curActionType;
 
@@ -29,19 +23,7 @@ public class AgentBehavior : MonoBehaviour
     /// </summary>
     private ABAction curAction;
 
-    public string BehaviorModelIdentifier
-    {
-        get
-        {
-            return behaviorModelIdentifier;
-        }
-
-        set
-        {
-            behaviorModelIdentifier = value;
-        }
-    }
-
+	#region Properties
     public ABAction CurAction
     {
         get
@@ -81,6 +63,7 @@ public class AgentBehavior : MonoBehaviour
             curActionType = value;
         }
     }
+	#endregion
 
     // Use this for initialization
     void Start()

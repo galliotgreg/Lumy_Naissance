@@ -6,8 +6,8 @@ using UnityEngine;
 public class UnitTemplateInitializer {
     public static void InitTemplate(Cast cast, GameObject agentTemplate, GameObject componentTemplate)
     {
-        AgentBehavior agentBehavior = agentTemplate.GetComponent<AgentBehavior>();
-        agentBehavior.BehaviorModelIdentifier = cast.BehaviorModelIdentifier;
+		AgentEntity agentEntity = agentTemplate.GetComponent<AgentEntity>();
+		agentEntity.BehaviorModelIdentifier = cast.BehaviorModelIdentifier;
         //Set Head Components
         GameObject headObject = agentTemplate.transform.Find("Head").gameObject;
         foreach (AgentComponent agentComponent in cast.Head)
