@@ -6,16 +6,14 @@ public class LayAction : GameAction {
     [SerializeField]
     private string castName;
 
+	[SerializeField]
     private GameObject childTemplate;
 
-    private HomeScript home;
-
-    //All Ressources 
-    private float unitRedCost = 0;
-    private float unitBlueCost = 0;
-    private float unitGreenCost = 0;
-    private float unitIncoCost = 0;
-
+	// Resource Cost
+	float unitRedCost = 0;
+	float unitBlueCost = 0;
+	float unitGreenCost = 0;
+	float unitIncoCost = 0;
 
     public string CastName
     {
@@ -33,23 +31,28 @@ public class LayAction : GameAction {
     private void Lay()
     {
         //Decrease Ressources
-        DecreaseAmount();
+        DecreaseResourcesAmount();
         GameObject child = Instantiate(
             childTemplate, this.transform.position, this.transform.rotation);
         child.SetActive(true);
         //Increment Population 
-        home.Population[castName]++;
+		this.agentEntity.Home.addUnit( child.GetComponent<AgentEntity>() );
     }
 
-    private bool CheckRes ()
+	// Check if there is enough Resource
+    private bool CheckResources ()
     {
-         childTemplate = GameManager.instance.GetUnitTemplate(
-         agentEntity.Authority, castName);
-        //Get Cost of the child  
-        //Change Cost Evaluation Method 
-        AgentContext childContext = childTemplate.GetComponent<AgentContext>();
-        AgentComponent[] agentComponents = childContext.GetComponents<AgentComponent>();
+        childTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
 
+        //Get Cost of the child
+        //Change Cost Evaluation Method
+        AgentEntity child = childTemplate.GetComponent<AgentEntity>();
+		AgentComponent[] agentComponents = child.gameObject.GetComponents<AgentComponent>();
+
+		unitRedCost = 0;
+		unitBlueCost = 0;
+		unitGreenCost = 0;
+		unitIncoCost = 0;
 
         foreach (AgentComponent component in agentComponents)
         {
@@ -63,10 +66,9 @@ public class LayAction : GameAction {
             else
                 unitIncoCost += component.ProdCost; 
         }
-
         unitIncoCost += unitRedCost + unitGreenCost + unitBlueCost; 
 
-        home = GameManager.instance.GetHome(agentEntity.Authority);
+		HomeScript home = agentEntity.Home;
         //Get ressources from Home || Change the method to calculate ressources 
         float resAmount = home.RedResAmout + home.GreenResAmout + home.BlueResAmout;
 
@@ -78,18 +80,20 @@ public class LayAction : GameAction {
         {
             return true; 
         }
-        unitBlueCost = 0;
-        unitGreenCost = 0;
-        unitIncoCost = 0;
-        unitRedCost = 0;
+
+		unitRedCost = 0;
+		unitBlueCost = 0;
+		unitGreenCost = 0;
+		unitIncoCost = 0;
+
         return false; 
     }
 
-    private void DecreaseAmount ()
+    private void DecreaseResourcesAmount ()
     {
-       
-     
-        //How to decrease the incolore Amount ? 
+		HomeScript home = agentEntity.Home;
+
+        //How to decrease the incolore Amount ?
         home.GreenResAmout -= unitGreenCost;
         home.RedResAmout -= unitRedCost;
         home.BlueResAmout -= unitBlueCost;
@@ -98,9 +102,7 @@ public class LayAction : GameAction {
         unitGreenCost = 0;
         unitIncoCost = 0;
         unitRedCost = 0;
-    }
-
-  
+    }  
     
 	#region implemented abstract members of GameAction
 	protected override void initAction ()
@@ -110,7 +112,7 @@ public class LayAction : GameAction {
 	}
 	protected override void executeAction ()
 	{
-		if( CheckRes() ){
+		if( CheckResources() ){
 			Lay();
 		}
 	}
