@@ -65,7 +65,6 @@ public class NavigationManager : MonoBehaviour {
     {
         GameObject root = SceneManager.GetSceneByName(curScene).GetRootGameObjects()[0];
 
-
         // Zoomer sur le bouton
         GameObject canvas = GameObject.Find("WorldCanvas");
         Vector3 dir = (root.transform.position - camera.transform.position).normalized;
@@ -76,7 +75,7 @@ public class NavigationManager : MonoBehaviour {
                 camera.transform.position + root.transform.position - sightPoint,
                 zoomStep);
             root.transform.position = towards;
-            //GameObject.Find("WorldCanvas").GetComponent<CanvasGroup>().alpha -= fadeStep;
+            canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
             yield return true;
         }
 
@@ -84,19 +83,15 @@ public class NavigationManager : MonoBehaviour {
         AsyncOperation unload = SceneManager.UnloadSceneAsync(curScene);
         while (!unload.isDone)
         {
-            Debug.Log("unloading");
             yield return null;
         }
-        Debug.Log("unloaded");
 
         // Attendre la fin du chargement de la scène de destination
         AsyncOperation load = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
         while (!load.isDone)
         {
-            Debug.Log("loading");
             yield return null;
         }
-        Debug.Log("loaded");
 
         // Faire apparaître le canvas en fondu
         //GameObject.Find("WorldCanvas").GetComponent<CanvasGroup>().alpha = 0f;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NavTrigger : MonoBehaviour {
+public class NavTriggerStub : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -13,7 +13,8 @@ public class NavTrigger : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.A))
         {
-            NavigationManager.instance.SwapScenes("TitleScene", "CampaignScene", 2, Vector3.zero);
+
+            NavigationManager.instance.SwapScenes("TitleScene", "CampaignScene", 2, new Vector3(0f, 0f, 0f));
         }
 	}
 }
