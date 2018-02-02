@@ -66,7 +66,7 @@ public class NavigationManager : MonoBehaviour {
         GameObject root = SceneManager.GetSceneByName(curScene).GetRootGameObjects()[0];
 
         // Zoomer sur le bouton
-        GameObject canvas = GameObject.Find("WorldCanvas");
+        GameObject canvas = GameObject.Find(curScene + "Canvas");
         Vector3 dir = (root.transform.position - camera.transform.position).normalized;
         while (Vector3.Dot(dir, root.transform.position - camera.transform.position) > zoomEndDistance)
         {
@@ -94,14 +94,15 @@ public class NavigationManager : MonoBehaviour {
         }
 
         // Faire apparaître le canvas en fondu
-        //GameObject.Find("WorldCanvas").GetComponent<CanvasGroup>().alpha = 0f;
-        //float alpha = GameObject.Find("WorldCanvas").GetComponent<CanvasGroup>().alpha;
-        //while (alpha < 1.0f)
-        //{
-        //    alpha = GameObject.Find("WorldCanvas").GetComponent<CanvasGroup>().alpha;
-        //    GameObject.Find("WorldCanvas").GetComponent<CanvasGroup>().alpha += fadeStep;
-        //    yield return true;
-        //}
+        canvas = GameObject.Find(nextScene + "Canvas");
+        canvas.GetComponent<CanvasGroup>().alpha = 0f;
+        float alpha = canvas.GetComponent<CanvasGroup>().alpha;
+        while (alpha < 1.0f)
+        {
+            alpha = canvas.GetComponent<CanvasGroup>().alpha;
+            canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
+            yield return true;
+        }
 
         // Arrêter la coroutine de transition
         StopCoroutine(ZoomIn(curScene, nextScene, layer, sightPoint));
