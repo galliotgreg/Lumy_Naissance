@@ -45,6 +45,7 @@ public class TraceAction : GameAction {
 			TraceGameObject traceScript = traceObject.GetComponent<TraceGameObject>();
 			if( traceScript != null ){
 				traceScript.Color = this.color;
+				Unit_GameObj_Manager.instance.addTrace( traceScript );
 			}
 		}
 
@@ -55,8 +56,6 @@ public class TraceAction : GameAction {
 			agentAttr.transform.position = GotoAction.moveTo( agentAttr, this.GetComponent<UnityEngine.AI.NavMeshAgent>() );
 			agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );
 		}
-
-		// TODO where to store the trace? Normally at the GameManager
 	}
 
 	#endregion

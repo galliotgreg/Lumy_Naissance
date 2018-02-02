@@ -29,7 +29,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	Dictionary<PlayerAuthority,HomeScript> homes = new Dictionary<PlayerAuthority, HomeScript>();
 	List<ResourceScript> resources = new List<ResourceScript>();
-	List<TraceGameObject> traces;
+	List<TraceGameObject> traces = new List<TraceGameObject>();
 
 	#region Properties
 	public List<HomeScript> Homes {
@@ -95,6 +95,14 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		}
 		return false;
 	}
+
+	public bool addTrace( TraceGameObject trace ){
+		if( !this.traces.Contains( trace ) ){
+			this.traces.Add( trace );
+			return true;
+		}
+		return false;
+	}
 	#endregion
 
 	public GameObject getUnit( int key ){
@@ -122,6 +130,13 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	public void KillUnit( AgentEntity unit ){
 		homes[ unit.Authority ].removeUnit( unit );
 		GameObject.Destroy( unit.gameObject );
+	}
+	public bool destroyTrace( TraceGameObject trace ){
+		if( this.traces.Remove( trace ) ){
+			Destroy( trace.gameObject );
+			return true;
+		}
+		return false;
 	}
 
 	// Use this for initialization
