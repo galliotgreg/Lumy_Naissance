@@ -35,31 +35,6 @@ public class GotoAction : GameAction {
 			agentAttr.TrgPos = path[0];
 		}
 
-		// Moving to target
-			// If it is too close, move directly
-		// TODO replace by Unity A*
-/*		if (Vector3.Distance( agentAttr.TrgPos, agentAttr.CurPos ) < 0.1f)
-		{
-			this.transform.position = new Vector3(
-				agentAttr.TrgPos.x, 
-				0f, 
-				agentAttr.TrgPos.y);
-			agentAttr.CurPos = agentAttr.TrgPos;
-		}
-		else
-		{
-			// Calculate A* to the target
-			// TODO where search for the terrain information?
-			// TODO use Unity A*?
-
-			float speed = agentAttr.MoveSpd;
-
-			Vector3 dir = (	agentAttr.TrgPos - agentAttr.CurPos ).normalized;
-			this.transform.position += Time.deltaTime * speed * new Vector3(dir.x, 0f, dir.y);
-
-			agentAttr.CurPos = this.transform.position;
-		}
-*/
 		// Use Unity A* to move
 		UnityEngine.AI.NavMeshAgent movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		agentAttr.transform.position = moveTo( agentAttr, movingAgent );

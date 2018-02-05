@@ -229,10 +229,6 @@ public class GameManager : MonoBehaviour {
         p2_queen.name = "p2_queen";
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);
-		// TODO this increment is done in addUnit. Check if queen has QueenCastName as castname
-		Debug.LogWarning( "TODO" );
-        /*p1_hiveScript.Population[p1_specie.QueenCastName]++;
-        p2_hiveScript.Population[p2_specie.QueenCastName]++;*/
 
 		p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
 		p2_hiveScript.addUnit( p2_queen.GetComponent<AgentEntity>() );
