@@ -14,7 +14,8 @@ public class NavTriggerStub : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.A))
         {
 
-            NavigationManager.instance.SwapScenes("TitleScene", "CampaignScene", 2, new Vector3(0f, 0f, 0f));
+            NavigationManager.instance.SwapScenes(
+                "TitleScene", "CampaignScene", new Vector3(-35f, 0f, 0f));
         }
 	}
 }

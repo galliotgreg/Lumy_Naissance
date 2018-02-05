@@ -56,12 +56,12 @@ public class NavigationManager : MonoBehaviour {
         }
     }
 
-    public void SwapScenes(string curScene, string nextScene, int layer, Vector3 sightPoint)
+    public void SwapScenes(string curScene, string nextScene, Vector3 sightPoint)
     {
-        StartCoroutine(ZoomIn(curScene, nextScene, layer, sightPoint));
+        StartCoroutine(ZoomIn(curScene, nextScene, sightPoint));
     }
 
-    IEnumerator ZoomIn(string curScene, string nextScene, int layer, Vector3 sightPoint)
+    IEnumerator ZoomIn(string curScene, string nextScene, Vector3 sightPoint)
     {
         GameObject root = SceneManager.GetSceneByName(curScene).GetRootGameObjects()[0];
 
@@ -105,7 +105,7 @@ public class NavigationManager : MonoBehaviour {
         }
 
         // Arrêter la coroutine de transition
-        StopCoroutine(ZoomIn(curScene, nextScene, layer, sightPoint));
+        StopCoroutine(ZoomIn(curScene, nextScene, sightPoint));
         yield return true;
     }
 }
