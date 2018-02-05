@@ -38,7 +38,7 @@ public class GotoAction : GameAction {
 		// Moving to target
 			// If it is too close, move directly
 		// TODO replace by Unity A*
-		if (Vector3.Distance( agentAttr.TrgPos, agentAttr.CurPos ) < 0.1f)
+/*		if (Vector3.Distance( agentAttr.TrgPos, agentAttr.CurPos ) < 0.1f)
 		{
 			this.transform.position = new Vector3(
 				agentAttr.TrgPos.x, 
@@ -59,11 +59,11 @@ public class GotoAction : GameAction {
 
 			agentAttr.CurPos = this.transform.position;
 		}
-
+*/
 		// Use Unity A* to move
-		/*UnityEngine.AI.NavMeshAgent movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+		UnityEngine.AI.NavMeshAgent movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		agentAttr.transform.position = moveTo( agentAttr, movingAgent );
-		agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );*/
+		//agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );
 	}
 
 	#endregion

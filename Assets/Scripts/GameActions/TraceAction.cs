@@ -55,7 +55,7 @@ public class TraceAction : GameAction {
 		{
 			agentAttr.TrgPos = path[0];
 			agentAttr.transform.position = GotoAction.moveTo( agentAttr, this.GetComponent<UnityEngine.AI.NavMeshAgent>() );
-			agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );
+			//agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );
 		}
 	}
 
