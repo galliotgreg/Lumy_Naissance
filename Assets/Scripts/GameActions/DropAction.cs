@@ -34,6 +34,8 @@ public class DropAction : GameAction {
 			}
 			else{
 				// Wherever else
+				_resource.transform.position = this.transform.position;
+
 				Unit_GameObj_Manager.instance.dropResource( _resource );
 			}
 		}

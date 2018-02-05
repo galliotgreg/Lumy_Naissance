@@ -151,7 +151,20 @@ public class AgentContext : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		// TODO fill enemies and allies ?
-		Debug.LogWarning( "TODO" );
+		// fill enemies and allies
+		this.Allies = extractGameObj( Unit_GameObj_Manager.instance.alliesInRange( this.entity ).ToArray() );
+		this.Enemies = extractGameObj( Unit_GameObj_Manager.instance.enemiesInRange( this.entity ).ToArray() );
+		// fill resources
+		this.Resources = extractGameObj( Unit_GameObj_Manager.instance.resourcesInRange( this.entity ).ToArray() );
+		// fill traces
+		this.Traces = extractGameObj( Unit_GameObj_Manager.instance.tracesInRange( this.entity ).ToArray() );
     }
+
+	GameObject[] extractGameObj( MonoBehaviour[] list ){
+		GameObject[] result = new GameObject[ list.Length ];
+		for( int i = 0; i < list.Length; i++ ){
+			result [i] = list [i].gameObject;
+		}
+		return result;
+	}
 }

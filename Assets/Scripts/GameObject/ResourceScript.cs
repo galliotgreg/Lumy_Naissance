@@ -17,10 +17,7 @@ public class ResourceScript : MonoBehaviour {
 
 	public Vector2 Location {
 		get {
-			return location;
-		}
-		set {
-			location = value;
+			return new Vector2(this.transform.position.x, this.transform.position.z);
 		}
 	}
 

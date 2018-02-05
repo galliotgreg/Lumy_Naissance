@@ -17,34 +17,34 @@ public class AgentScript : MonoBehaviour {
     [AttrName(Identifier = "trgPos")]
     [SerializeField]
     private Vector2 trgPos;
-    [AttrName(Identifier = "vitalityMax ")]
+    [AttrName(Identifier = "vitalityMax")]
     [SerializeField]
     private float vitalityMax;
-    [AttrName(Identifier = "vitality ")]
+    [AttrName(Identifier = "vitality")]
     [SerializeField]
     private float vitality;
-    [AttrName(Identifier = "strength ")]
+    [AttrName(Identifier = "strength")]
     [SerializeField]
     private float strength;
-    [AttrName(Identifier = "stamina ")]
+    [AttrName(Identifier = "stamina")]
     [SerializeField]
     private float stamina;
-    [AttrName(Identifier = "actSpd ")]
+    [AttrName(Identifier = "actSpd")]
     [SerializeField]
     private float actSpd;
-    [AttrName(Identifier = "moveSpd ")]
+    [AttrName(Identifier = "moveSpd")]
     [SerializeField]
     private float moveSpd;
-    [AttrName(Identifier = "nbItemMax ")]
+    [AttrName(Identifier = "nbItemMax")]
     [SerializeField]
     private int nbItemMax;
-    [AttrName(Identifier = "nbItem ")]
+    [AttrName(Identifier = "nbItem")]
     [SerializeField]
     private int nbItem;
-    [AttrName(Identifier = "atkRange ")]
+    [AttrName(Identifier = "atkRange")]
     [SerializeField]
     private float atkRange;
-    [AttrName(Identifier = "pickRange ")]
+    [AttrName(Identifier = "pickRange")]
     [SerializeField]
 	private float pickRange;
 

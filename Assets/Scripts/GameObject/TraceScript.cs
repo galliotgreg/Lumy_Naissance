@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TraceGameObject : MonoBehaviour {
+public class TraceScript : MonoBehaviour {
 
 	// GameObject Identification
 	[AttrName(Identifier = "key")]
 	[SerializeField]
 	private int key;
 
+	[AttrName(Identifier = "color")]
 	[SerializeField]
 	Color32 color;
+
+	[AttrName(Identifier = "pos")]
+	[SerializeField]
+	private Vector2 location;
 
 	public Color32 Color {
 		get {
@@ -21,6 +26,13 @@ public class TraceGameObject : MonoBehaviour {
 			changeColor();
 		}
 	}
+
+	public Vector2 Location {
+		get {
+			return new Vector2(this.transform.position.x, this.transform.position.z);
+		}
+	}
+
 	public int Key {
 		get {
 			return key;

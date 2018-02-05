@@ -64,7 +64,7 @@ public abstract class GameAction : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		agentEntity = GetComponent<AgentEntity>();
-		agentAttr = agentEntity.Context.Self.GetComponent<AgentScript>();
+		agentAttr = agentEntity.Context.Model;
 		this.initAction();
 	}
 

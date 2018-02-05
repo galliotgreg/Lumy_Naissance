@@ -42,9 +42,10 @@ public class TraceAction : GameAction {
 		// Create Tracing Object
 		if( tracePrefab != null ){
 			GameObject traceObject = Instantiate( tracePrefab, this.transform.position, this.transform.rotation );
-			TraceGameObject traceScript = traceObject.GetComponent<TraceGameObject>();
+			TraceScript traceScript = traceObject.GetComponent<TraceScript>();
 			if( traceScript != null ){
 				traceScript.Color = this.color;
+				traceScript.transform.position = this.transform.position;
 				Unit_GameObj_Manager.instance.addTrace( traceScript );
 			}
 		}

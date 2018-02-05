@@ -85,11 +85,27 @@ public class AgentEntity : MonoBehaviour
 			return this.context.Model.Cast;
         }
     }
+
+	public float VisionRange
+	{
+		get
+		{
+			float result = 0;
+			foreach( AgentComponent comp in getAgentComponents() ){
+				result += comp.VisionRange;
+			}
+			return result;
+		}
+	}
 	#endregion
 
 	public void setAction( ABAction action, IABType[] actionParams ){
 		this.behaviour.CurAction = action;
 		this.behaviour.CurActionParams = actionParams;
+	}
+
+	AgentComponent[] getAgentComponents (){
+		return this.GetComponentsInChildren<AgentComponent> ();
 	}
 
     // Use this for initialization
