@@ -26,6 +26,16 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+
+
+        string pathFile = "Assets/Inputs/Components/components.csv";
+        ComponentFactory.CreateFactory(readFile(pathFile)); 
+    }
+
+    string readFile(string path)
+    {
+        System.IO.StreamReader reader = new System.IO.StreamReader(path);
+        return reader.ReadToEnd();
     }
 
     //Paths
@@ -152,6 +162,7 @@ public class GameManager : MonoBehaviour {
         template.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             p1_specie.Casts[p1_specie.QueenCastName], template, emptyComponentPrefab);
+        //TODO Context.Model is null 
 		template.GetComponent<AgentEntity>().Context.Model.Cast = p1_specie.QueenCastName;
         //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player1;
         p1_unitTemplates[0] = template;
