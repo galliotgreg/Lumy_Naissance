@@ -68,10 +68,10 @@ public class MCEditorManager : MonoBehaviour {
     }
 
 
-    ProxyABModel Load_MC()
+  /*  ProxyABModel Load_MC()
     {
 
-    }
+    }*/
 
     void Save_MC()
     {
