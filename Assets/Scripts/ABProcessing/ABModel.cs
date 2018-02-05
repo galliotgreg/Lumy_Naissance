@@ -26,6 +26,22 @@ public class ABModel {
         }
     }
 
+    public List<ABState> States
+    {
+        get
+        {
+            return states;
+        }
+    }
+
+    public List<ABTransition> Transitions
+    {
+        get
+        {
+            return transitions;
+        }
+    }
+
     public int InitStateId
     {
         get
