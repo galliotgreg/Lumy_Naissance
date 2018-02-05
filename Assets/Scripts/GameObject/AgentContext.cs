@@ -146,6 +146,8 @@ public class AgentContext : MonoBehaviour
         Home = GameManager.instance.GetHome(agentScript.Authority).gameObject;
 
 		this.model = gameObject.GetComponent<AgentScript>();
+
+		setModelValues ();
     }
 
     // Update is called once per frame
@@ -159,6 +161,44 @@ public class AgentContext : MonoBehaviour
 		// fill traces
 		this.Traces = extractGameObj( Unit_GameObj_Manager.instance.tracesInRange( this.entity ).ToArray() );
     }
+
+	void setModelValues(){
+		// Set Model Values based on AgentComponents
+		AgentComponent[] agentComponents = this.entity.getAgentComponents();
+		// vitality
+		this.model.VitalityMax = 0;
+		// strength
+		this.model.Strength = 0;
+		// stamina
+		this.model.Stamina = 0;
+		// actSpeed
+		this.model.ActSpd = 0;
+		// moveSpeed
+		this.model.MoveSpd = 0;
+		// nbItemMax
+		Debug.LogError( "TODO : nbItem always 1" );
+		this.model.NbItemMax = 1;
+		// atkRange
+		this.model.AtkRange = 0;
+		// pickRange
+		Debug.LogError( "TODO : pickRange = visionRange" );
+		this.model.PickRange = 0;
+
+		foreach( AgentComponent comp in agentComponents ){
+			this.model.VitalityMax += comp.VitalityBuff;
+			this.model.Strength += comp.StrengthBuff;
+			this.model.Stamina += comp.StaminaBuff;
+			this.model.ActSpd += comp.ActionSpeedBuff;
+			this.model.MoveSpd += comp.MoveSpeedBuff;
+			Debug.LogError( "TODO : atkRange = visionRange" );
+			Debug.LogError( "TODO : difference between visionRange and visionRangeBuff" );
+			this.model.AtkRange += comp.VisionRange;
+			Debug.LogError( "TODO : pickRange = visionRange" );
+			this.model.PickRange += comp.VisionRange;
+		}
+
+		this.model.Vitality = this.model.VitalityMax;
+	}
 
 	GameObject[] extractGameObj( MonoBehaviour[] list ){
 		GameObject[] result = new GameObject[ list.Length ];

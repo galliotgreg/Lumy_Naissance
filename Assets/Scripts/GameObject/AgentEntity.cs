@@ -97,6 +97,30 @@ public class AgentEntity : MonoBehaviour
 			return result;
 		}
 	}
+
+	public float ProdCost
+	{
+		get
+		{
+			float result = 0;
+			foreach( AgentComponent comp in getAgentComponents() ){
+				result += comp.ProdCost;
+			}
+			return result;
+		}
+	}
+
+	public float BuyCost
+	{
+		get
+		{
+			float result = 0;
+			foreach( AgentComponent comp in getAgentComponents() ){
+				result += comp.BuyCost;
+			}
+			return result;
+		}
+	}
 	#endregion
 
 	public void setAction( ABAction action, IABType[] actionParams ){
@@ -104,7 +128,7 @@ public class AgentEntity : MonoBehaviour
 		this.behaviour.CurActionParams = actionParams;
 	}
 
-	AgentComponent[] getAgentComponents (){
+	public AgentComponent[] getAgentComponents (){
 		return this.GetComponentsInChildren<AgentComponent> ();
 	}
 
