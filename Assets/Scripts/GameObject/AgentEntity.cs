@@ -27,6 +27,7 @@ public class AgentEntity : MonoBehaviour
 		}
 		set {
 			home = value;
+			this.context.Home = value.gameObject;
 		}
 	}
 

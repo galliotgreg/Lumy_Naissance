@@ -68,11 +68,15 @@ GameObject:
   - component: {fileID: 114743776689603538}
   - component: {fileID: 114557014208587398}
   - component: {fileID: 114238049092781280}
-  - component: {fileID: 114973090759279900}
-  - component: {fileID: 114662239543177926}
-  - component: {fileID: 114892884380249330}
+  - component: {fileID: 114797667755122866}
   - component: {fileID: 33639599402962088}
   - component: {fileID: 23608124313498414}
+  - component: {fileID: 114892884380249330}
+  - component: {fileID: 114973090759279900}
+  - component: {fileID: 114308745040976662}
+  - component: {fileID: 114368823567724644}
+  - component: {fileID: 114107907229580660}
+  - component: {fileID: 114662239543177926}
   m_Layer: 0
   m_Name: EmptyAgentPrefab
   m_TagString: Agent
@@ -174,6 +178,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1618866709941296}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114107907229580660
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1618866709941296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bd1988a44335d5479b1983b3440bb41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolDownActivate: 1
+  coolDownTime: 0.1
 --- !u!114 &114238049092781280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -185,8 +202,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8143e47269e4c5045bd2aa8cae95424c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behaviorModelIdentifier: 
   curActionType: 0
+--- !u!114 &114308745040976662
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1618866709941296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6069ac2dc65a57142bece31596128b32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolDownActivate: 1
+  coolDownTime: 0.1
+--- !u!114 &114368823567724644
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1618866709941296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ffaad4ae31469546a8fd6bb1643748c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolDownActivate: 1
+  coolDownTime: 0.1
 --- !u!114 &114557014208587398
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -198,12 +240,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe412959c0bba774795cc7552807bad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 0
   self: {fileID: 1251105846208636}
   home: {fileID: 0}
   enemies: []
   allies: []
   resources: []
   traces: []
+  entity: {fileID: 0}
+  model: {fileID: 0}
 --- !u!114 &114662239543177926
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,11 +260,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 421b1eed0d7d22b49b9b508d4eef1287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activated: 0
+  coolDownActivate: 1
+  coolDownTime: 0.1
   path: []
   color:
     serializedVersion: 2
     rgba: 0
+  tracePrefab: {fileID: 0}
 --- !u!114 &114743776689603538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -232,10 +279,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  authority: 0
+  home: {fileID: 0}
   behaviour: {fileID: 0}
   context: {fileID: 0}
---- !u!114 &114892884380249330
+  behaviorModelIdentifier: 
+--- !u!114 &114797667755122866
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -243,22 +291,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1618866709941296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7b8ffbe3a367e24b9bcde3306503efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activated: 0
-  castName: 
---- !u!114 &114893578127201778
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1251105846208636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82aa6bfea7d13f44ca2087917e38dbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 0
   cast: 
   curPos: {x: 0, y: 0}
   trgPos: {x: 0, y: 0}
@@ -271,7 +307,46 @@ MonoBehaviour:
   nbItemMax: 0
   nbItem: 0
   atkRange: 0
-  pickRange: {x: 0, y: 0}
+  pickRange: 0
+--- !u!114 &114892884380249330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1618866709941296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b8ffbe3a367e24b9bcde3306503efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolDownActivate: 1
+  coolDownTime: 0.1
+  castName: 
+--- !u!114 &114893578127201778
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1251105846208636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82aa6bfea7d13f44ca2087917e38dbf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 0
+  cast: 
+  curPos: {x: 0, y: 0}
+  trgPos: {x: 0, y: 0}
+  vitalityMax: 0
+  vitality: 0
+  strength: 0
+  stamina: 0
+  actSpd: 0
+  moveSpd: 0
+  nbItemMax: 0
+  nbItem: 0
+  atkRange: 0
+  pickRange: NaN
 --- !u!114 &114973090759279900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -283,5 +358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef0748f289c07441b9bcd7621a32ffd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activated: 0
+  coolDownActivate: 1
+  coolDownTime: 0.1
   path: []

@@ -138,21 +138,23 @@ public class AgentContext : MonoBehaviour
 	void Awake(){
 		key = this.GetHashCode();
 
+		this.model = gameObject.GetComponent<AgentScript>();
     }
 
     // Use this for initialization
-    void Start()
-    {
-
-        AgentEntity agentScript = gameObject.GetComponent<AgentEntity>();
-        Home = GameManager.instance.GetHome(agentScript.Authority).gameObject;
-
-        this.model = gameObject.GetComponent<AgentScript>();
-    }
+    void Start(){}
 
     // Update is called once per frame
     void Update()
     {
+		/* // the home is not set immediatly
+		if (Home == null) {
+			if (this.entity.Home != null) {
+				Home = this.entity.Home.gameObject;
+			}
+		}
+		*/
+
 		// TODO fill enemies and allies ?
 		Debug.LogWarning( "TODO" );
     }
