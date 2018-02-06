@@ -6,6 +6,8 @@ public class LayAction : GameAction {
     [SerializeField]
     private string castName;
 
+    private int nbComposants = 0;
+
 	public string CastName
 	{
 		get
@@ -108,19 +110,26 @@ public class LayAction : GameAction {
 	protected override void initAction ()
 	{
 		this.CoolDownActivate = true;
-		this.CoolDownTime = 1/(this.agentAttr.ActSpd*5);
+        GameObject childTemplate = GameManager.instance.GetUnitTemplate(agentEntity.Authority, castName);
 	}
+
 	protected override void executeAction ()
 	{
 		GameObject childTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
-		ResourceCost cost = getCost( childTemplate );
 
-		if( CheckResources( childTemplate, cost ) ){
-            Debug.Log("Ressources is Enought : " + cost);
+        AgentEntity child = childTemplate.GetComponent<AgentEntity>();
+        AgentComponent[] agentComponents = child.getAgentComponents();
+        nbComposants = agentComponents.Length;
+        Debug.Log("NbComposants :" + nbComposants);
+        this.CoolDownTime = (float) 0.5f * nbComposants;
+        Debug.Log(CoolDownTime); 
+        ResourceCost cost = getCost( childTemplate );
+       
+
+        if ( CheckResources( childTemplate, cost ) ){   
 			Lay( childTemplate, cost );
 		}
         else {
-            Debug.Log("Ressources is not Enought : " + cost); 
         }
 	}
 	#endregion
