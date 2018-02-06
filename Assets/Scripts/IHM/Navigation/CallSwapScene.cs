@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CallSwapScene : MonoBehaviour {
 
+    public bool isReturnButton;
     public string target;
 
 	// Use this for initialization
@@ -19,6 +21,13 @@ public class CallSwapScene : MonoBehaviour {
 
     void SwapScene()
     {
-        NavigationManager.instance.SwapScenes(target, this.gameObject.transform.position);
+        if (!isReturnButton)
+        {
+            NavigationManager.instance.SwapScenes(target, this.gameObject.transform.position);
+        } else
+        {
+            NavigationManager.instance.GoBack(this.gameObject.transform.position);
+        }
+        
     }
 }
