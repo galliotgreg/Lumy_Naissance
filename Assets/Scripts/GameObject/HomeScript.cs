@@ -85,11 +85,6 @@ public class HomeScript : MonoBehaviour {
         {
             return population;
         }
-
-        set
-        {
-            population = value;
-        }
     }
 
 	public PlayerAuthority Authority {
@@ -161,5 +156,6 @@ public class HomeScript : MonoBehaviour {
 	void Update () {
         location.x = this.transform.position.x;
         location.y = this.transform.position.y;
+        Debug.Log(population); 
     }
 }

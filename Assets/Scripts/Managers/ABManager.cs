@@ -45,7 +45,7 @@ public class ABManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Debug.Log(INPUTS_FOLDER_PATH);
+        
     }
 	
 	// Update is called once per frame
