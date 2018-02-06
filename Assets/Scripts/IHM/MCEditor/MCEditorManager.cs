@@ -22,7 +22,6 @@ public class MCEditorManager : MonoBehaviour {
     [SerializeField]
     private GameObject operatorPrefab;
     [SerializeField]
-    //private IProxyABParam parameterPrefab;
     private GameObject parameterPrefab;
     [SerializeField]
     private ProxyABAction actionPrefab;
