@@ -2,10 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProxyABParam : MonoBehaviour {
+public class ProxyABParam<T> : MonoBehaviour, IProxyABParam{
 
-	// Use this for initialization
-	void Start () {
+    private ABParam<T> abParam;
+
+    public string Identifier {
+        get {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -13,4 +21,8 @@ public class ProxyABParam : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public ProxyABParam(ABParam<T> param) {
+        abParam = param;
+    }
 }

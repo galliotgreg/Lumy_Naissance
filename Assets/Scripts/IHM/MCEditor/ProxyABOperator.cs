@@ -2,10 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProxyABOperator : MonoBehaviour {
+public class ProxyABOperator<T> : MonoBehaviour, IProxyABOperator{
 
-	// Use this for initialization
-	void Start () {
+    private ABOperator<T> abOperator;
+
+    public ABNode[] Inputs {
+        get {
+            throw new System.NotImplementedException();
+        }
+
+        set {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -13,4 +25,8 @@ public class ProxyABOperator : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public ProxyABOperator(ABOperator<T> ope) {
+        abOperator = ope;
+    }
 }
