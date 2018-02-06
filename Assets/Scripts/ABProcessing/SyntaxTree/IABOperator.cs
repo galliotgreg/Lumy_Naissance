@@ -3,5 +3,5 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface IABOperator {
-    ABNode[] Inputs { get; set; }
+    ABNode[] Inputs { get; set; }    
 }

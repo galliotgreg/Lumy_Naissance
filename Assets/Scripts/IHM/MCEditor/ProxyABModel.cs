@@ -11,7 +11,11 @@ public class ProxyABModel : MonoBehaviour {
     private ABModel abModel;
     private List<ProxyABState> proxyStates;
     private List<ProxyABTransition> proxyTransitions;
-    private List<Pin> pins;
+    private List<Pin> pins; //ProxyABGateOperator
+    //ProxyABParam
+    //ProxyABOperator
+
+    
 
     // Use this for initialization
     void Start () {

@@ -27,12 +27,13 @@ public class MCEditorManager : MonoBehaviour {
     [SerializeField]
     private GameObject[] mcTemplates;
 
-    //Path
-    public string SPECIE_FILE_SUFFIX = "specie.csv";
-    public string INPUTS_FOLDER_PATH = "Assets/Inputs/";
-    public string PLAYER1_SPECIE_FOLDER = "Player1/";
+    private ABModel abModel;
+    private List<ProxyABState> proxyStates;
+    private List<ProxyABTransition> proxyTransitions;
+    private List<Pin> pins; //ProxyABGateOperator
+    private List<ProxyABParam> proxyParam; //ProxyABParam
+    private List<ProxyABOperator> proxyOperator;//ProxyABOperator
 
-    private Specie p1_specie;
 
     /// <summary>
     /// Enforce Singleton properties
@@ -59,19 +60,44 @@ public class MCEditorManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        SetupCast();
+        SetupModel();
     }
 
-    private void SetupCast()
+    private void SetupModel()
     {
-
+        abModel = LoadMC();
     }
 
 
-  /*  ProxyABModel Load_MC()
+    ABModel LoadMC()
     {
+        //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path
+        return ABManager.instance.LoadABModelFromFile("path");
+    }
 
-    }*/
+    void CreateProxyStates()
+    {
+        foreach (ABState state in this.abModel.States)
+        {
+            ProxyABState proxyState = new ProxyABState(state);
+            this.proxyStates.Add(proxyState);
+            CreatePins(state.Outcomes);
+        }
+    }
+
+    void CreateProxyTransitions()
+    {
+        foreach (ABTransition transition in this.abModel.Transitions)
+        {
+            ProxyABTransition proxyTransition = new ProxyABTransition(transition);
+            this.proxyTransitions.Add(proxyTransition);
+        }
+    }
+
+    void CreatePins(List<ABTransition> transitions)
+    {
+    }
+
 
     void Save_MC()
     {
