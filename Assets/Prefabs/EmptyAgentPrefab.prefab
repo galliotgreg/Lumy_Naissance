@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 114368823567724644}
   - component: {fileID: 114107907229580660}
   - component: {fileID: 114662239543177926}
+  - component: {fileID: 195848833984645618}
   m_Layer: 0
   m_Name: EmptyAgentPrefab
   m_TagString: Agent
@@ -202,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8143e47269e4c5045bd2aa8cae95424c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curActionType: 0
+  curActionType: 9
 --- !u!114 &114308745040976662
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -279,7 +280,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  home: {fileID: 0}
   behaviour: {fileID: 0}
   context: {fileID: 0}
   behaviorModelIdentifier: 
@@ -361,3 +361,24 @@ MonoBehaviour:
   coolDownActivate: 1
   coolDownTime: 0.1
   path: []
+--- !u!195 &195848833984645618
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1618866709941296}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 1
+  m_AutoRepath: 0
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 1

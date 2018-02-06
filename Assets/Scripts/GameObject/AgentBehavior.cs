@@ -112,7 +112,7 @@ public class AgentBehavior : MonoBehaviour
 			dropAction.Activated = true;
 			break;
 		case ActionType.Goto:
-			ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams[0]);
+			ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams [0]);
 			gotoAction.Path = new Vector3[path.Values.Length];
 			for (int i = 0; i < path.Values.Length; i++)
 			{

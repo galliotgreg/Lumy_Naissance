@@ -23,7 +23,9 @@ public class HomeScript : MonoBehaviour {
     [AttrName(Identifier = "population")]
     private Dictionary<string, int> population = new Dictionary<string, int>();
 
+	[SerializeField]
 	Unit_GameObj_Manager gameObjectManager;
+	[SerializeField]
 	PlayerAuthority authority;
 	Dictionary<string,List<AgentEntity>> populationGameObj;
 
@@ -156,6 +158,5 @@ public class HomeScript : MonoBehaviour {
 	void Update () {
         location.x = this.transform.position.x;
         location.y = this.transform.position.y;
-        Debug.Log(population); 
     }
 }
