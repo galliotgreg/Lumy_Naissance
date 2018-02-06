@@ -65,7 +65,7 @@ public class AgentComponent : MonoBehaviour {
 
     //Not handled
     [SerializeField]
-	private List<String> notHandledTokens = new List<String>();
+	private List<String> notHandledTokens;
 
 	#region GETTERS and SETTERS
 	public int Id {

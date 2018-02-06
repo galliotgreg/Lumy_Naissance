@@ -45,8 +45,8 @@ public class ABManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
+        Debug.Log(INPUTS_FOLDER_PATH);
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -58,7 +58,8 @@ public class ABManager : MonoBehaviour {
         } else
         {
             cooldown -= Time.deltaTime;
-        }  
+        }
+      
     }
 
     private void Frame()

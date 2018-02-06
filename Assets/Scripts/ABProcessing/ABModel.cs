@@ -93,6 +93,7 @@ public class ABModel {
 
     public bool HasAction(int stateId)
     {
+       
         ABState state = states[stateId];
         return state.Action != null;
     }

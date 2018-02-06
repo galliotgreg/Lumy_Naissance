@@ -137,18 +137,14 @@ public class AgentContext : MonoBehaviour
 
 	void Awake(){
 		key = this.GetHashCode();
-	}
-
-    // Use this for initialization
-    void Start()
-    {
-        AgentEntity agentScript = gameObject.GetComponent<AgentEntity>();
-        Home = GameManager.instance.GetHome(agentScript.Authority).gameObject;
 
 		this.model = gameObject.GetComponent<AgentScript>();
 
 		setModelValues ();
     }
+
+    // Use this for initialization
+    void Start(){}
 
     // Update is called once per frame
     void Update()
