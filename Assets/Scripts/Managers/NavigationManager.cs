@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NavigationManager : MonoBehaviour {
 
@@ -65,8 +66,17 @@ public class NavigationManager : MonoBehaviour {
         StartCoroutine(SwapScenesCo(nextScene, sightPoint));
     }
 
+    public void GoBack(Vector3 sightPoint)
+    {
+        StartCoroutine(SwapScenesCo(previousScene, sightPoint));
+    }
+
     IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
     {
+        Debug.Log("Previous :" + previousScene);
+        Debug.Log("Current :" + currentScene);
+        Debug.Log("Next :" + nextScene);
+
         GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
 
         // Zoomer sur le bouton
@@ -119,8 +129,6 @@ public class NavigationManager : MonoBehaviour {
             StartCoroutine(SwapLayersCo(nextScene, newLayer));
         }
 
-        //GameObject.Find("ReturnButton").GetComponent<CallSwapScene>().target = previousScene;
-
         // Arrêter la coroutine de transition
         StopCoroutine(SwapScenesCo(nextScene, sightPoint));
         yield return true;
@@ -164,9 +172,12 @@ public class NavigationManager : MonoBehaviour {
             yield return true;
         }
 
+        // Mettre à jour la strate courante
         currentLayer = newLayer;
 
+        // Arrêter la coroutine
         StopCoroutine(SwapLayersCo(nextScene, newLayer));
         yield return true;
     }
+    
 }
