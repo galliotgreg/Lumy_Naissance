@@ -172,12 +172,12 @@ public class AgentContext : MonoBehaviour
 		// moveSpeed
 		this.model.MoveSpd = 0;
 		// nbItemMax
-		Debug.LogError( "TODO : nbItem always 1" );
+		Debug.LogWarning( "TODO : nbItem always 1" );
 		this.model.NbItemMax = 1;
 		// atkRange
 		this.model.AtkRange = 0;
 		// pickRange
-		Debug.LogError( "TODO : pickRange = visionRange" );
+		Debug.LogWarning( "TODO : pickRange = visionRange" );
 		this.model.PickRange = 0;
 
 		foreach( AgentComponent comp in agentComponents ){
@@ -186,10 +186,10 @@ public class AgentContext : MonoBehaviour
 			this.model.Stamina += comp.StaminaBuff;
 			this.model.ActSpd += comp.ActionSpeedBuff;
 			this.model.MoveSpd += comp.MoveSpeedBuff;
-			Debug.LogError( "TODO : atkRange = visionRange" );
-			Debug.LogError( "TODO : difference between visionRange and visionRangeBuff" );
+			Debug.LogWarning( "TODO : atkRange = visionRange" );
+			Debug.LogWarning( "TODO : difference between visionRange and visionRangeBuff" );
 			this.model.AtkRange += comp.VisionRange;
-			Debug.LogError( "TODO : pickRange = visionRange" );
+			Debug.LogWarning( "TODO : pickRange = visionRange" );
 			this.model.PickRange += comp.VisionRange;
 		}
 
