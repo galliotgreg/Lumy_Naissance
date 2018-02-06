@@ -23,13 +23,11 @@ public class LayAction : GameAction {
 		public float red;
 		public float green;
 		public float blue;
-		public float incolore;
 
 		public ResourceCost(){
 			red = 0;
 			green = 0;
 			blue = 0;
-			incolore = 0;
 		}
 	}
 
@@ -56,13 +54,9 @@ public class LayAction : GameAction {
 	private void DecreaseResources ( ResourceCost cost )
     {
 		HomeScript home = agentEntity.Home;
-
-        //How to decrease the incolore Amount ?
 		home.RedResAmout -= cost.red;
 		home.GreenResAmout -= cost.green;
 		home.BlueResAmout -= cost.blue;
-		// TODO incolore?
-		Debug.LogWarning( "TODO" );
     }
 
 	/// <summary>
@@ -87,12 +81,7 @@ public class LayAction : GameAction {
 				resultCost.green += component.ProdCost;
 			else if (color.Equals(new Color32(0, 0, 255, 1)))
 				resultCost.blue += component.ProdCost;
-			else
-				resultCost.incolore += component.ProdCost; 
 		}
-		// TODO how to calculate incolore?
-		Debug.LogWarning("TODO");
-		resultCost.incolore += resultCost.red + resultCost.green + resultCost.blue; 
 
 		return resultCost;
 	}
@@ -106,14 +95,12 @@ public class LayAction : GameAction {
 	private bool CheckResources ( GameObject childTemplate, ResourceCost cost )
 	{
 		HomeScript home = agentEntity.Home;
-		// Get ressources from Home || Change the method to calculate ressources 
-		float resAmount = home.RedResAmout + home.GreenResAmout + home.BlueResAmout;
+		// Get ressources from Home || Change the method to calculate ressources
 
 		//Compare them and return bool
 		return (cost.red <= home.RedResAmout
 			&& cost.green <= home.GreenResAmout
-			&& cost.blue <= home.BlueResAmout
-			&& cost.incolore <= resAmount);
+			&& cost.blue <= home.BlueResAmout);
 	}
     
 	#region implemented abstract members of GameAction
