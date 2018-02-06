@@ -91,26 +91,27 @@ public class MCEditorManager : MonoBehaviour {
         foreach (ABState state in this.abModel.States)
         {
             ProxyABState proxyState;
-            GameObject proxyAction;                        
-
-            //this.proxyStates.Add( (ProxyABModel) proxyState);
+            GameObject proxyAction;
+            Pin pin;
+            
             if (state.Action != null)
             {
                 proxyAction = Instantiate<GameObject>(actionPrefab);                
-                int len = state.Action.Parameters.Length;
+                int len = state.Action.Parameters.Length;               
 
                 foreach(IABGateOperator param in state.Action.Parameters) {
-                    Debug.Log(param.GetType().ToString());
-                    Debug.Log(param.Inputs);
+                    pin = Instantiate<Pin>(pinPrefab);
+                    pin.transform.position = proxyAction.transform.position;
+                    float radius = proxyAction.transform.localScale.y / 2;
+                    pin.transform.position = new Vector3(pin.transform.position.x, pin.transform.position.y + radius, pin.transform.position.z);
+                    pins.Add(pin);
                     DeploySyntaxeTree(param.Inputs);                     
                 }
             }
             else {
                 proxyState = Instantiate<ProxyABState>(statePrefab);
                 proxyState.GetComponent<ProxyABState>().AbState = state;
-                proxyStates.Add(proxyState);
-
-                Debug.Log(proxyStates.ToString());
+                proxyStates.Add(proxyState);                
             }
             if (state.Outcomes.Count != 0)
             {
