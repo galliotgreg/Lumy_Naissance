@@ -21,7 +21,8 @@ public class MCEditorManager : MonoBehaviour {
     [SerializeField]
     private IProxyABOperator operatorPrefab;
     [SerializeField]
-    private IProxyABParam parameterPrefab;
+    //private IProxyABParam parameterPrefab;
+    private GameObject parameterPrefab;
     [SerializeField]
     private GameObject actionPrefab;
     [SerializeField]
@@ -83,17 +84,33 @@ public class MCEditorManager : MonoBehaviour {
     {
         foreach (ABState state in this.abModel.States)
         {
-            ProxyABState proxyState = Instantiate<ProxyABState>(statePrefab);
+            ProxyABState proxyState;
+            GameObject proxyAction;
+            IProxyABParam proxyParam;
+            //GameObject proxyParam;
+
             //this.proxyStates.Add( (ProxyABModel) proxyState);
             if (state.Action != null)
             {
+                proxyAction = Instantiate<GameObject>(actionPrefab);
+                int len = state.Action.Parameters.Length;
 
+                foreach(IABGateOperator param in state.Action.Parameters) {
+                    Debug.Log(param.Inputs);
+                    //proxyParam = Instantiate<ProxyABParam<T>>(parameterPrefab);
+                }
+            }
+            else {
+                proxyState = Instantiate<ProxyABState>(statePrefab);
             }
             if (state.Outcomes.Count != 0)
             {
                 CreatePins(state.Outcomes);
             }            
         }
+    }
+
+    void CreateProxySyntaxTree() {
     }
 
     void CreateProxyTransitions()
