@@ -4,14 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class NavigationManager : MonoBehaviour {
-    /// <summary>
-    /// The static instance of the Singleton for external access
-    /// </summary>
-    public static NavigationManager instance = null;
 
-    /// <summary>
-    /// Enforce Singleton properties
-    /// </summary>
+    // The static instance of the Singleton for external access
+    public static NavigationManager instance = null;
+   
+    // Enforce Singleton properties
     void Awake()
     {
         //Check if instance already exists and set it to this if not
@@ -28,10 +25,16 @@ public class NavigationManager : MonoBehaviour {
     }
 
     [SerializeField]
-    private string[] initSceneLayers;
+    private string initialScene;
     [SerializeField]
     private Camera camera;
 
+    [SerializeField]
+    private string currentLayer;
+    [SerializeField]
+    private string currentScene;
+    [SerializeField]
+    private string previousScene;
 
     public float zoomEndDistance = 0.0f;
     public float zoomStep = 0.1f;
@@ -44,29 +47,31 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator InitSceneLayers()
     {
-        AsyncOperation loadLayer1 = SceneManager.LoadSceneAsync(initSceneLayers[1], LoadSceneMode.Additive);
-        AsyncOperation loadLayer2 = SceneManager.LoadSceneAsync(initSceneLayers[2], LoadSceneMode.Additive);
-        while (!loadLayer1.isDone)
+        AsyncOperation loadScene = SceneManager.LoadSceneAsync(initialScene, LoadSceneMode.Additive);
+        while (!loadScene.isDone)
         {
             yield return null;
         }
-        while (!loadLayer2.isDone)
+        AsyncOperation loadLayer = SceneManager.LoadSceneAsync(SceneManager.GetSceneByName(initialScene).GetRootGameObjects()[0].GetComponent<SceneData>().parentLayer, LoadSceneMode.Additive);
+        while (!loadLayer.isDone)
         {
             yield return null;
         }
+        currentScene = initialScene;
+
     }
 
-    public void SwapScenes(string curScene, string nextScene, Vector3 sightPoint)
+    public void SwapScenes(string nextScene, Vector3 sightPoint)
     {
-        StartCoroutine(ZoomIn(curScene, nextScene, sightPoint));
+        StartCoroutine(ZoomIn(nextScene, sightPoint));
     }
 
-    IEnumerator ZoomIn(string curScene, string nextScene, Vector3 sightPoint)
+    IEnumerator ZoomIn(string nextScene, Vector3 sightPoint)
     {
-        GameObject root = SceneManager.GetSceneByName(curScene).GetRootGameObjects()[0];
+        GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
 
         // Zoomer sur le bouton
-        GameObject canvas = GameObject.Find(curScene + "Canvas");
+        GameObject canvas = GameObject.Find(currentScene + "Canvas");
         Vector3 dir = (root.transform.position - camera.transform.position).normalized;
         while (Vector3.Dot(dir, root.transform.position - camera.transform.position) > zoomEndDistance)
         {
@@ -80,7 +85,7 @@ public class NavigationManager : MonoBehaviour {
         }
 
         // Attendre la fin du déchargement de la scène initiale
-        AsyncOperation unload = SceneManager.UnloadSceneAsync(curScene);
+        AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
         while (!unload.isDone)
         {
             yield return null;
@@ -92,6 +97,10 @@ public class NavigationManager : MonoBehaviour {
         {
             yield return null;
         }
+
+        // Mettre à jour les propriétés du gestionnaire
+        previousScene = currentScene;
+        currentScene = nextScene;
 
         // Faire apparaître le canvas en fondu
         canvas = GameObject.Find(nextScene + "Canvas");
@@ -105,7 +114,7 @@ public class NavigationManager : MonoBehaviour {
         }
 
         // Arrêter la coroutine de transition
-        StopCoroutine(ZoomIn(curScene, nextScene, sightPoint));
+        StopCoroutine(ZoomIn(nextScene, sightPoint));
         yield return true;
     }
 }
