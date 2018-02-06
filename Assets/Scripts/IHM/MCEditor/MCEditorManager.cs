@@ -24,7 +24,7 @@ public class MCEditorManager : MonoBehaviour {
     //private IProxyABParam parameterPrefab;
     private GameObject parameterPrefab;
     [SerializeField]
-    private GameObject actionPrefab;
+    private ProxyABAction actionPrefab;
     [SerializeField]
     private GameObject[] mcTemplates;
 
@@ -91,15 +91,16 @@ public class MCEditorManager : MonoBehaviour {
         foreach (ABState state in this.abModel.States)
         {
             ProxyABState proxyState;
-            GameObject proxyAction;                        
+            ProxyABAction proxyAction;                        
 
             //this.proxyStates.Add( (ProxyABModel) proxyState);
             if (state.Action != null)
             {
-                proxyAction = Instantiate<GameObject>(actionPrefab);                
-                int len = state.Action.Parameters.Length;
+                proxyAction = Instantiate<ProxyABAction>(actionPrefab);
+                proxyAction.GetComponent<ProxyABAction>().AbAction = state.Action;
+                proxyActions.Add(proxyAction);
 
-                foreach(IABGateOperator param in state.Action.Parameters) {
+                foreach (IABGateOperator param in state.Action.Parameters) {
                     Debug.Log(param.GetType().ToString());
                     Debug.Log(param.Inputs);
                     DeploySyntaxeTree(param.Inputs);                     
@@ -126,10 +127,13 @@ public class MCEditorManager : MonoBehaviour {
             if(node is IABOperator)
             {
                 GameObject ope = Instantiate<GameObject>(operatorPrefab);
+
                 DeploySyntaxeTree(((IABOperator)node).Inputs);
+
             } else if (node is IABParam)
             {
-                GameObject param = Instantiate<GameObject>(parameterPrefab);                
+                GameObject param = Instantiate<GameObject>(parameterPrefab);
+
             }                    
         }
     }
