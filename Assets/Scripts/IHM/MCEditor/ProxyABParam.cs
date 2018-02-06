@@ -23,6 +23,6 @@ public class ProxyABParam<T> : MonoBehaviour, IProxyABParam{
 	}
 
     public ProxyABParam(ABParam<T> param) {
-        AbParam = param;
+        abParam = param;
     }
 }

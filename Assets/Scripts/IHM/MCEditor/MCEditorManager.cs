@@ -67,6 +67,7 @@ public class MCEditorManager : MonoBehaviour {
         pins = new List<Pin>(); //ProxyABGateOperator
         proxyParam = new List<IProxyABParam>(); //ProxyABParam
         proxyOperator = new List<IProxyABOperator>();//ProxyABOperator
+        proxyActions = new List<ProxyABAction>();
         SetupModel();
     }
 
@@ -91,9 +92,12 @@ public class MCEditorManager : MonoBehaviour {
         foreach (ABState state in this.abModel.States)
         {
             ProxyABState proxyState;
-            GameObject proxyAction;
-            Pin pin;            if (state.Action != null)
+            ProxyABAction proxyAction;
+
+            Pin pin;
+            if (state.Action != null)
             {
+                proxyAction = Instantiate<ProxyABAction>(actionPrefab);
                 proxyAction.GetComponent<ProxyABAction>().AbAction = state.Action;
                 proxyActions.Add(proxyAction);
                 foreach (IABGateOperator param in state.Action.Parameters) {
