@@ -57,7 +57,7 @@ public class GotoAction : GameAction {
 
 			// move towards next corner
 			if (path.corners.Length > 0) {
-				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (agentAttr.transform.position - path.corners [path.corners.Length-1]).normalized;
+				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (path.corners [path.corners.Length-1] - agentAttr.transform.position).normalized;
 			}
 		}
 		return agentAttr.transform.position;
