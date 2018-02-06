@@ -83,6 +83,7 @@ public class ABManager : MonoBehaviour {
 					} else if (action.Parameters [i] is AB_VecGate_Operator) {
 						IABType param =
 							((AB_VecGate_Operator)action.Parameters [i]).Evaluate (context);
+//						Debug.Log (((ABTable<ABVec>)param).Values==null);
 						actionParams.Add (param);
 					}
 				}

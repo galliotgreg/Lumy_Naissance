@@ -7,7 +7,6 @@ public class AgentEntity : MonoBehaviour
     [SerializeField]
     private int id;
 
-	[SerializeField]
 	private HomeScript home;
     [SerializeField]
     private AgentBehavior behaviour;
