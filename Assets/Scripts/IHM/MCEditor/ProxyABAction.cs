@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProxyABState : MonoBehaviour {
-    private ABState abState;
+public class ProxyABAction : MonoBehaviour {
 
-    public ABState AbState
+    private ABAction abAction;
+
+    public ABAction AbAction
     {
         get
         {
-            return abState;
+            return abAction;
         }
 
         set
         {
-            abState = value;
+            abAction = value;
         }
     }
 
@@ -27,9 +28,4 @@ public class ProxyABState : MonoBehaviour {
 	void Update () {
 		
 	}
-
-    public ProxyABState(ABState state)
-    {
-        this.AbState = state;
-    }
 }

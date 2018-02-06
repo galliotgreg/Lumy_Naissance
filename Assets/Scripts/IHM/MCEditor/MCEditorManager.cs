@@ -19,7 +19,7 @@ public class MCEditorManager : MonoBehaviour {
     [SerializeField]
     private Pin pinPrefab;
     [SerializeField]
-    private IProxyABOperator operatorPrefab;
+    private GameObject operatorPrefab;
     [SerializeField]
     //private IProxyABParam parameterPrefab;
     private GameObject parameterPrefab;
@@ -30,6 +30,7 @@ public class MCEditorManager : MonoBehaviour {
 
     private ABModel abModel;
     private List<ProxyABState> proxyStates;
+    private List<ProxyABAction> proxyActions;
     private List<ProxyABTransition> proxyTransitions;
     private List<Pin> pins; //ProxyABGateOperator
     private List<IProxyABParam> proxyParam; //ProxyABParam
@@ -61,6 +62,11 @@ public class MCEditorManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        proxyStates = new List<ProxyABState>();
+        proxyTransitions = new List<ProxyABTransition>();
+        pins = new List<Pin>(); //ProxyABGateOperator
+        proxyParam = new List<IProxyABParam>(); //ProxyABParam
+        proxyOperator = new List<IProxyABOperator>();//ProxyABOperator
         SetupModel();
     }
 
@@ -85,23 +91,26 @@ public class MCEditorManager : MonoBehaviour {
         foreach (ABState state in this.abModel.States)
         {
             ProxyABState proxyState;
-            GameObject proxyAction;
-            IProxyABParam proxyParam;
-            //GameObject proxyParam;
+            GameObject proxyAction;                        
 
             //this.proxyStates.Add( (ProxyABModel) proxyState);
             if (state.Action != null)
             {
-                proxyAction = Instantiate<GameObject>(actionPrefab);
+                proxyAction = Instantiate<GameObject>(actionPrefab);                
                 int len = state.Action.Parameters.Length;
 
                 foreach(IABGateOperator param in state.Action.Parameters) {
+                    Debug.Log(param.GetType().ToString());
                     Debug.Log(param.Inputs);
-                    //proxyParam = Instantiate<ProxyABParam<T>>(parameterPrefab);
+                    DeploySyntaxeTree(param.Inputs);                     
                 }
             }
             else {
                 proxyState = Instantiate<ProxyABState>(statePrefab);
+                proxyState.GetComponent<ProxyABState>().AbState = state;
+                proxyStates.Add(proxyState);
+
+                Debug.Log(proxyStates.ToString());
             }
             if (state.Outcomes.Count != 0)
             {
@@ -110,7 +119,23 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
+    void DeploySyntaxeTree(ABNode[] nodes)
+    {
+        foreach (ABNode node in nodes)
+        {
+            if(node is IABOperator)
+            {
+                GameObject ope = Instantiate<GameObject>(operatorPrefab);
+                DeploySyntaxeTree(((IABOperator)node).Inputs);
+            } else if (node is IABParam)
+            {
+                GameObject param = Instantiate<GameObject>(parameterPrefab);                
+            }                    
+        }
+    }
+
     void CreateProxySyntaxTree() {
+
     }
 
     void CreateProxyTransitions()
