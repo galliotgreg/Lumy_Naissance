@@ -48,14 +48,17 @@ public class GotoAction : GameAction {
 		if( navMeshAgent != null ){
 			//navMeshAgent.acceleration = 1;
 			//navMeshAgent.speed = agentAttr.MoveSpd;
-			navMeshAgent.destination = new Vector3( agentAttr.TrgPos.x, 0f, agentAttr.TrgPos.y);
-			navMeshAgent.updatePosition = false;
+			//navMeshAgent.destination = new Vector3( agentAttr.TrgPos.x, 0f, agentAttr.TrgPos.y);
+			//navMeshAgent.updatePosition = false;
+			Vector3 destination = new Vector3( agentAttr.TrgPos.x, 0f, agentAttr.TrgPos.y);
 
 			UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
-			navMeshAgent.CalculatePath( agentAttr.gameObject.transform.position, path );
+			navMeshAgent.CalculatePath( destination, path );
 
 			// move towards next corner
-			return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (path.corners[0] - agentAttr.transform.position).normalized;
+			if (path.corners.Length > 0) {
+				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (agentAttr.transform.position - path.corners [path.corners.Length-1]).normalized;
+			}
 		}
 		return agentAttr.transform.position;
 	}
