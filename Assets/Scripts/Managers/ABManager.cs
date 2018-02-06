@@ -72,8 +72,9 @@ public class ABManager : MonoBehaviour {
             ABAction action = processor.ProcessABInstance(instance, context);
 
             //Compute Action Parameters
+			List<IABType> actionParams = new List<IABType> ();
+
 			if (action != null) {
-				List<IABType> actionParams = new List<IABType> ();
 				for (int i = 0; i < action.Parameters.Length; i++) {
 					if (action.Parameters [i] is AB_TxtGate_Operator) {
 						IABType param =
@@ -85,9 +86,9 @@ public class ABManager : MonoBehaviour {
 						actionParams.Add (param);
 					}
 				}
-
-				agent.setAction (action, actionParams.ToArray ());
 			}
+
+			agent.setAction (action, actionParams.ToArray ());
         }
     }
 

@@ -34,7 +34,11 @@ public class AgentBehavior : MonoBehaviour
         set
         {
             curAction = value;
-            curActionType = value.Type;
+			if (curAction == null) {
+				curActionType = ActionType.None;
+			} else {
+				curActionType = value.Type;
+			}
         }
     }
 
@@ -88,15 +92,20 @@ public class AgentBehavior : MonoBehaviour
     }
 
 	private void executeAction(){
+		DisableActions();
+
 		//We arre between 2 IA frames
-		// TODO clear curActionParams ?
 		if (curActionParams == null)
+		{
+			return;
+		}
+		// no Action
+		if (curAction == null)
 		{
 			return;
 		}
 
 		// Inject Param on corresponding Action Script then enable it
-		DisableActions();
 		switch (curActionType)
 		{
 		case ActionType.Drop:
