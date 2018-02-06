@@ -52,12 +52,14 @@ public class NavigationManager : MonoBehaviour {
         {
             yield return null;
         }
-        AsyncOperation loadLayer = SceneManager.LoadSceneAsync(SceneManager.GetSceneByName(initialScene).GetRootGameObjects()[0].GetComponent<SceneData>().parentLayer, LoadSceneMode.Additive);
+        string layerToLoad = SceneManager.GetSceneByName(initialScene).GetRootGameObjects()[0].GetComponent<SceneData>().parentLayer;
+        AsyncOperation loadLayer = SceneManager.LoadSceneAsync(layerToLoad, LoadSceneMode.Additive);
         while (!loadLayer.isDone)
         {
             yield return null;
         }
         currentScene = initialScene;
+        currentLayer = layerToLoad;
 
     }
 
@@ -111,6 +113,50 @@ public class NavigationManager : MonoBehaviour {
             alpha = canvas.GetComponent<CanvasGroup>().alpha;
             canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
             yield return true;
+        }
+
+        // Vérifier la conservation de la strate-mère
+        string newLayer = SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].GetComponent<SceneData>().parentLayer;
+        if (newLayer != currentLayer)
+        {
+
+            // Faire disparaître la strate-mère initiale en fondu 
+            canvas = GameObject.Find(currentLayer + "Canvas");
+            float alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
+            while (alphaLayer > 0.0f)
+            {
+                alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
+                canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
+                yield return true;
+            }
+
+            // Attendre la fin du déchargement de la strate-mère initiale
+            AsyncOperation unloadLayer = SceneManager.UnloadSceneAsync(currentLayer);
+            while (!unloadLayer.isDone)
+            {
+                yield return null;
+            }
+
+            // Attendre la fin du chargement de la strate-mère de destination
+            AsyncOperation loadLayer = SceneManager.LoadSceneAsync(newLayer, LoadSceneMode.Additive);
+            while (!loadLayer.isDone)
+            {
+                yield return null;
+            }
+
+            // Faire apparaître la strate-mère de destination en fondu 
+            canvas = GameObject.Find(newLayer + "Canvas");
+            canvas.GetComponent<CanvasGroup>().alpha = 0f;
+            alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
+            while (alphaLayer < 1.0f)
+            {
+                alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
+                canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
+                yield return true;
+            }
+
+            /*Debug.Log("PINGOUIN D'UNE AUTRE STRATE !");
+            Debug.Log(currentLayer + " -> " + newLayer);*/
         }
 
         // Arrêter la coroutine de transition
