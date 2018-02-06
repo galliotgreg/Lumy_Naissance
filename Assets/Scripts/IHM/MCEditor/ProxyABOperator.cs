@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProxyABOperator : MonoBehaviour {
-
+public class ProxyABOperator : MonoBehaviour {   
 	// Use this for initialization
 	void Start () {
 		

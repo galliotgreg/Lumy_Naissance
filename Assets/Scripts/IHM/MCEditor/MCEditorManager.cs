@@ -66,22 +66,33 @@ public class MCEditorManager : MonoBehaviour {
     private void SetupModel()
     {
         abModel = LoadMC();
+        CreateProxyStates();
+        //CreateProxyTransitions();
     }
-
 
     ABModel LoadMC()
     {
+        ABModel model = new ABModel();
         //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path
-        return ABManager.instance.LoadABModelFromFile("path");
+        model = ABManager.instance.LoadABModelFromFile("Assets/Inputs/Test/siu_scoot_behavior_TEST.csv");
+        return model;
     }
 
     void CreateProxyStates()
+
     {
         foreach (ABState state in this.abModel.States)
         {
-            ProxyABState proxyState = new ProxyABState(state);
-            this.proxyStates.Add(proxyState);
-            CreatePins(state.Outcomes);
+            GameObject proxyState = Instantiate<GameObject>(statePrefab);
+            //this.proxyStates.Add( (ProxyABModel) proxyState);
+            if (state.Action != null)
+            {
+
+            }
+            if (state.Outcomes.Count != 0)
+            {
+                CreatePins(state.Outcomes);
+            }            
         }
     }
 
