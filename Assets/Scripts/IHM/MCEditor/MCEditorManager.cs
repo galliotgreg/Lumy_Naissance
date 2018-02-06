@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MCEditorManager : MonoBehaviour {
 
@@ -98,10 +99,13 @@ public class MCEditorManager : MonoBehaviour {
             if (state.Action != null)
             {
                 proxyAction = Instantiate<ProxyABAction>(actionPrefab);
+                Text actionName = proxyAction.GetComponentInChildren<Text>();
+                actionName.text = state.Name;
                 proxyAction.GetComponent<ProxyABAction>().AbAction = state.Action;
                 proxyActions.Add(proxyAction);
                 foreach (IABGateOperator param in state.Action.Parameters) {
                     pin = Instantiate<Pin>(pinPrefab);
+                    pin.transform.parent = proxyAction.transform;
                     pin.transform.position = proxyAction.transform.position;
                     float radius = proxyAction.transform.localScale.y / 2;
                     pin.transform.position = new Vector3(pin.transform.position.x, pin.transform.position.y + radius, pin.transform.position.z);
@@ -111,6 +115,8 @@ public class MCEditorManager : MonoBehaviour {
             }
             else {
                 proxyState = Instantiate<ProxyABState>(statePrefab);
+                Text stateName = proxyState.GetComponentInChildren<Text>();
+                stateName.text = state.Name;
                 proxyState.GetComponent<ProxyABState>().AbState = state;
                 proxyStates.Add(proxyState);                
             }
@@ -127,13 +133,18 @@ public class MCEditorManager : MonoBehaviour {
         {
             if(node is IABOperator)
             {
+                Debug.Log("operator " + node.GetType());
                 GameObject ope = Instantiate<GameObject>(operatorPrefab);
+                Text operatorName = ope.GetComponentInChildren<Text>();
+                operatorName.text = node.Output.ToString();
 
                 DeploySyntaxeTree(((IABOperator)node).Inputs);
 
             } else if (node is IABParam)
             {
                 GameObject param = Instantiate<GameObject>(parameterPrefab);
+                Text paramName = param.GetComponentInChildren<Text>();
+                paramName.text = node.GetType().ToString();
 
             }                    
         }

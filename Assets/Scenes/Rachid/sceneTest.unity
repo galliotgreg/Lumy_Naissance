@@ -108,6 +108,68 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &146998915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 146998918}
+  - component: {fileID: 146998917}
+  - component: {fileID: 146998916}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &146998916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 146998915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &146998917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 146998915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 5
+--- !u!4 &146998918
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 146998915}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &263358716
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,9 +396,13 @@ MonoBehaviour:
   statePrefab: {fileID: 114982164584323468, guid: d407002516f1adc4baed91d43637ceea,
     type: 2}
   transitionPrefab: {fileID: 0}
-  pinPrefab: {fileID: 0}
-  parameterPrefab: {fileID: 0}
-  actionPrefab: {fileID: 1991256928399342, guid: b7379c04e248b674d882cb6ca865cef8,
+  pinPrefab: {fileID: 114283751197350292, guid: bde872f3612945541a9cb2b75d61c0ee,
+    type: 2}
+  operatorPrefab: {fileID: 1252162017228764, guid: 7e17d04df551622488792468c01d180b,
+    type: 2}
+  parameterPrefab: {fileID: 1565636141641142, guid: d221de39703880d49a2c94d44304acfe,
+    type: 2}
+  actionPrefab: {fileID: 114003601275317380, guid: b7379c04e248b674d882cb6ca865cef8,
     type: 2}
   mcTemplates: []
 --- !u!4 &1224244034
