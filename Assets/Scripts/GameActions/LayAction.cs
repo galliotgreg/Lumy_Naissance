@@ -116,8 +116,12 @@ public class LayAction : GameAction {
 		ResourceCost cost = getCost( childTemplate );
 
 		if( CheckResources( childTemplate, cost ) ){
+            Debug.Log("Ressources is Enought : " + cost);
 			Lay( childTemplate, cost );
 		}
+        else {
+            Debug.Log("Ressources is not Enought : " + cost); 
+        }
 	}
 	#endregion
 }

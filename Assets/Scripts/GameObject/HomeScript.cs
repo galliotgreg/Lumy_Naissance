@@ -156,6 +156,5 @@ public class HomeScript : MonoBehaviour {
 	void Update () {
         location.x = this.transform.position.x;
         location.y = this.transform.position.y;
-        Debug.Log(population); 
     }
 }

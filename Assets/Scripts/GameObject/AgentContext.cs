@@ -162,15 +162,15 @@ public class AgentContext : MonoBehaviour
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
 		// vitality
-		this.model.VitalityMax = 0;
+		this.model.VitalityMax = 5;
 		// strength
-		this.model.Strength = 0;
+		this.model.Strength = 5;
 		// stamina
-		this.model.Stamina = 0;
+		this.model.Stamina = 5;
 		// actSpeed
-		this.model.ActSpd = 0;
+		this.model.ActSpd = 5;
 		// moveSpeed
-		this.model.MoveSpd = 0;
+		this.model.MoveSpd = 5;
 		// nbItemMax
 		Debug.LogWarning( "TODO : nbItem always 1" );
 		this.model.NbItemMax = 1;
