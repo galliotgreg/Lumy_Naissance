@@ -102,11 +102,20 @@ public class AgentEntity : MonoBehaviour
 	{
 		get
 		{
+			Debug.LogWarning ( "TODO : the result must be a struct with the cost for each color" );
 			float result = 0;
 			foreach( AgentComponent comp in getAgentComponents() ){
 				result += comp.ProdCost;
 			}
 			return result;
+		}
+	}
+
+	public float LayTimeCost
+	{
+		get
+		{
+			return 0.5f * getAgentComponents().Length;
 		}
 	}
 
