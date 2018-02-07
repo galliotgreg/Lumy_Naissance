@@ -85,51 +85,6 @@ public class AgentEntity : MonoBehaviour
 			return this.context.Model.Cast;
         }
     }
-
-	public float VisionRange
-	{
-		get
-		{
-			float result = 0;
-			foreach( AgentComponent comp in getAgentComponents() ){
-				result += comp.VisionRange;
-			}
-			return result;
-		}
-	}
-
-	public float ProdCost
-	{
-		get
-		{
-			Debug.LogWarning ( "TODO : the result must be a struct with the cost for each color" );
-			float result = 0;
-			foreach( AgentComponent comp in getAgentComponents() ){
-				result += comp.ProdCost;
-			}
-			return result;
-		}
-	}
-
-	public float LayTimeCost
-	{
-		get
-		{
-			return 0.5f * getAgentComponents().Length;
-		}
-	}
-
-	public float BuyCost
-	{
-		get
-		{
-			float result = 0;
-			foreach( AgentComponent comp in getAgentComponents() ){
-				result += comp.BuyCost;
-			}
-			return result;
-		}
-	}
 	#endregion
 
 	public void setAction( ABAction action, IABType[] actionParams ){

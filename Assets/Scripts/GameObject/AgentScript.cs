@@ -48,6 +48,18 @@ public class AgentScript : MonoBehaviour {
     [SerializeField]
 	private float pickRange;
 
+	[SerializeField]
+	// TODO add Attr
+	private float prodCost;
+	[SerializeField]
+	private float buyCost;
+	[SerializeField]
+	// TODO add Attr
+	private float layTimeCost;
+
+	[SerializeField]
+	private float visionRange;
+
 	private List<ResourceScript> carryingResources = new List<ResourceScript>();
 
 	#region Properties
@@ -172,18 +184,17 @@ public class AgentScript : MonoBehaviour {
         {
             return nbItemMax;
         }
-
-        set
-        {
-            nbItemMax = value;
-        }
+		set
+		{
+			this.nbItemMax = value;
+		}
     }
 
     public int NbItem
     {
         get
         {
-			return this.carryingResources.Count;
+			return this.nbItem;
         }
     }
 
@@ -213,6 +224,42 @@ public class AgentScript : MonoBehaviour {
         }
     }
 
+	public float LayTimeCost {
+		get {
+			return layTimeCost;
+		}
+		set {
+			layTimeCost = value;
+		}
+	}
+
+	public float BuyCost {
+		get {
+			return buyCost;
+		}
+		set {
+			buyCost = value;
+		}
+	}
+
+	public float ProdCost {
+		get {
+			return prodCost;
+		}
+		set {
+			prodCost = value;
+		}
+	}
+
+	public float VisionRange {
+		get {
+			return visionRange;
+		}
+		set {
+			visionRange = value;
+		}
+	}
+
 	public int Key {
 		get {
 			return key;
@@ -222,11 +269,13 @@ public class AgentScript : MonoBehaviour {
 
 	public void addResource( ResourceScript resource ){
 		this.carryingResources.Add( resource );
+		this.nbItem = this.carryingResources.Count;
 	}
 	public ResourceScript removeLastResource(){
 		if( this.carryingResources.Count > 0 ){
 			ResourceScript result = this.carryingResources[ this.carryingResources.Count-1 ];
 			this.carryingResources.Remove( result );
+			this.nbItem = this.carryingResources.Count;
 			return result;
 		}
 		return null;

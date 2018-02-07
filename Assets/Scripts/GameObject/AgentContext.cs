@@ -180,6 +180,15 @@ public class AgentContext : MonoBehaviour
 		Debug.LogWarning( "TODO : pickRange = visionRange" );
 		this.model.PickRange = 0;
 
+		// ProdCost
+		this.model.ProdCost = 0;
+		// BuyCost
+		this.model.BuyCost = 0;
+		// layTimeCost
+		this.model.LayTimeCost = 0;
+		// visionRange
+		this.model.VisionRange = 0;
+
 		foreach( AgentComponent comp in agentComponents ){
 			this.model.VitalityMax += comp.VitalityBuff;
 			this.model.Strength += comp.StrengthBuff;
@@ -191,7 +200,12 @@ public class AgentContext : MonoBehaviour
 			this.model.AtkRange += comp.VisionRange;
 			Debug.LogWarning( "TODO : pickRange = visionRange" );
 			this.model.PickRange += comp.VisionRange;
+
+			this.model.ProdCost += comp.ProdCost;
+			this.model.BuyCost += comp.BuyCost;
+			this.model.VisionRange += comp.VisionRange;
 		}
+		this.model.LayTimeCost = 0.5f * agentComponents.Length;
 
 		this.model.Vitality = this.model.VitalityMax;
 	}
