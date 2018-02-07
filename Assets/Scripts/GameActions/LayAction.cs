@@ -76,20 +76,24 @@ public class LayAction : GameAction {
 		//Get Cost of the child
 		//Change Cost Evaluation Method
 		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
-		AgentComponent[] agentComponents = child.gameObject.GetComponents<AgentComponent>();
+        AgentComponent[] agentComponents = child.getAgentComponents(); 
 
 		ResourceCost resultCost = new ResourceCost();
 
 		foreach (AgentComponent component in agentComponents)
 		{
-			Debug.LogWarning ("TODO : cost for each color");
+            
 			Color32 color = component.Color;
-			if (color.Equals(new Color32(255, 0, 0, 1)))
-				resultCost.red += component.ProdCost; 
-			else if (color.Equals(new Color32(0, 255, 0, 1)))
-				resultCost.green += component.ProdCost;
-			else if (color.Equals(new Color32(0, 0, 255, 1)))
-				resultCost.blue += component.ProdCost;
+            if (color.Equals(new Color32(255, 0, 0, 1)))
+                resultCost.red += component.ProdCost;
+            else if (color.Equals(new Color32(0, 255, 0, 1)))
+                resultCost.green += component.ProdCost;
+            else if (color.Equals(new Color32(0, 0, 255, 1)))
+                resultCost.blue += component.ProdCost;
+            else
+                Debug.LogWarning("Component has no good color TODO Implement new strategy");
+                
+            
 		}
 
 		return resultCost;
