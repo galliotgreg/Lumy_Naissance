@@ -14,21 +14,25 @@ public class AgentTestManager : MonoBehaviour {
 	Vector2 pos;
 
 	GameObject agent = null;
+	bool initialized = false;
 
 	// Use this for initialization
 	void Start () {
 		
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if (agent == null) {
+		if (agent == null && !initialized) {
 			GameObject obj = GameManager.instance.GetUnitTemplate (authority, castName);
 			if (obj != null) {
 				agent = Instantiate (obj, pos, Quaternion.identity);
-				agent.name = agent.GetComponent<AgentEntity> ().CastName;
 				agent.SetActive (true);
-				GameManager.instance.GetHome (PlayerAuthority.Player1).addUnit (agent.GetComponent<AgentEntity> ());
+				HomeScript home = GameManager.instance.GetHome (authority);
+				home.addUnit (agent.GetComponent<AgentEntity> ());
+				agent.name = agent.GetComponent<AgentEntity> ().CastName + "-" + home.Authority.ToString();
+
+				initialized = true;
 			}
 		}
 	}
