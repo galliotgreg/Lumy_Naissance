@@ -16,8 +16,12 @@ public class ResourceScript : MonoBehaviour {
     private Color32 color;
 
 	public Vector2 Location {
-		get {
-			return new Vector2(this.transform.position.x, this.transform.position.z);
+		get
+		{
+			return location;
+		}
+		set{
+			this.location = value;
 		}
 	}
 
@@ -46,11 +50,15 @@ public class ResourceScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
+		this.Location = positionFromTransform ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		this.Location = positionFromTransform ();
+	}
+
+	Vector2 positionFromTransform(){
+		return new Vector2(transform.position.x, transform.position.z);
 	}
 }

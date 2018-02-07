@@ -149,14 +149,17 @@ public class HomeScript : MonoBehaviour {
 		populationGameObj = new Dictionary<string, List<AgentEntity>>();
 	}
 
-    // Use this for initialization
-    void Start () {
-		
+	// Use this for initialization
+	void Start () {
+		this.Location = positionFromTransform ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-        location.x = this.transform.position.x;
-        location.y = this.transform.position.y;
-    }
+		this.Location = positionFromTransform ();
+	}
+
+	Vector2 positionFromTransform(){
+		return new Vector2(transform.position.x, transform.position.z);
+	}
 }

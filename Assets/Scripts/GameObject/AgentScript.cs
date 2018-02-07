@@ -68,8 +68,11 @@ public class AgentScript : MonoBehaviour {
     {
         get
         {
-			return new Vector2(transform.position.x, transform.position.z);
+			return curPos;
         }
+		set{
+			this.curPos = value;
+		}
     }
 
     public Vector2 TrgPos
@@ -235,9 +238,16 @@ public class AgentScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		this.CurPos = positionFromTransform ();
         TrgPos = CurPos;
     }
 	
 	// Update is called once per frame
-	void Update () {}
+	void Update () {
+		this.CurPos = positionFromTransform ();
+	}
+
+	Vector2 positionFromTransform(){
+		return new Vector2(transform.position.x, transform.position.z);
+	}
 }

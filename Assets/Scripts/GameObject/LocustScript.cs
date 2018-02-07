@@ -10,7 +10,16 @@ public class LocustScript : MonoBehaviour {
 
     [AttrName(Identifier = "pos")]
     [SerializeField]
-    private Vector2 location;
+	private Vector2 location;
+
+	public Vector2 Location {
+		get {
+			return location;
+		}
+		set {
+			location = value;
+		}
+	}
 
 	public int Key {
 		get {
@@ -22,15 +31,17 @@ public class LocustScript : MonoBehaviour {
 		key = this.GetHashCode();
 	}
 
-    // Use this for initialization
-    void Start () {
-        location.x = this.transform.position.x;
-        location.y = this.transform.position.y;
-    }
-	
+	// Use this for initialization
+	void Start () {
+		this.Location = positionFromTransform ();
+	}
+
 	// Update is called once per frame
 	void Update () {
-        location.x = this.transform.position.x;
-        location.y = this.transform.position.y;
-    }
+		this.Location = positionFromTransform ();
+	}
+
+	Vector2 positionFromTransform(){
+		return new Vector2(transform.position.x, transform.position.z);
+	}
 }
