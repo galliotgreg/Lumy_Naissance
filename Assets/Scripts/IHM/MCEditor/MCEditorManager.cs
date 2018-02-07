@@ -76,6 +76,7 @@ public class MCEditorManager : MonoBehaviour {
         abModel = LoadMC();
         CreateProxyStates();
         //CreateProxyTransitions();
+        //
     }
 
     ABModel LoadMC()
