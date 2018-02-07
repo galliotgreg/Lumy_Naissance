@@ -33,8 +33,10 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABAction> proxyActions;
     private List<ProxyABTransition> proxyTransitions;
     private List<Pin> pins; //ProxyABGateOperator
-    private List<IProxyABParam> proxyParam; //ProxyABParam
-    private List<IProxyABOperator> proxyOperator;//ProxyABOperator
+    //private List<IProxyABParam> proxyParam; //ProxyABParam
+    //private List<IProxyABOperator> proxyOperator;//ProxyABOperator
+    private List<GameObject> proxyOperator;
+    private List<GameObject> proxyParam;
 
 
     /// <summary>
@@ -65,8 +67,10 @@ public class MCEditorManager : MonoBehaviour {
         proxyStates = new List<ProxyABState>();
         proxyTransitions = new List<ProxyABTransition>();
         pins = new List<Pin>(); //ProxyABGateOperator
-        proxyParam = new List<IProxyABParam>(); //ProxyABParam
-        proxyOperator = new List<IProxyABOperator>();//ProxyABOperator
+        //proxyParam = new List<IProxyABParam>(); //ProxyABParam
+        proxyParam = new List<GameObject>(); //ProxyABParam
+        //proxyOperator = new List<IProxyABOperator>();//ProxyABOperator
+        proxyOperator = new List<GameObject>();
         proxyActions = new List<ProxyABAction>();
         SetupModel();
     }
@@ -75,6 +79,9 @@ public class MCEditorManager : MonoBehaviour {
     {
         abModel = LoadMC();
         CreateProxyStates();
+        DisplayStates();
+        DisplayOperators();
+        DisplayParameters();
         //CreateProxyTransitions();
     }
 
@@ -136,6 +143,7 @@ public class MCEditorManager : MonoBehaviour {
                 GameObject ope = Instantiate<GameObject>(operatorPrefab);
                 Text operatorName = ope.GetComponentInChildren<Text>();
                 operatorName.text = node.Output.ToString();
+                proxyOperator.Add(ope);
 
                 DeploySyntaxeTree(((IABOperator)node).Inputs);
 
@@ -144,6 +152,7 @@ public class MCEditorManager : MonoBehaviour {
                 GameObject param = Instantiate<GameObject>(parameterPrefab);
                 Text paramName = param.GetComponentInChildren<Text>();
                 paramName.text = node.GetType().ToString();
+                proxyParam.Add(param);
 
             }                    
         }
@@ -164,6 +173,31 @@ public class MCEditorManager : MonoBehaviour {
 
     void CreatePins(List<ABTransition> transitions)
     {
+    }
+
+    void DisplayStates() {
+        for(int i=0; i< proxyStates.Count; i++) {
+            proxyStates[i].transform.position = new Vector3(proxyStates[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyStates[i].transform.position.y+ UnityEngine.Random.Range(-5,5), proxyStates[i].transform.position.z);
+        }
+    }
+
+    void DisplayActions() {
+        for (int i = 0; i < proxyActions.Count; i++) {
+            proxyActions[i].transform.position = new Vector3(proxyActions[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyActions[i].transform.position.y + UnityEngine.Random.Range(-5, 5), proxyActions[i].transform.position.z);
+        }
+    }
+
+    void DisplayOperators() {
+        
+        for (int i = 0; i < proxyOperator.Count; i++) {
+            proxyOperator[i].transform.position = new Vector3(proxyOperator[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyOperator[i].transform.position.y + UnityEngine.Random.Range(-5, 5), 0);
+        }
+    }
+
+    void DisplayParameters() {
+        for (int i = 0; i < proxyParam.Count; i++) {
+            proxyParam[i].transform.position = new Vector3(proxyOperator[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyParam[i].transform.position.y + UnityEngine.Random.Range(-5, 5), proxyParam[i].transform.position.z);
+        }
     }
 
 
