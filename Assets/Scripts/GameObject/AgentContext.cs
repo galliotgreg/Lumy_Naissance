@@ -207,6 +207,17 @@ public class AgentContext : MonoBehaviour
 		}
 		this.model.LayTimeCost = 0.5f * agentComponents.Length;
 
+		// TODO test : remove
+		if (this.model.ProdCost <= 0) {
+			this.model.ProdCost = 1;
+		}
+		if (this.model.BuyCost <= 0) {
+			this.model.BuyCost = 1;
+		}
+		if (this.model.LayTimeCost<= 0) {
+			this.model.LayTimeCost = 1;
+		}
+
 		this.model.Vitality = this.model.VitalityMax;
 	}
 
