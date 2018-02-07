@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentScript : MonoBehaviour {
-	// GameObject Identification
-	[AttrName(Identifier = "key")]
-	[SerializeField]
-	private int key;
-
     [AttrName(Identifier = "cast")]
     [SerializeField]
     private string cast;
@@ -259,12 +254,6 @@ public class AgentScript : MonoBehaviour {
 			visionRange = value;
 		}
 	}
-
-	public int Key {
-		get {
-			return key;
-		}
-	}
 	#endregion
 
 	public void addResource( ResourceScript resource ){
@@ -282,7 +271,6 @@ public class AgentScript : MonoBehaviour {
 	}
 
 	void Awake(){
-		key = this.GetHashCode();
 	}
 
     // Use this for initialization
