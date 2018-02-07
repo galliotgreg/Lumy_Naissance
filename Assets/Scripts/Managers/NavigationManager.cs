@@ -38,6 +38,8 @@ public class NavigationManager : MonoBehaviour {
     public float zoomStep = 0.1f;
     public float fadeStep = 0.05f;
 
+    private bool layerLoaded;
+
     // Use this for initialization
     void Start () {
         StartCoroutine(InitSceneLayers());
@@ -73,9 +75,6 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
     {
-        Debug.Log("Previous :" + previousScene);
-        Debug.Log("Current :" + currentScene);
-        Debug.Log("Next :" + nextScene);
 
         GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
 
@@ -106,6 +105,21 @@ public class NavigationManager : MonoBehaviour {
         {
             yield return null;
         }
+        SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(false);
+
+        // Vérifier la conservation de la strate-mère
+        string newLayer = SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].GetComponent<SceneData>().parentLayer;
+        if (newLayer != currentLayer)
+        {
+            layerLoaded = false;
+            StartCoroutine(SwapLayersCo(nextScene, newLayer));
+        }
+        while (!layerLoaded)
+        {
+            yield return null;
+        }
+
+        SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(true);
 
         // Mettre à jour les propriétés du gestionnaire
         previousScene = currentScene;
@@ -120,13 +134,6 @@ public class NavigationManager : MonoBehaviour {
             alpha = canvas.GetComponent<CanvasGroup>().alpha;
             canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
             yield return true;
-        }
-
-        // Vérifier la conservation de la strate-mère
-        string newLayer = SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].GetComponent<SceneData>().parentLayer;
-        if (newLayer != currentLayer)
-        {
-            StartCoroutine(SwapLayersCo(nextScene, newLayer));
         }
 
         // Arrêter la coroutine de transition
@@ -174,6 +181,8 @@ public class NavigationManager : MonoBehaviour {
 
         // Mettre à jour la strate courante
         currentLayer = newLayer;
+
+        layerLoaded = true;
 
         // Arrêter la coroutine
         StopCoroutine(SwapLayersCo(nextScene, newLayer));
