@@ -33,6 +33,9 @@ public class LayAction : GameAction {
 		}
 	}
 
+	private GameObject currentTemplate;
+	private ResourceCost currentCost;
+
 	/// <summary>
 	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
 	/// </summary>
@@ -40,8 +43,6 @@ public class LayAction : GameAction {
 	/// <param name="cost">Cost</param>
 	private void Lay( GameObject childTemplate, ResourceCost cost )
     {
-        //Decrease Ressources
-		DecreaseResources( cost );
         GameObject child = Instantiate(
             childTemplate, this.transform.position, this.transform.rotation);
         child.SetActive(true);
@@ -49,6 +50,10 @@ public class LayAction : GameAction {
         //Increment Population 
 		this.agentEntity.Home.addUnit( child.GetComponent<AgentEntity>() );
     }
+
+	private void Lay(){
+		Lay (currentTemplate, currentCost);
+	}
 
 	/// <summary>
 	/// Decreases the resources from the home.
@@ -77,6 +82,7 @@ public class LayAction : GameAction {
 
 		foreach (AgentComponent component in agentComponents)
 		{
+			Debug.LogWarning ("TODO : cost for each color");
 			Color32 color = component.Color;
 			if (color.Equals(new Color32(255, 0, 0, 1)))
 				resultCost.red += component.ProdCost; 
@@ -87,6 +93,18 @@ public class LayAction : GameAction {
 		}
 
 		return resultCost;
+	}
+
+	/// <summary>
+	/// Calculates the cooldown for laying a unit
+	/// </summary>
+	/// <returns>The cooldown.</returns>
+	/// <param name="childTemplate">Gameobject that represents the unit</param>
+	float getCooldown( GameObject childTemplate ){
+		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
+		AgentComponent[] agentComponents = child.getAgentComponents();
+		nbComposants = agentComponents.Length;
+		return 0.5f * nbComposants;
 	}
 
 	/// <summary>
@@ -110,27 +128,21 @@ public class LayAction : GameAction {
 	protected override void initAction ()
 	{
 		this.CoolDownActivate = true;
-        GameObject childTemplate = GameManager.instance.GetUnitTemplate(agentEntity.Authority, castName);
 	}
+
 
 	protected override void executeAction ()
 	{
-		GameObject childTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
+		currentTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
 
-        AgentEntity child = childTemplate.GetComponent<AgentEntity>();
-        AgentComponent[] agentComponents = child.getAgentComponents();
-        nbComposants = agentComponents.Length;
-        Debug.Log("NbComposants :" + nbComposants);
-        this.CoolDownTime = (float) 0.5f * nbComposants;
-        Debug.Log(CoolDownTime); 
-        ResourceCost cost = getCost( childTemplate );
-       
+		currentCost = getCost( currentTemplate );
+		if ( CheckResources( currentTemplate, currentCost ) ){
+			DecreaseResources( currentCost );
 
-        if ( CheckResources( childTemplate, cost ) ){   
-			Lay( childTemplate, cost );
+			this.CoolDownTime = getCooldown(currentTemplate);
+			// wait for cooldownTime
+			Invoke( "Lay", this.CoolDownTime );
 		}
-        else {
-        }
 	}
 	#endregion
 }
