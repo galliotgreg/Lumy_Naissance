@@ -29,6 +29,10 @@ public class MCEditorManager : MonoBehaviour {
     private GameObject[] mcTemplates;
 
     private ABModel abModel;
+
+    private Dictionary<ABState,ProxyABState> statesDictionnary;
+    private Dictionary<ABAction, ProxyABAction> actionsDictionnary;
+
     private List<ProxyABState> proxyStates;
     private List<ProxyABAction> proxyActions;
     private List<ProxyABTransition> proxyTransitions;
@@ -72,6 +76,8 @@ public class MCEditorManager : MonoBehaviour {
         //proxyOperator = new List<IProxyABOperator>();//ProxyABOperator
         proxyOperator = new List<GameObject>();
         proxyActions = new List<ProxyABAction>();
+        actionsDictionnary = new Dictionary<ABAction, ProxyABAction>();
+        statesDictionnary = new Dictionary<ABState, ProxyABState>();
         SetupModel();
     }
 
@@ -109,7 +115,10 @@ public class MCEditorManager : MonoBehaviour {
                 Text actionName = proxyAction.GetComponentInChildren<Text>();
                 actionName.text = state.Name;
                 proxyAction.GetComponent<ProxyABAction>().AbAction = state.Action;
+
                 proxyActions.Add(proxyAction);
+                actionsDictionnary.Add(state.Action, proxyAction);
+
                 foreach (IABGateOperator param in state.Action.Parameters) {
                     pin = Instantiate<Pin>(pinPrefab);
                     pin.transform.parent = proxyAction.transform;
@@ -117,7 +126,7 @@ public class MCEditorManager : MonoBehaviour {
                     float radius = proxyAction.transform.localScale.y / 2;
                     pin.transform.position = new Vector3(pin.transform.position.x, pin.transform.position.y + radius, pin.transform.position.z);
                     pins.Add(pin);
-                    DeploySyntaxeTree(param.Inputs);                     
+                    DeploySyntaxeTree(param.Inputs);                
                 }
             }
             else {
@@ -125,13 +134,34 @@ public class MCEditorManager : MonoBehaviour {
                 Text stateName = proxyState.GetComponentInChildren<Text>();
                 stateName.text = state.Name;
                 proxyState.GetComponent<ProxyABState>().AbState = state;
-                proxyStates.Add(proxyState);                
+
+                proxyStates.Add(proxyState);
+                statesDictionnary.Add(state, proxyState);
+
+                PinCreation(state);
+                
             }
             if (state.Outcomes.Count != 0)
             {
                 CreatePins(state.Outcomes);
             }            
         }
+    }
+
+    void PinCreation(ABState state) {
+
+        Pin pin;
+        for (int j=0;j< state.Outcomes.Count; j++) {
+
+            ProxyABState st = statesDictionnary[state.Outcomes[j].Start];
+            pin = Instantiate<Pin>(pinPrefab);
+            pin.transform.parent = st.transform;
+            pin.transform.position = st.transform.position;
+            float radius = st.transform.localScale.y / 2;
+            pin.transform.position = new Vector3(pin.transform.position.x + (radius * Mathf.Cos(j * (2 * Mathf.PI) / state.Outcomes.Count)), pin.transform.position.y + (radius + Mathf.Cos(j * (2 * Mathf.PI) / state.Outcomes.Count)), pin.transform.position.z);
+            pins.Add(pin);
+        }
+
     }
 
     void DeploySyntaxeTree(ABNode[] nodes)
@@ -145,7 +175,7 @@ public class MCEditorManager : MonoBehaviour {
                 Text operatorName = ope.GetComponentInChildren<Text>();
                 operatorName.text = node.Output.ToString();
                 proxyOperator.Add(ope);
-
+               
                 DeploySyntaxeTree(((IABOperator)node).Inputs);
 
             } else if (node is IABParam)
