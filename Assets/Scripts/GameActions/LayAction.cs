@@ -76,13 +76,12 @@ public class LayAction : GameAction {
 		//Get Cost of the child
 		//Change Cost Evaluation Method
 		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
-        AgentComponent[] agentComponents = child.getAgentComponents(); 
+		AgentComponent[] agentComponents = child.getAgentComponents();
 
 		ResourceCost resultCost = new ResourceCost();
 
 		foreach (AgentComponent component in agentComponents)
 		{
-            
 			Color32 color = component.Color;
             if (color.Equals(new Color32(255, 0, 0, 1)))
                 resultCost.red += component.ProdCost;
@@ -107,6 +106,7 @@ public class LayAction : GameAction {
 	float getCooldown( GameObject childTemplate ){
 		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
 		AgentComponent[] agentComponents = child.getAgentComponents();
+
 		nbComposants = agentComponents.Length;
 		return 0.5f * nbComposants;
 	}

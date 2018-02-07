@@ -116,7 +116,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	public List<ResourceScript> resourcesInRange( AgentEntity agent ){
 		List<ResourceScript> resultList = new List<ResourceScript>();
 
-		float agentRange = agent.VisionRange;
+		float agentRange = agent.Context.Model.VisionRange;
 		foreach (ResourceScript resource in this.resources) {
 			if( Vector2.Distance(agent.Context.Model.CurPos, resource.Location) <= agentRange ){
 				resultList.Add (resource);
@@ -128,7 +128,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	public List<TraceScript> tracesInRange( AgentEntity agent ){
 		List<TraceScript> resultList = new List<TraceScript>();
 
-		float agentRange = agent.VisionRange;
+		float agentRange = agent.Context.Model.VisionRange;
 		foreach (TraceScript trace in this.traces) {
 			if( Vector2.Distance(agent.Context.Model.CurPos, trace.Location) <= agentRange ){
 				resultList.Add (trace);
@@ -150,14 +150,16 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 		if (allies) {
 			evaluationList = this.homes [agent.Authority].getPopulation ();
+			evaluationList.Remove (agent);
 		} else {
 			evaluationList = new List<AgentEntity> ();
+			List<HomeScript> h = this.enemyHomes (agent);
 			foreach (HomeScript enemyHome in this.enemyHomes( agent )) {
 				evaluationList.AddRange ( enemyHome.getPopulation() );
 			}
 		}
 
-		float agentRange = agent.VisionRange;
+		float agentRange = agent.Context.Model.VisionRange;
 		foreach (AgentEntity unit in evaluationList) {
 			if( Vector2.Distance(agent.Context.Model.CurPos, unit.Context.Model.CurPos) <= agentRange ){
 				resultList.Add (unit);
@@ -177,7 +179,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 		foreach( PlayerAuthority auth in homes.Keys ){
 			if (auth != agent.Authority) {
-				result.Add (homes [agent.Authority]);
+				result.Add (homes [auth]);
 			}
 		}
 

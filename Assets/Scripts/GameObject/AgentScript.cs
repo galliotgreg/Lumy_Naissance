@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentScript : MonoBehaviour {
-	// GameObject Identification
-	[AttrName(Identifier = "key")]
-	[SerializeField]
-	private int key;
-
     [AttrName(Identifier = "cast")]
     [SerializeField]
     private string cast;
@@ -47,6 +42,18 @@ public class AgentScript : MonoBehaviour {
     [AttrName(Identifier = "pickRange")]
     [SerializeField]
 	private float pickRange;
+
+	[SerializeField]
+	// TODO add Attr
+	private float prodCost;
+	[SerializeField]
+	private float buyCost;
+	[SerializeField]
+	// TODO add Attr
+	private float layTimeCost;
+
+	[SerializeField]
+	private float visionRange;
 
 	private List<ResourceScript> carryingResources = new List<ResourceScript>();
 
@@ -172,18 +179,17 @@ public class AgentScript : MonoBehaviour {
         {
             return nbItemMax;
         }
-
-        set
-        {
-            nbItemMax = value;
-        }
+		set
+		{
+			this.nbItemMax = value;
+		}
     }
 
     public int NbItem
     {
         get
         {
-			return this.carryingResources.Count;
+			return this.nbItem;
         }
     }
 
@@ -213,27 +219,58 @@ public class AgentScript : MonoBehaviour {
         }
     }
 
-	public int Key {
+	public float LayTimeCost {
 		get {
-			return key;
+			return layTimeCost;
+		}
+		set {
+			layTimeCost = value;
+		}
+	}
+
+	public float BuyCost {
+		get {
+			return buyCost;
+		}
+		set {
+			buyCost = value;
+		}
+	}
+
+	public float ProdCost {
+		get {
+			return prodCost;
+		}
+		set {
+			prodCost = value;
+		}
+	}
+
+	public float VisionRange {
+		get {
+			return visionRange;
+		}
+		set {
+			visionRange = value;
 		}
 	}
 	#endregion
 
 	public void addResource( ResourceScript resource ){
 		this.carryingResources.Add( resource );
+		this.nbItem = this.carryingResources.Count;
 	}
 	public ResourceScript removeLastResource(){
 		if( this.carryingResources.Count > 0 ){
 			ResourceScript result = this.carryingResources[ this.carryingResources.Count-1 ];
 			this.carryingResources.Remove( result );
+			this.nbItem = this.carryingResources.Count;
 			return result;
 		}
 		return null;
 	}
 
 	void Awake(){
-		key = this.GetHashCode();
 	}
 
     // Use this for initialization

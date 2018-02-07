@@ -8,6 +8,9 @@ public class AgentTestManager : MonoBehaviour {
 	string castName;
 
 	[SerializeField]
+	PlayerAuthority authority = PlayerAuthority.Player1;
+
+	[SerializeField]
 	Vector2 pos;
 
 	GameObject agent = null;
@@ -20,7 +23,7 @@ public class AgentTestManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (agent == null) {
-			GameObject obj = GameManager.instance.GetUnitTemplate (PlayerAuthority.Player1, castName);
+			GameObject obj = GameManager.instance.GetUnitTemplate (authority, castName);
 			if (obj != null) {
 				agent = Instantiate (obj, pos, Quaternion.identity);
 				agent.name = agent.GetComponent<AgentEntity> ().CastName;
