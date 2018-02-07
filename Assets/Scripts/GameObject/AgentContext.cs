@@ -5,7 +5,7 @@ using UnityEngine;
 public class AgentContext : MonoBehaviour
 {
 	// GameObject Identification
-	[BindParam(Identifier = "key")]
+	[AttrName(Identifier = "key")]
 	[SerializeField]
 	private int key;
 

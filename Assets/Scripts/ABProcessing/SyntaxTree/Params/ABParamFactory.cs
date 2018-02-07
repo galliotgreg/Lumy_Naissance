@@ -346,7 +346,7 @@ public class ABParamFactory
             if (objects[i] != null)
             {
                 refVal = TypeFactory.CreateEmptyRef();
-                foreach (object obj in objects)
+				foreach (object obj in objects[i])
                 {
                     FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.NonPublic | BindingFlags.Instance);
                     foreach (FieldInfo field in fields)
