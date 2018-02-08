@@ -605,7 +605,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 326512250}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
@@ -692,7 +692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &466496458
 RectTransform:
   m_ObjectHideFlags: 0
@@ -961,7 +961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &624035446
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1108,7 +1108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &684393468
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1741,7 +1741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subMenu: {fileID: 684393467}
-  subMenuBis: {fileID: 732318529}
+  subMenuBis: {fileID: 0}
 --- !u!1 &1071012487
 GameObject:
   m_ObjectHideFlags: 0
@@ -2153,7 +2153,7 @@ GameObject:
   - component: {fileID: 1283306336}
   - component: {fileID: 1283306335}
   - component: {fileID: 1283306334}
-  - component: {fileID: 1283306333}
+  - component: {fileID: 1283306337}
   m_Layer: 5
   m_Name: btn_Video
   m_TagString: Untagged
@@ -2180,19 +2180,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 30}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1283306333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1283306331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7461d68f11884c34db326db61a9b028f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isReturnButton: 0
-  target: VideoScene
 --- !u!114 &1283306334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2267,6 +2254,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1283306331}
+--- !u!114 &1283306337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1283306331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc0f206fc76fae4f954ff94a69fdfe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subMenu: {fileID: 466496457}
+  subMenuBis: {fileID: 0}
 --- !u!1 &1292661925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2279,6 +2279,7 @@ GameObject:
   - component: {fileID: 1292661929}
   - component: {fileID: 1292661928}
   - component: {fileID: 1292661927}
+  - component: {fileID: 1292661931}
   m_Layer: 5
   m_Name: btn_Option
   m_TagString: Untagged
@@ -2313,11 +2314,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1292661925}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7461d68f11884c34db326db61a9b028f, type: 3}
+  m_Script: {fileID: 11500000, guid: ebc0f206fc76fae4f954ff94a69fdfe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isReturnButton: 0
-  target: OptionScene
+  subMenu: {fileID: 624035445}
+  subMenuBis: {fileID: 1786794979}
 --- !u!114 &1292661928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2392,6 +2393,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1292661925}
+--- !u!114 &1292661931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1292661925}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc0f206fc76fae4f954ff94a69fdfe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subMenu: {fileID: 1786794979}
+  subMenuBis: {fileID: 684393467}
 --- !u!1 &1341949980
 GameObject:
   m_ObjectHideFlags: 0
@@ -3130,7 +3144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1786794980
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3434,7 +3448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subMenu: {fileID: 732318529}
-  subMenuBis: {fileID: 684393467}
+  subMenuBis: {fileID: 0}
 --- !u!114 &1849302486
 MonoBehaviour:
   m_ObjectHideFlags: 0

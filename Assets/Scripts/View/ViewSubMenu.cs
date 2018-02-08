@@ -9,8 +9,8 @@ public class ViewSubMenu : MonoBehaviour {
     public GameObject subMenu;
     public GameObject subMenuBis;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         this.gameObject.GetComponent<Button>().onClick.AddListener(SwitchMenu);
     }
 	
@@ -21,8 +21,23 @@ public class ViewSubMenu : MonoBehaviour {
 
     void SwitchMenu()
     {
-        subMenu.active = !subMenu.active;
+        /*
+        subMenu.SetActive(!subMenu.activeSelf);
 
-        if (subMenuBis.active) subMenuBis.active = !subMenuBis.active;
+        if (subMenuBis.activeSelf) subMenuBis.SetActive(!subMenuBis.activeSelf);
+        */
+        foreach( Transform child in transform.parent.parent)
+        {
+            if (child.gameObject == subMenu || child.gameObject == subMenuBis)
+            {
+                child.gameObject.SetActive(!child.gameObject.activeSelf);
+            }
+            else
+            {
+                if (child.gameObject.activeSelf && child != transform.parent) child.gameObject.SetActive(!child.gameObject.activeSelf);
+            }
+            
+
+        }
     }
 }
