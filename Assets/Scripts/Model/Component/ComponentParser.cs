@@ -6,14 +6,14 @@ public class ComponentParser {
 	public class ComponentParserException : System.Exception{};
 	public class ComponentParser_RequiredAttribute_Exception : System.Exception{};
 
-	public static Dictionary<int,AgentComponent> parse( string fileContent ){
-		Dictionary<int,AgentComponent> components = new Dictionary<int,AgentComponent>();
+	public static Dictionary<int, ComponentInfo> parse( string fileContent ){
+		Dictionary<int, ComponentInfo> components = new Dictionary<int, ComponentInfo>();
 
 		List<List<string>> lines = splitComponents( fileContent, 9 );
 
 		// 2 header lines
 		for( int i = 2; i < lines.Count; i++ ){
-			AgentComponent comp = parseComponent( lines[i] );
+            ComponentInfo comp = parseComponent( lines[i] );
 			components.Add( comp.Id, comp );
 		}
 
@@ -75,9 +75,9 @@ public class ComponentParser {
 		return res;
 	}
 
-	private static AgentComponent parseComponent( List<string> componentContent ){
-		// TODO check if has some filled field
-		AgentComponent agent = new AgentComponent();
+	private static ComponentInfo parseComponent( List<string> componentContent ){
+        // TODO check if has some filled field
+        ComponentInfo agent = new ComponentInfo();
 		agent.init();
 
 		List<string> values = componentContent;
@@ -164,7 +164,7 @@ public class ComponentParser {
 		return agent;
 	}
 
-	private static void parseAction( string action, AgentComponent component ){
+	private static void parseAction( string action, ComponentInfo component ){
 		if( action.Length > 0 ){
 			switch( action ){
 			case "strike": component.EnableStrike = true; return;
@@ -175,7 +175,7 @@ public class ComponentParser {
 			}
 		}
 	}
-	private static void parseSensor( string sensor, AgentComponent component ){
+	private static void parseSensor( string sensor, ComponentInfo component ){
 		if( sensor.Length > 0 ){
 			string[] sensorValues = sensor.Split( new char[]{' '} );
 			if( sensorValues.Length > 1 ){
@@ -191,7 +191,7 @@ public class ComponentParser {
 			component.NotHandledTokens.Add( sensor );
 		}
 	}
-	private static void parseAttribute( string attribute, AgentComponent component ){
+	private static void parseAttribute( string attribute, ComponentInfo component ){
 		if( attribute.Length > 0 ){
 			string[] attrValues = attribute.Split( new char[]{' '} );
 			if( attrValues.Length > 1 ){
@@ -208,7 +208,7 @@ public class ComponentParser {
 			component.NotHandledTokens.Add( attribute );
 		}
 	}
-	private static void parseEffect( string effect, AgentComponent component ){
+	private static void parseEffect( string effect, ComponentInfo component ){
 		if( effect.Length > 0 ){
 			string[] attrValues = effect.Split( new char[]{' '} );
 			if( attrValues.Length > 2 ){
