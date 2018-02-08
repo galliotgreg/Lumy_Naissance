@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Cast {
     private string behaviorModelIdentifier;
-    private List<AgentComponent> head = new List<AgentComponent>();
-    private List<AgentComponent> tail = new List<AgentComponent>();
+    private List<ComponentInfo> head = new List<ComponentInfo>();
+    private List<ComponentInfo> tail = new List<ComponentInfo>();
 
     public string BehaviorModelIdentifier
     {
@@ -20,7 +20,7 @@ public class Cast {
         }
     }
 
-    public List<AgentComponent> Head
+    public List<ComponentInfo> Head
     {
         get
         {
@@ -33,7 +33,7 @@ public class Cast {
         }
     }
 
-    public List<AgentComponent> Tail
+    public List<ComponentInfo> Tail
     {
         get
         {

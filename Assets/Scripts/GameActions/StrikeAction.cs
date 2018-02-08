@@ -19,7 +19,11 @@ public class StrikeAction : GameAction {
 	protected override void initAction ()
 	{
 		this.CoolDownActivate = true;
-		this.CoolDownTime = 1/(this.agentAttr.ActSpd*5);
+		if (this.agentAttr.ActSpd <= 0) {
+			this.CoolDownTime = 0;
+		} else {
+			this.CoolDownTime = 1/(this.agentAttr.ActSpd/5);
+		}
 	}
 
 	protected override void executeAction ()

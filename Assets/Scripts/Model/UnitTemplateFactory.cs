@@ -10,7 +10,7 @@ public class UnitTemplateInitializer {
 		agentEntity.BehaviorModelIdentifier = cast.BehaviorModelIdentifier;
         //Set Head Components
         GameObject headObject = agentTemplate.transform.Find("Head").gameObject;
-        foreach (AgentComponent agentComponent in cast.Head)
+        foreach (ComponentInfo agentComponent in cast.Head)
         {
             GameObject componentObject = GameObject.Instantiate(componentTemplate);
             componentObject.transform.parent = headObject.transform;
@@ -18,7 +18,7 @@ public class UnitTemplateInitializer {
         }
         //Set Tail Components
         GameObject tailObject = agentTemplate.transform.Find("Tail").gameObject;
-        foreach (AgentComponent agentComponent in cast.Tail)
+        foreach (ComponentInfo agentComponent in cast.Tail)
         {
             GameObject componentObject = GameObject.Instantiate(componentTemplate);
             componentObject.transform.parent = tailObject.transform;
@@ -26,7 +26,7 @@ public class UnitTemplateInitializer {
         }
     }
 
-    private static void CopyComponentValues(AgentComponent src, AgentComponent dst)
+    private static void CopyComponentValues(ComponentInfo src, AgentComponent dst)
     {
         //Generic
         dst.Id = src.Id;
