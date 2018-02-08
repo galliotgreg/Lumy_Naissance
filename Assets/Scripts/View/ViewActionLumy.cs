@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ViewActionLumy : MonoBehaviour {
 
-    GameObject subMenu;
+    public GameObject subMenu;
 
     // Use this for initialization
     void Start()
@@ -23,11 +23,11 @@ public class ViewActionLumy : MonoBehaviour {
 
     void SwitchMenu()
     {
-    /*    subMenu.SetActive(!subMenu.activeSelf);
+        subMenu.SetActive(!subMenu.activeSelf);
 
         foreach (Transform child in transform.parent.parent)
         {
-            if (child.Find("PanelAction").activeSelf && child != transform.parent) child.gameObject.SetActive(!child.gameObject.activeSelf);
-        }*/
+            if (child.Find("PanelAction").gameObject.activeSelf && child != transform.parent) child.gameObject.SetActive(!child.gameObject.activeSelf);
+        }
     }
 }
