@@ -34,9 +34,23 @@ public class LumyEditorManager : MonoBehaviour {
 
     [SerializeField]
     private GameObject editedLumy;
-    private AgentComponent selectedLibraryCompo;
-    private AgentComponent selectedLumyCompo;
-    private AgentComponent hoveredLumyCompo;
+    private ComponentInfo selectedLibraryCompo;
+    private ComponentInfo selectedLumyCompo;
+    private ComponentInfo hoveredLumyCompo;
+    private IList<ComponentInfo> compoLibrary;
+
+    [SerializeField]
+    private string COMPO_DATA_PATH = "Assets/Inputs/Components/components.csv";
+
+    void Start()
+    {
+        LoadLibrary();
+    }
+
+    void Update()
+    {
+        Debug.Log("Update");
+    }
 
     /// <summary>
     /// Push the composant on top of the selected lumy's head
@@ -126,6 +140,23 @@ public class LumyEditorManager : MonoBehaviour {
     /// </summary>
     public void LoadLibrary()
     {
-        Debug.Log("TODO : implement LumyEditorManager.LoadLibrary");
+        ComponentFactory.CreateFactory(readFile(COMPO_DATA_PATH));
+        compoLibrary = new List<ComponentInfo>();
+        int i = 1;
+        ComponentInfo component = null;
+        do
+        {
+            component = ComponentFactory.CreateComponent(i++);
+            if (component != null)
+            {
+                compoLibrary.Add(component);
+            }
+        } while (component != null);
+    }
+
+    string readFile(string path)
+    {
+        System.IO.StreamReader reader = new System.IO.StreamReader(path);
+        return reader.ReadToEnd();
     }
 }
