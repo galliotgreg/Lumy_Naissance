@@ -55,6 +55,13 @@ public class ABModel {
         }
     }
 
+	ABState getState( int stateID ){
+		if (stateID < 0 || stateID >= states.Count) {
+			return null;
+		}
+		return states [stateID];
+	}
+
     //CONSTRUCTION
     public int AddState(string name, ABAction action)
     {
@@ -103,42 +110,46 @@ public class ABModel {
     //ACCESS
     public String GetStateName(int stateId)
     {
-        ABState state = states[stateId];
+		ABState state = getState( stateId );
         return state.Name;
     }
 
     public bool HasAction(int stateId)
     {
-        ABState state = states[stateId];
-        return state.Action != null;
+		ABState state = getState(stateId);
+		return state != null && state.Action != null;
     }
 
     public int FireTransition(int stateId, ABContext context)
     {
-        ABState state = states[stateId];
-        foreach (ABTransition transition in state.Outcomes)
-        {
-            if (transition.Condition == null)
-            {
-                return transition.End.Id;
-            } else
-            {
-                AB_BoolGate_Operator condition = transition.Condition;
-                ABBool result = condition.Evaluate(context);
-                if (result.Value)
-                {
-                    return transition.End.Id;
-                }
-            }
-        }
+		ABState state = getState(stateId);
+
+		if (state != null) {
+			foreach (ABTransition transition in state.Outcomes) {
+				if (transition.Condition == null) {
+					return transition.End.Id;
+				} else {
+					AB_BoolGate_Operator condition = transition.Condition;
+					ABBool result = condition.Evaluate (context);
+					if (result.Value) {
+						return transition.End.Id;
+					}
+				}
+			}
+		}
 
         return -1;
     }
 
     public ABAction GetAction(int stateId)
     {
-        ABState state = states[stateId];
-        return state.Action;
+		ABState state = getState(stateId);
+
+		if (state == null) {
+			return null;
+		}
+
+		return state.Action;
     }
 
     //INTERN UTILS

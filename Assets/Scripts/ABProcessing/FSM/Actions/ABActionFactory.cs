@@ -27,6 +27,8 @@ public class ABActionFactory {
                 return ActionType.Spread;
             case "trace":
                 return ActionType.Trace;
+			case "strike":
+				return ActionType.Strike;
         }
         return ActionType.None;
     }
@@ -37,7 +39,7 @@ public class ABActionFactory {
         switch(type)
         {
             case ActionType.Drop:
-                throw new NotImplementedException();
+				action = new ABDropAction();
                 break;
             case ActionType.Goto:
                 action = new ABGotoAction();
@@ -52,7 +54,7 @@ public class ABActionFactory {
                 action =  new ABLayAction();
                 break;
             case ActionType.Pick:
-                throw new NotImplementedException();
+				action = new ABPickAction();
                 break;
             case ActionType.Spread:
                 throw new NotImplementedException();
@@ -60,6 +62,9 @@ public class ABActionFactory {
             case ActionType.Trace:
                 action = new ABTraceAction();
                 break;
+			case ActionType.Strike:
+				action = new ABStrikeAction();
+				break;
         }
 
         return action;
