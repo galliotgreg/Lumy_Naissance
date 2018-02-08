@@ -4,8 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-public class ViewActionLumy : MonoBehaviour {
+public class ViewNuées : MonoBehaviour {
 
     public GameObject subMenu;
 
@@ -25,9 +24,5 @@ public class ViewActionLumy : MonoBehaviour {
     {
         subMenu.SetActive(!subMenu.activeSelf);
 
-        foreach (Transform child in transform.parent.parent)
-        {
-            if (child.Find("PanelAction").gameObject.activeSelf && child != transform.parent) child.Find("PanelAction").gameObject.SetActive(!child.Find("PanelAction").gameObject.activeSelf);
-        }
     }
 }
