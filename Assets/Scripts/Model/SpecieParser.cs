@@ -56,14 +56,14 @@ public class SpecieParser
         {
             if (tokens[i] == "") break;
             int id = int.Parse(tokens[i]);
-            AgentComponent component = ComponentFactory.CreateComponent(id);
+            ComponentInfo component = ComponentFactory.CreateComponent(id);
             cast.Head.Add(component);
         }
         for (int i = headSize + 3; i < tokens.Length; i++)
         {
             if (tokens[i] == "") break;
             int id = int.Parse(tokens[i]);
-            AgentComponent component = 
+            ComponentInfo component = 
                 ComponentFactory.CreateComponent(id);
             cast.Tail.Add(component);
         }
