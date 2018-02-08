@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
+using System.Runtime.InteropServices;
 public class MCEditorManager : MonoBehaviour {
 
     /// <summary>
@@ -124,6 +125,7 @@ public class MCEditorManager : MonoBehaviour {
 
                 foreach (IABGateOperator param in state.Action.Parameters) {
                     pin = Instantiate<Pin>(pinPrefab);
+                    pin.IsGateOperator = true;
                     pin.transform.parent = proxyAction.transform;
                     pin.transform.position = proxyAction.transform.position;
                     float radius = proxyAction.transform.localScale.y / 2;
@@ -188,7 +190,7 @@ public class MCEditorManager : MonoBehaviour {
         for(int i =0;i< abModel.Transitions.Count; i++) {
             proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
 
-            pinList = CreatePins(i);
+            pinList = CreatePinsStates(i);
             proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, pinList[0].transform.position);
             proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, pinList[1].transform.position);
 
@@ -197,50 +199,54 @@ public class MCEditorManager : MonoBehaviour {
         
     }
 
-    List<Pin> CreatePins(int i)
+    List<Pin> CreatePinsStates(int curTransition)
     {
-        Pin startPin;
-        Pin endPin;
         List<Pin> pinList = new List<Pin>();
 
-        ProxyABState startState = statesDictionnary[abModel.Transitions[i].Start];
+        ProxyABState startState = statesDictionnary[abModel.Transitions[curTransition].Start];
 
-        startPin = Instantiate<Pin>(pinPrefab);
-        startPin.transform.parent = startState.transform;
-        startPin.transform.position = startState.transform.position;
-        float radiusStartPin = startState.transform.localScale.y / 2;
+        //pins.Add(CreatePin(startState.transform,false,curTransition)); //TODO peut etre a jeter
 
-        startPin.transform.position = new Vector3(startPin.transform.position.x + (radiusStartPin * Mathf.Cos(i * (2 * Mathf.PI) / abModel.Transitions[i].Start.Outcomes.Count)), startPin.transform.position.y + (radiusStartPin * Mathf.Sin(i * (2 * Mathf.PI) / abModel.Transitions[i].Start.Outcomes.Count)), startPin.transform.position.z);
-        pins.Add(startPin);
-        pinList.Add(startPin);
+        pinList.Add(CreatePinState(startState.transform, false,true, curTransition));
 
-        if (statesDictionnary.ContainsKey(abModel.Transitions[i].End)) {
+        if (statesDictionnary.ContainsKey(abModel.Transitions[curTransition].End)) {
 
-            ProxyABState endState = statesDictionnary[abModel.Transitions[i].End];
+            ProxyABState endState = statesDictionnary[abModel.Transitions[curTransition].End];
 
-            endPin = Instantiate<Pin>(pinPrefab);
-            endPin.transform.parent = endState.transform;
-            endPin.transform.position = endState.transform.position;
-            float radiusEndPin = endState.transform.localScale.y / 2;
-            endPin.transform.position = new Vector3(endPin.transform.position.x + (radiusEndPin * Mathf.Cos(i * (2 * Mathf.PI) / abModel.Transitions[i].End.Outcomes.Count)), endPin.transform.position.y + (radiusEndPin * Mathf.Sin(i * (2 * Mathf.PI) / abModel.Transitions[i].End.Outcomes.Count)), endPin.transform.position.z);
 
-            pins.Add(endPin);
-            pinList.Add(endPin);
+            pinList.Add(CreatePinState(endState.transform, false,false, curTransition));
         }
-        else if (actionsDictionnary.ContainsKey(abModel.Transitions[i].End)) {
+        else if (actionsDictionnary.ContainsKey(abModel.Transitions[curTransition].End)) {
 
-            ProxyABAction endState = actionsDictionnary[abModel.Transitions[i].End];
+            ProxyABAction endState = actionsDictionnary[abModel.Transitions[curTransition].End];
 
-            endPin = Instantiate<Pin>(pinPrefab);
-            endPin.transform.parent = endState.transform;
-            endPin.transform.position = endState.transform.position;
-            float radiusEndPin = endState.transform.localScale.y / 2;
-            endPin.transform.position = new Vector3(endPin.transform.position.x + (radiusEndPin), endPin.transform.position.y, endPin.transform.position.z);
-            pins.Add(endPin);
-            pinList.Add(endPin);
+            pinList.Add(CreatePinState(endState.transform, true,false));
         }
         
         return pinList;
+    }
+    
+    Pin CreatePinState(Transform state,bool isAction,bool isStart, [Optional] int curTransition){
+        Pin pin;
+        pin = Instantiate<Pin>(pinPrefab);
+        pin.transform.parent = state;
+        pin.transform.position = state.position;
+        float radiusState = state.localScale.y / 2;
+        Vector3 newPos;
+        if (isAction) {
+            newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
+        }
+        else {
+            if (isStart) {
+                newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / abModel.Transitions[curTransition].Start.Outcomes.Count)), pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / abModel.Transitions[curTransition].Start.Outcomes.Count)), pin.transform.position.z);
+            }
+            else {
+                newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / abModel.Transitions[curTransition].End.Outcomes.Count)), pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / abModel.Transitions[curTransition].End.Outcomes.Count)), pin.transform.position.z);
+            }
+            
+        }
+        pin.transform.position = newPos;
+        return pin;
     }
 
     void DisplayStates() {

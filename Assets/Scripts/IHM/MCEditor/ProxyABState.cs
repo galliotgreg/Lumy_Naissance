@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ProxyABState : MonoBehaviour {
     private ABState abState;
+    private List<Pin> pinList;
 
     public ABState AbState
     {
