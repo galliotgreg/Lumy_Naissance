@@ -10,6 +10,9 @@ public class AgentTestManager : MonoBehaviour {
 	[SerializeField]
 	PlayerAuthority authority = PlayerAuthority.Player1;
 
+    [SerializeField]
+    ResourceScript ressources; 
+
 	[SerializeField]
 	Vector2 pos;
 
@@ -18,22 +21,26 @@ public class AgentTestManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        List<ResourceScript> ressourcesList = new List<ResourceScript>();
+        ressourcesList.Add(ressources);
+        Unit_GameObj_Manager.instance.Resources = ressourcesList;
+    }
 
 	// Update is called once per frame
 	void Update () {
-		if (agent == null && !initialized) {
-			GameObject obj = GameManager.instance.GetUnitTemplate (authority, castName);
-			if (obj != null) {
-				agent = Instantiate (obj, pos, Quaternion.identity);
-				agent.SetActive (true);
-				HomeScript home = GameManager.instance.GetHome (authority);
-				home.addUnit (agent.GetComponent<AgentEntity> ());
-				agent.name = agent.GetComponent<AgentEntity> ().CastName + "-" + home.Authority.ToString();
+		//if (agent == null && !initialized) {
+		//	GameObject obj = GameManager.instance.GetUnitTemplate (authority, castName);
+		//	if (obj != null) {
+		//		agent = Instantiate (obj, pos, Quaternion.identity);
+		//		agent.SetActive (true);
+		//		HomeScript home = GameManager.instance.GetHome (authority);
+               
+               
+  //              // (agent.GetComponent<AgentEntity> ());
+		//		agent.name = agent.GetComponent<AgentEntity> ().CastName + "-" + home.Authority.ToString();
 
-				initialized = true;
-			}
-		}
+		//		initialized = true;
+		//	}
+		//}
 	}
 }

@@ -437,6 +437,7 @@ public class ABParamFactory
             {
                 color = ABColor.Color.Blue;
             }
+            type = TypeFactory.CreateEmptyColor();
             ((ABColor)type).Value = color;
         }
         else if (field.FieldType == typeof(Dictionary<string, int>))

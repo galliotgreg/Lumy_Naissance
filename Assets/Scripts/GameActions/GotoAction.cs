@@ -54,10 +54,11 @@ public class GotoAction : GameAction {
 
 			UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
 			navMeshAgent.CalculatePath( destination, path );
-
+            Debug.Log(destination); 
 			// move towards next corner
 			if (path.corners.Length > 0) {
-				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (path.corners [path.corners.Length-1] - agentAttr.transform.position).normalized;
+    			
+	            return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (path.corners [path.corners.Length-1] - agentAttr.transform.position).normalized;
 			}
 		}
 		return agentAttr.transform.position;

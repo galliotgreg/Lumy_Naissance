@@ -22,6 +22,7 @@ public class PickAction : GameAction {
 	}
 	protected override void executeAction ()
 	{
+        Debug.Log("Execute Pick");
 		if( item is GameObject ){
 			ResourceScript resource = item.GetComponent<ResourceScript>();
 
