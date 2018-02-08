@@ -7,8 +7,20 @@ using UnityEngine;
  */  
 public class Pin : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    bool isGateOperator = false;
+
+    public bool IsGateOperator {
+        get {
+            return isGateOperator;
+        }
+
+        set {
+            isGateOperator = value;
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
