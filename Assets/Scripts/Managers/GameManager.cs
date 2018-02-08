@@ -26,6 +26,16 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+
+		// Starting Component Factory
+        string pathFile = "Assets/Inputs/Components/components.csv";
+        ComponentFactory.CreateFactory(readFile(pathFile)); 
+    }
+
+    string readFile(string path)
+    {
+        System.IO.StreamReader reader = new System.IO.StreamReader(path);
+        return reader.ReadToEnd();
     }
 
     //Paths
@@ -152,8 +162,9 @@ public class GameManager : MonoBehaviour {
         template.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             p1_specie.Casts[p1_specie.QueenCastName], template, emptyComponentPrefab);
-        template.GetComponent<AgentEntity>().CastName = p1_specie.QueenCastName;
-        template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player1;
+
+		template.GetComponent<AgentEntity>().Context.Model.Cast = p1_specie.QueenCastName;
+        //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player1;
         p1_unitTemplates[0] = template;
         int ind = 1;
         foreach (string key in p1_specie.Casts.Keys)
@@ -162,8 +173,8 @@ public class GameManager : MonoBehaviour {
             {
                 Cast cast = p1_specie.Casts[key];
                 template = Instantiate(emptyAgentPrefab);
-                template.GetComponent<AgentEntity>().CastName = key;
-                template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player1;
+				template.GetComponent<AgentEntity>().Context.Model.Cast = key;
+                //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player1;
                 template.SetActive(false);
                 p1_unitTemplates[ind++] = template;
                 UnitTemplateInitializer.InitTemplate(cast, template, emptyComponentPrefab);
@@ -176,8 +187,8 @@ public class GameManager : MonoBehaviour {
         template.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             p2_specie.Casts[p2_specie.QueenCastName], template, emptyComponentPrefab);
-        template.GetComponent<AgentEntity>().CastName = p2_specie.QueenCastName;
-        template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player2;
+		template.GetComponent<AgentEntity>().Context.Model.Cast = p2_specie.QueenCastName;
+        //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player2;
         p2_unitTemplates[0] = template;
         ind = 1;
         foreach (string key in p2_specie.Casts.Keys)
@@ -186,8 +197,8 @@ public class GameManager : MonoBehaviour {
             {
                 Cast cast = p2_specie.Casts[key];
                 template = Instantiate(emptyAgentPrefab);
-                template.GetComponent<AgentEntity>().CastName = key;
-                template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player2;
+				template.GetComponent<AgentEntity>().Context.Model.Cast = key;
+                //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player2;
                 template.SetActive(false);
                 p2_unitTemplates[ind++] = template;
                 UnitTemplateInitializer.InitTemplate(cast, template, emptyComponentPrefab);
@@ -203,7 +214,9 @@ public class GameManager : MonoBehaviour {
         p2_home = Instantiate(homePrefab, new Vector3(30f, -0.45f, 0f), Quaternion.identity);
         p2_home.name = "p2_hive";
         HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
+		p1_hiveScript.Authority = PlayerAuthority.Player1;
         HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
+		p2_hiveScript.Authority = PlayerAuthority.Player2;
         p1_hiveScript.RedResAmout = p1_specie.RedResAmount;
         p1_hiveScript.GreenResAmout = p1_specie.GreenResAmount;
         p1_hiveScript.BlueResAmout = p1_specie.BlueResAmount;
@@ -218,7 +231,7 @@ public class GameManager : MonoBehaviour {
         {
             p2_hiveScript.Population.Add(key, 0);
         }
-
+		Unit_GameObj_Manager.instance.Homes = new List<HomeScript>(){ p1_hiveScript, p2_hiveScript };
 
         //Queens
         GameObject p1_queen = Instantiate(p1_unitTemplates[0], new Vector3(-30f, 0f, 0f), Quaternion.identity);
@@ -227,8 +240,9 @@ public class GameManager : MonoBehaviour {
         p2_queen.name = "p2_queen";
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);
-        p1_hiveScript.Population[p1_specie.QueenCastName]++;
-        p2_hiveScript.Population[p2_specie.QueenCastName]++;
+
+		p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
+		p2_hiveScript.addUnit( p2_queen.GetComponent<AgentEntity>() );
     }
 
     public GameObject GetUnitTemplate(PlayerAuthority authority, string castName)
@@ -266,4 +280,15 @@ public class GameManager : MonoBehaviour {
             return p2_home.GetComponent<HomeScript>();
         }
     }
+
+	public HomeScript GetEnemyHome(PlayerAuthority authority)
+	{
+		if (authority == PlayerAuthority.Player1)
+		{
+			return p2_home.GetComponent<HomeScript>();
+		} else
+		{
+			return p1_home.GetComponent<HomeScript>();
+		}
+	}
 }

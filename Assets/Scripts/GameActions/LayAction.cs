@@ -2,138 +2,151 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LayAction : MonoBehaviour {
-    // Workaround for script enabling issues
-    public bool activated;
-
+public class LayAction : GameAction {
     [SerializeField]
     private string castName;
 
-    private bool coolDownElapsed = true;
+    private int nbComposants = 0;
 
-    private GameObject childTemplate;
+	public string CastName
+	{
+		get
+		{
+			return castName;
+		}
 
-    private HomeScript home;
+		set
+		{
+			castName = value;
+		}
+	}
 
-    private AgentEntity agentEntity;
+	class ResourceCost{
+		public float red;
+		public float green;
+		public float blue;
 
-    //All Ressources 
-    private float unitRedCost = 0;
-    private float unitBlueCost = 0;
-    private float unitGreenCost = 0;
-    private float unitIncoCost = 0;
+		public ResourceCost(){
+			red = 0;
+			green = 0;
+			blue = 0;
+		}
+	}
 
+	private GameObject currentTemplate;
+	private ResourceCost currentCost;
 
-    public string CastName
+	/// <summary>
+	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
+	/// </summary>
+	/// <param name="childTemplate">Child template</param>
+	/// <param name="cost">Cost</param>
+	private void Lay( GameObject childTemplate, ResourceCost cost )
     {
-        get
-        {
-            return castName;
-        }
-
-        set
-        {
-            castName = value;
-        }
-    }
-
-    // Use this for initialization
-    void Start () {
-        agentEntity = GetComponent<AgentEntity>();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-		if (!activated)
-        {
-            return;
-        }
-
-        if (coolDownElapsed && CheckRes())
-        {     
-            //Decrease Ressources & Drop new Instance
-            Lay();
-            coolDownElapsed = false;
-            // Get CoolDown 
-            Invoke("EndCooldown", 0.3f);            
-        }
-    }
-
-    private void Lay()
-    {
-        //Decrease Ressources
-        DecreaseAmount();
         GameObject child = Instantiate(
             childTemplate, this.transform.position, this.transform.rotation);
         child.SetActive(true);
+		child.name = child.GetComponent<AgentEntity> ().CastName;
         //Increment Population 
-        home.Population[castName]++;
+		this.agentEntity.Home.addUnit( child.GetComponent<AgentEntity>() );
     }
 
-    private void EndCooldown()
+	private void Lay(){
+		Lay (currentTemplate, currentCost);
+	}
+
+	/// <summary>
+	/// Decreases the resources from the home.
+	/// </summary>
+	/// <param name="cost">Cost of the unit</param>
+	private void DecreaseResources ( ResourceCost cost )
     {
-        coolDownElapsed = true;
+		HomeScript home = agentEntity.Home;
+		home.RedResAmout -= cost.red;
+		home.GreenResAmout -= cost.green;
+		home.BlueResAmout -= cost.blue;
     }
 
-    private bool CheckRes ()
-    {
-         childTemplate = GameManager.instance.GetUnitTemplate(
-         agentEntity.Authority, castName);
-        //Get Cost of the child  
-        //Change Cost Evaluation Method 
-        AgentContext childContext = childTemplate.GetComponent<AgentContext>();
-        AgentComponent[] agentComponents = childContext.GetComponents<AgentComponent>();
+	/// <summary>
+	/// Obtains the cost associated to a template
+	/// </summary>
+	/// <returns>The cost.</returns>
+	/// <param name="childTemplate">Child template.</param>
+	ResourceCost getCost( GameObject childTemplate ){
+		//Get Cost of the child
+		//Change Cost Evaluation Method
+		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
+		AgentComponent[] agentComponents = child.getAgentComponents();
 
+		ResourceCost resultCost = new ResourceCost();
 
-        foreach (AgentComponent component in agentComponents)
-        {
-            Color32 color = component.Color;
+		foreach (AgentComponent component in agentComponents)
+		{
+			Color32 color = component.Color;
             if (color.Equals(new Color32(255, 0, 0, 1)))
-                unitRedCost += component.ProdCost; 
+                resultCost.red += component.ProdCost;
             else if (color.Equals(new Color32(0, 255, 0, 1)))
-                unitBlueCost += component.ProdCost;
+                resultCost.green += component.ProdCost;
             else if (color.Equals(new Color32(0, 0, 255, 1)))
-                unitGreenCost += component.ProdCost;
+                resultCost.blue += component.ProdCost;
             else
-                unitIncoCost += component.ProdCost; 
-        }
+                Debug.LogWarning("Component has no good color TODO Implement new strategy");
+                
+            
+		}
 
-        unitIncoCost += unitRedCost + unitGreenCost + unitBlueCost; 
+		return resultCost;
+	}
 
-        home = GameManager.instance.GetHome(agentEntity.Authority);
-        //Get ressources from Home || Change the method to calculate ressources 
-        float resAmount = home.RedResAmout + home.GreenResAmout + home.BlueResAmout;
+	/// <summary>
+	/// Calculates the cooldown for laying a unit
+	/// </summary>
+	/// <returns>The cooldown.</returns>
+	/// <param name="childTemplate">Gameobject that represents the unit</param>
+	float getCooldown( GameObject childTemplate ){
+		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
+		AgentComponent[] agentComponents = child.getAgentComponents();
 
-        //Compare them and return bool
-        if (unitRedCost <= home.RedResAmout
-            && unitGreenCost <= home.GreenResAmout
-            && unitBlueCost <= home.BlueResAmout
-            && unitIncoCost <= resAmount)  
-        {
-            return true; 
-        }
-        unitBlueCost = 0;
-        unitGreenCost = 0;
-        unitIncoCost = 0;
-        unitRedCost = 0;
-        return false; 
-    }
+		nbComposants = agentComponents.Length;
+		return 0.5f * nbComposants;
+	}
 
-    private void DecreaseAmount ()
-    {
-       
-     
-        //How to decrease the incolore Amount ? 
-        home.GreenResAmout -= unitGreenCost;
-        home.RedResAmout -= unitRedCost;
-        home.BlueResAmout -= unitBlueCost;
+	/// <summary>
+	/// Check if the home has enough Resource
+	/// </summary>
+	/// <returns><c>true</c>, if there is enough resource, <c>false</c> otherwise.</returns>
+	/// <param name="childTemplate">Child template.</param>
+	/// <param name="cost">Cost of the template.</param>
+	private bool CheckResources ( GameObject childTemplate, ResourceCost cost )
+	{
+		HomeScript home = agentEntity.Home;
+		// Get ressources from Home || Change the method to calculate ressources
 
-        unitBlueCost = 0;
-        unitGreenCost = 0;
-        unitIncoCost = 0;
-        unitRedCost = 0;
-    }
-
-  
+		//Compare them and return bool
+		return (cost.red <= home.RedResAmout
+			&& cost.green <= home.GreenResAmout
+			&& cost.blue <= home.BlueResAmout);
+	}
     
+	#region implemented abstract members of GameAction
+	protected override void initAction ()
+	{
+		this.CoolDownActivate = true;
+	}
+
+
+	protected override void executeAction ()
+	{
+		currentTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
+
+		currentCost = getCost( currentTemplate );
+		if ( CheckResources( currentTemplate, currentCost ) ){
+			DecreaseResources( currentCost );
+
+			this.CoolDownTime = getCooldown(currentTemplate);
+			// wait for cooldownTime
+			Invoke( "Lay", this.CoolDownTime );
+		}
+	}
+	#endregion
 }

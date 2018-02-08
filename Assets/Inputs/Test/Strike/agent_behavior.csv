@@ -1,0 +1,21 @@
+States,Name,Type
+0,INIT,Init
+1,strikeEnemy,trigger{strike}
+,,
+Transitions,Start State,End State
+0,INIT,strikeEnemy
+,,
+Syntax Tree,output,
+0,0,
+Nodes,Type,output (Node -> Input)
+0,operator{B>SS},
+1,operator{SsizeR[]},0->0
+2,param{ref[]:enemies},1->0
+3,param{const scal=0},0->1
+,,
+Syntax Tree,output,
+1,strikeEnemy->0,
+Nodes,Type,output (Node -> Input)
+0,operator{RgetR[]S},
+1,param{ref[]:enemies},0->0
+2,param{const scal=0},0->1

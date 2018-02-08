@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GotoAction : MonoBehaviour {
-    // Workaround for script enabling issues
-    public bool activated;
-
+public class GotoAction : GameAction {
+	
     [SerializeField]
     private Vector3[] path;
-    private AgentContext agentContext;
 
     public Vector3[] Path
     {
@@ -23,40 +20,46 @@ public class GotoAction : MonoBehaviour {
         }
     }
 
-    // Use this for initialization
-    void Start () {
-        agentContext = GetComponent<AgentContext>();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        if (!activated)
-        {
-            return;
-        }
+	#region implemented abstract members of GameAction
 
-        if (path.Length > 0)
-        {
-            agentContext.Self.GetComponent<AgentScript>().TrgPos = path[0];
-        }
+	protected override void initAction ()
+	{
+		this.CoolDownActivate = false;
+	}
 
-        if (Vector3.Distance(
-            agentContext.Self.GetComponent<AgentScript>().TrgPos,
-            agentContext.Self.GetComponent<AgentScript>().CurPos) < 0.1f)
-        {
-            this.transform.position = new Vector3(
-                agentContext.Self.GetComponent<AgentScript>().TrgPos.x, 
-                0f, 
-                agentContext.Self.GetComponent<AgentScript>().TrgPos.y);
-        }
-        else
-        {
-            Vector3 dir = (
-                agentContext.Self.GetComponent<AgentScript>().TrgPos 
-                - agentContext.Self.GetComponent<AgentScript>().CurPos).normalized;
-            float speed = 5f;
-            this.transform.position +=
-                Time.deltaTime * speed * new Vector3(dir.x, 0f, dir.y);
-        }
-    }
+	protected override void executeAction ()
+	{
+		// Setting next target
+		if (path.Length > 0)
+		{
+			agentAttr.TrgPos = path[0];
+		}
+
+		// Use Unity A* to move
+		UnityEngine.AI.NavMeshAgent movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+		agentAttr.transform.position = moveTo( agentAttr, movingAgent );
+		//agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );
+	}
+
+	#endregion
+
+	public static Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
+		// Use Unity A* to move
+		if( navMeshAgent != null ){
+			//navMeshAgent.acceleration = 1;
+			//navMeshAgent.speed = agentAttr.MoveSpd;
+			//navMeshAgent.destination = new Vector3( agentAttr.TrgPos.x, 0f, agentAttr.TrgPos.y);
+			//navMeshAgent.updatePosition = false;
+			Vector3 destination = new Vector3( agentAttr.TrgPos.x, 0f, agentAttr.TrgPos.y);
+
+			UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
+			navMeshAgent.CalculatePath( destination, path );
+
+			// move towards next corner
+			if (path.corners.Length > 0) {
+				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (path.corners [path.corners.Length-1] - agentAttr.transform.position).normalized;
+			}
+		}
+		return agentAttr.transform.position;
+	}
 }
