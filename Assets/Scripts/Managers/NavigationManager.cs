@@ -38,7 +38,7 @@ public class NavigationManager : MonoBehaviour {
     public float zoomStep = 0.1f;
     public float fadeStep = 0.05f;
 
-    private bool layerLoaded;
+    private bool layerLoaded = true;
     private bool addToPreviousList = true;
 
     // Use this for initialization
@@ -152,6 +152,7 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator SwapLayersCo(string nextScene, string newLayer)
     {
+        Debug.Log("Pingouin rentré");
         
         // Faire disparaître la strate-mère initiale en fondu 
         GameObject canvas = GameObject.Find(currentLayer + "Canvas");
