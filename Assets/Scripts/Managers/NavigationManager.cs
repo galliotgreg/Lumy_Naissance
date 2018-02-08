@@ -32,13 +32,14 @@ public class NavigationManager : MonoBehaviour {
     
     private string currentLayer;
     private string currentScene;
-    private string previousScene = null;
+    private List<string> previousScene = new List<string>();
 
     public float zoomEndDistance = 0.0f;
     public float zoomStep = 0.1f;
     public float fadeStep = 0.05f;
 
     private bool layerLoaded;
+    private bool addToPreviousList = true;
 
     // Use this for initialization
     void Start () {
@@ -70,7 +71,9 @@ public class NavigationManager : MonoBehaviour {
 
     public void GoBack(Vector3 sightPoint)
     {
-        StartCoroutine(SwapScenesCo(previousScene, sightPoint));
+        addToPreviousList = false;
+        StartCoroutine(SwapScenesCo(previousScene[previousScene.Count-1], sightPoint));
+        previousScene.RemoveAt(previousScene.Count - 1);
     }
 
     IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
@@ -122,7 +125,11 @@ public class NavigationManager : MonoBehaviour {
         SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(true);
 
         // Mettre à jour les propriétés du gestionnaire
-        previousScene = currentScene;
+        if (addToPreviousList)
+        {
+            previousScene.Add(currentScene);
+        }
+        
         currentScene = nextScene;
 
         // Faire apparaître le canvas en fondu
@@ -135,6 +142,8 @@ public class NavigationManager : MonoBehaviour {
             canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
             yield return true;
         }
+
+        addToPreviousList = true;
 
         // Arrêter la coroutine de transition
         StopCoroutine(SwapScenesCo(nextScene, sightPoint));
