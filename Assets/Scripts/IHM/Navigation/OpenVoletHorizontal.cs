@@ -18,51 +18,58 @@ public class OpenVoletHorizontal : MonoBehaviour {
 	RectTransform rtLeft;
 	RectTransform rtRight;
 	RectTransform rtMidd;
+
     // Use this for initialization
     void Start () {
 		isOpenLeft = true;
 		isOpenRight = true;
 		leftButton = GameObject.Find ("btn_VoletGauche");
 		rightButton = GameObject.Find ("btn_VoletDroit");
-
-
-
+		leftButton.GetComponent<Button>().onClick.AddListener(MoveLeftPanel);
+		rightButton.GetComponent<Button>().onClick.AddListener(MoveRightPanel);
     }
 	
 	// Update is called once per frame
 	void Update () {
-		leftButton.GetComponent<Button>().onClick.AddListener(MoveLeftPanel);
-		rightButton.GetComponent<Button>().onClick.AddListener(MoveRightPanel);
+		
 	}
 
 	void MoveLeftPanel() {
-		isOpenLeft = !isOpenLeft;
+		
 		leftPanel = GameObject.FindWithTag ("Left");
-		rightPanel = GameObject.FindWithTag ("Right");
-		middPanel = GameObject.FindWithTag ("Midd");
 		rtLeft = (RectTransform)leftPanel.transform;
-		rtRight = (RectTransform)rightPanel.transform;
+		leftWidth = rtLeft.rect.width;
+
+		middPanel = GameObject.FindWithTag ("Midd");
 		rtMidd = (RectTransform)middPanel.transform;
-
-		rightWidth = rtLeft.rect.width;
-		leftWidth = rtRight.rect.width;
 		middWidth = rtMidd.rect.width;
-
-
+		Debug.Log (isOpenLeft);
 		if(isOpenLeft == true)
 		{
 			Debug.Log ("Left: isOpen: "+ isOpenLeft);	
+			middWidth = middWidth + leftWidth;
+
 		}else{
 			Debug.Log ("Left: isOpen: "+ isOpenLeft);	
 		}
+		isOpenLeft = !isOpenLeft;
     }
+
 	void MoveRightPanel(){
-		isOpenRight = !isOpenRight;
+		rightPanel = GameObject.FindWithTag ("Right");
+		rtRight = (RectTransform)rightPanel.transform;
+		rightWidth = rtRight.rect.width;
+
+		middPanel = GameObject.FindWithTag ("Midd");
+		rtMidd = (RectTransform)middPanel.transform;
+		middWidth = rtMidd.rect.width;
 
 		if (isOpenRight == true) {
 			Debug.Log ("Right: isOpen " + isOpenRight);
+
 		} else {
 			Debug.Log ("Right: isOpen " + isOpenRight);
 		}
+		isOpenRight = !isOpenRight;
 	}
 }
