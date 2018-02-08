@@ -158,7 +158,7 @@ public class MCEditorManager : MonoBehaviour {
             pin.transform.parent = st.transform;
             pin.transform.position = st.transform.position;
             float radius = st.transform.localScale.y / 2;
-            pin.transform.position = new Vector3(pin.transform.position.x + (radius * Mathf.Cos(j * (2 * Mathf.PI) / state.Outcomes.Count)), pin.transform.position.y + (radius + Mathf.Cos(j * (2 * Mathf.PI) / state.Outcomes.Count)), pin.transform.position.z);
+            pin.transform.position = new Vector3(pin.transform.position.x + (radius * Mathf.Cos(j * (2 * Mathf.PI) / state.Outcomes.Count)), pin.transform.position.y + (radius * Mathf.Sin(j * (2 * Mathf.PI) / state.Outcomes.Count)), pin.transform.position.z);
             pins.Add(pin);
         }
 
