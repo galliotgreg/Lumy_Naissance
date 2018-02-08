@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class ComponentFactory {
 
-	protected static Dictionary<int,AgentComponent> loadedComponents = null;
+	protected static Dictionary<int, ComponentInfo> loadedComponents = null;
 
 	public class ComponentFactoryNotCreated : System.Exception{};
 
@@ -23,7 +23,7 @@ public class ComponentFactory {
 		}
 	}
 
-    public static AgentComponent CreateComponent(int id)
+    public static ComponentInfo CreateComponent(int id)
     {
 		if( !IsLoaded ){
 			throw new ComponentFactory.ComponentFactoryNotCreated();

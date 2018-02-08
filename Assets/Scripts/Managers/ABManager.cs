@@ -153,7 +153,7 @@ public class ABManager : MonoBehaviour {
         return subFolder;
     }
 
-    private ABModel LoadABModelFromFile(string path)
+    public ABModel LoadABModelFromFile(string path)
     {
         StreamReader reader = new StreamReader(path);
         List<string> lines = new List<string>();
