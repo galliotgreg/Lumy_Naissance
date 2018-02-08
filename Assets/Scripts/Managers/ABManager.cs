@@ -89,6 +89,7 @@ public class ABManager : MonoBehaviour {
 							((AB_RefGate_Operator)action.Parameters [i]).Evaluate (context);
 						actionParams.Add (param);
 					}
+					// TODO add type for each new param type
 				}
 			}
 

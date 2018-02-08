@@ -11,7 +11,12 @@ public abstract class GameAction : MonoBehaviour {
 	[SerializeField]
 	private bool coolDownActivate = true;
 	[SerializeField]
-	private float coolDownTime = 0.1f;
+	/// <summary>
+	/// Factor to be applied to the cooldown (based on the GameAction's internal value for the cooldown action)
+	/// </summary>
+	private float coolDownTime = 1f;
+
+	private float actionStepTime = 1;	// Seconds used as basis for the actions (ie 1 action per second)
 
 	/// <summary>
 	/// Gets or sets a value indicating whether this <see cref="GameAction"/> cool down is activated.
@@ -75,12 +80,12 @@ public abstract class GameAction : MonoBehaviour {
 			return;
 		}
 
-		if (coolDownElapsed)
+		if (coolDownElapsed && coolDownTime > 0)
 		{
 			executeAction();
 			coolDownElapsed = false;
 			if( coolDownActivate ){
-				Invoke("EndCooldown", coolDownTime);
+				Invoke("EndCooldown", coolDownTime*actionStepTime);
 			} else {
 				EndCooldown();
 			}
