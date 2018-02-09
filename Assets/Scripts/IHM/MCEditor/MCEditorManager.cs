@@ -210,10 +210,10 @@ public class MCEditorManager : MonoBehaviour {
             paramName.text = ((IABParam)node).Identifier.ToString();
             proxyParam.Add(proxy);
 
-            pin = CreatePinSynthTree(proxy.transform, true);
+            /*pin = CreatePinSynthTree(proxy.transform, true);
             Renderer rend = pin.GetComponent<Renderer>();
             rend.material.shader = Shader.Find("Specular");
-            rend.material.SetColor("_SpecColor", Color.red);
+            rend.material.SetColor("_SpecColor", Color.red);*/
         }
         pin = CreatePinSynthTree(proxy.transform, true);
         return pin;
@@ -246,8 +246,8 @@ public class MCEditorManager : MonoBehaviour {
 
     void CreateTransitionSyntaxTree(Pin start, Pin end) {
         ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
-        proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, start.transform.position);
-        proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, end.transform.position);
+        proxyABTransition.StartPosition = start;
+        proxyABTransition.EndPosition = end;
     }
 
     void CreateProxyTransitions()
@@ -260,8 +260,8 @@ public class MCEditorManager : MonoBehaviour {
             proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
 
             pinList = CreatePinsStates(i);
-            proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, pinList[0].transform.position);
-            proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, pinList[1].transform.position);
+            proxyABTransition.StartPosition = pinList[0];
+            proxyABTransition.EndPosition = pinList[1];
         }   
     }
 
@@ -324,7 +324,6 @@ public class MCEditorManager : MonoBehaviour {
         pin.transform.parent = node;
         pin.transform.position = node.position;
         int childCount = node.transform.childCount;
-        Debug.Log("childNumber : " + node.transform.childCount);
         float radiusState = node.localScale.y / 2;
         Vector3 newPos;
         if (isOperator)
