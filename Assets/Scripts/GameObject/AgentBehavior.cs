@@ -148,15 +148,15 @@ public class AgentBehavior : MonoBehaviour
 			// color
 			ABColor traceColor = ((ABColor)CurActionParams[0]);
 			switch( traceColor.Value ){
-			case ABColor.Color.Red:
-				traceAction.Color = Color.red;
-				break;
-			case ABColor.Color.Green:
-				traceAction.Color = Color.green;
-				break;
-			case ABColor.Color.Blue:
-				traceAction.Color = Color.blue;
-				break;
+				case ABColor.Color.Red:
+					traceAction.Color = Color.red;
+					break;
+				case ABColor.Color.Green:
+					traceAction.Color = Color.green;
+					break;
+				case ABColor.Color.Blue:
+					traceAction.Color = Color.blue;
+					break;
 			}
 
 			// path

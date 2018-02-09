@@ -17,6 +17,9 @@ public class TraceScript : MonoBehaviour {
 	[SerializeField]
 	private Vector2 location;
 
+	[SerializeField]
+	private float lifeTime;
+
 	public Color32 Color {
 		get {
 			return color;
@@ -49,11 +52,17 @@ public class TraceScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		this.Location = positionFromTransform ();
+		this.lifeTime = 10;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		this.Location = positionFromTransform ();
+
+		this.lifeTime -= Time.deltaTime;
+		if( lifeTime <= 0 ){
+			Unit_GameObj_Manager.instance.destroyTrace (this);
+		}
 	}
 
 	Vector2 positionFromTransform(){
