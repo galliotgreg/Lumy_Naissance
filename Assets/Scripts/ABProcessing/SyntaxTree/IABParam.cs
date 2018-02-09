@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IABParam
 {
-    string Identifier { get; }
+    string Identifier { get; }    
 }

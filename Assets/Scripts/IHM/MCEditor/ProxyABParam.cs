@@ -12,6 +12,12 @@ public class ProxyABParam<T> : MonoBehaviour, IProxyABParam{
         }
     }
 
+    public string Value {
+        get {
+            throw new System.NotImplementedException();
+        }
+    }
+
     // Use this for initialization
     void Start () {
 		

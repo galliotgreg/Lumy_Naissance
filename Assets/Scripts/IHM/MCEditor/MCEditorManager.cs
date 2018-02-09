@@ -205,16 +205,37 @@ public class MCEditorManager : MonoBehaviour {
         {
             proxy = Instantiate<GameObject>(parameterPrefab);
             proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
-            //TODO get name parameter
-            Text paramName = proxy.GetComponentInChildren<Text>();
-            paramName.text = ((IABParam)node).Identifier.ToString();
-            proxyParam.Add(proxy);
 
-            /*pin = CreatePinSynthTree(proxy.transform, true);
-            Renderer rend = pin.GetComponent<Renderer>();
-            rend.material.shader = Shader.Find("Specular");
-            rend.material.SetColor("_SpecColor", Color.red);*/
-        }
+            //TODO value parameter
+            Text paramName = proxy.GetComponentInChildren<Text>();            
+            if(node is ABParam<ABText>) {
+                paramName.text = ((ABParam<ABText>)node).Value.ToString();
+            }else if (node is ABParam<ABVec>) {
+                paramName.text = ((ABParam<ABVec>)node).Value.ToString();
+
+            }
+            else if(node is ABParam<ABBool>) {
+                paramName.text = ((ABParam<ABBool>)node).Value.ToString();
+            }
+            else if(node is ABParam<ABRef>) {
+                paramName.text = ((ABParam<ABRef>)node).Value.ToString();
+            }
+            else if(node is ABParam<ABColor>) {
+                paramName.text = ((ABParam<ABColor>)node).Value.ToString();
+
+            }
+            else if(node is ABParam<ABScalar>) {
+                paramName.text = ((ABParam<ABScalar>)node).Value.ToString();
+            }
+
+            proxyParam.Add(proxy);
+            
+
+                /*pin = CreatePinSynthTree(proxy.transform, true);
+                Renderer rend = pin.GetComponent<Renderer>();
+                rend.material.shader = Shader.Find("Specular");
+                rend.material.SetColor("_SpecColor", Color.red);*/
+            }
         pin = CreatePinSynthTree(proxy.transform, true);
         return pin;
     }
@@ -255,14 +276,27 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABTransition proxyABTransition;
 
         List<Pin> pinList;
-
-        for(int i =0;i< abModel.Transitions.Count; i++) {
+        Pin condition = null;
+        for (int i = 0; i < abModel.Transitions.Count; i++) {
             proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
 
             pinList = CreatePinsStates(i);
+
             proxyABTransition.StartPosition = pinList[0];
             proxyABTransition.EndPosition = pinList[1];
-        }   
+
+            condition = Instantiate<Pin>(pinPrefab);
+            condition.IsGateOperator = true;
+            condition.transform.parent = proxyABTransition.transform;
+            proxyABTransition.Condition = condition;
+
+            if(abModel.Transitions[i].Condition != null) {
+                
+                Pin end = RecNodeSynthTree(abModel.Transitions[i].Condition.Inputs[0]);
+                CreateTransitionSyntaxTree(condition, end);
+                
+            }
+        }         
     }
 
     List<Pin> CreatePinsStates(int curTransition)
