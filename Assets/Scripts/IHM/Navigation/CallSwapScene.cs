@@ -8,6 +8,7 @@ public class CallSwapScene : MonoBehaviour {
 
     public bool isReturnButton;
     public string target;
+    public string panel;
 
 	// Use this for initialization
 	void Start () {
@@ -21,12 +22,16 @@ public class CallSwapScene : MonoBehaviour {
 
     void SwapScene()
     {
-        if (!isReturnButton)
+        Debug.Log(panel);
+        if (!isReturnButton && (panel == null || panel == ""))
         {
             NavigationManager.instance.SwapScenes(target, this.gameObject.transform.position);
-        } else
+        } else if (isReturnButton)
         {
             NavigationManager.instance.GoBack(this.gameObject.transform.position);
+        } else
+        {
+            NavigationManager.instance.SwapScenesWithPanel(target, panel, this.gameObject.transform.position);
         }
         
     }

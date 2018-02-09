@@ -40,6 +40,7 @@ public class NavigationManager : MonoBehaviour {
 
     private bool layerLoaded = true;
     private bool addToPreviousList = true;
+    private bool sceneLoaded = false;
 
     // Use this for initialization
     void Start () {
@@ -67,6 +68,13 @@ public class NavigationManager : MonoBehaviour {
     public void SwapScenes(string nextScene, Vector3 sightPoint)
     {
         StartCoroutine(SwapScenesCo(nextScene, sightPoint));
+    }
+
+    public void SwapScenesWithPanel(string nextScene, string panelToActivate, Vector3 sightPoint)
+    {
+        sceneLoaded = false;
+        StartCoroutine(SwapScenesCo(nextScene, sightPoint));
+        StartCoroutine(ActivatePanelCo(nextScene, panelToActivate));
     }
 
     public void GoBack(Vector3 sightPoint)
@@ -144,6 +152,7 @@ public class NavigationManager : MonoBehaviour {
         }
 
         addToPreviousList = true;
+        sceneLoaded = true;
 
         // Arrêter la coroutine de transition
         StopCoroutine(SwapScenesCo(nextScene, sightPoint));
@@ -152,7 +161,6 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator SwapLayersCo(string nextScene, string newLayer)
     {
-        Debug.Log("Pingouin rentré");
         
         // Faire disparaître la strate-mère initiale en fondu 
         GameObject canvas = GameObject.Find(currentLayer + "Canvas");
@@ -198,5 +206,15 @@ public class NavigationManager : MonoBehaviour {
         StopCoroutine(SwapLayersCo(nextScene, newLayer));
         yield return true;
     }
-    
+
+    IEnumerator ActivatePanelCo(string nextScene, string layerName)
+    {
+        print(sceneLoaded);
+        yield return new WaitUntil(() => sceneLoaded);
+        print(sceneLoaded);
+        GameObject panel = GameObject.Find(nextScene+"Canvas").transform.Find(layerName).gameObject;
+        panel.SetActive(true);
+        StopCoroutine(ActivatePanelCo(nextScene, layerName));
+        yield return true;
+    }
 }
