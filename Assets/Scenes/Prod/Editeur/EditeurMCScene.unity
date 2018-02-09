@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 149024347}
   - component: {fileID: 149024346}
   m_Layer: 5
-  m_Name: EditeurMCCanvas
+  m_Name: EditeurMCSceneCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,7 +237,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 149024344}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_Children:
   - {fileID: 182037716}
@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 159124574}
   m_Layer: 5
   m_Name: PanelNode
-  m_TagString: Untagged
+  m_TagString: Right
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -477,7 +477,7 @@ GameObject:
   - component: {fileID: 182037717}
   m_Layer: 5
   m_Name: PanelVoletGauche
-  m_TagString: Untagged
+  m_TagString: Left
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -989,7 +989,7 @@ GameObject:
   - component: {fileID: 473562054}
   m_Layer: 5
   m_Name: PanelPrincipal
-  m_TagString: Untagged
+  m_TagString: Midd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3929,6 +3929,7 @@ GameObject:
   - component: {fileID: 1725846084}
   - component: {fileID: 1725846083}
   - component: {fileID: 1725846082}
+  - component: {fileID: 1725846086}
   m_Layer: 0
   m_Name: Root
   m_TagString: Untagged
@@ -3942,7 +3943,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1725846081}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
@@ -3994,13 +3995,25 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1725846081}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 149024345}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1725846086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1725846081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32685cb15eafe84a8e40a2fa0757f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentLayer: MenuLayer
 --- !u!1 &1788819027
 GameObject:
   m_ObjectHideFlags: 0
@@ -4012,6 +4025,7 @@ GameObject:
   - component: {fileID: 1788819031}
   - component: {fileID: 1788819030}
   - component: {fileID: 1788819029}
+  - component: {fileID: 1788819032}
   m_Layer: 5
   m_Name: btn_VoletGauche
   m_TagString: Untagged
@@ -4112,6 +4126,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1788819027}
+--- !u!114 &1788819032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1788819027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0639e8dbba3fba4e821e8737bf6f3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1791283083
 GameObject:
   m_ObjectHideFlags: 0
@@ -5025,6 +5050,7 @@ GameObject:
   - component: {fileID: 2129924041}
   - component: {fileID: 2129924040}
   - component: {fileID: 2129924039}
+  - component: {fileID: 2129924042}
   m_Layer: 5
   m_Name: btn_VoletDroit
   m_TagString: Untagged
@@ -5125,3 +5151,14 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2129924037}
+--- !u!114 &2129924042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2129924037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0639e8dbba3fba4e821e8737bf6f3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
