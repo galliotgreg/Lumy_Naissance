@@ -60,8 +60,8 @@ public class OpenVoletHorizontal : MonoBehaviour {
 			leftPanel.SetActive (false);
 			float pos = rtMidd.position.x;
 			pos= pos - (recenterPanel)/100;
-			rtMidd.sizeDelta = new Vector2(middWidth,0);
-			rtMidd.SetPositionAndRotation (new Vector3 (pos,0,0), Quaternion.Euler(0,0,0));
+			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
+			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
 
 
 		}else{
@@ -70,8 +70,8 @@ public class OpenVoletHorizontal : MonoBehaviour {
 			leftPanel.SetActive (true);
 			float pos = rtMidd.position.x;
 			pos= pos +(recenterPanel/100);
-			rtMidd.sizeDelta = new Vector2(middWidth,0);
-			rtMidd.SetPositionAndRotation (new Vector3 (pos,0,0), Quaternion.Euler(0,0,0));
+			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
+			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
 
 		}
 		isOpenLeft = !isOpenLeft;
@@ -92,16 +92,16 @@ public class OpenVoletHorizontal : MonoBehaviour {
 			rightPanel.SetActive (false);
 			float pos = rtMidd.position.x;
 			pos= pos + (recenterPanel)/100;
-			rtMidd.sizeDelta = new Vector2(middWidth,0);
-			rtMidd.SetPositionAndRotation (new Vector3 (pos,0,0), Quaternion.Euler(0,0,0));
+			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
+			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
 		}else{
 			middWidth = middWidth-rightWidth;
 			recenterPanel = rightWidth/2 ;
 			rightPanel.SetActive (true);
 			float pos = rtMidd.position.x;
 			pos= pos - (recenterPanel/100);
-			rtMidd.sizeDelta = new Vector2(middWidth,0);
-			rtMidd.SetPositionAndRotation (new Vector3 (pos,0,0), Quaternion.Euler(0,0,0));
+			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
+			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
 		}
 		isOpenRight = !isOpenRight;
 	}
