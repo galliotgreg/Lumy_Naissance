@@ -29,16 +29,21 @@ public class PickAction : GameAction {
 			if( resource != null ){
 				// Check if the player close to the resource
 				if( (this.agentAttr.CurPos - resource.Location).magnitude <= this.agentAttr.PickRange ){
-					// Can carry the item?
-					if( this.agentAttr.NbItem >= this.agentAttr.NbItemMax ){
-						// Drop some item
-						Unit_GameObj_Manager.instance.dropResource( this.agentAttr.removeLastResource() );
-					}
 
-					// Carry it
-					this.agentAttr.addResource( resource );
-					// Associate gameobject
-					resource.transform.parent = this.agentEntity.transform;
+					if (Unit_GameObj_Manager.instance.pickResource (resource)) {
+						// Can carry the item?
+						if( this.agentAttr.NbItem >= this.agentAttr.NbItemMax ){
+							// Drop some item
+							Unit_GameObj_Manager.instance.dropResource( this.agentAttr.removeLastResource() );
+						}
+
+						// Carry it
+						this.agentAttr.addResource( resource );
+						// Associate gameobject
+						resource.transform.parent = this.agentEntity.transform;
+					} else {
+						throw new System.Exception ("resource not found into the manager");
+					}
 				}
 			}
 		}
