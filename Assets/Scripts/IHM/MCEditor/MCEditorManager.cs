@@ -134,10 +134,7 @@ public class MCEditorManager : MonoBehaviour {
                     foreach(ABNode node in param.Inputs)
                     {
                         Pin end = RecNodeSynthTree(node);
-                        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
-                        proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, start.transform.position);
-                        proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, end.transform.position);
-
+                        CreateTransitionSyntaxTree(start, end);
                     }
                 }
             }
@@ -160,6 +157,21 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
+    void SetNodeName(GameObject proxy, ABNode node) {
+
+        Text operatorName = proxy.GetComponentInChildren<Text>();
+        string opeName = node.ToString();
+        char splitter = '_';
+        string[] newName = opeName.Split(splitter);
+        string newOpeName = "";
+
+        for (int i = 1; i < newName.Length - 1; i++) {
+
+            newOpeName += newName[i];
+        }
+        operatorName.text = newOpeName;
+    }
+
     Pin RecNodeSynthTree(ABNode node)
     {
         GameObject proxy = null;
@@ -168,9 +180,8 @@ public class MCEditorManager : MonoBehaviour {
         {
             proxy = Instantiate<GameObject>(operatorPrefab);
             proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
-            Text operatorName = proxy.GetComponentInChildren<Text>();
-            //TODO
-            //operatorName.text = node.Output.ToString();
+            SetNodeName(proxy, node);
+
             proxyOperator.Add(proxy);
             if ( ((IABOperator)node).Inputs.Length != 0)
             {
@@ -185,9 +196,7 @@ public class MCEditorManager : MonoBehaviour {
 
                     if(end != null)
                     {
-                        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
-                        proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, start.transform.position);
-                        proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, end.transform.position);
+                        CreateTransitionSyntaxTree(start, end);
                     }
                 } 
             }
@@ -196,8 +205,9 @@ public class MCEditorManager : MonoBehaviour {
         {
             proxy = Instantiate<GameObject>(parameterPrefab);
             proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
+            //TODO get name parameter
             Text paramName = proxy.GetComponentInChildren<Text>();
-            paramName.text = node.GetType().ToString();
+            paramName.text = ((IABParam)node).Identifier.ToString();
             proxyParam.Add(proxy);
 
             pin = CreatePinSynthTree(proxy.transform, true);
@@ -234,8 +244,10 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
-    void CreateProxySyntaxTree() {
-
+    void CreateTransitionSyntaxTree(Pin start, Pin end) {
+        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
+        proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, start.transform.position);
+        proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, end.transform.position);
     }
 
     void CreateProxyTransitions()
@@ -305,19 +317,25 @@ public class MCEditorManager : MonoBehaviour {
 
     Pin CreatePinSynthTree(Transform node, bool isOperator)
     {
+
+        //TODO positionner les pins correctement
         Pin pin;
         pin = Instantiate<Pin>(pinPrefab);
         pin.transform.parent = node;
         pin.transform.position = node.position;
+        int childCount = node.transform.childCount;
+        Debug.Log("childNumber : " + node.transform.childCount);
         float radiusState = node.localScale.y / 2;
         Vector3 newPos;
         if (isOperator)
         {
-            newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
+            newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);
+            //newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
         }
         else
         {
-            newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
+            newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);
+            //newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
         }
         pin.transform.position = newPos;
         return pin;
