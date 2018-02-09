@@ -12,8 +12,7 @@ public class AgentTestManager : MonoBehaviour {
 
     [SerializeField]
     ResourceScript ressource1;
-    [SerializeField]
-    ResourceScript ressource2;
+
 	[SerializeField]
 	Vector2 pos;
 
@@ -24,7 +23,7 @@ public class AgentTestManager : MonoBehaviour {
 	void Start () {
         List<ResourceScript> ressourcesList = new List<ResourceScript>();
         ressourcesList.Add(ressource1);
-        ressourcesList.Add(ressource2);
+       
         Unit_GameObj_Manager.instance.Resources = ressourcesList;
     }
 
