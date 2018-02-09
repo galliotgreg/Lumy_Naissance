@@ -134,10 +134,7 @@ public class MCEditorManager : MonoBehaviour {
                     foreach(ABNode node in param.Inputs)
                     {
                         Pin end = RecNodeSynthTree(node);
-                        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
-                        proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, start.transform.position);
-                        proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, end.transform.position);
-
+                        CreateTransitionSyntaxTree(start, end);
                     }
                 }
             }
@@ -185,9 +182,7 @@ public class MCEditorManager : MonoBehaviour {
 
                     if(end != null)
                     {
-                        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
-                        proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, start.transform.position);
-                        proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, end.transform.position);
+                        CreateTransitionSyntaxTree(start, end);
                     }
                 } 
             }
@@ -196,6 +191,7 @@ public class MCEditorManager : MonoBehaviour {
         {
             proxy = Instantiate<GameObject>(parameterPrefab);
             proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
+            //TODO get name parameter
             Text paramName = proxy.GetComponentInChildren<Text>();
             paramName.text = node.GetType().ToString();
             proxyParam.Add(proxy);
@@ -234,8 +230,10 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
-    void CreateProxySyntaxTree() {
-
+    void CreateTransitionSyntaxTree(Pin start, Pin end) {
+        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
+        proxyABTransition.GetComponent<LineRenderer>().SetPosition(0, start.transform.position);
+        proxyABTransition.GetComponent<LineRenderer>().SetPosition(1, end.transform.position);
     }
 
     void CreateProxyTransitions()
@@ -305,6 +303,8 @@ public class MCEditorManager : MonoBehaviour {
 
     Pin CreatePinSynthTree(Transform node, bool isOperator)
     {
+
+        //TODO positionner les pins correctement
         Pin pin;
         pin = Instantiate<Pin>(pinPrefab);
         pin.transform.parent = node;

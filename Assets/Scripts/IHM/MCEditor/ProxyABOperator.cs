@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProxyABOperator<T> : MonoBehaviour, IProxyABOperator{
     private ABOperator<T> abOperator;
 
+
     public ABNode[] Inputs {
         get {
             throw new System.NotImplementedException();
