@@ -209,11 +209,21 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator ActivatePanelCo(string nextScene, string layerName)
     {
-        print(sceneLoaded);
         yield return new WaitUntil(() => sceneLoaded);
-        print(sceneLoaded);
+
+        GameObject canvas = GameObject.Find(nextScene + "Canvas");
         GameObject panel = GameObject.Find(nextScene+"Canvas").transform.Find(layerName).gameObject;
+
+        canvas.GetComponent<CanvasGroup>().alpha = 0f;
         panel.SetActive(true);
+        float alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
+        while (alphaLayer < 1.0f)
+        {
+            alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
+            canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
+            yield return true;
+        }
+        
         StopCoroutine(ActivatePanelCo(nextScene, layerName));
         yield return true;
     }
