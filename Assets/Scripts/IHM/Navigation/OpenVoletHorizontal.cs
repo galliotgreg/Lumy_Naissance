@@ -15,9 +15,11 @@ public class OpenVoletHorizontal : MonoBehaviour {
 	GameObject leftPanel;
 	GameObject middPanel;
 	GameObject rightPanel;
+	GameObject buttonMenuPanel;
 	RectTransform rtLeft;
 	RectTransform rtRight;
 	RectTransform rtMidd;
+	RectTransform rtMenuBarre;
 
     // Use this for initialization
     void Start () {
@@ -25,8 +27,15 @@ public class OpenVoletHorizontal : MonoBehaviour {
 		isOpenRight = true;
 		leftButton = GameObject.Find ("btn_VoletGauche");
 		rightButton = GameObject.Find ("btn_VoletDroit");
-		leftButton.GetComponent<Button>().onClick.AddListener(MoveLeftPanel);
-		rightButton.GetComponent<Button>().onClick.AddListener(MoveRightPanel);
+
+		//get Rightpanel width
+		leftPanel = GameObject.FindWithTag ("Left");
+		rtLeft = (RectTransform)leftPanel.transform;
+		leftWidth = rtLeft.rect.width;
+		//get Rightpanel width
+		rightPanel = GameObject.FindWithTag ("Right");
+		rtRight = (RectTransform)rightPanel.transform;
+		rightWidth = rtRight.rect.width;
     }
 	
 	// Update is called once per frame
@@ -34,41 +43,65 @@ public class OpenVoletHorizontal : MonoBehaviour {
 		
 	}
 
-	void MoveLeftPanel() {
-		
-		leftPanel = GameObject.FindWithTag ("Left");
-		rtLeft = (RectTransform)leftPanel.transform;
-		leftWidth = rtLeft.rect.width;
+	public void MoveLeftPanel() {		
+		float recenterPanel=0;
 
 		middPanel = GameObject.FindWithTag ("Midd");
 		rtMidd = (RectTransform)middPanel.transform;
 		middWidth = rtMidd.rect.width;
-		Debug.Log (isOpenLeft);
+
+		buttonMenuPanel = GameObject.FindWithTag ("ButtonMenuBarre");
+		rtMenuBarre = (RectTransform)buttonMenuPanel.transform;
+
 		if(isOpenLeft == true)
 		{
-			Debug.Log ("Left: isOpen: "+ isOpenLeft);	
 			middWidth = middWidth + leftWidth;
+			recenterPanel = leftWidth/2 ;
+			leftPanel.SetActive (false);
+			float pos = rtMidd.position.x;
+			pos= pos - (recenterPanel)/100;
+			rtMidd.sizeDelta = new Vector2(middWidth,0);
+			rtMidd.SetPositionAndRotation (new Vector3 (pos,0,0), Quaternion.Euler(0,0,0));
+
 
 		}else{
-			Debug.Log ("Left: isOpen: "+ isOpenLeft);	
+			middWidth = middWidth-leftWidth;
+			recenterPanel = leftWidth/2 ;
+			leftPanel.SetActive (true);
+			float pos = rtMidd.position.x;
+			pos= pos +(recenterPanel/100);
+			rtMidd.sizeDelta = new Vector2(middWidth,0);
+			rtMidd.SetPositionAndRotation (new Vector3 (pos,0,0), Quaternion.Euler(0,0,0));
+
 		}
 		isOpenLeft = !isOpenLeft;
-    }
+	}
 
-	void MoveRightPanel(){
-		rightPanel = GameObject.FindWithTag ("Right");
-		rtRight = (RectTransform)rightPanel.transform;
-		rightWidth = rtRight.rect.width;
+	//Recenter Right panel
+	public void MoveRightPanel(){
+		float recenterPanel=0;
 
 		middPanel = GameObject.FindWithTag ("Midd");
 		rtMidd = (RectTransform)middPanel.transform;
 		middWidth = rtMidd.rect.width;
 
-		if (isOpenRight == true) {
-			Debug.Log ("Right: isOpen " + isOpenRight);
-
-		} else {
-			Debug.Log ("Right: isOpen " + isOpenRight);
+		if(isOpenRight == true)
+		{
+			middWidth = middWidth + rightWidth;
+			recenterPanel = rightWidth/2 ;
+			rightPanel.SetActive (false);
+			float pos = rtMidd.position.x;
+			pos= pos + (recenterPanel)/100;
+			rtMidd.sizeDelta = new Vector2(middWidth,0);
+			rtMidd.SetPositionAndRotation (new Vector3 (pos,0,0), Quaternion.Euler(0,0,0));
+		}else{
+			middWidth = middWidth-rightWidth;
+			recenterPanel = rightWidth/2 ;
+			rightPanel.SetActive (true);
+			float pos = rtMidd.position.x;
+			pos= pos - (recenterPanel/100);
+			rtMidd.sizeDelta = new Vector2(middWidth,0);
+			rtMidd.SetPositionAndRotation (new Vector3 (pos,0,0), Quaternion.Euler(0,0,0));
 		}
 		isOpenRight = !isOpenRight;
 	}
