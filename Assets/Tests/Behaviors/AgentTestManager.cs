@@ -11,8 +11,9 @@ public class AgentTestManager : MonoBehaviour {
 	PlayerAuthority authority = PlayerAuthority.Player1;
 
     [SerializeField]
-    ResourceScript ressources; 
-
+    ResourceScript ressource1;
+    [SerializeField]
+    ResourceScript ressource2;
 	[SerializeField]
 	Vector2 pos;
 
@@ -22,7 +23,8 @@ public class AgentTestManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         List<ResourceScript> ressourcesList = new List<ResourceScript>();
-        ressourcesList.Add(ressources);
+        ressourcesList.Add(ressource1);
+        ressourcesList.Add(ressource2);
         Unit_GameObj_Manager.instance.Resources = ressourcesList;
     }
 
