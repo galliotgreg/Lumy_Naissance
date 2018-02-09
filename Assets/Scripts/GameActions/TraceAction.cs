@@ -59,5 +59,15 @@ public class TraceAction : GameAction {
 		}
 	}
 
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
 	#endregion
 }

@@ -52,5 +52,15 @@ public class DropAction : GameAction {
 		Drop();
 	}
 
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
 	#endregion
 }

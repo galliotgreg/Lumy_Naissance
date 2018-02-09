@@ -148,5 +148,15 @@ public class LayAction : GameAction {
 			Invoke( "Lay", this.CoolDownTime );
 		}
 	}
+
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
 	#endregion
 }

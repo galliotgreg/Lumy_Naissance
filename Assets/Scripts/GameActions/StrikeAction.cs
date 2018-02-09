@@ -44,5 +44,16 @@ public class StrikeAction : GameAction {
 			}
 		}
 	}
+
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
 	#endregion
 }

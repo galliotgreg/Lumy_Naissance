@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class GameAction : MonoBehaviour {
-	// Workaround for script enabling issues
+	
+	// a value indicating whether this <see cref="GameAction"/> is activated.
 	protected bool activated;
 
 	private bool coolDownElapsed = true;
@@ -41,19 +42,6 @@ public abstract class GameAction : MonoBehaviour {
 		}
 		set {
 			coolDownTime = value;
-		}
-	}
-
-	/// <summary>
-	/// Gets or sets a value indicating whether this <see cref="GameAction"/> is activated.
-	/// </summary>
-	/// <value><c>true</c> if activated; otherwise, <c>false</c>.</value>
-	public bool Activated {
-		get {
-			return activated;
-		}
-		set {
-			activated = value;
 		}
 	}
 
@@ -97,6 +85,20 @@ public abstract class GameAction : MonoBehaviour {
 		coolDownElapsed = true;
 	}
 
+	public void activate(){
+		if (!activated) {
+			activateAction ();
+			activated = true;
+		}
+	}
+
+	public void deactivate(){
+		if (activated) {
+			deactivateAction ();
+			activated = false;
+		}
+	}
+
 	/// <summary>
 	/// Inits the action during Start method.
 	/// </summary>
@@ -106,4 +108,14 @@ public abstract class GameAction : MonoBehaviour {
 	/// Executes the action during Update method (Considers the cooldownTime and activated attributes)
 	/// </summary>
 	protected abstract void executeAction();
+
+	/// <summary>
+	/// Called when an action is activated.
+	/// </summary>
+	protected abstract void activateAction();
+
+	/// <summary>
+	/// Called when an action is deactivated.
+	/// </summary>
+	protected abstract void deactivateAction();
 }

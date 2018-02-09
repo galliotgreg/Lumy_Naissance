@@ -31,6 +31,7 @@ public class CreateAgentTest : MonoBehaviour {
 				HomeScript home = GameManager.instance.GetHome (authority);
 				home.addUnit (agent.GetComponent<AgentEntity> ());
 				agent.name = agent.GetComponent<AgentEntity> ().CastName + "-" + home.Authority.ToString();
+				//agent.GetComponent<AgentEntity> ().Context.Model.MoveSpd = 10;
 
 				initialized = true;
 			}

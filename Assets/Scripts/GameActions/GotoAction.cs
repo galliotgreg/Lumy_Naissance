@@ -20,42 +20,59 @@ public class GotoAction : GameAction {
         }
     }
 
+	UnityEngine.AI.NavMeshAgent movingAgent;
+
 	#region implemented abstract members of GameAction
 
 	protected override void initAction ()
 	{
 		this.CoolDownActivate = false;
+		movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent> ();
 	}
 
 	protected override void executeAction ()
 	{
 		// Setting next target
-		if (path.Length > 0)
-		{
+		if (path.Length > 0) {
 			if (path.Length == 1) {
-				agentAttr.TrgPos = worldToVec2( path [0] );
+				agentAttr.TrgPos = worldToVec2 (path [0]);
 			} else {
 				Vector2 curPos = worldToVec2 (agentAttr.transform.position);
 
 				// selectNext Point
-				int closestIndex = indexClosest( curPos, path );
+				int closestIndex = indexClosest (curPos, path);
 
 				// On a point
-				if (isClose ( curPos, worldToVec2 (path [closestIndex]))) {
+				if (isClose (curPos, worldToVec2 (path [closestIndex]))) {
 					// set next target (or the last point, if the index is the last)
-					agentAttr.TrgPos = worldToVec2( (closestIndex == path.Length-1?path [closestIndex]:path [closestIndex+1]) );
+					agentAttr.TrgPos = worldToVec2 ((closestIndex == path.Length - 1 ? path [closestIndex] : path [closestIndex + 1]));
 				} else {
 					// On an intersection
-					int edge = getEdge( curPos, closestIndex, path );
-					agentAttr.TrgPos = worldToVec2( path [closestIndex + (edge>0?edge:0)] );
+					int edge = getEdge (curPos, closestIndex, path);
+					agentAttr.TrgPos = worldToVec2 (path [closestIndex + (edge > 0 ? edge : 0)]);
 				}
 			}
 
 			// Use Unity A* to move
-			UnityEngine.AI.NavMeshAgent movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-			agentAttr.transform.position = moveTo( agentAttr, movingAgent );
+			agentAttr.transform.position = moveTo (agentAttr, movingAgent);
 			//agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );
 		}
+	}
+
+	protected override void activateAction ()
+	{
+		if (movingAgent != null) {
+			movingAgent.isStopped = false;
+		}
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		if (movingAgent != null) {
+			movingAgent.isStopped = true;
+		}
+		return;
 	}
 
 	#endregion
@@ -63,19 +80,20 @@ public class GotoAction : GameAction {
 	public static Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
 		// Use Unity A* to move
 		if( navMeshAgent != null ){
-			//navMeshAgent.acceleration = 1;
-			//navMeshAgent.speed = agentAttr.MoveSpd;
-			//navMeshAgent.destination = new Vector3( agentAttr.TrgPos.x, 0f, agentAttr.TrgPos.y);
-			//navMeshAgent.updatePosition = false;
-			Vector3 destination = vec2ToWorld( agentAttr.TrgPos );
+			Vector3 destination = vec2ToWorld (agentAttr.TrgPos);
 
-			UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
+			//navMeshAgent.acceleration = 1;
+			navMeshAgent.speed = agentAttr.MoveSpd;
+			navMeshAgent.destination = destination;
+			//navMeshAgent.updatePosition = false;
+
+			/*UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
 			navMeshAgent.CalculatePath( destination, path );
 
 			// move towards next corner
 			if (path.corners.Length > 0) {
 	            return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (path.corners [path.corners.Length-1] - agentAttr.transform.position).normalized;
-			}
+			}*/
 		}
 		return agentAttr.transform.position;
 	}
@@ -94,11 +112,11 @@ public class GotoAction : GameAction {
 		return resultIndex;
 	}
 
+	// TODO : adapt isClose and isEdge params
 	private bool isClose( Vector2 pos, Vector2 point ){
-		return Vector2.Distance (pos, point) < 0.1f;
+		return Vector2.Distance (pos, point) < 0.7f;
 	}
-
-	//TODO
+		
 	// -1 edge towards the previous point
 	// 1 edge towards the next point
 	// 0 not edge
@@ -117,7 +135,7 @@ public class GotoAction : GameAction {
 	}
 
 	private bool isEdge( Vector2 pos, Vector2 a, Vector2 b ){
-		return Vector3.Dot( (a-b).normalized, (a-pos).normalized ) > 0.9f ;
+		return Vector3.Dot( (a-b).normalized, (a-pos).normalized ) > 0.7f ;
 	}
 
 	private static Vector2 worldToVec2( Vector3 point ){

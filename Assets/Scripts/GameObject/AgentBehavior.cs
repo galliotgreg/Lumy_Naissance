@@ -83,22 +83,22 @@ public class AgentBehavior : MonoBehaviour
 
     private void DisableActions()
     {
-		gotoAction.Activated = false;
-		traceAction.Activated = false;
-		layAction.Activated = false;
-		strikeAction.Activated = false;
-		pickAction.Activated = false;
-		dropAction.Activated = false;
+		gotoAction.deactivate ();
+		traceAction.deactivate ();
+		layAction.deactivate ();
+		strikeAction.deactivate ();
+		pickAction.deactivate ();
+		dropAction.deactivate ();
     }
 
 	private void executeAction(){
 		DisableActions();
 
 		//We arre between 2 IA frames
-		if (curActionParams == null)
+		/*if (curActionParams == null)
 		{
 			return;
-		}
+		}*/
 		// no Action
 		if (curAction == null)
 		{
@@ -109,7 +109,7 @@ public class AgentBehavior : MonoBehaviour
 		switch (curActionType)
 		{
 		case ActionType.Drop:
-			dropAction.Activated = true;
+			dropAction.activate ();
 			break;
 		case ActionType.Goto:
 			ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams [0]);
@@ -121,7 +121,7 @@ public class AgentBehavior : MonoBehaviour
 				gotoAction.Path[i] = vec3;
 			}
 
-			gotoAction.Activated = true;
+			gotoAction.activate ();
 			break;
 		case ActionType.Hit:
 			throw new System.NotImplementedException();
@@ -133,13 +133,13 @@ public class AgentBehavior : MonoBehaviour
 			ABText castName = ((ABText)curActionParams[0]);
 			layAction.CastName = castName.Value;
 
-			layAction.Activated = true;
+			layAction.activate ();
 			break;
 		case ActionType.Pick:
 			ABRef item = ((ABRef)curActionParams[0]);
 			pickAction.Item = Unit_GameObj_Manager.instance.getResource( Mathf.FloorToInt( ((ABScalar)item.GetAttr( "key" )).Value ) );
 
-			pickAction.Activated = true;
+			pickAction.activate ();
 			break;
 		case ActionType.Spread:
 			throw new System.NotImplementedException();
@@ -169,13 +169,13 @@ public class AgentBehavior : MonoBehaviour
 				traceAction.Path[i] = vec3;
 			}
 
-			traceAction.Activated = true;
+			traceAction.activate ();
 			break;
 		case ActionType.Strike:
 			ABRef target = ((ABRef)curActionParams [0]);
 			strikeAction.Target = Unit_GameObj_Manager.instance.getUnit( Mathf.FloorToInt( ((ABScalar)target.GetAttr( "key" )).Value ) );
 
-			strikeAction.Activated = true;
+			strikeAction.activate ();
 			break;
 		case ActionType.None:
 			break;

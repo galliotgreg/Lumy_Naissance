@@ -48,5 +48,15 @@ public class PickAction : GameAction {
 			}
 		}
 	}
+
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
 	#endregion
 }
