@@ -117,7 +117,7 @@ public class AgentBehavior : MonoBehaviour
 			for (int i = 0; i < path.Values.Length; i++)
 			{
 				ABVec abVec = path.Values[i];
-				Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
+				Vector3 vec3 = vec2ToWorld( new Vector2( abVec.X, abVec.Y ) );
 				gotoAction.Path[i] = vec3;
 			}
 
@@ -165,7 +165,7 @@ public class AgentBehavior : MonoBehaviour
 			for (int i = 0; i < tracePath.Values.Length; i++)
 			{
 				ABVec abVec = tracePath.Values[i];
-				Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
+				Vector3 vec3 = vec2ToWorld( new Vector2( abVec.X, abVec.Y ) );
 				traceAction.Path[i] = vec3;
 			}
 
@@ -180,5 +180,12 @@ public class AgentBehavior : MonoBehaviour
 		case ActionType.None:
 			break;
 		}
+	}
+
+	public static Vector2 worldToVec2( Vector3 point ){
+		return new Vector2 ( point.x, point.z );
+	}
+	public static Vector3 vec2ToWorld( Vector2 point ){
+		return new Vector3 ( point.x, 0, point.y );
 	}
 }
