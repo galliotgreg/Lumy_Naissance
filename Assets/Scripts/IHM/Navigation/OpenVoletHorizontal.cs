@@ -50,8 +50,8 @@ public class OpenVoletHorizontal : MonoBehaviour {
 		rtMidd = (RectTransform)middPanel.transform;
 		middWidth = rtMidd.rect.width;
 
-		buttonMenuPanel = GameObject.FindWithTag ("ButtonMenuBarre");
-		rtMenuBarre = (RectTransform)buttonMenuPanel.transform;
+		//buttonMenuPanel = GameObject.FindWithTag ("ButtonMenuBarre");
+		//rtMenuBarre = (RectTransform)buttonMenuPanel.transform;
 
 		if(isOpenLeft == true)
 		{
