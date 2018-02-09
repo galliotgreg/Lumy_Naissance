@@ -1,0 +1,15 @@
+States,Name,Type
+0,INIT,Init
+1,gotoHome,trigger{goto}
+,,
+Transitions,Start State,End State
+0,INIT,gotoHome
+,,
+Syntax Tree,output,
+0,gotoHome->0
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->1
+2,param{ref:hive},1->0
+3,param{const txt=pos},1->1
+4,param{const vec=10;10},0->0
