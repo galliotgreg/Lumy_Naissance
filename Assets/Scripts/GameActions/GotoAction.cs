@@ -22,6 +22,9 @@ public class GotoAction : GameAction {
 
 	UnityEngine.AI.NavMeshAgent movingAgent;
 
+	[SerializeField]
+	int currentPathIndex = 0;
+
 	#region implemented abstract members of GameAction
 
 	protected override void initAction ()
@@ -32,37 +35,45 @@ public class GotoAction : GameAction {
 
 	protected override void executeAction ()
 	{
-		// Setting next target
-		if (path.Length > 0) {
-			if (path.Length == 1) {
-				agentAttr.TrgPos = worldToVec2 (path [0]);
-			} else {
-				Vector2 curPos = worldToVec2 (agentAttr.transform.position);
+		Vector2 curPos = worldToVec2 (agentAttr.transform.position);
 
-				// selectNext Point
-				int closestIndex = indexClosest (curPos, path);
-
-				// On a point
-				if (isClose (curPos, worldToVec2 (path [closestIndex]))) {
-					// set next target (or the last point, if the index is the last)
-					agentAttr.TrgPos = worldToVec2 ((closestIndex == path.Length - 1 ? path [closestIndex] : path [closestIndex + 1]));
-				} else {
-					// On an intersection
-					int edge = getEdge (curPos, closestIndex, path);
-					agentAttr.TrgPos = worldToVec2 (path [closestIndex + (edge > 0 ? edge : 0)]);
-				}
-			}
-
-			// Use Unity A* to move
-			agentAttr.transform.position = moveTo (agentAttr, movingAgent);
-			//agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );
+		// On a point
+		if (isClose (curPos, worldToVec2 (path [currentPathIndex]))) {
+			currentPathIndex = (currentPathIndex == path.Length - 1 ? currentPathIndex : (currentPathIndex + 1));
 		}
+
+		agentAttr.TrgPos = worldToVec2 (path [currentPathIndex]);
+
+		// Use Unity A* to move
+		agentAttr.transform.position = moveTo (agentAttr, movingAgent);
 	}
 
 	protected override void activateAction ()
 	{
 		if (movingAgent != null) {
 			movingAgent.isStopped = false;
+
+			// define startPoint
+			if (path.Length > 0) {
+				if (path.Length == 1) {
+					currentPathIndex = 0;
+				} else {
+					Vector2 curPos = worldToVec2 (agentAttr.transform.position);
+
+					// selectNext Point
+					int closestIndex = indexClosest (curPos, path);
+
+					// On a point
+					if (isClose (curPos, worldToVec2 (path [closestIndex]))) {
+						// set next target (or the last point, if the index is the last)
+						currentPathIndex = (closestIndex == path.Length - 1 ? closestIndex : closestIndex + 1);
+					} else {
+						// On an intersection
+						int edge = getEdge (curPos, closestIndex, path);
+						currentPathIndex = closestIndex + edge;
+					}
+				}
+			}
 		}
 		return;
 	}
@@ -76,33 +87,48 @@ public class GotoAction : GameAction {
 	}
 
 	#endregion
-
+	const float closeFactor = 1f;
 	public static Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
 		// Use Unity A* to move
 		if( navMeshAgent != null ){
 			Vector3 destination = vec2ToWorld (agentAttr.TrgPos);
+			destination.y = agentAttr.transform.position.y;
 
-			//navMeshAgent.acceleration = 1;
+			navMeshAgent.acceleration = 1000;
 			navMeshAgent.speed = agentAttr.MoveSpd;
+			navMeshAgent.autoBraking = true;
 			navMeshAgent.destination = destination;
-			//navMeshAgent.updatePosition = false;
+			navMeshAgent.stoppingDistance = closeFactor;
 
-			/*UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
-			navMeshAgent.CalculatePath( destination, path );
+			/*//navMeshAgent.updatePosition = false;
+			UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
+			navMeshAgent.CalculatePath( destination, auxpath );
 
 			// move towards next corner
-			if (path.corners.Length > 0) {
-	            return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (path.corners [path.corners.Length-1] - agentAttr.transform.position).normalized;
+			if (auxpath.corners.Length > 0) {
+				Debug.Log ("move");
+				Debug.Log (auxpath.corners[0]);
+				Debug.Log (auxpath.corners[1]);
+				Debug.Log (agentAttr.transform.position);
+				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (auxpath.corners [1] - agentAttr.transform.position).normalized;
 			}*/
 		}
 		return agentAttr.transform.position;
 	}
 
+	// TODO distance does not consider obstacles
 	private int indexClosest( Vector2 pos, Vector3[] _path ){
 		int resultIndex = 0;
-		float resultDistance = Vector2.Distance (pos, worldToVec2(_path [resultIndex]));
+		UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
+		movingAgent.CalculatePath( _path [resultIndex], auxpath );
+
+		float resultDistance =  pathLength( auxpath );
+
 		for (int i = 1; i < _path.Length; i++) {
-			float auxDistance = Vector3.Distance (pos, worldToVec2(_path [i]));
+			auxpath.ClearCorners ();
+			movingAgent.CalculatePath( _path [i], auxpath );
+			float auxDistance = pathLength( auxpath );
+
 			if ( auxDistance < resultDistance ) {
 				resultIndex = i;
 				resultDistance = auxDistance;
@@ -112,29 +138,41 @@ public class GotoAction : GameAction {
 		return resultIndex;
 	}
 
+	private float pathLength(UnityEngine.AI.NavMeshPath _path){
+		float result = 0;
+		for (int i = 0; i < _path.corners.Length-1; i++) {
+			result += Vector3.Distance (_path.corners [i], _path.corners [i + 1]);
+		}
+		return result;
+	}
+
 	// TODO : adapt isClose and isEdge params
 	private bool isClose( Vector2 pos, Vector2 point ){
-		return Vector2.Distance (pos, point) < 0.7f;
+		return Vector2.Distance (pos, point) < closeFactor;
 	}
 		
-	// -1 edge towards the previous point
 	// 1 edge towards the next point
-	// 0 not edge
+	// 0 not edge or towards previous
 	private int getEdge( Vector2 pos, int index, Vector3[] _path ){
-		if (index > 0) {
-			if (isEdge (pos, worldToVec2 (_path [index-1]), worldToVec2 (_path [index]))) {
-				return -1;
-			}
-		}
 		if (index < _path.Length-1) {
-			if (isEdge (pos, worldToVec2 (_path [index]), worldToVec2 (_path [index+1]))) {
+			UnityEngine.AI.NavMeshPath _navMeshPath = new UnityEngine.AI.NavMeshPath ();
+			UnityEngine.AI.NavMesh.CalculatePath (_path [index],_path [index+1], UnityEngine.AI.NavMesh.AllAreas, _navMeshPath);
+			if (isEdgePath (pos, _navMeshPath)) {
 				return 1;
 			}
 		}
 		return 0;
 	}
 
-	private bool isEdge( Vector2 pos, Vector2 a, Vector2 b ){
+	private bool isEdgePath( Vector2 pos, UnityEngine.AI.NavMeshPath _path ){
+		for (int i = 0; i < _path.corners.Length-1; i++) {
+			if (isEdgePoints (pos, worldToVec2 (_path.corners [i]), worldToVec2 (_path.corners [i + 1]))) {
+				return true;
+			}
+		}
+		return false;
+	}
+	private bool isEdgePoints( Vector2 pos, Vector2 a, Vector2 b ){
 		return Vector3.Dot( (a-b).normalized, (a-pos).normalized ) > 0.7f ;
 	}
 

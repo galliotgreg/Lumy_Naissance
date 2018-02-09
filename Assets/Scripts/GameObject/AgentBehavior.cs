@@ -33,6 +33,8 @@ public class AgentBehavior : MonoBehaviour
 
         set
         {
+			DisableActions();
+
             curAction = value;
 			if (curAction == null) {
 				curActionType = ActionType.None;
@@ -92,8 +94,6 @@ public class AgentBehavior : MonoBehaviour
     }
 
 	private void executeAction(){
-		DisableActions();
-
 		//We arre between 2 IA frames
 		/*if (curActionParams == null)
 		{
