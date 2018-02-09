@@ -29,7 +29,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	Dictionary<PlayerAuthority,HomeScript> homes = new Dictionary<PlayerAuthority, HomeScript>();
 	List<ResourceScript> resources = new List<ResourceScript>();
-	List<TraceScript> traces = new List<TraceScript>();
+	Dictionary<Color32, List<TraceScript>> traces = new Dictionary<Color32, List<TraceScript>>();
 
 	#region Properties
 	public List<HomeScript> Homes {
@@ -54,7 +54,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		}
 	}
 
-	public List<TraceScript> Traces {
+	public Dictionary<Color32, List<TraceScript>> Traces {
 		get {
 			return traces;
 		}
@@ -97,8 +97,11 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	public bool addTrace( TraceScript trace ){
-		if( !this.traces.Contains( trace ) ){
-			this.traces.Add( trace );
+		if (!this.traces.ContainsKey (trace.Color)) {
+			this.traces.Add ( trace.Color, new List<TraceScript>() );
+		}
+		if( !this.traces[trace.Color].Contains( trace ) ){
+			this.traces[trace.Color].Add( trace );
 			return true;
 		}
 		return false;
@@ -129,9 +132,11 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		List<TraceScript> resultList = new List<TraceScript>();
 
 		float agentRange = agent.Context.Model.VisionRange;
-		foreach (TraceScript trace in this.traces) {
-			if( Vector2.Distance(agent.Context.Model.CurPos, trace.Location) <= agentRange ){
-				resultList.Add (trace);
+		foreach (Color32 color in this.traces.Keys) {
+			foreach (TraceScript trace in this.traces[color]) {
+				if( Vector2.Distance(agent.Context.Model.CurPos, trace.Location) <= agentRange ){
+					resultList.Add (trace);
+				}
 			}
 		}
 
@@ -213,10 +218,13 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		homes[ unit.Authority ].removeUnit( unit );
 		GameObject.Destroy( unit.gameObject );
 	}
+
 	public bool destroyTrace( TraceScript trace ){
-		if( this.traces.Remove( trace ) ){
-			Destroy( trace.gameObject );
-			return true;
+		if (this.traces.ContainsKey (trace.Color)) {
+			if( this.traces[trace.Color].Remove( trace ) ){
+				Destroy( trace.gameObject );
+				return true;
+			}
 		}
 		return false;
 	}

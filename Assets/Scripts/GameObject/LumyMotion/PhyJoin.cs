@@ -126,7 +126,7 @@ public class PhyJoin : MonoBehaviour {
         {
             b = 1f;
         }
-        trgColor = new Color(r, g, b);
-        trgIntensity = (float) rand.NextDouble() + 1f;
+        //trgColor = new Color(r, g, b);
+        //trgIntensity = (float) rand.NextDouble() + 1f;
     }
 }

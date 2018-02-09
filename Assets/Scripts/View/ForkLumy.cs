@@ -1,0 +1,39 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ForkLumy : MonoBehaviour {
+
+    public GameObject nuee;
+    public GameObject nueeprefab;
+    // Use this for initialization
+    void Start()
+    {
+        nuee = transform.parent.parent.parent.gameObject;
+        this.gameObject.GetComponent<Button>().onClick.AddListener(Fork);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void Fork()
+    {
+        //Bloquer le lumy d'origine, qui n'est plus modifiable
+        transform.parent.parent.Find("btn_Lumy").GetComponent<Button>().interactable = false;
+        transform.parent.gameObject.SetActive(false);
+        for (int i = 0; i < 2; i++)
+        {
+            var clone = Instantiate(nueeprefab, nuee.transform);
+            clone.name = "nuee feuille";
+            clone.transform.localScale = Vector3.one;
+            clone.transform.GetChild(0).Find("btn_Lumy").GetComponent<Button>().interactable = true;
+            clone.transform.localPosition = new Vector3(2f-4*i,-2f, 0);
+            //if (clone.transform.childCount > 1) Destroy(clone.transform.GetChild(1).gameObject);
+        }
+    }
+}

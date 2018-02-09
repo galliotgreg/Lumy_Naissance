@@ -22,7 +22,6 @@ public class CallSwapScene : MonoBehaviour {
 
     void SwapScene()
     {
-        Debug.Log(panel);
         if (!isReturnButton && (panel == null || panel == ""))
         {
             NavigationManager.instance.SwapScenes(target, this.gameObject.transform.position);
