@@ -157,6 +157,21 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
+    void SetNodeName(GameObject proxy, ABNode node) {
+
+        Text operatorName = proxy.GetComponentInChildren<Text>();
+        string opeName = node.ToString();
+        char splitter = '_';
+        string[] newName = opeName.Split(splitter);
+        string newOpeName = "";
+
+        for (int i = 1; i < newName.Length - 1; i++) {
+
+            newOpeName += newName[i];
+        }
+        operatorName.text = newOpeName;
+    }
+
     Pin RecNodeSynthTree(ABNode node)
     {
         GameObject proxy = null;
@@ -165,9 +180,8 @@ public class MCEditorManager : MonoBehaviour {
         {
             proxy = Instantiate<GameObject>(operatorPrefab);
             proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
-            Text operatorName = proxy.GetComponentInChildren<Text>();
-            //TODO
-            //operatorName.text = node.Output.ToString();
+            SetNodeName(proxy, node);
+
             proxyOperator.Add(proxy);
             if ( ((IABOperator)node).Inputs.Length != 0)
             {
@@ -193,7 +207,7 @@ public class MCEditorManager : MonoBehaviour {
             proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
             //TODO get name parameter
             Text paramName = proxy.GetComponentInChildren<Text>();
-            paramName.text = node.GetType().ToString();
+            paramName.text = ((IABParam)node).Identifier.ToString();
             proxyParam.Add(proxy);
 
             pin = CreatePinSynthTree(proxy.transform, true);
@@ -309,15 +323,19 @@ public class MCEditorManager : MonoBehaviour {
         pin = Instantiate<Pin>(pinPrefab);
         pin.transform.parent = node;
         pin.transform.position = node.position;
+        int childCount = node.transform.childCount;
+        Debug.Log("childNumber : " + node.transform.childCount);
         float radiusState = node.localScale.y / 2;
         Vector3 newPos;
         if (isOperator)
         {
-            newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
+            newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);
+            //newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
         }
         else
         {
-            newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
+            newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);
+            //newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
         }
         pin.transform.position = newPos;
         return pin;
