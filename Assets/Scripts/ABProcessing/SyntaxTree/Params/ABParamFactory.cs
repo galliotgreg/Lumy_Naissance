@@ -77,8 +77,9 @@ public class ABParamFactory
                 ABVec vecVal = TypeFactory.CreateEmptyVec();
                 if (value != null)
                 {
-                    //TODO spec & parse vector
-                    throw new NotSupportedException();
+                    string[] tokens = value.Split(';');
+                    vecVal.X = float.Parse(tokens[0]);
+                    vecVal.Y = float.Parse(tokens[1]);
                 }
                 param = new ABVecParam(identifier, vecVal);
                 break;
@@ -114,6 +115,7 @@ public class ABParamFactory
                 ABTable<ABBool> boolTab = TypeFactory.CreateEmptyTable<ABBool>();
                 if (value != null)
                 {
+                    //TODO spec & parse vector
                     throw new NotSupportedException();
                 }
                 param = new ABTableParam<ABBool>(identifier, boolTab);
@@ -122,6 +124,7 @@ public class ABParamFactory
                 ABTable<ABScalar> scalTab = TypeFactory.CreateEmptyTable<ABScalar>();
                 if (value != null)
                 {
+                    //TODO spec & parse vector
                     throw new NotSupportedException();
                 }
                 param = new ABTableParam<ABScalar>(identifier, scalTab);
@@ -130,6 +133,7 @@ public class ABParamFactory
                 ABTable<ABText> textTab = TypeFactory.CreateEmptyTable<ABText>();
                 if (value != null)
                 {
+                    //TODO spec & parse vector
                     throw new NotSupportedException();
                 }
                 param = new ABTableParam<ABText>(identifier, textTab);
@@ -138,6 +142,7 @@ public class ABParamFactory
                 ABTable<ABVec> vecTab = TypeFactory.CreateEmptyTable<ABVec>();
                 if (value != null)
                 {
+                    //TODO spec & parse vector
                     throw new NotImplementedException();
                 }
                 param = new ABTableParam<ABVec>(identifier, vecTab);
@@ -146,6 +151,7 @@ public class ABParamFactory
                 ABTable<ABColor> colorTab = TypeFactory.CreateEmptyTable<ABColor>();
                 if (value != null)
                 {
+                    //TODO spec & parse vector
                     throw new NotImplementedException();
                 }
                 param = new ABTableParam<ABColor>(identifier, colorTab);
@@ -154,6 +160,7 @@ public class ABParamFactory
                 ABTable<ABRef> refTab = TypeFactory.CreateEmptyTable<ABRef>();
                 if (value != null)
                 {
+                    //TODO spec & parse vector
                     throw new NotSupportedException();
                 }
                 param = new ABTableParam<ABRef>(identifier, refTab);
