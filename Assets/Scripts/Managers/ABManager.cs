@@ -84,6 +84,10 @@ public class ABManager : MonoBehaviour {
 						IABType param =
 							((AB_VecGate_Operator)action.Parameters [i]).Evaluate (context);
 						actionParams.Add (param);
+					} else if (action.Parameters [i] is AB_ColorGate_Operator) {
+						IABType param =
+							((AB_ColorGate_Operator)action.Parameters [i]).Evaluate (context);
+						actionParams.Add (param);
 					} else if (action.Parameters [i] is AB_RefGate_Operator) {
 						IABType param =
 							((AB_RefGate_Operator)action.Parameters [i]).Evaluate (context);

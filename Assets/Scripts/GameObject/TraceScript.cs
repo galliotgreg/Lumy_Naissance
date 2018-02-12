@@ -13,26 +13,50 @@ public class TraceScript : MonoBehaviour {
 	[SerializeField]
 	Color32 color;
 
-	[AttrName(Identifier = "pos")]
+	[AttrName(Identifier = "points")]
 	[SerializeField]
-	private Vector2 location;
+	private Vector2[] points;
 
+	private Vector2[] controlPoints;
+
+	[AttrName(Identifier = "age")]
+	[SerializeField]
+	private float age;
+
+	[SerializeField] 
+	private float lifeTime;
+
+	[SerializeField]
+	private PlayerAuthority authority;
+
+	#region PROPERTIES
 	public Color32 Color {
 		get {
 			return color;
 		}
-		set {
-			color = value;
-			changeColor();
+	}
+
+	public Vector2[] Points {
+		get {
+			return points;
 		}
 	}
 
-	public Vector2 Location {
+	public float Age {
 		get {
-			return this.location;
+			return age;
 		}
-		set{
-			this.location = value;
+	}
+
+	public float LifeTime {
+		get {
+			return lifeTime;
+		}
+	}
+
+	public PlayerAuthority Authority {
+		get {
+			return authority;
 		}
 	}
 
@@ -41,24 +65,134 @@ public class TraceScript : MonoBehaviour {
 			return key;
 		}
 	}
+	#endregion
 
 	void Awake(){
 		key = this.GetHashCode();
+		this.age = 0;
+		this.lifeTime = 1;
 	}
 
 	// Use this for initialization
 	void Start () {
-		this.Location = positionFromTransform ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		this.Location = positionFromTransform ();
-	}
+		this.age += Time.deltaTime;
 
-	Vector2 positionFromTransform(){
-		return new Vector2(transform.position.x, transform.position.z);
+		this.lifeTime -= Time.deltaTime; 
+		if( lifeTime <= 0 ){ 
+			Unit_GameObj_Manager.instance.destroyTrace (this); 
+		}
 	}
 
 	void changeColor(){}
+
+	#region CreateTrace
+	void CreateTrace_Points( Color32 color, PlayerAuthority authority, Vector2[] controlPoints, Vector2[] points, float lifeTime = 10 ){
+		this.color = color;
+		changeColor();
+
+		this.authority = authority;
+		this.lifeTime = lifeTime;
+		this.controlPoints = controlPoints;
+		this.points = points;
+	}
+
+	// One point path
+	public void CreateTrace( Color32 color, Vector2 start, Vector2 target, PlayerAuthority authority, float lifeTime = 10 ){
+		CreateTrace_Points ( color, authority, new Vector2[]{start,target}, traceBetween( start, target ).ToArray(), lifeTime );
+	}
+
+	// more than one point path
+	public void CreateTrace( Color32 color, Vector2 start, Vector2[] controlPoints, PlayerAuthority authority, float lifeTime = 10 ){
+		// trace points
+		List<Vector2> result = new List<Vector2> ();
+
+		/*
+		// Considering start point
+		Vector3[] pointsVec3 = new Vector3[ controlPoints.Length ];
+		for (int i = 0; i < controlPoints.Length; i++) {
+			pointsVec3 [i] = AgentBehavior.vec2ToWorld ( controlPoints[i] );
+		}
+
+		int index = indexClosest ( start, pointsVec3 );
+		// Start -> index
+		result.AddRange( traceBetween( start, controlPoints[index] ) );
+		// index -> index+1
+		for (int i = index; i < controlPoints.Length-1; i++) {
+			result.AddRange( traceBetween( controlPoints[index], controlPoints[index+1] ) );
+		}
+
+		// control points including start
+		Vector2[] newControlPoints = new Vector2[controlPoints.Length+1];
+		newControlPoints [0] = start;
+		for (int i = 0; i < controlPoints.Length; i++) {
+			newControlPoints [i + 1] = controlPoints [i];
+		}*/
+
+		// Not considering start Point
+		for (int i = 0; i < controlPoints.Length-1; i++) {
+			result.AddRange( traceBetween( controlPoints[i], controlPoints[i+1] ) );
+		}
+
+		CreateTrace_Points ( color, authority, controlPoints, result.ToArray(), lifeTime );
+	}
+
+	List<Vector2> traceBetween(Vector2 posA, Vector2 posB){
+		List<Vector2> result = new List<Vector2> ();
+
+		Vector3 posAVec3 = AgentBehavior.vec2ToWorld ( posA );
+		Vector3 posBVec3 = AgentBehavior.vec2ToWorld ( posB );
+
+		UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
+		UnityEngine.AI.NavMesh.CalculatePath( posAVec3, posBVec3, 1, auxpath );
+
+		for (int i = 0; i < auxpath.corners.Length-1; i++) {
+			result.AddRange ( traceRectBetween( auxpath.corners[i], auxpath.corners[i+1] ) );
+		}
+
+		return result;
+	}
+	// create one point to each 1 m
+	List<Vector2> traceRectBetween(Vector3 posA, Vector3 posB){
+		float distance = (posB - posA).magnitude;
+		Vector3 unitaryDirectionVector = (posB - posA).normalized;
+
+		List<Vector2> result = new List<Vector2> ();
+
+		float it = 0;
+		while (it < distance) {
+			// create a point
+			result.Add( AgentBehavior.worldToVec2( posA + unitaryDirectionVector*it ) );
+			it += distance/Mathf.Ceil(distance);
+		}
+		// end Point
+		result.Add( AgentBehavior.worldToVec2( posB ) );
+
+		return result;
+	}
+
+	/*private int indexClosest( Vector2 pos, Vector3[] _path ){
+		int resultIndex = 0;
+		UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
+		UnityEngine.AI.NavMesh.CalculatePath( pos, _path [resultIndex], UnityEngine.AI.NavMesh.AllAreas, auxpath );
+
+		float resultDistance = GotoAction.pathLength( auxpath );
+
+		for (int i = 1; i < _path.Length; i++) {
+			auxpath.ClearCorners ();
+			UnityEngine.AI.NavMesh.CalculatePath( pos, _path [i], UnityEngine.AI.NavMesh.AllAreas, auxpath );
+			float auxDistance = GotoAction.pathLength( auxpath );
+
+			if ( auxDistance < resultDistance ) {
+				resultIndex = i;
+				resultDistance = auxDistance;
+			}
+		}
+
+		return resultIndex;
+	}*/
+	#endregion
 }
