@@ -50,13 +50,14 @@ public class SpecieParser
     private void ParseCastLine(string[] tokens)
     {
         Cast cast = new Cast();
+        cast.Name = tokens[0];
         cast.BehaviorModelIdentifier = tokens[1];
         int headSize = int.Parse(tokens[2]);
         for (int i = 3; i < headSize + 3; i++)
         {
             if (tokens[i] == "") break;
             int id = int.Parse(tokens[i]);
-            ComponentInfo component = ComponentFactory.CreateComponent(id);
+            ComponentInfo component = ComponentFactory.instance.CreateComponent(id);
             cast.Head.Add(component);
         }
         for (int i = headSize + 3; i < tokens.Length; i++)
@@ -64,7 +65,7 @@ public class SpecieParser
             if (tokens[i] == "") break;
             int id = int.Parse(tokens[i]);
             ComponentInfo component = 
-                ComponentFactory.CreateComponent(id);
+                ComponentFactory.instance.CreateComponent(id);
             cast.Tail.Add(component);
         }
         specie.Casts.Add(tokens[0], cast);

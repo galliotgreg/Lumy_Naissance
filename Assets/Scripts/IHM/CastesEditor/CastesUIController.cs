@@ -37,7 +37,18 @@ public class CastesUIController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         CreateSwarmSelectionButons();
+        LoadEditedLumy();
 	}
+
+    private void LoadEditedLumy()
+    {
+        if (LumyEditorManager.instance.EditedLumy != null)
+        {
+            Destroy(LumyEditorManager.instance.EditedLumy);
+        }
+        string castName = AppContextManager.instance.ActiveCast.Name;
+        LumyEditorManager.instance.LoadLumy(castName);
+    }
 
     private void CreateSwarmSelectionButons()
     {
@@ -68,6 +79,7 @@ public class CastesUIController : MonoBehaviour {
     private void SelectActiveSwarm(string swarmName)
     {
         AppContextManager.instance.SwitchActiveSpecie(swarmName);
+        LoadEditedLumy();
     }
 
     // Update is called once per frame

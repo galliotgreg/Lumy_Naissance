@@ -14,6 +14,6 @@ public class ActiveSpecieTextBinding : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        activeSpecieText.text = AppContextManager.instance.ActiveSpeciePath;
+        activeSpecieText.text = AppContextManager.instance.ActiveSpecieFolderPath;
     }
 }

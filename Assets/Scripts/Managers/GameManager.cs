@@ -26,10 +26,6 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-
-		// Starting Component Factory
-        string pathFile = "Assets/Inputs/Components/components.csv";
-        ComponentFactory.CreateFactory(readFile(pathFile)); 
     }
 
     string readFile(string path)

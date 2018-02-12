@@ -16,7 +16,7 @@ public class ComponentsParser_Test {
 	[Test]
 	public void notCreated() {
 		try{
-            ComponentInfo component = ComponentFactory.CreateComponent( 1 );
+            ComponentInfo component = ComponentFactory.instance.CreateComponent( 1 );
 			Debug.Log( "ATTENTION : this test uses a static value that is initialized by other methods." );
 		}
 		catch( ComponentFactory.ComponentFactoryNotCreated ex ){
@@ -27,18 +27,14 @@ public class ComponentsParser_Test {
 
 	[Test]
 	public void basic01() {
-		ComponentFactory.CreateFactory( readFile( pathFile ) );
-
-        ComponentInfo component = ComponentFactory.CreateComponent( 1 );
+        ComponentInfo component = ComponentFactory.instance.CreateComponent( 1 );
 
 		Assert.AreEqual( "Tête Blinde", component.Name );
 	}
 
 	[Test]
 	public void basic02() {
-		ComponentFactory.CreateFactory( readFile( pathFile ) );
-
-        ComponentInfo component = ComponentFactory.CreateComponent( 9 );
+        ComponentInfo component = ComponentFactory.instance.CreateComponent( 9 );
 
 		Assert.AreEqual( "Pinces tranchantes", component.Name );
 		Assert.AreEqual( (Color32)UnityEngine.Color.red, component.Color );
@@ -51,9 +47,7 @@ public class ComponentsParser_Test {
 
 	[Test]
 	public void basic_doubleAttr() {
-		ComponentFactory.CreateFactory( readFile( pathFile ) );
-
-        ComponentInfo component = ComponentFactory.CreateComponent( 22 );
+        ComponentInfo component = ComponentFactory.instance.CreateComponent( 22 );
 
 		Assert.AreEqual( "Musculature Démoniaque", component.Name );
 		Assert.AreEqual( (Color32)UnityEngine.Color.red, component.Color );

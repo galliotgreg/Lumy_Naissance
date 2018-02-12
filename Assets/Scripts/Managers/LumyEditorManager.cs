@@ -40,7 +40,9 @@ public class LumyEditorManager : MonoBehaviour {
     private IList<ComponentInfo> compoLibrary;
 
     [SerializeField]
-    private string COMPO_DATA_PATH = "Assets/Inputs/Components/components.csv";
+    private GameObject emptyAgentPrefab;
+    [SerializeField]
+    private GameObject emptyComponentPrefab;
 
     public GameObject EditedLumy
     {
@@ -188,7 +190,11 @@ public class LumyEditorManager : MonoBehaviour {
     /// <param name=""></param>
     public void LoadLumy(string castName)
     {
-        Debug.Log("TODO : implement LumyEditorManager.LoadLumy");
+        Cast lumyCast = AppContextManager.instance.ActiveCast;
+        editedLumy = Instantiate(emptyAgentPrefab);
+        editedLumy.SetActive(true);
+        UnitTemplateInitializer.InitTemplate(
+            lumyCast, editedLumy, emptyComponentPrefab);
     }
 
     /// <summary>
@@ -205,23 +211,16 @@ public class LumyEditorManager : MonoBehaviour {
     /// </summary>
     public void LoadLibrary()
     {
-        ComponentFactory.CreateFactory(readFile(COMPO_DATA_PATH));
         compoLibrary = new List<ComponentInfo>();
         int i = 1;
         ComponentInfo component = null;
         do
         {
-            component = ComponentFactory.CreateComponent(i++);
+            component = ComponentFactory.instance.CreateComponent(i++);
             if (component != null)
             {
                 compoLibrary.Add(component);
             }
         } while (component != null);
-    }
-
-    string readFile(string path)
-    {
-        System.IO.StreamReader reader = new System.IO.StreamReader(path);
-        return reader.ReadToEnd();
     }
 }

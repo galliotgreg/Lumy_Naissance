@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Cast {
+    private string name;
     private string behaviorModelIdentifier;
     private List<ComponentInfo> head = new List<ComponentInfo>();
     private List<ComponentInfo> tail = new List<ComponentInfo>();
@@ -43,6 +44,19 @@ public class Cast {
         set
         {
             tail = value;
+        }
+    }
+
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            name = value;
         }
     }
 }
