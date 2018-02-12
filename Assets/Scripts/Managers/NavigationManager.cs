@@ -34,6 +34,9 @@ public class NavigationManager : MonoBehaviour {
     private string currentScene;
     private List<string> previousScene = new List<string>();
 
+    private string lastPanelLoaded = null;
+    private List<string> previousPanel = new List<string>();
+
     public float zoomEndDistance = 0.0f;
     public float zoomStep = 0.1f;
     public float fadeStep = 0.05f;
@@ -80,8 +83,17 @@ public class NavigationManager : MonoBehaviour {
     public void GoBack(Vector3 sightPoint)
     {
         addToPreviousList = false;
-        StartCoroutine(SwapScenesCo(previousScene[previousScene.Count-1], sightPoint));
+        sceneLoaded = false;
+        string sceneToGoBackTo = previousScene[previousScene.Count - 1];
+        StartCoroutine(SwapScenesCo(sceneToGoBackTo, sightPoint));
         previousScene.RemoveAt(previousScene.Count - 1);
+
+        if (previousPanel[previousPanel.Count-1] != null)
+        {
+            StartCoroutine(ActivatePanelCo(sceneToGoBackTo, previousPanel[previousPanel.Count - 1]));
+        }
+        previousPanel.RemoveAt(previousPanel.Count - 1);
+
     }
 
     IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
@@ -136,6 +148,7 @@ public class NavigationManager : MonoBehaviour {
         if (addToPreviousList)
         {
             previousScene.Add(currentScene);
+            previousPanel.Add(lastPanelLoaded);
         }
         
         currentScene = nextScene;
@@ -152,6 +165,7 @@ public class NavigationManager : MonoBehaviour {
         }
 
         addToPreviousList = true;
+        lastPanelLoaded = null;
         sceneLoaded = true;
 
         // Arrêter la coroutine de transition
@@ -207,12 +221,12 @@ public class NavigationManager : MonoBehaviour {
         yield return true;
     }
 
-    IEnumerator ActivatePanelCo(string nextScene, string layerName)
+    IEnumerator ActivatePanelCo(string nextScene, string panelName)
     {
         yield return new WaitUntil(() => sceneLoaded);
 
         GameObject canvas = GameObject.Find(nextScene + "Canvas");
-        GameObject panel = GameObject.Find(nextScene+"Canvas").transform.Find(layerName).gameObject;
+        GameObject panel = GameObject.Find(nextScene+"Canvas").transform.Find(panelName).gameObject;
 
         canvas.GetComponent<CanvasGroup>().alpha = 0f;
         panel.SetActive(true);
@@ -223,8 +237,10 @@ public class NavigationManager : MonoBehaviour {
             canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
             yield return true;
         }
-        
-        StopCoroutine(ActivatePanelCo(nextScene, layerName));
+
+        lastPanelLoaded = panelName;
+
+        StopCoroutine(ActivatePanelCo(nextScene, panelName));
         yield return true;
     }
 }
