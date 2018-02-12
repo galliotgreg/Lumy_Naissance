@@ -116,7 +116,6 @@ public class GotoAction : GameAction {
 		return agentAttr.transform.position;
 	}
 
-	// TODO distance does not consider obstacles
 	private int indexClosest( Vector2 pos, Vector3[] _path ){
 		int resultIndex = 0;
 		UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
@@ -138,7 +137,7 @@ public class GotoAction : GameAction {
 		return resultIndex;
 	}
 
-	private float pathLength(UnityEngine.AI.NavMeshPath _path){
+	public static float pathLength(UnityEngine.AI.NavMeshPath _path){
 		float result = 0;
 		for (int i = 0; i < _path.corners.Length-1; i++) {
 			result += Vector3.Distance (_path.corners [i], _path.corners [i + 1]);

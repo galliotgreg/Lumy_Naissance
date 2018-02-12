@@ -432,6 +432,17 @@ public class ABParamFactory
             ((ABVec)type).X = value.x;
             ((ABVec)type).Y = value.y;
         }
+		else if (field.FieldType == typeof(Vector2[]))
+		{
+			Vector2[] value = (Vector2[])field.GetValue(obj);
+			ABTable<ABVec> table = TypeFactory.CreateEmptyTable<ABVec>();
+			table.Values = new ABVec[value.Length];
+			for( int i = 0; i < value.Length; i++ ){
+				table.Values [i] = TypeFactory.CreateEmptyVec ();
+				table.Values [i].X = value [i].x;
+				table.Values [i].Y = value [i].y;
+			}
+		}
         else if (field.FieldType == typeof(Color32))
         {
             Color32 value = (Color32)field.GetValue(obj);
