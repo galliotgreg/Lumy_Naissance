@@ -267,7 +267,10 @@ MonoBehaviour:
   color:
     serializedVersion: 2
     rgba: 0
-  tracePrefab: {fileID: 0}
+  tracePrefab: {fileID: 1987368783561748, guid: 226ac1543437f97408a787472e282d97,
+    type: 2}
+  traceUnitPrefab: {fileID: 1782979075011054, guid: 77eb03fd42803084daee13c2fc694898,
+    type: 2}
 --- !u!114 &114743776689603538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -294,7 +297,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82aa6bfea7d13f44ca2087917e38dbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 0
   cast: 
   curPos: {x: 0, y: 0}
   trgPos: {x: 0, y: 0}
@@ -308,6 +310,10 @@ MonoBehaviour:
   nbItem: 0
   atkRange: 0
   pickRange: 0
+  prodCost: 0
+  buyCost: 0
+  layTimeCost: 0
+  visionRange: 0
 --- !u!114 &114892884380249330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -333,7 +339,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82aa6bfea7d13f44ca2087917e38dbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 0
   cast: 
   curPos: {x: 0, y: 0}
   trgPos: {x: 0, y: 0}
@@ -347,6 +352,10 @@ MonoBehaviour:
   nbItem: 0
   atkRange: 0
   pickRange: NaN
+  prodCost: 0
+  buyCost: 0
+  layTimeCost: 0
+  visionRange: 0
 --- !u!114 &114973090759279900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -361,6 +370,7 @@ MonoBehaviour:
   coolDownActivate: 1
   coolDownTime: 0.1
   path: []
+  currentPathIndex: 0
 --- !u!195 &195848833984645618
 NavMeshAgent:
   m_ObjectHideFlags: 1

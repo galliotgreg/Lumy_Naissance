@@ -16,6 +16,7 @@ public class TraceScript : MonoBehaviour {
 	[AttrName(Identifier = "points")]
 	[SerializeField]
 	private Vector2[] points;
+
 	private Vector2[] controlPoints;
 
 	[AttrName(Identifier = "age")]
@@ -146,7 +147,7 @@ public class TraceScript : MonoBehaviour {
 		Vector3 posBVec3 = AgentBehavior.vec2ToWorld ( posB );
 
 		UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
-		UnityEngine.AI.NavMesh.CalculatePath( posAVec3, posBVec3, UnityEngine.AI.NavMesh.AllAreas, auxpath );
+		UnityEngine.AI.NavMesh.CalculatePath( posAVec3, posBVec3, 1, auxpath );
 
 		for (int i = 0; i < auxpath.corners.Length-1; i++) {
 			result.AddRange ( traceRectBetween( auxpath.corners[i], auxpath.corners[i+1] ) );
@@ -164,11 +165,11 @@ public class TraceScript : MonoBehaviour {
 		float it = 0;
 		while (it < distance) {
 			// create a point
-			result.Add( posA + unitaryDirectionVector*it );
-			it += 1;
+			result.Add( AgentBehavior.worldToVec2( posA + unitaryDirectionVector*it ) );
+			it += distance/Mathf.Ceil(distance);
 		}
 		// end Point
-		result.Add( posB );
+		result.Add( AgentBehavior.worldToVec2( posB ) );
 
 		return result;
 	}
