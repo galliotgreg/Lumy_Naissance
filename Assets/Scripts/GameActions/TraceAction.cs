@@ -61,7 +61,7 @@ public class TraceAction : GameAction {
 
 				// create game objects
 				if( traceUnitPrefab != null ){
-					foreach( Vector2 pos in traceScript.Points ){
+					foreach( Vector2 pos in traceScript.VisualPoints ){
 						GameObject traceUnitObject = Instantiate( traceUnitPrefab, AgentBehavior.vec2ToWorld( pos ), this.transform.rotation, this.transform );
 					}
 				}

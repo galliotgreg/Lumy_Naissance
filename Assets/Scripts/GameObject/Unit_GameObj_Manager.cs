@@ -136,7 +136,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		float agentRange = agent.Context.Model.VisionRange;
 		if (this.traces.ContainsKey (agent.Authority)) {
 			foreach (TraceScript trace in this.traces[agent.Authority]) {
-				foreach (Vector2 tracePos in trace.Points) {
+				foreach (Vector2 tracePos in trace.VisualPoints) {
 					if (Vector2.Distance (agent.Context.Model.CurPos, tracePos) <= agentRange) {
 						resultList.Add (trace);
 						break;

@@ -15,9 +15,9 @@ public class TraceScript : MonoBehaviour {
 
 	[AttrName(Identifier = "points")]
 	[SerializeField]
-	private Vector2[] points;
-
 	private Vector2[] controlPoints;
+
+	private Vector2[] visualPoints;
 
 	[AttrName(Identifier = "age")]
 	[SerializeField]
@@ -36,9 +36,15 @@ public class TraceScript : MonoBehaviour {
 		}
 	}
 
-	public Vector2[] Points {
+	public Vector2[] ControlPoints {
 		get {
-			return points;
+			return controlPoints;
+		}
+	}
+
+	public Vector2[] VisualPoints {
+		get {
+			return visualPoints;
 		}
 	}
 
@@ -90,14 +96,14 @@ public class TraceScript : MonoBehaviour {
 	void changeColor(){}
 
 	#region CreateTrace
-	void CreateTrace_Points( Color32 color, PlayerAuthority authority, Vector2[] controlPoints, Vector2[] points, float lifeTime = 10 ){
+	void CreateTrace_Points( Color32 color, PlayerAuthority authority, Vector2[] controlPoints, Vector2[] visualPoints, float lifeTime = 10 ){
 		this.color = color;
 		changeColor();
 
 		this.authority = authority;
 		this.lifeTime = lifeTime;
 		this.controlPoints = controlPoints;
-		this.points = points;
+		this.visualPoints = visualPoints;
 	}
 
 	// One point path
