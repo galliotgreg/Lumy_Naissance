@@ -42,6 +42,71 @@ public class LumyEditorManager : MonoBehaviour {
     [SerializeField]
     private string COMPO_DATA_PATH = "Assets/Inputs/Components/components.csv";
 
+    public GameObject EditedLumy
+    {
+        get
+        {
+            return editedLumy;
+        }
+
+        set
+        {
+            editedLumy = value;
+        }
+    }
+
+    public ComponentInfo SelectedLibraryCompo
+    {
+        get
+        {
+            return selectedLibraryCompo;
+        }
+
+        set
+        {
+            selectedLibraryCompo = value;
+        }
+    }
+
+    public ComponentInfo SelectedLumyCompo
+    {
+        get
+        {
+            return selectedLumyCompo;
+        }
+
+        set
+        {
+            selectedLumyCompo = value;
+        }
+    }
+
+    public ComponentInfo HoveredLumyCompo
+    {
+        get
+        {
+            return hoveredLumyCompo;
+        }
+
+        set
+        {
+            hoveredLumyCompo = value;
+        }
+    }
+
+    public IList<ComponentInfo> CompoLibrary
+    {
+        get
+        {
+            return compoLibrary;
+        }
+
+        set
+        {
+            compoLibrary = value;
+        }
+    }
+
     void Start()
     {
         LoadLibrary();
