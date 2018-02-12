@@ -4,18 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class OpenVoletHorizontal : MonoBehaviour {
-
+    //Largeur des volets
 	private float rightWidth;
     private float leftWidth;
 	private float middWidth;
+    //Booléen état des volet
 	private bool isOpenRight;
 	private bool isOpenLeft;
+    //Button
 	GameObject leftButton;
 	GameObject rightButton;
-	GameObject leftPanel;
+    GameObject buttonMenuPanel;
+    //Panel
+    GameObject leftPanel;
 	GameObject middPanel;
 	GameObject rightPanel;
-	GameObject buttonMenuPanel;
+    //RectTransform de chaque Panel
 	RectTransform rtLeft;
 	RectTransform rtRight;
 	RectTransform rtMidd;
@@ -23,16 +27,17 @@ public class OpenVoletHorizontal : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        //initialisation booléen de l'état des volets
 		isOpenLeft = true;
 		isOpenRight = true;
+        //Detection des bouton liés aux volets
 		leftButton = GameObject.Find ("btn_VoletGauche");
 		rightButton = GameObject.Find ("btn_VoletDroit");
-
-		//get Rightpanel width
+		//get Largeur Panel gauche
 		leftPanel = GameObject.FindWithTag ("Left");
 		rtLeft = (RectTransform)leftPanel.transform;
 		leftWidth = rtLeft.rect.width;
-		//get Rightpanel width
+		//get Largeur panel droit
 		rightPanel = GameObject.FindWithTag ("Right");
 		rtRight = (RectTransform)rightPanel.transform;
 		rightWidth = rtRight.rect.width;
@@ -43,32 +48,38 @@ public class OpenVoletHorizontal : MonoBehaviour {
 		
 	}
 
-	public void MoveLeftPanel() {		
-		float recenterPanel=0;
-
-		middPanel = GameObject.FindWithTag ("Midd");
+    //Recentrer panel gauche
+	public void MoveLeftPanel() {
+        //Valeur pour recentrer le panel central
+        float recenterPanel =0;
+        //Recupération de la largeur du panel central
+        //Via la rectTransform du panel tagger "Midd" 
+        middPanel = GameObject.FindWithTag ("Midd");
 		rtMidd = (RectTransform)middPanel.transform;
 		middWidth = rtMidd.rect.width;
-
-		//buttonMenuPanel = GameObject.FindWithTag ("ButtonMenuBarre");
-		//rtMenuBarre = (RectTransform)buttonMenuPanel.transform;
-
-		if(isOpenLeft == true)
-		{
-			middWidth = middWidth + leftWidth;
+        //Détection ouverture - Fermeture volet
+        if (isOpenLeft == true)//Fermeture
+        {
+            //Calcul de la valeur de recentrage du panel central
+            middWidth = middWidth + leftWidth;
 			recenterPanel = leftWidth/2 ;
-			leftPanel.SetActive (false);
-			float pos = rtMidd.position.x;
+            //Desactivation du panel gauche
+            leftPanel.SetActive (false);
+            //Repositionnement du panel central sur la gauche
+            float pos = rtMidd.position.x;
 			pos= pos - (recenterPanel)/100;
 			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
 			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
 
 
-		}else{
-			middWidth = middWidth-leftWidth;
+		}else{//Ouverture
+              //Calcul de la valeur de recentrage du panel central
+            middWidth = middWidth-leftWidth;
 			recenterPanel = leftWidth/2 ;
-			leftPanel.SetActive (true);
-			float pos = rtMidd.position.x;
+            //Desactivation du panel gauche
+            leftPanel.SetActive (true);
+            //Repositionnement du panel central sur la gauche
+            float pos = rtMidd.position.x;
 			pos= pos +(recenterPanel/100);
 			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
 			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
@@ -77,28 +88,39 @@ public class OpenVoletHorizontal : MonoBehaviour {
 		isOpenLeft = !isOpenLeft;
 	}
 
-	//Recenter Right panel
+	//Recenter panel droit
 	public void MoveRightPanel(){
+        //Valeur pour recentrer le panel central
 		float recenterPanel=0;
-
+        //Recupération de la largeur du panel central
+        //Via la rectTransform du panel tagger "Midd" 
 		middPanel = GameObject.FindWithTag ("Midd");
 		rtMidd = (RectTransform)middPanel.transform;
 		middWidth = rtMidd.rect.width;
 
-		if(isOpenRight == true)
-		{
+        //Détection ouverture - Fermeture volet
+        
+		if(isOpenRight == true)//Fermeture
+        {
+            //Calcul de la valeur de recentrage du panel central
 			middWidth = middWidth + rightWidth;
 			recenterPanel = rightWidth/2 ;
+            //Desactivation du panel droit
 			rightPanel.SetActive (false);
+            //Repositionnement du panel central sur la droite
 			float pos = rtMidd.position.x;
 			pos= pos + (recenterPanel)/100;
 			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
 			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
-		}else{
-			middWidth = middWidth-rightWidth;
+        
+		}else{//Ouverture
+            //Calcul de la valeur de recentrage du panel central
+            middWidth = middWidth-rightWidth;
 			recenterPanel = rightWidth/2 ;
-			rightPanel.SetActive (true);
-			float pos = rtMidd.position.x;
+            //Desactivation du panel droit
+            rightPanel.SetActive (true);
+            //Repositionnement du panel central sur la droite
+            float pos = rtMidd.position.x;
 			pos= pos - (recenterPanel/100);
 			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
 			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
