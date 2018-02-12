@@ -29,7 +29,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	Dictionary<PlayerAuthority,HomeScript> homes = new Dictionary<PlayerAuthority, HomeScript>();
 	List<ResourceScript> resources = new List<ResourceScript>();
-	List<TraceScript> traces = new List<TraceScript>();
+	Dictionary<PlayerAuthority, List<TraceScript>> traces = new Dictionary<PlayerAuthority, List<TraceScript>>();
 
 	#region Properties
 	public List<HomeScript> Homes {
@@ -54,7 +54,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		}
 	}
 
-	public List<TraceScript> Traces {
+	public Dictionary<PlayerAuthority, List<TraceScript>> Traces {
 		get {
 			return traces;
 		}
@@ -97,9 +97,14 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	public bool addTrace( TraceScript trace ){
-		if( !this.traces.Contains( trace ) ){
-			this.traces.Add( trace );
+		if (!this.traces.ContainsKey (trace.Authority)) {
+			this.traces.Add (trace.Authority, new List<TraceScript> (){ trace });
 			return true;
+		} else {
+			if (!this.traces [trace.Authority].Contains (trace)) {
+				this.traces[trace.Authority].Add (trace);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -129,9 +134,14 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		List<TraceScript> resultList = new List<TraceScript>();
 
 		float agentRange = agent.Context.Model.VisionRange;
-		foreach (TraceScript trace in this.traces) {
-			if( Vector2.Distance(agent.Context.Model.CurPos, trace.Location) <= agentRange ){
-				resultList.Add (trace);
+		if (this.traces.ContainsKey (agent.Authority)) {
+			foreach (TraceScript trace in this.traces[agent.Authority]) {
+				foreach (Vector2 tracePos in trace.Points) {
+					if (Vector2.Distance (agent.Context.Model.CurPos, tracePos) <= agentRange) {
+						resultList.Add (trace);
+						break;
+					}
+				}
 			}
 		}
 
@@ -214,9 +224,11 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		GameObject.Destroy( unit.gameObject );
 	}
 	public bool destroyTrace( TraceScript trace ){
-		if( this.traces.Remove( trace ) ){
-			Destroy( trace.gameObject );
-			return true;
+		if ( this.traces.ContainsKey (trace.Authority) ) {
+			if (this.traces [trace.Authority].Remove(trace)) {
+				Destroy( trace.gameObject );
+				return true;
+			}
 		}
 		return false;
 	}
