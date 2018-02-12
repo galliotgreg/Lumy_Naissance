@@ -33,8 +33,9 @@ public class PickAction : GameAction {
 					if (Unit_GameObj_Manager.instance.pickResource (resource)) {
 						// Can carry the item?
 						if( this.agentAttr.NbItem >= this.agentAttr.NbItemMax ){
-							// Drop some item
-							Unit_GameObj_Manager.instance.dropResource( this.agentAttr.removeLastResource() );
+                            // Drop some item
+                            Debug.Log("Drop"); 
+                            Unit_GameObj_Manager.instance.dropResource( this.agentAttr.removeLastResource() );
 						}
 
 						// Carry it
