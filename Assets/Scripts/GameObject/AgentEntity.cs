@@ -106,7 +106,13 @@ public class AgentEntity : MonoBehaviour
 
     void Start()
     {
-        ABManager.instance.RegisterAgent(this);
+        if (ABManager.instance != null)
+        {
+            ABManager.instance.RegisterAgent(this);
+        } else
+        {
+            Debug.LogWarning("WARNING ! : ABManager not found");
+        }
     }
 
     // Update is called once per frame
