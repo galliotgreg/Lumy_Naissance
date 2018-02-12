@@ -93,26 +93,31 @@ public class TraceScript : MonoBehaviour {
 		}
 	}
 
-	void changeColor(){}
-
 	#region CreateTrace
-	void CreateTrace_Points( Color32 color, PlayerAuthority authority, Vector2[] controlPoints, Vector2[] visualPoints, float lifeTime = 10 ){
+	void CreateTrace_Points( Color32 color, PlayerAuthority authority, Vector2[] controlPoints, Vector2[] visualPoints, GameObject traceUnitPrefab, float lifeTime = 10 ){
 		this.color = color;
-		changeColor();
-
 		this.authority = authority;
 		this.lifeTime = lifeTime;
 		this.controlPoints = controlPoints;
 		this.visualPoints = visualPoints;
+
+		// create game objects
+		if( traceUnitPrefab != null ){
+			foreach( Vector2 pos in visualPoints ){
+				GameObject traceUnitObject = Instantiate( traceUnitPrefab, AgentBehavior.vec2ToWorld( pos ), this.transform.rotation, this.transform );
+				TraceUnitGameObject traceUnit = traceUnitObject.GetComponent<TraceUnitGameObject> ();
+				traceUnit.Color = color;
+			}
+		}
 	}
 
 	// One point path
-	public void CreateTrace( Color32 color, Vector2 start, Vector2 target, PlayerAuthority authority, float lifeTime = 10 ){
-		CreateTrace_Points ( color, authority, new Vector2[]{start,target}, traceBetween( start, target ).ToArray(), lifeTime );
+	public void CreateTrace( Color32 color, Vector2 start, Vector2 target, PlayerAuthority authority, GameObject traceUnitPrefab, float lifeTime = 10 ){
+		CreateTrace_Points ( color, authority, new Vector2[]{start,target}, traceBetween( start, target ).ToArray(), traceUnitPrefab, lifeTime );
 	}
 
 	// more than one point path
-	public void CreateTrace( Color32 color, Vector2 start, Vector2[] controlPoints, PlayerAuthority authority, float lifeTime = 10 ){
+	public void CreateTrace( Color32 color, Vector2 start, Vector2[] controlPoints, PlayerAuthority authority, GameObject traceUnitPrefab, float lifeTime = 10 ){
 		// trace points
 		List<Vector2> result = new List<Vector2> ();
 
@@ -143,7 +148,7 @@ public class TraceScript : MonoBehaviour {
 			result.AddRange( traceBetween( controlPoints[i], controlPoints[i+1] ) );
 		}
 
-		CreateTrace_Points ( color, authority, controlPoints, result.ToArray(), lifeTime );
+		CreateTrace_Points ( color, authority, controlPoints, result.ToArray(), traceUnitPrefab, lifeTime );
 	}
 
 	List<Vector2> traceBetween(Vector2 posA, Vector2 posB){

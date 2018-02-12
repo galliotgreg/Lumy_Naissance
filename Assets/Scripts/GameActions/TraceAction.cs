@@ -49,21 +49,14 @@ public class TraceAction : GameAction {
 			TraceScript traceScript = traceObject.GetComponent<TraceScript>();
 			if (traceScript != null) {
 				if (path.Length == 1) {
-					traceScript.CreateTrace (color, AgentBehavior.worldToVec2 (this.transform.position), AgentBehavior.worldToVec2 (path [0]), agentEntity.Authority);
+					traceScript.CreateTrace (color, AgentBehavior.worldToVec2 (this.transform.position), AgentBehavior.worldToVec2 (path [0]), agentEntity.Authority, traceUnitPrefab);
 				} else {
 					Vector2[] convertedPath = new Vector2[ path.Length ];
 					for (int i = 0; i < path.Length; i++) {
 						convertedPath [i] = AgentBehavior.worldToVec2 ( path[i] );
 					}
 
-					traceScript.CreateTrace (color, AgentBehavior.worldToVec2 (this.transform.position), convertedPath, agentEntity.Authority);
-				}
-
-				// create game objects
-				if( traceUnitPrefab != null ){
-					foreach( Vector2 pos in traceScript.VisualPoints ){
-						GameObject traceUnitObject = Instantiate( traceUnitPrefab, AgentBehavior.vec2ToWorld( pos ), this.transform.rotation, this.transform );
-					}
+					traceScript.CreateTrace (color, AgentBehavior.worldToVec2 (this.transform.position), convertedPath, agentEntity.Authority, traceUnitPrefab);
 				}
 
 				Unit_GameObj_Manager.instance.addTrace ( traceScript );
