@@ -87,8 +87,7 @@ public class OpenVoletHorizontal : MonoBehaviour {
 		}
 		isOpenLeft = !isOpenLeft;
 	}
-
-	//Recenter panel droit
+ 	//Recenter panel droit
 	public void MoveRightPanel(){
         //Valeur pour recentrer le panel central
 		float recenterPanel=0;
