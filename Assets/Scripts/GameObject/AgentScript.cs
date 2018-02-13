@@ -43,13 +43,11 @@ public class AgentScript : MonoBehaviour {
     [SerializeField]
 	private float pickRange;
 
+	[AttrName(Identifier = "prodCost")]
 	[SerializeField]
-	// TODO add Attr
-	private float prodCost;
+	private Dictionary<string,int> prodCost = new Dictionary<string, int>();
+	[AttrName(Identifier = "layTimeCost")]
 	[SerializeField]
-	private float buyCost;
-	[SerializeField]
-	// TODO add Attr
 	private float layTimeCost;
 
 	[SerializeField]
@@ -228,16 +226,7 @@ public class AgentScript : MonoBehaviour {
 		}
 	}
 
-	public float BuyCost {
-		get {
-			return buyCost;
-		}
-		set {
-			buyCost = value;
-		}
-	}
-
-	public float ProdCost {
+	public Dictionary<string,int> ProdCost {
 		get {
 			return prodCost;
 		}
@@ -286,5 +275,41 @@ public class AgentScript : MonoBehaviour {
 
 	Vector2 positionFromTransform(){
 		return new Vector2(transform.position.x, transform.position.z);
+	}
+
+	public class ResourceCost{
+		Dictionary<string,int> resources;
+
+		public Dictionary<string, int> Resources {
+			get {
+				return resources;
+			}
+		}
+
+		public int getResourceByColor( ABColor.Color color ){
+			return resources [color.ToString()];
+		}
+
+		public ResourceCost(){
+			resources = new Dictionary<string, int>();
+			foreach( ABColor.Color color in System.Enum.GetValues( typeof( ABColor.Color ) ) ){
+				resources.Add( color.ToString(), 0 );
+			}
+		}
+		public ResourceCost( Dictionary<string, int> newResources ){
+			this.resources = newResources;
+		}
+
+		public void addResource( ABColor.Color color, int amount ){
+			if (resources.ContainsKey (color.ToString())) {
+				resources [color.ToString()] += amount;
+			}
+		}
+
+		public void reduceResource( ABColor.Color color, int amount ){
+			if (resources.ContainsKey (color.ToString())) {
+				resources [color.ToString()] = Mathf.Max( resources [color.ToString()]-amount, 0 );
+			}
+		}
 	}
 }
