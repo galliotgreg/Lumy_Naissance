@@ -13,7 +13,7 @@ public class DropAction : GameAction {
 			// Check if the player close to the home
 			// TODO What is the range?
 			Debug.LogWarning( "TODO" );
-			
+            Debug.Log("DROP THE MIC"); 
 			if( (this.agentAttr.CurPos - this.agentEntity.Home.Location).magnitude <= 1 ){
 				// Close to home
 				// Destroy object
