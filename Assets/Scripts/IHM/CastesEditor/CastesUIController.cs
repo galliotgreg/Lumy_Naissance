@@ -38,7 +38,10 @@ public class CastesUIController : MonoBehaviour {
     private GameObject nueePrincipalePanel;
 
     [SerializeField]
-    private GameObject UICastPrefab; 
+    private GameObject UICastPrefab;
+
+    [SerializeField]
+    private GameObject rootUICast;
 
     // Use this for initialization
     void Start () {
@@ -49,10 +52,15 @@ public class CastesUIController : MonoBehaviour {
 
     private void CreateTree()
     {
+        if (rootUICast != null)
+        {
+            Destroy(rootUICast);
+        }
+
         UICastPrefab.transform.position = new Vector3(0f, 295f, 0);
         UICastPrefab.transform.localScale = new Vector3(100f, 100f, 1f);
-        GameObject rootUICast = Instantiate(UICastPrefab, UICastPrefab.transform.position, transform.rotation);
-        rootUICast.transform.SetParent(nueePrincipalePanel.transform, false);
+        rootUICast = Instantiate(UICastPrefab, UICastPrefab.transform.position, transform.rotation);
+        rootUICast.transform.SetParent(nueePrincipalePanel.transform, false); 
 
         Cast origin = AppContextManager.instance.ActiveSpecie.Casts["origin"];
         RecCreateTree(origin, rootUICast);
@@ -121,6 +129,7 @@ public class CastesUIController : MonoBehaviour {
     {
         AppContextManager.instance.SwitchActiveSpecie(swarmName);
         LoadEditedLumy();
+        CreateTree();
     }
 
     // Update is called once per frame
