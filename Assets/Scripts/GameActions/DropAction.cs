@@ -22,11 +22,11 @@ public class DropAction : GameAction {
 				// Add to the home
 				Color32 color = _resource.Color;
 
-				if ( color.Equals( new Color32(255, 0, 0, 1) ) ){
+				if ( color.Equals( new Color32(255, 0, 0, 255) ) ){
 					this.agentEntity.Home.RedResAmout++;
-				}else if( color.Equals( new Color32(0, 255, 0, 1) ) ){
+				}else if( color.Equals( new Color32(0, 255, 0, 255) ) ){
 					this.agentEntity.Home.GreenResAmout++;
-				}else if( color.Equals( new Color32(0, 0, 255, 1) ) ){
+				}else if( color.Equals( new Color32(0, 0, 255, 255) ) ){
 					this.agentEntity.Home.BlueResAmout++;
 				}
 				
@@ -48,12 +48,12 @@ public class DropAction : GameAction {
 
 	protected override void executeAction ()
 	{
-		Drop();
+		return;
 	}
 
 	protected override void activateAction ()
 	{
-		return;
+		Drop();
 	}
 
 	protected override void deactivateAction ()

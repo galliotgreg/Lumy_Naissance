@@ -199,12 +199,12 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	public GameObject getUnit( int key ){
 		foreach( AgentEntity unit in homes[ PlayerAuthority.Player1 ].getPopulation() ){
-			if( unit.Context.Key == key ){
+			if( unit.Context.Model.Key == key ){
 				return unit.gameObject;
 			}
 		}
 		foreach( AgentEntity unit in homes[ PlayerAuthority.Player2 ].getPopulation() ){
-			if( unit.Context.Key == key ){
+			if( unit.Context.Model.Key == key ){
 				return unit.gameObject;
 			}
 		}

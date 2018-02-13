@@ -26,7 +26,7 @@ public class CreateAgentTest : MonoBehaviour {
 		if (agent == null && !initialized) {
 			GameObject obj = GameManager.instance.GetUnitTemplate (authority, castName);
 			if (obj != null) {
-				agent = Instantiate (obj, pos, Quaternion.identity);
+				agent = Instantiate (obj, AgentBehavior.vec2ToWorld(pos), Quaternion.identity);
 				agent.SetActive (true);
 				HomeScript home = GameManager.instance.GetHome (authority);
 				home.addUnit (agent.GetComponent<AgentEntity> ());

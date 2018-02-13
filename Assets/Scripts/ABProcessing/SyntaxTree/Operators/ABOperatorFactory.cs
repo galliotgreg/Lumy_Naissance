@@ -242,6 +242,9 @@ public class ABOperatorFactory {
             case "VgetRT":
                 type = OperatorType.Vec_Get_Ref_Txt;
                 break;
+			case "V[]getRT":
+			type = OperatorType.VecTab_Get_Ref_Txt;
+				break;
             case "V[]getR[]T":
                 type = OperatorType.VecTab_Get_RefTab_Txt;
                 break;
@@ -503,6 +506,9 @@ public class ABOperatorFactory {
             case OperatorType.Vec_Get_Ref_Txt:
                 abOperator = new AB_Vec_Get_Ref_Txt_Operator();
                 break;
+			case OperatorType.VecTab_Get_Ref_Txt:
+				abOperator = new AB_VecTab_Get_Ref_Txt_Operator();
+				break;
             case OperatorType.VecTab_Get_RefTab_Txt:
                 abOperator = new AB_VecTab_Get_RefTab_Txt_Operator();
                 break;

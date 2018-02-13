@@ -12,9 +12,7 @@ public class AgentComponent : MonoBehaviour {
     [SerializeField]
 	private Color32 color;
     [SerializeField]
-	private float prodCost;
-    [SerializeField]
-	private float buyCost;
+	private int prodCost;
 
     //Passive Buffs
     [SerializeField]
@@ -95,21 +93,12 @@ public class AgentComponent : MonoBehaviour {
 		}
 	}
 
-	public float ProdCost {
+	public int ProdCost {
 		get {
 			return prodCost;
 		}
 		set {
 			prodCost = value;
-		}
-	}
-
-	public float BuyCost {
-		get {
-			return buyCost;
-		}
-		set {
-			buyCost = value;
 		}
 	}
 
