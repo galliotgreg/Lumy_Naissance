@@ -146,6 +146,21 @@ public class ABManager : MonoBehaviour {
         instances.Add(instance);
     }
 
+	/// <summary>
+	/// Remove the given agent from the system
+	/// </summary>
+	/// <param name="agent"></param>
+	public void UnregisterAgent(AgentEntity agent)
+	{
+		foreach (ABInstance instance in instances) {
+			if (instance.AgentId == agent.Id) {
+				instances.Remove (instance);
+				break;
+			}
+		}
+		agents.Remove (agent);
+	}
+
     private static string GetInputSubFolder(AgentEntity agent)
     {
         string subFolder = GameManager.instance.PLAYER1_SPECIE_FOLDER;

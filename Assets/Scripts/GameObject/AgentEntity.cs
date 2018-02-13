@@ -114,4 +114,8 @@ public class AgentEntity : MonoBehaviour
     {
 
     }
+
+	void OnDestroy(){
+		ABManager.instance.UnregisterAgent(this);
+	}
 }
