@@ -10,12 +10,14 @@ public class SpecieParser
     private bool isInQueenCastBlock;
     private bool isInResourcesBlock;
     private bool isInCastBlock;
+    private bool isInHierarchyBlock;
 
     private void InitialiseParser()
     {
         isInQueenCastBlock = false;
         isInResourcesBlock = false;
         isInCastBlock = false;
+        isInHierarchyBlock = false;
     }
 
     public Specie Parse(List<string> lines)
@@ -41,10 +43,25 @@ public class SpecieParser
                 {
                     ParseCastLine(tokens);
                 }
+                else if (isInHierarchyBlock)
+                {
+                    ParseHierarchyLine(tokens);
+                }
             }
         }
 
         return specie;
+    }
+
+    private void ParseHierarchyLine(string[] tokens)
+    {
+        if (tokens[1] != "")
+        {
+            Cast curCast = specie.Casts[tokens[0]];
+            Cast parentCast = specie.Casts[tokens[1]];
+            curCast.Parent = parentCast;
+            parentCast.Childs.Add(curCast);
+        }
     }
 
     private void ParseCastLine(string[] tokens)
@@ -91,16 +108,25 @@ public class SpecieParser
                 isInQueenCastBlock = true;
                 isInResourcesBlock = false;
                 isInCastBlock = false;
+                isInHierarchyBlock = false;
                 return true;
             case "Resources (rgb)":
                 isInQueenCastBlock = false;
                 isInResourcesBlock = true;
                 isInCastBlock = false;
+                isInHierarchyBlock = false;
                 return true;
             case "Name":
                 isInQueenCastBlock = false;
                 isInResourcesBlock = false;
                 isInCastBlock = true;
+                isInHierarchyBlock = false;
+                return true;
+            case "Cast":
+                isInQueenCastBlock = false;
+                isInResourcesBlock = false;
+                isInCastBlock = false;
+                isInHierarchyBlock = true;
                 return true;
             default:
                 return false;

@@ -7,6 +7,8 @@ public class Cast {
     private string behaviorModelIdentifier;
     private List<ComponentInfo> head = new List<ComponentInfo>();
     private List<ComponentInfo> tail = new List<ComponentInfo>();
+    private Cast parent;
+    private IList<Cast> childs = new List<Cast>();
 
     public string BehaviorModelIdentifier
     {
@@ -57,6 +59,32 @@ public class Cast {
         set
         {
             name = value;
+        }
+    }
+
+    public Cast Parent
+    {
+        get
+        {
+            return parent;
+        }
+
+        set
+        {
+            parent = value;
+        }
+    }
+
+    public IList<Cast> Childs
+    {
+        get
+        {
+            return childs;
+        }
+
+        set
+        {
+            childs = value;
         }
     }
 }
