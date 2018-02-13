@@ -206,7 +206,7 @@ public class AgentContext : MonoBehaviour
 		this.model.Vitality = this.model.VitalityMax;
 
 		// TODO test : remove
-		if (this.model.LayTimeCost<= 0) {
+		/*if (this.model.LayTimeCost<= 0) {
 			this.model.LayTimeCost = 1;
 		}
 		if (this.model.VisionRange<= 0) {
@@ -214,7 +214,7 @@ public class AgentContext : MonoBehaviour
 		}
 		if (this.model.AtkRange<= 0) {
 			this.model.AtkRange = 1;
-		}
+		}*/
 	}
 
 	GameObject[] extractGameObj( MonoBehaviour[] list ){
