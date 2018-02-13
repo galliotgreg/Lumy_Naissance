@@ -80,6 +80,7 @@ public enum OperatorType
     Scal_Dot_Vec_Vec,
     Bool_Equals_Vec_Vec,
     Vec_Get_Ref_Txt,
+	VecTab_Get_Ref_Txt,
     VecTab_Get_RefTab_Txt,
     Vec_Get_VecTab_Scal,
     Bool_IsSet_Vec,

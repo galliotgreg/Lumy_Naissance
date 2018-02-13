@@ -442,6 +442,7 @@ public class ABParamFactory
 				table.Values [i].X = value [i].x;
 				table.Values [i].Y = value [i].y;
 			}
+			type = table;
 		}
         else if (field.FieldType == typeof(Color32))
         {
