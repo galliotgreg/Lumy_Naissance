@@ -70,7 +70,8 @@ public class OpenVoletHorizontal : MonoBehaviour {
 			pos= pos - (recenterPanel)/100;
 			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
 			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
-
+			string text = leftButton.GetComponentInChildren<Text>().text = ">>";
+			leftButton.GetComponentInChildren<Text> ().text = text;
 
 		}else{//Ouverture
               //Calcul de la valeur de recentrage du panel central
@@ -83,7 +84,8 @@ public class OpenVoletHorizontal : MonoBehaviour {
 			pos= pos +(recenterPanel/100);
 			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
 			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
-
+			string text = leftButton.GetComponentInChildren<Text>().text = "<<";
+			leftButton.GetComponentInChildren<Text> ().text = text;
 		}
 		isOpenLeft = !isOpenLeft;
 	}
@@ -111,7 +113,9 @@ public class OpenVoletHorizontal : MonoBehaviour {
 			pos= pos + (recenterPanel)/100;
 			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
 			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
-        
+			string text = rightButton.GetComponentInChildren<Text>().text = "<<";
+			rightButton.GetComponentInChildren<Text> ().text = text;
+
 		}else{//Ouverture
             //Calcul de la valeur de recentrage du panel central
             middWidth = middWidth-rightWidth;
@@ -123,6 +127,8 @@ public class OpenVoletHorizontal : MonoBehaviour {
 			pos= pos - (recenterPanel/100);
 			rtMidd.sizeDelta = new Vector2(middWidth,rtMidd.rect.height);
 			rtMidd.SetPositionAndRotation (new Vector3 (pos,rtMidd.position.y,0), Quaternion.Euler(0,0,0));
+			string text = rightButton.GetComponentInChildren<Text>().text = ">>";
+			rightButton.GetComponentInChildren<Text> ().text = text;
 		}
 		isOpenRight = !isOpenRight;
 	}

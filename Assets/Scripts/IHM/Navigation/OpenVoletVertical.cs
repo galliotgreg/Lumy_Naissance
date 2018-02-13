@@ -55,7 +55,7 @@ public class OpenVoletVertical : MonoBehaviour {
 		rtParams = (RectTransform)panelParams.transform;
 		rtOpe = (RectTransform)panelOpe.transform;
 
-		//getrectTransform panel Header ""
+		//getrectTransform panel Header "rtPanelHeader"
 		rtNodeHeader = (RectTransform) panelNodeHeaderClick.transform;
 		rtActionsHeader = (RectTransform)panelActionHeaderClick.transform;
 		rtParamsHeader = (RectTransform)panelParamsHeaderClick.transform;
@@ -66,34 +66,42 @@ public class OpenVoletVertical : MonoBehaviour {
 	void Update () {
 		
 	}
-	//detecte si ont doit fermer ou ouvrir le volet
-	public void OpenCloseVerticalPanel(){
-		
-		if (voletsIsOpen [0] == false) {
-
-		} else if (voletsIsOpen [1] == false) {
-
-		} else if (voletsIsOpen [2] == false) {
-
-		} else if (voletsIsOpen [3] == false) {
-
-		}else if (voletsIsOpen [0] == true) {
-
-		} else if (voletsIsOpen [1] == true) {
-
-		} else if (voletsIsOpen [2] == true) {
-
-		} else if (voletsIsOpen [3] == true) {
-
+	public void OpenCloseFirstPanel(){
+		float heightPanel = rtActions.rect.height;
+		float heightHeaderPanel = rtActionsHeader.rect.height;
+		bool isOpen = voletsIsOpen [0];
+		float pos;
+		//Fermeture
+		if (isOpen == true) 
+		{
+			heightPanel = rtNode.rect.width / 36;
+			rtNode.sizeDelta = new Vector2 (rtNode.rect.width, heightPanel);
+			pos = rtNode.rect.position.y;
+			Debug.Log ("Position Y node: " + pos);
+			Debug.Log ("Position X node: " + rtNode.rect.position.x);
+			pos = rtNode.rect.height - (heightPanel+heightHeaderPanel*2)/100;
+			rtNode.SetPositionAndRotation (new Vector3(rtNode.rect.position.x,pos,0), Quaternion.Euler(0,0,0));
+			Debug.Log ("Position Y node2: " + pos);
+			Debug.Log ("Position X node2: " + rtNode.rect.position.x);
+		} 
+		//Ouverture
+		else 
+		{
+			heightPanel = rtActions.rect.width * 36;
+			rtNode.sizeDelta = new Vector2 (rtActions.rect.width, heightPanel);
 		}
+
+
 	}
-	//Ouverture d'un volet si il est fermé
-	public void OpenVerticalPanel(int cas) {
+	public void OpenCloseSecondPanel(){
 		
 	}
-	//Fermeture d'un volet si il est ouvert
-	public void CloseVerticalPanel(int cas){
+	public void OpenCloseThirdPanel(){
 		
 	}
+	public void OpenCloseFourthPanel(){
+		
+	}
+
 }
 
