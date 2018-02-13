@@ -13,10 +13,11 @@ public class TraceScript : MonoBehaviour {
 	[SerializeField]
 	Color32 color;
 
-	[AttrName(Identifier = "points")]
 	[SerializeField]
 	private Vector2[] controlPoints;
 
+	[AttrName(Identifier = "points")]
+	[SerializeField]
 	private Vector2[] visualPoints;
 
 	[AttrName(Identifier = "age")]
