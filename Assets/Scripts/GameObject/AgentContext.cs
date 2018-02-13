@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class AgentContext : MonoBehaviour
 {
-	// GameObject Identification
-	[AttrName(Identifier = "key")]
-	[SerializeField]
-	private int key;
-
     [BindParam(Identifier = "self")]
     [SerializeField]
     private GameObject self;
@@ -127,17 +122,9 @@ public class AgentContext : MonoBehaviour
             traces = value;
         }
     }
-
-	public int Key {
-		get {
-			return key;
-		}
-	}
 	#endregion
 
 	void Awake(){
-		key = this.GetHashCode();
-
 		this.model = self.GetComponent<AgentScript>();
 
 		setModelValues ();
