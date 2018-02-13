@@ -11,6 +11,11 @@ public class ForkLumy : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         nuee = transform.parent.parent.parent.gameObject;
         this.gameObject.GetComponent<Button>().onClick.AddListener(Fork);
     }
@@ -21,7 +26,7 @@ public class ForkLumy : MonoBehaviour {
 
     }
 
-    void Fork()
+    public void Fork()
     {
         //Bloquer le lumy d'origine, qui n'est plus modifiable
         transform.parent.parent.Find("btn_Lumy").GetComponent<Button>().interactable = false;

@@ -34,11 +34,52 @@ public class CastesUIController : MonoBehaviour {
     [SerializeField]
     private GameObject swarmSelectionPanel;
 
+    [SerializeField]
+    private GameObject nueePrincipalePanel;
+
+    [SerializeField]
+    private GameObject UICastPrefab; 
+
     // Use this for initialization
     void Start () {
         CreateSwarmSelectionButons();
         LoadEditedLumy();
+        CreateTree();
 	}
+
+    private void CreateTree()
+    {
+        UICastPrefab.transform.position = new Vector3(0f, 295f, 0);
+        UICastPrefab.transform.localScale = new Vector3(100f, 100f, 1f);
+        GameObject rootUICast = Instantiate(UICastPrefab, UICastPrefab.transform.position, transform.rotation);
+        rootUICast.transform.SetParent(nueePrincipalePanel.transform, false);
+
+        Cast origin = AppContextManager.instance.ActiveSpecie.Casts["origin"];
+        RecCreateTree(origin, rootUICast);
+
+    }
+
+    private void RecCreateTree(Cast node, GameObject nodeUICast)
+    {
+        //Configure Node
+        GameObject lumyBtnTxtObj = nodeUICast.transform.Find("PanelLumy/btn_Lumy/Text").gameObject;
+        Text lumyBtnTxt = lumyBtnTxtObj.GetComponent<Text>();
+        lumyBtnTxt.text = node.Name;
+
+        if (node.Childs.Count == 2)
+        {
+            GameObject buttonObject = nodeUICast.transform.Find("PanelLumy/PanelAction/btn_Fork").gameObject;
+            ForkLumy btnCallBack = buttonObject.GetComponent<ForkLumy>();
+            btnCallBack.Init();
+            btnCallBack.Fork();
+
+            GameObject leftChild = nodeUICast.transform.GetChild(1).gameObject;
+            GameObject rightChild = nodeUICast.transform.GetChild(2).gameObject;
+
+            RecCreateTree(node.Childs[0], leftChild);
+            RecCreateTree(node.Childs[1], rightChild);
+        }
+    }
 
     private void LoadEditedLumy()
     {

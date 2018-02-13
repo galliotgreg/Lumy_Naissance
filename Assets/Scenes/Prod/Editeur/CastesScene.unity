@@ -2776,58 +2776,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 610489450}
---- !u!1001 &670676625
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1494764933}
-    m_Modifications:
-    - target: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 295
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1944940057340870, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-      propertyPath: m_Name
-      value: Nuee Principal
-      objectReference: {fileID: 0}
-    - target: {fileID: 114667322855692310, guid: 474846775485fde4c86ffee89319dec7,
-        type: 2}
-      propertyPath: nueeprefab
-      value: 
-      objectReference: {fileID: 1944940057340870, guid: 474846775485fde4c86ffee89319dec7,
-        type: 2}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 474846775485fde4c86ffee89319dec7, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &689790809
 GameObject:
   m_ObjectHideFlags: 0
@@ -3798,11 +3746,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1065961430}
---- !u!4 &1170297960 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4088388328600866, guid: 474846775485fde4c86ffee89319dec7,
-    type: 2}
-  m_PrefabInternal: {fileID: 670676625}
 --- !u!1 &1193539841
 GameObject:
   m_ObjectHideFlags: 0
@@ -3851,6 +3794,9 @@ MonoBehaviour:
   swarmSelectionBtnPrefab: {fileID: 1335766293211302, guid: 71334af099089b548a95df33ebddc97c,
     type: 2}
   swarmSelectionPanel: {fileID: 266068134}
+  nueePrincipalePanel: {fileID: 1494764932}
+  UICastPrefab: {fileID: 1944940057340870, guid: 474846775485fde4c86ffee89319dec7,
+    type: 2}
 --- !u!1 &1300698807
 GameObject:
   m_ObjectHideFlags: 0
@@ -4272,8 +4218,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1170297960}
+  m_Children: []
   m_Father: {fileID: 149024345}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5592,7 +5537,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1931703960}
-  - component: {fileID: 1931703961}
   m_Layer: 5
   m_Name: "Bloc_ChoixNu\xE9e"
   m_TagString: Untagged
@@ -5620,18 +5564,6 @@ RectTransform:
   m_AnchoredPosition: {x: -679.99976, y: 504.99994}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1931703961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1931703959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6de0f05c1b41f64cad3edf275765b1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  subMenu: {fileID: 2023887848}
 --- !u!1 &2023887848
 GameObject:
   m_ObjectHideFlags: 0

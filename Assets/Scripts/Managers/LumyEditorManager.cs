@@ -190,11 +190,18 @@ public class LumyEditorManager : MonoBehaviour {
     /// <param name=""></param>
     public void LoadLumy(string castName)
     {
+        //Instanciate
         Cast lumyCast = AppContextManager.instance.ActiveCast;
         editedLumy = Instantiate(emptyAgentPrefab);
         editedLumy.SetActive(true);
         UnitTemplateInitializer.InitTemplate(
             lumyCast, editedLumy, emptyComponentPrefab);
+
+        //Disable InGame Logics
+        AgentBehavior agentBehavior = editedLumy.GetComponent<AgentBehavior>();
+        agentBehavior.enabled = false;
+        AgentContext agentContext = editedLumy.GetComponent<AgentContext>();
+        agentContext.enabled = false;
     }
 
     /// <summary>
