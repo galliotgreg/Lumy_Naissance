@@ -138,7 +138,7 @@ public class AgentContext : MonoBehaviour
 	void Awake(){
 		key = this.GetHashCode();
 
-		this.model = gameObject.GetComponent<AgentScript>();
+		this.model = self.GetComponent<AgentScript>();
 
 		setModelValues ();
     }
@@ -231,6 +231,14 @@ public class AgentContext : MonoBehaviour
 		GameObject[] result = new GameObject[ list.Length ];
 		for( int i = 0; i < list.Length; i++ ){
 			result [i] = list [i].gameObject;
+		}
+		return result;
+	}
+
+	GameObject[] extractGameObj( AgentEntity[] list ){
+		GameObject[] result = new GameObject[ list.Length ];
+		for( int i = 0; i < list.Length; i++ ){
+			result [i] = list [i].Context.Self;
 		}
 		return result;
 	}

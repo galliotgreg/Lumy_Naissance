@@ -74,7 +74,7 @@ public class ABManager : MonoBehaviour {
             //Compute Action Parameters
 			List<IABType> actionParams = new List<IABType> ();
 
-			if (action != null) {
+			if (action != null && action.Parameters != null) {
 				for (int i = 0; i < action.Parameters.Length; i++) {
 					if (action.Parameters [i] is AB_TxtGate_Operator) {
 						IABType param =
