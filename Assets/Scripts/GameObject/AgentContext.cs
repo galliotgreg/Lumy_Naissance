@@ -131,7 +131,8 @@ public class AgentContext : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start(){}
+    void Start(){
+	}
 
     // Update is called once per frame
     void Update()
@@ -145,7 +146,7 @@ public class AgentContext : MonoBehaviour
 		this.Traces = extractGameObj( Unit_GameObj_Manager.instance.tracesInRange( this.entity ).ToArray() );
     }
 
-	void setModelValues(){
+	public void setModelValues(){
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
 		// vitality
