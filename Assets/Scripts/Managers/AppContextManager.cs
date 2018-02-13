@@ -135,23 +135,29 @@ public class AppContextManager : MonoBehaviour
     public void SwitchActiveCast(string castName)
     {
         //Check if specie existe
-        bool found = false;
-        foreach (string name in castsFileNames)
-        {
-            if (name == castName)
-            {
-                found = true;
-                break;
-            }
-        }
-        if (!found)
+        //bool found = false;
+        //foreach (string name in castsFileNames)
+        //{
+        //    if (name == castName)
+        //    {
+        //        found = true;
+        //        break;
+        //    }
+        //}
+        //if (!found)
+        //{
+        //    Debug.LogError(castName + " Does not exists");
+        //}
+
+        if (!activeSpecie.Casts.ContainsKey(castName))
         {
             Debug.LogError(castName + " Does not exists");
+            return;
         }
 
         //Set Specie path
-        activeBehaviorPath = GetPathFromCastName(castName);
         activeCast = activeSpecie.Casts[castName];
+        activeBehaviorPath = GetPathFromCastName(castName);
     }
 
     public void SwitchActiveSpecie(string specieName)
@@ -257,7 +263,8 @@ public class AppContextManager : MonoBehaviour
 
     private string GetPathFromCastName(string name)
     {
-        return SPECIES_FOLDER_PATH + name + CAST_FILES_SUFFIX;
+        return SPECIES_FOLDER_PATH + activeSpecie.Name + "/" 
+            + activeSpecie.Casts[name].BehaviorModelIdentifier + CSV_EXT;
     }
 
     private string GetFilePathFromSpecieName(string name)

@@ -89,7 +89,7 @@ public class CastesUIController : MonoBehaviour {
         }
     }
 
-    private void LoadEditedLumy()
+    public void LoadEditedLumy()
     {
         if (LumyEditorManager.instance.EditedLumy != null)
         {
