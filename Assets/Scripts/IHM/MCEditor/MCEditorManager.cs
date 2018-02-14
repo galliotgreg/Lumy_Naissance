@@ -41,23 +41,18 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABState> proxyStates;
     private List<ProxyABAction> proxyActions;
     private List<ProxyABTransition> proxyTransitions;
-    private List<Pin> pins; //ProxyABGateOperator
-    //private List<IProxyABParam> proxyParam; //ProxyABParam
-    //private List<IProxyABOperator> proxyOperator;//ProxyABOperator
+    private List<Pin> pins; //ProxyABGateOperator    
     private List<GameObject> proxyOperator;
     private List<GameObject> proxyParam;
 
-
-    /**TEST SAVE**/
+    /** START TEST SAVE**/
     ProxyABAction abAction = null;
     ProxyABAction abAction2 = null;
     ProxyABState abState = null;
     ProxyABState abState2 = null;
+    /** END TEST SAVE**/
 
 
-    /// <summary>
-    /// Enforce Singleton properties
-    /// </summary>
     void Awake()
     {
         //Check if instance already exists and set it to this if not
@@ -82,9 +77,9 @@ public class MCEditorManager : MonoBehaviour {
     }
 
     // Use this for initialization
-    // Use this for initialization
     void Start()
     {
+        /** INITIALISATION **/
         proxyStates = new List<ProxyABState>();
         proxyTransitions = new List<ProxyABTransition>();
         pins = new List<Pin>(); //ProxyABGateOperator
@@ -93,14 +88,14 @@ public class MCEditorManager : MonoBehaviour {
         proxyActions = new List<ProxyABAction>();
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
-        /**TEST LOAD**/
-        SetupModel();
 
-        /**TEST SAVE**/
+        /** LOAD MODEL AND CREATE PROXY OBJECTS **/
+        SetupModel();      
     }
 
     private void Update()
     {
+        /**START TEST SAVE**/
         if (Input.GetKeyDown(KeyCode.S))
         {
             Save_MC();
@@ -128,25 +123,31 @@ public class MCEditorManager : MonoBehaviour {
         {
             CreateTransition(abState.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
         }
+        /**END TEST SAVE**/
     }
 
     private void SetupModel()
     {
         abModel = LoadMC();
-        CreateProxyStates();
-
-        CreateProxyTransitions();
+        LoadProxyStates();
+        LoadProxyTransitions();
     }
-
+    
     ABModel LoadMC()
     {
         ABModel model = new ABModel();
+
+        /**** START TODO ****/
         //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path
         model = ABManager.instance.LoadABModelFromFile("Assets/Inputs/Test/siu_scoot_behavior_TEST.csv");
+        /**** END TODO ****/
+
         return model;
     }
 
-    void CreateProxyStates() {
+    /************** LOAD MODEL FUNCTIONS  **************/
+
+    void LoadProxyStates() {
 
         ProxyABState proxyState;
         ProxyABAction proxyAction;
@@ -160,8 +161,7 @@ public class MCEditorManager : MonoBehaviour {
                 proxyAction.IsLoaded = true;
                 proxyAction.transform.position = new Vector3(proxyAction.transform.position.x + UnityEngine.Random.Range(-5, 5), proxyAction.transform.position.y + UnityEngine.Random.Range(-5, 5), proxyAction.transform.position.z);
                 Text actionName = proxyAction.GetComponentInChildren<Text>();
-                actionName.text = state.Name;
-                //proxyAction.GetComponent<ProxyABAction>().AbAction = state.Action;
+                actionName.text = state.Name;                
 
                 proxyActions.Add(proxyAction);
                 actionsDictionnary.Add(state, proxyAction);
@@ -191,31 +191,14 @@ public class MCEditorManager : MonoBehaviour {
 
                 proxyStates.Add(proxyState);
                 statesDictionnary.Add(state, proxyState);
-
-
             }
             if (state.Outcomes.Count != 0)
-            {
-                //CreatePins(state.Outcomes);
+            {                
             }
         }
     }
 
-    void SetNodeName(GameObject proxy, ABNode node) {
-
-        Text operatorName = proxy.GetComponentInChildren<Text>();
-        string opeName = node.ToString();
-        char splitter = '_';
-        string[] newName = opeName.Split(splitter);
-        string newOpeName = "";
-
-        for (int i = 1; i < newName.Length - 1; i++) {
-
-            newOpeName += newName[i];
-        }
-        operatorName.text = newOpeName;
-    }
-
+    //Load syntaxe Tree in a recursive way
     Pin RecNodeSynthTree(ABNode node)
     {
         GameObject proxy = null;
@@ -249,8 +232,7 @@ public class MCEditorManager : MonoBehaviour {
         {
             proxy = Instantiate<GameObject>(parameterPrefab);
             proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
-
-            //TODO value parameter
+            
             Text paramName = proxy.GetComponentInChildren<Text>();            
             if(node is ABParam<ABText>) {
                 paramName.text = ((ABParam<ABText>)node).Value.ToString();
@@ -279,13 +261,7 @@ public class MCEditorManager : MonoBehaviour {
         return pin;
     }
 
-    void CreateTransitionSyntaxTree(Pin start, Pin end) {
-        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
-        proxyABTransition.StartPosition = start;
-        proxyABTransition.EndPosition = end;
-    }
-
-    void CreateProxyTransitions()
+    void LoadProxyTransitions()
     {
         ProxyABTransition proxyABTransition;
 
@@ -294,7 +270,7 @@ public class MCEditorManager : MonoBehaviour {
         for (int i = 0; i < AbModel.Transitions.Count; i++) {
             proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
 
-            pinList = CreatePinsStates(i);
+            pinList = LoadPinsStates(i);
 
             proxyABTransition.StartPosition = pinList[0];
             proxyABTransition.EndPosition = pinList[1];
@@ -308,15 +284,7 @@ public class MCEditorManager : MonoBehaviour {
         }         
     }
 
-    void CreatePinTransition(ProxyABTransition proxyABTransition)
-    {
-        Pin condition = Instantiate<Pin>(pinPrefab);
-        condition.IsGateOperator = true;
-        condition.transform.parent = proxyABTransition.transform;
-        proxyABTransition.Condition = condition;        
-    }
-
-    List<Pin> CreatePinsStates(int curTransition)
+    List<Pin> LoadPinsStates(int curTransition)
     {
         List<Pin> pinList = new List<Pin>();
 
@@ -340,7 +308,26 @@ public class MCEditorManager : MonoBehaviour {
         
         return pinList;
     }
-    
+
+    /************** PROXY CREATION FUNCTIONS **************/
+
+    // In a syntaxe tree a transition don't need a pin ( only for connect syntaxe tree to action or transition between state and action/state)
+    void CreateTransitionSyntaxTree(Pin start, Pin end)
+    {
+        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
+        proxyABTransition.StartPosition = start;
+        proxyABTransition.EndPosition = end;
+    }
+
+    //Create pin for connect a syntaxe tree on a transition
+    void CreatePinTransition(ProxyABTransition proxyABTransition)
+    {
+        Pin condition = Instantiate<Pin>(pinPrefab);
+        condition.IsGateOperator = true;
+        condition.transform.parent = proxyABTransition.transform;
+        proxyABTransition.Condition = condition;
+    }
+
     public Pin CreatePinState(Transform state,bool isAction,bool isStart, [Optional] int curTransition){
         Pin pin;
         pin = Instantiate<Pin>(pinPrefab);
@@ -368,8 +355,6 @@ public class MCEditorManager : MonoBehaviour {
 
     Pin CreatePinSynthTree(Transform node, bool isOperator)
     {
-
-        //TODO positionner les pins correctement
         Pin pin;
         pin = Instantiate<Pin>(pinPrefab);
         pin.transform.parent = node;
@@ -380,42 +365,16 @@ public class MCEditorManager : MonoBehaviour {
         if (isOperator)
         {
             newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);
-            //newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
         }
         else
         {
-            newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);
-            //newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
+            newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);            
         }
         pin.transform.position = newPos;
         return pin;
     }
 
-    void DisplayStates() {
-        for(int i=0; i< proxyStates.Count; i++) {
-            proxyStates[i].transform.position = new Vector3(proxyStates[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyStates[i].transform.position.y+ UnityEngine.Random.Range(-5,5), proxyStates[i].transform.position.z);
-        }
-    }
-
-    void DisplayActions() {
-        for (int i = 0; i < proxyActions.Count; i++) {
-            proxyActions[i].transform.position = new Vector3(proxyActions[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyActions[i].transform.position.y + UnityEngine.Random.Range(-5, 5), proxyActions[i].transform.position.z);
-        }
-    }
-
-    void DisplayOperators() {
-        
-        for (int i = 0; i < proxyOperator.Count; i++) {
-            proxyOperator[i].transform.position = new Vector3(proxyOperator[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyOperator[i].transform.position.y + UnityEngine.Random.Range(-5, 5), 0);
-        }
-    }
-
-    void DisplayParameters() {
-        for (int i = 0; i < proxyParam.Count; i++) {
-            proxyParam[i].transform.position = new Vector3(proxyOperator[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyParam[i].transform.position.y + UnityEngine.Random.Range(-5, 5), proxyParam[i].transform.position.z);
-        }
-    }
-
+    /************** SAVE FUNCTION **************/
 
     void Save_MC()
     {
@@ -452,10 +411,7 @@ public class MCEditorManager : MonoBehaviour {
         Debug.Log("Save MC");
     }
 
-    void Select()
-    {
-
-    }
+    /************** EDITOR FUNCTIONS **************/
 
     void CreateTransition(Pin start, Pin end)
     {
@@ -501,6 +457,11 @@ public class MCEditorManager : MonoBehaviour {
         Debug.Log(AbModel.Transitions.Count.ToString());
     }
 
+    void Select()
+    {
+
+    }
+
     void DeleteTransition()
     {
 
@@ -530,4 +491,56 @@ public class MCEditorManager : MonoBehaviour {
 
     }
 
+
+    /************** DISPLAY FUNCTIONS **************/
+
+    void DisplayStates()
+    {
+        for (int i = 0; i < proxyStates.Count; i++)
+        {
+            proxyStates[i].transform.position = new Vector3(proxyStates[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyStates[i].transform.position.y + UnityEngine.Random.Range(-5, 5), proxyStates[i].transform.position.z);
+        }
+    }
+
+    void DisplayActions()
+    {
+        for (int i = 0; i < proxyActions.Count; i++)
+        {
+            proxyActions[i].transform.position = new Vector3(proxyActions[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyActions[i].transform.position.y + UnityEngine.Random.Range(-5, 5), proxyActions[i].transform.position.z);
+        }
+    }
+
+    void DisplayOperators()
+    {
+
+        for (int i = 0; i < proxyOperator.Count; i++)
+        {
+            proxyOperator[i].transform.position = new Vector3(proxyOperator[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyOperator[i].transform.position.y + UnityEngine.Random.Range(-5, 5), 0);
+        }
+    }
+
+    void DisplayParameters()
+    {
+        for (int i = 0; i < proxyParam.Count; i++)
+        {
+            proxyParam[i].transform.position = new Vector3(proxyOperator[i].transform.position.x + UnityEngine.Random.Range(-5, 5), proxyParam[i].transform.position.y + UnityEngine.Random.Range(-5, 5), proxyParam[i].transform.position.z);
+        }
+    }
+
+    void SetNodeName(GameObject proxy, ABNode node)
+    {
+
+        Text operatorName = proxy.GetComponentInChildren<Text>();
+        string opeName = node.ToString();
+        char splitter = '_';
+        string[] newName = opeName.Split(splitter);
+        string newOpeName = "";
+
+        for (int i = 1; i < newName.Length - 1; i++)
+        {
+
+            newOpeName += newName[i];
+        }
+        operatorName.text = newOpeName;
+    }
 }
