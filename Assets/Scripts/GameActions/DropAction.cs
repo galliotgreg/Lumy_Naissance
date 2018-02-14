@@ -13,7 +13,7 @@ public class DropAction : GameAction {
 			// Check if the player close to the home
 			// TODO What is the range?
 			Debug.LogWarning( "TODO" );
-			//What is the range ? Now hard coded : 10
+            Debug.Log("DROP THE MIC"); 
 			if( (this.agentAttr.CurPos - this.agentEntity.Home.Location).magnitude <= 1 ){
 				// Close to home
 				// Destroy object
@@ -22,15 +22,14 @@ public class DropAction : GameAction {
 				// Add to the home
 				Color32 color = _resource.Color;
 
-				if ( color.Equals( new Color32(255, 0, 0, 1) ) ){
+				if ( color.Equals( new Color32(255, 0, 0, 255) ) ){
 					this.agentEntity.Home.RedResAmout++;
-				}else if( color.Equals( new Color32(0, 255, 0, 1) ) ){
+				}else if( color.Equals( new Color32(0, 255, 0, 255) ) ){
 					this.agentEntity.Home.GreenResAmout++;
-				}else if( color.Equals( new Color32(0, 0, 255, 1) ) ){
+				}else if( color.Equals( new Color32(0, 0, 255, 255) ) ){
 					this.agentEntity.Home.BlueResAmout++;
 				}
-				// TODO What to do for incolore ?
-				Debug.LogWarning( "TODO" );
+				
 			}
 			else{
 				// Wherever else
@@ -49,7 +48,17 @@ public class DropAction : GameAction {
 
 	protected override void executeAction ()
 	{
+		return;
+	}
+
+	protected override void activateAction ()
+	{
 		Drop();
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
 	}
 
 	#endregion

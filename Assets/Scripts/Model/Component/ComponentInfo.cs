@@ -11,9 +11,7 @@ public class ComponentInfo {
     [SerializeField]
     private Color32 color;
     [SerializeField]
-    private float prodCost;
-    [SerializeField]
-    private float buyCost;
+    private int prodCost;
 
     //Passive Buffs
     [SerializeField]
@@ -103,7 +101,7 @@ public class ComponentInfo {
         }
     }
 
-    public float ProdCost
+    public int ProdCost
     {
         get
         {
@@ -112,18 +110,6 @@ public class ComponentInfo {
         set
         {
             prodCost = value;
-        }
-    }
-
-    public float BuyCost
-    {
-        get
-        {
-            return buyCost;
-        }
-        set
-        {
-            buyCost = value;
         }
     }
 

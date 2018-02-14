@@ -28,7 +28,7 @@ public class StrikeAction : GameAction {
 
 	protected override void executeAction ()
 	{
-		if( target is GameObject ){
+		if( target is GameObject && target != null ){
 			AgentEntity targetAgent = target.GetComponent<AgentEntity>();
 
 			if( targetAgent != null ){
@@ -44,5 +44,16 @@ public class StrikeAction : GameAction {
 			}
 		}
 	}
+
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
 	#endregion
 }

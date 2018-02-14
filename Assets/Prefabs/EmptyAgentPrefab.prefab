@@ -84,7 +84,6 @@ GameObject:
   - component: {fileID: 114743776689603538}
   - component: {fileID: 114557014208587398}
   - component: {fileID: 114238049092781280}
-  - component: {fileID: 114797667755122866}
   - component: {fileID: 33639599402962088}
   - component: {fileID: 23608124313498414}
   - component: {fileID: 114892884380249330}
@@ -380,7 +379,10 @@ MonoBehaviour:
   color:
     serializedVersion: 2
     rgba: 0
-  tracePrefab: {fileID: 0}
+  tracePrefab: {fileID: 1987368783561748, guid: 226ac1543437f97408a787472e282d97,
+    type: 2}
+  traceUnitPrefab: {fileID: 1782979075011054, guid: 77eb03fd42803084daee13c2fc694898,
+    type: 2}
 --- !u!114 &114743776689603538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -480,6 +482,7 @@ MonoBehaviour:
   coolDownActivate: 1
   coolDownTime: 0.1
   path: []
+  currentPathIndex: 0
 --- !u!195 &195848833984645618
 NavMeshAgent:
   m_ObjectHideFlags: 1

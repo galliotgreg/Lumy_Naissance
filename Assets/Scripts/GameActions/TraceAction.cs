@@ -11,6 +11,8 @@ public class TraceAction : GameAction {
 
 	[SerializeField]
 	private GameObject tracePrefab;
+	[SerializeField]
+	private GameObject traceUnitPrefab;
 
 	public Vector3[] Path {
 		get {
@@ -37,27 +39,32 @@ public class TraceAction : GameAction {
 		this.CoolDownActivate = false;
 	}
 
-	protected override void executeAction ()
+	protected override void executeAction (){}
+
+	protected override void activateAction ()
 	{
-		// Create Tracing Object
+		// TraceScript
 		if( tracePrefab != null ){
 			GameObject traceObject = Instantiate( tracePrefab, this.transform.position, this.transform.rotation );
 			TraceScript traceScript = traceObject.GetComponent<TraceScript>();
-			if( traceScript != null ){
-				traceScript.Color = this.color;
-				traceScript.transform.position = this.transform.position;
-				Unit_GameObj_Manager.instance.addTrace( traceScript );
+			if (traceScript != null) {
+				if (path.Length == 1) {
+					traceScript.CreateTrace (color, AgentBehavior.worldToVec2 (this.transform.position), AgentBehavior.worldToVec2 (path [0]), agentEntity.Authority, traceUnitPrefab);
+				} else {
+					Vector2[] convertedPath = new Vector2[ path.Length ];
+					for (int i = 0; i < path.Length; i++) {
+						convertedPath [i] = AgentBehavior.worldToVec2 ( path[i] );
+					}
+
+					traceScript.CreateTrace (color, AgentBehavior.worldToVec2 (this.transform.position), convertedPath, agentEntity.Authority, traceUnitPrefab);
+				}
+
+				Unit_GameObj_Manager.instance.addTrace ( traceScript );
 			}
 		}
-
-		// Update Position
-		if (path.Length > 0)
-		{
-			agentAttr.TrgPos = path[0];
-			agentAttr.transform.position = GotoAction.moveTo( agentAttr, this.GetComponent<UnityEngine.AI.NavMeshAgent>() );
-			//agentAttr.CurPos = new Vector2( agentAttr.transform.position.x, agentAttr.transform.position.z );
-		}
 	}
+
+	protected override void deactivateAction (){}
 
 	#endregion
 }

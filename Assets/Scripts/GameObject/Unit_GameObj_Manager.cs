@@ -29,7 +29,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	Dictionary<PlayerAuthority,HomeScript> homes = new Dictionary<PlayerAuthority, HomeScript>();
 	List<ResourceScript> resources = new List<ResourceScript>();
-	Dictionary<Color32, List<TraceScript>> traces = new Dictionary<Color32, List<TraceScript>>();
+	Dictionary<PlayerAuthority, List<TraceScript>> traces = new Dictionary<PlayerAuthority, List<TraceScript>>();
 
 	#region Properties
 	public List<HomeScript> Homes {
@@ -54,7 +54,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		}
 	}
 
-	public Dictionary<Color32, List<TraceScript>> Traces {
+	public Dictionary<PlayerAuthority, List<TraceScript>> Traces {
 		get {
 			return traces;
 		}
@@ -97,12 +97,14 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	public bool addTrace( TraceScript trace ){
-		if (!this.traces.ContainsKey (trace.Color)) {
-			this.traces.Add ( trace.Color, new List<TraceScript>() );
-		}
-		if( !this.traces[trace.Color].Contains( trace ) ){
-			this.traces[trace.Color].Add( trace );
+		if (!this.traces.ContainsKey (trace.Authority)) {
+			this.traces.Add (trace.Authority, new List<TraceScript> (){ trace });
 			return true;
+		} else {
+			if (!this.traces [trace.Authority].Contains (trace)) {
+				this.traces[trace.Authority].Add (trace);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -132,10 +134,13 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		List<TraceScript> resultList = new List<TraceScript>();
 
 		float agentRange = agent.Context.Model.VisionRange;
-		foreach (Color32 color in this.traces.Keys) {
-			foreach (TraceScript trace in this.traces[color]) {
-				if( Vector2.Distance(agent.Context.Model.CurPos, trace.Location) <= agentRange ){
-					resultList.Add (trace);
+		if (this.traces.ContainsKey (agent.Authority)) {
+			foreach (TraceScript trace in this.traces[agent.Authority]) {
+				foreach (Vector2 tracePos in trace.VisualPoints) {
+					if (Vector2.Distance (agent.Context.Model.CurPos, tracePos) <= agentRange) {
+						resultList.Add (trace);
+						break;
+					}
 				}
 			}
 		}
@@ -194,12 +199,12 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	public GameObject getUnit( int key ){
 		foreach( AgentEntity unit in homes[ PlayerAuthority.Player1 ].getPopulation() ){
-			if( unit.Context.Key == key ){
+			if( unit.Context.Model.Key == key ){
 				return unit.gameObject;
 			}
 		}
 		foreach( AgentEntity unit in homes[ PlayerAuthority.Player2 ].getPopulation() ){
-			if( unit.Context.Key == key ){
+			if( unit.Context.Model.Key == key ){
 				return unit.gameObject;
 			}
 		}
@@ -220,8 +225,8 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	public bool destroyTrace( TraceScript trace ){
-		if (this.traces.ContainsKey (trace.Color)) {
-			if( this.traces[trace.Color].Remove( trace ) ){
+		if ( this.traces.ContainsKey (trace.Authority) ) {
+			if (this.traces [trace.Authority].Remove(trace)) {
 				Destroy( trace.gameObject );
 				return true;
 			}

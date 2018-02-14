@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class AgentContext : MonoBehaviour
 {
-	// GameObject Identification
-	[AttrName(Identifier = "key")]
-	[SerializeField]
-	private int key;
-
     [BindParam(Identifier = "self")]
     [SerializeField]
     private GameObject self;
@@ -127,24 +122,17 @@ public class AgentContext : MonoBehaviour
             traces = value;
         }
     }
-
-	public int Key {
-		get {
-			return key;
-		}
-	}
 	#endregion
 
 	void Awake(){
-		key = this.GetHashCode();
-
-		this.model = gameObject.GetComponent<AgentScript>();
+		this.model = self.GetComponent<AgentScript>();
 
 		setModelValues ();
     }
 
     // Use this for initialization
-    void Start(){}
+    void Start(){
+	}
 
     // Update is called once per frame
     void Update()
@@ -158,7 +146,7 @@ public class AgentContext : MonoBehaviour
 		this.Traces = extractGameObj( Unit_GameObj_Manager.instance.tracesInRange( this.entity ).ToArray() );
     }
 
-	void setModelValues(){
+	public void setModelValues(){
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
 		// vitality
@@ -181,11 +169,10 @@ public class AgentContext : MonoBehaviour
 		this.model.PickRange = 0;
 
 		// ProdCost
-		this.model.ProdCost = 0;
-		// BuyCost
-		this.model.BuyCost = 0;
+		AgentScript.ResourceCost cost = getCost( agentComponents );
+		this.model.ProdCost = cost.Resources;
 		// layTimeCost
-		this.model.LayTimeCost = 0;
+		this.model.LayTimeCost = getCooldown( agentComponents );
 		// visionRange
 		this.model.VisionRange = 0;
 
@@ -201,20 +188,13 @@ public class AgentContext : MonoBehaviour
 			Debug.LogWarning( "TODO : pickRange = visionRange" );
 			this.model.PickRange += comp.VisionRange;
 
-			this.model.ProdCost += comp.ProdCost;
-			this.model.BuyCost += comp.BuyCost;
 			this.model.VisionRange += comp.VisionRange;
 		}
-		this.model.LayTimeCost = 0.5f * agentComponents.Length;
+
+		this.model.Vitality = this.model.VitalityMax;
 
 		// TODO test : remove
-		if (this.model.ProdCost <= 0) {
-			this.model.ProdCost = 1;
-		}
-		if (this.model.BuyCost <= 0) {
-			this.model.BuyCost = 1;
-		}
-		if (this.model.LayTimeCost<= 0) {
+		/*if (this.model.LayTimeCost<= 0) {
 			this.model.LayTimeCost = 1;
 		}
 		if (this.model.VisionRange<= 0) {
@@ -222,9 +202,7 @@ public class AgentContext : MonoBehaviour
 		}
 		if (this.model.AtkRange<= 0) {
 			this.model.AtkRange = 1;
-		}
-
-		this.model.Vitality = this.model.VitalityMax;
+		}*/
 	}
 
 	GameObject[] extractGameObj( MonoBehaviour[] list ){
@@ -233,5 +211,48 @@ public class AgentContext : MonoBehaviour
 			result [i] = list [i].gameObject;
 		}
 		return result;
+	}
+
+	GameObject[] extractGameObj( AgentEntity[] list ){
+		GameObject[] result = new GameObject[ list.Length ];
+		for( int i = 0; i < list.Length; i++ ){
+			result [i] = list [i].Context.Self;
+		}
+		return result;
+	}
+
+	/// <summary>
+	/// Calculates the cooldown for laying a unit
+	/// </summary>
+	/// <param name="agentComponents">Agent's Components</param>
+	/// <returns>The cooldown.</returns>
+	float getCooldown( AgentComponent[] agentComponents ){
+		int nbComposants = agentComponents.Length;
+		return 0.5f * nbComposants;
+	}
+
+	/// <summary>
+	/// Obtains the cost associated to a template
+	/// </summary>
+	/// <param name="agentComponents">Agent's Components</param>
+	/// <returns>The cost.</returns>
+	AgentScript.ResourceCost getCost( AgentComponent[] agentComponents ){
+		// TODO Change Cost Evaluation Method
+		AgentScript.ResourceCost resultCost = new AgentScript.ResourceCost();
+
+		foreach (AgentComponent component in agentComponents)
+		{
+			Color32 color = component.Color;
+			if (color.Equals(new Color32(255, 0, 0, 255)))
+				resultCost.addResource (ABColor.Color.Red, component.ProdCost);
+			else if (color.Equals(new Color32(0, 255, 0, 255)))
+				resultCost.addResource (ABColor.Color.Green, component.ProdCost);
+			else if (color.Equals(new Color32(0, 0, 255, 255)))
+				resultCost.addResource (ABColor.Color.Blue, component.ProdCost);
+			else
+				Debug.LogWarning("Component has no good color TODO Implement new strategy");
+		}
+
+		return resultCost;
 	}
 }

@@ -74,7 +74,7 @@ public class ABManager : MonoBehaviour {
             //Compute Action Parameters
 			List<IABType> actionParams = new List<IABType> ();
 
-			if (action != null) {
+			if (action != null && action.Parameters != null) {
 				for (int i = 0; i < action.Parameters.Length; i++) {
 					if (action.Parameters [i] is AB_TxtGate_Operator) {
 						IABType param =
@@ -83,6 +83,10 @@ public class ABManager : MonoBehaviour {
 					} else if (action.Parameters [i] is AB_VecGate_Operator) {
 						IABType param =
 							((AB_VecGate_Operator)action.Parameters [i]).Evaluate (context);
+						actionParams.Add (param);
+					} else if (action.Parameters [i] is AB_ColorGate_Operator) {
+						IABType param =
+							((AB_ColorGate_Operator)action.Parameters [i]).Evaluate (context);
 						actionParams.Add (param);
 					} else if (action.Parameters [i] is AB_RefGate_Operator) {
 						IABType param =
@@ -141,6 +145,21 @@ public class ABManager : MonoBehaviour {
         instance.AgentId = agent.Id;
         instances.Add(instance);
     }
+
+	/// <summary>
+	/// Remove the given agent from the system
+	/// </summary>
+	/// <param name="agent"></param>
+	public void UnregisterAgent(AgentEntity agent)
+	{
+		foreach (ABInstance instance in instances) {
+			if (instance.AgentId == agent.Id) {
+				instances.Remove (instance);
+				break;
+			}
+		}
+		agents.Remove (agent);
+	}
 
     private static string GetInputSubFolder(AgentEntity agent)
     {
@@ -356,7 +375,9 @@ public class ABManager : MonoBehaviour {
             MonoBehaviour[][] scripts = new MonoBehaviour[values.Length][];
             for (int i = 0; i < values.Length; i++)
             {
-                scripts[i] = values[i].GetComponents<MonoBehaviour>();
+				if (values [i] != null) {
+					scripts [i] = values [i].GetComponents<MonoBehaviour> ();
+				}
             }
             param = ABParamFactory.CreateRefTableParam(identifier, scripts);
         }

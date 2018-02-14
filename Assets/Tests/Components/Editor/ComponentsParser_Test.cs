@@ -39,7 +39,6 @@ public class ComponentsParser_Test {
 		Assert.AreEqual( "Pinces tranchantes", component.Name );
 		Assert.AreEqual( (Color32)UnityEngine.Color.red, component.Color );
 		Assert.AreEqual( 0, component.ProdCost );
-		Assert.AreEqual( 0, component.BuyCost );
 		Assert.AreEqual( true, component.EnablePickDrop );
 		Assert.AreEqual( 1, component.StrengthBuff );
 		Assert.AreEqual( 0, component.ActionSpeedBuff );
@@ -52,7 +51,6 @@ public class ComponentsParser_Test {
 		Assert.AreEqual( "Musculature Démoniaque", component.Name );
 		Assert.AreEqual( (Color32)UnityEngine.Color.red, component.Color );
 		Assert.AreEqual( 0, component.ProdCost );
-		Assert.AreEqual( 0, component.BuyCost );
 		Assert.AreEqual( false, component.EnablePickDrop );
 		Assert.AreEqual( false, component.EnableGotoHold );
 		Assert.AreEqual( 1, component.StrengthBuff );

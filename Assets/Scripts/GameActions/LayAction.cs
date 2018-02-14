@@ -6,8 +6,6 @@ public class LayAction : GameAction {
     [SerializeField]
     private string castName;
 
-    private int nbComposants = 0;
-
 	public string CastName
 	{
 		get
@@ -21,27 +19,15 @@ public class LayAction : GameAction {
 		}
 	}
 
-	class ResourceCost{
-		public float red;
-		public float green;
-		public float blue;
-
-		public ResourceCost(){
-			red = 0;
-			green = 0;
-			blue = 0;
-		}
-	}
-
 	private GameObject currentTemplate;
-	private ResourceCost currentCost;
+	private AgentScript.ResourceCost currentCost;
 
 	/// <summary>
 	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
 	/// </summary>
 	/// <param name="childTemplate">Child template</param>
 	/// <param name="cost">Cost</param>
-	private void Lay( GameObject childTemplate, ResourceCost cost )
+	private void Lay( GameObject childTemplate, AgentScript.ResourceCost cost )
     {
         GameObject child = Instantiate(
             childTemplate, this.transform.position, this.transform.rotation);
@@ -59,57 +45,13 @@ public class LayAction : GameAction {
 	/// Decreases the resources from the home.
 	/// </summary>
 	/// <param name="cost">Cost of the unit</param>
-	private void DecreaseResources ( ResourceCost cost )
+	private void DecreaseResources ( AgentScript.ResourceCost cost )
     {
 		HomeScript home = agentEntity.Home;
-		home.RedResAmout -= cost.red;
-		home.GreenResAmout -= cost.green;
-		home.BlueResAmout -= cost.blue;
+		home.RedResAmout -= cost.getResourceByColor( ABColor.Color.Red );
+		home.GreenResAmout -= cost.getResourceByColor( ABColor.Color.Green );
+		home.BlueResAmout -= cost.getResourceByColor( ABColor.Color.Blue );
     }
-
-	/// <summary>
-	/// Obtains the cost associated to a template
-	/// </summary>
-	/// <returns>The cost.</returns>
-	/// <param name="childTemplate">Child template.</param>
-	ResourceCost getCost( GameObject childTemplate ){
-		//Get Cost of the child
-		//Change Cost Evaluation Method
-		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
-		AgentComponent[] agentComponents = child.getAgentComponents();
-
-		ResourceCost resultCost = new ResourceCost();
-
-		foreach (AgentComponent component in agentComponents)
-		{
-			Color32 color = component.Color;
-            if (color.Equals(new Color32(255, 0, 0, 1)))
-                resultCost.red += component.ProdCost;
-            else if (color.Equals(new Color32(0, 255, 0, 1)))
-                resultCost.green += component.ProdCost;
-            else if (color.Equals(new Color32(0, 0, 255, 1)))
-                resultCost.blue += component.ProdCost;
-            else
-                Debug.LogWarning("Component has no good color TODO Implement new strategy");
-                
-            
-		}
-
-		return resultCost;
-	}
-
-	/// <summary>
-	/// Calculates the cooldown for laying a unit
-	/// </summary>
-	/// <returns>The cooldown.</returns>
-	/// <param name="childTemplate">Gameobject that represents the unit</param>
-	float getCooldown( GameObject childTemplate ){
-		AgentEntity child = childTemplate.GetComponent<AgentEntity>();
-		AgentComponent[] agentComponents = child.getAgentComponents();
-
-		nbComposants = agentComponents.Length;
-		return 0.5f * nbComposants;
-	}
 
 	/// <summary>
 	/// Check if the home has enough Resource
@@ -117,15 +59,15 @@ public class LayAction : GameAction {
 	/// <returns><c>true</c>, if there is enough resource, <c>false</c> otherwise.</returns>
 	/// <param name="childTemplate">Child template.</param>
 	/// <param name="cost">Cost of the template.</param>
-	private bool CheckResources ( GameObject childTemplate, ResourceCost cost )
+	private bool CheckResources ( GameObject childTemplate, AgentScript.ResourceCost cost )
 	{
 		HomeScript home = agentEntity.Home;
 		// Get ressources from Home || Change the method to calculate ressources
 
 		//Compare them and return bool
-		return (cost.red <= home.RedResAmout
-			&& cost.green <= home.GreenResAmout
-			&& cost.blue <= home.BlueResAmout);
+		return (cost.getResourceByColor( ABColor.Color.Red ) <= home.RedResAmout
+			&& cost.getResourceByColor( ABColor.Color.Green ) <= home.GreenResAmout
+			&& cost.getResourceByColor( ABColor.Color.Blue ) <= home.BlueResAmout);
 	}
     
 	#region implemented abstract members of GameAction
@@ -138,15 +80,26 @@ public class LayAction : GameAction {
 	protected override void executeAction ()
 	{
 		currentTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
+		AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
 
-		currentCost = getCost( currentTemplate );
+		currentCost = new AgentScript.ResourceCost( unitEntity.Context.Model.ProdCost );
 		if ( CheckResources( currentTemplate, currentCost ) ){
 			DecreaseResources( currentCost );
 
-			this.CoolDownTime = getCooldown(currentTemplate);
+			this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
 			// wait for cooldownTime
 			Invoke( "Lay", this.CoolDownTime );
 		}
+	}
+
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
 	}
 	#endregion
 }

@@ -33,6 +33,8 @@ public class AgentBehavior : MonoBehaviour
 
         set
         {
+			DisableActions();
+
             curAction = value;
 			if (curAction == null) {
 				curActionType = ActionType.None;
@@ -83,22 +85,20 @@ public class AgentBehavior : MonoBehaviour
 
     private void DisableActions()
     {
-		gotoAction.Activated = false;
-		traceAction.Activated = false;
-		layAction.Activated = false;
-		strikeAction.Activated = false;
-		pickAction.Activated = false;
-		dropAction.Activated = false;
+		gotoAction.deactivate ();
+		traceAction.deactivate ();
+		layAction.deactivate ();
+		strikeAction.deactivate ();
+		pickAction.deactivate ();
+		dropAction.deactivate ();
     }
 
 	private void executeAction(){
-		DisableActions();
-
 		//We arre between 2 IA frames
-		if (curActionParams == null)
+		/*if (curActionParams == null)
 		{
 			return;
-		}
+		}*/
 		// no Action
 		if (curAction == null)
 		{
@@ -109,7 +109,7 @@ public class AgentBehavior : MonoBehaviour
 		switch (curActionType)
 		{
 		case ActionType.Drop:
-			dropAction.Activated = true;
+			dropAction.activate ();
 			break;
 		case ActionType.Goto:
 			ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams [0]);
@@ -117,11 +117,11 @@ public class AgentBehavior : MonoBehaviour
 			for (int i = 0; i < path.Values.Length; i++)
 			{
 				ABVec abVec = path.Values[i];
-				Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
+				Vector3 vec3 = vec2ToWorld( new Vector2( abVec.X, abVec.Y ) );
 				gotoAction.Path[i] = vec3;
 			}
 
-			gotoAction.Activated = true;
+			gotoAction.activate ();
 			break;
 		case ActionType.Hit:
 			throw new System.NotImplementedException();
@@ -133,13 +133,13 @@ public class AgentBehavior : MonoBehaviour
 			ABText castName = ((ABText)curActionParams[0]);
 			layAction.CastName = castName.Value;
 
-			layAction.Activated = true;
+			layAction.activate ();
 			break;
 		case ActionType.Pick:
 			ABRef item = ((ABRef)curActionParams[0]);
 			pickAction.Item = Unit_GameObj_Manager.instance.getResource( Mathf.FloorToInt( ((ABScalar)item.GetAttr( "key" )).Value ) );
 
-			pickAction.Activated = true;
+			pickAction.activate ();
 			break;
 		case ActionType.Spread:
 			throw new System.NotImplementedException();
@@ -165,20 +165,29 @@ public class AgentBehavior : MonoBehaviour
 			for (int i = 0; i < tracePath.Values.Length; i++)
 			{
 				ABVec abVec = tracePath.Values[i];
-				Vector3 vec3 = new Vector3(abVec.X, abVec.Y);
+				Vector3 vec3 = vec2ToWorld( new Vector2( abVec.X, abVec.Y ) );
 				traceAction.Path[i] = vec3;
 			}
 
-			traceAction.Activated = true;
+			traceAction.activate ();
 			break;
 		case ActionType.Strike:
 			ABRef target = ((ABRef)curActionParams [0]);
-			strikeAction.Target = Unit_GameObj_Manager.instance.getUnit( Mathf.FloorToInt( ((ABScalar)target.GetAttr( "key" )).Value ) );
+			if (target != null) {
+				strikeAction.Target = Unit_GameObj_Manager.instance.getUnit (Mathf.FloorToInt (((ABScalar)target.GetAttr ("key")).Value));
+			}
 
-			strikeAction.Activated = true;
+			strikeAction.activate ();
 			break;
 		case ActionType.None:
 			break;
 		}
+	}
+
+	public static Vector2 worldToVec2( Vector3 point ){
+		return new Vector2 ( point.x, point.z );
+	}
+	public static Vector3 vec2ToWorld( Vector2 point ){
+		return new Vector3 ( point.x, 0, point.y );
 	}
 }
