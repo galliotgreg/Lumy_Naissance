@@ -62,9 +62,4 @@ public class ProxyABTransition : MonoBehaviour {
     Vector3 CalculABBGOPinPosition(Vector3 vec1, Vector3 vec2) {
         return new Vector3((vec1.x + vec2.x) / 2, (vec1.y + vec2.y) / 2, 0);
     }
-
-    public ProxyABTransition(ABTransition transition)
-    {
-        this.abTransition = transition;
-    }
 }
