@@ -116,7 +116,7 @@ public class LumyEditorManager : MonoBehaviour {
 
     void Update()
     {
-        Debug.Log("Update");
+
     }
 
     /// <summary>

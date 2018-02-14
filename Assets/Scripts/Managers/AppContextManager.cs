@@ -222,7 +222,7 @@ public class AppContextManager : MonoBehaviour
             content += "\n";
         }
         //Write cast hierarchy
-        content += "Cast, Parent,";
+        content += "Cast, Parent,\n";
         foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
         {
             Cast curCast = entry.Value;

@@ -32,10 +32,11 @@ public class ForkLumy : MonoBehaviour {
 
         //Invoquer le Forw via le Manager
         AppContextManager.instance.ForkCast();
+        CastesUIController.instance.CreateTree();
     }
 
     public void UIFork()
-    {
+    { 
         //Bloquer le lumy d'origine, qui n'est plus modifiable
         transform.parent.parent.Find("btn_Lumy").GetComponent<Button>().interactable = false;
         transform.parent.gameObject.SetActive(false);

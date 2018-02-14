@@ -50,7 +50,7 @@ public class CastesUIController : MonoBehaviour {
         CreateTree();
 	}
 
-    private void CreateTree()
+    public void CreateTree()
     {
         if (rootUICast != null)
         {
