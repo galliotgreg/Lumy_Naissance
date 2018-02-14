@@ -6,6 +6,7 @@ public class ProxyABParam<T> : MonoBehaviour, IProxyABParam{
 
     private ABParam<T> abParam;
     private Pin outcome;
+    private bool isLoaded = false;
 
     public string Identifier {
         get {
@@ -29,6 +30,19 @@ public class ProxyABParam<T> : MonoBehaviour, IProxyABParam{
         set
         {
             outcome = value;
+        }
+    }
+
+    public bool IsLoaded
+    {
+        get
+        {
+            return isLoaded;
+        }
+
+        set
+        {
+            isLoaded = value;
         }
     }
 

@@ -311,9 +311,20 @@ public class MCEditorManager : MonoBehaviour {
 
     /************** PROXY CREATION FUNCTIONS **************/
 
-    void CreateOperator()
+    GameObject CreateOperator()
     {
+        GameObject ope; 
+        ope = Instantiate<GameObject>(operatorPrefab);
+        proxyOperators.Add(ope);
+        return ope;
+    }
 
+    GameObject CreateParam()
+    {
+        GameObject param;
+        param = Instantiate<GameObject>(parameterPrefab);
+        proxyOperators.Add(param);
+        return param;
     }
 
     // In a syntaxe tree a transition don't need a pin ( only for connect syntaxe tree to action or transition between state and action/state)
@@ -365,7 +376,7 @@ public class MCEditorManager : MonoBehaviour {
         return pin;
     }
 
-    Pin CreatePinSynthTree(Transform node, bool isOperator)
+    public Pin CreatePinSynthTree(Transform node, bool isOperator)
     {
         Pin pin;
         pin = CreatePin(node);
