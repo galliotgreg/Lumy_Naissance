@@ -375,7 +375,9 @@ public class ABManager : MonoBehaviour {
             MonoBehaviour[][] scripts = new MonoBehaviour[values.Length][];
             for (int i = 0; i < values.Length; i++)
             {
-                scripts[i] = values[i].GetComponents<MonoBehaviour>();
+				if (values [i] != null) {
+					scripts [i] = values [i].GetComponents<MonoBehaviour> ();
+				}
             }
             param = ABParamFactory.CreateRefTableParam(identifier, scripts);
         }

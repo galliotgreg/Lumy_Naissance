@@ -173,7 +173,9 @@ public class AgentBehavior : MonoBehaviour
 			break;
 		case ActionType.Strike:
 			ABRef target = ((ABRef)curActionParams [0]);
-			strikeAction.Target = Unit_GameObj_Manager.instance.getUnit( Mathf.FloorToInt( ((ABScalar)target.GetAttr( "key" )).Value ) );
+			if (target != null) {
+				strikeAction.Target = Unit_GameObj_Manager.instance.getUnit (Mathf.FloorToInt (((ABScalar)target.GetAttr ("key")).Value));
+			}
 
 			strikeAction.activate ();
 			break;
