@@ -20,7 +20,7 @@ public class ProxyABModel : MonoBehaviour {
     // Use this for initialization
     void Start () {
         this.proxyStates = new List<ProxyABState>();
-        CreateProxyStates();
+        //CreateProxyStates();
 
         this.proxyTransitions = new List<ProxyABTransition>();
         this.pins = new List<Pin>();
@@ -28,15 +28,15 @@ public class ProxyABModel : MonoBehaviour {
         CreateProxyTransitions();               
 	}
 	
-    void CreateProxyStates()
+   /* void CreateProxyStates()
     {
         foreach (ABState state in this.abModel.States)
         {
-            ProxyABState proxyState = new ProxyABState(state);
+            //ProxyABState proxyState = new ProxyABState(state);
             this.proxyStates.Add(proxyState);
             CreatePins(state.Outcomes);
         }
-    }
+    }*/
 
     void CreateProxyTransitions()
     {

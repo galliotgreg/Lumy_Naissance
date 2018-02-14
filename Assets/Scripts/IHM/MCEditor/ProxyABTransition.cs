@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ProxyABTransition : MonoBehaviour {    
     private ABTransition abTransition;
-    private Pin startPosition;
-    private Pin endPosition;
-    private Pin condition;
+    public  Pin startPosition;
+    public Pin endPosition;    
+    
+    // ABBoolGateOperator to add a syntaxe Tree
+    public Pin condition;
 
     public Pin StartPosition {
         get {

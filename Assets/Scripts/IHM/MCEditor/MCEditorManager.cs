@@ -6,12 +6,16 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using System.Runtime.InteropServices;
+using System.Text;
+
 public class MCEditorManager : MonoBehaviour {
 
     /// <summary>
     /// The static instance of the Singleton for external access
     /// </summary>
     public static MCEditorManager instance = null;
+    private int curStateId;
+    private int curTransId;
 
     //Templates & Prefabs
     [SerializeField]
@@ -31,8 +35,7 @@ public class MCEditorManager : MonoBehaviour {
 
     private ABModel abModel;
 
-    private Dictionary<ABState,ProxyABState> statesDictionnary;
-    //private Dictionary<ABAction, ProxyABAction> actionsDictionnary;
+    private Dictionary<ABState,ProxyABState> statesDictionnary;    
     private Dictionary<ABState, ProxyABAction> actionsDictionnary;
 
     private List<ProxyABState> proxyStates;
@@ -43,6 +46,13 @@ public class MCEditorManager : MonoBehaviour {
     //private List<IProxyABOperator> proxyOperator;//ProxyABOperator
     private List<GameObject> proxyOperator;
     private List<GameObject> proxyParam;
+
+
+    /**TEST SAVE**/
+    ProxyABAction abAction = null;
+    ProxyABAction abAction2 = null;
+    ProxyABState abState = null;
+    ProxyABState abState2 = null;
 
 
     /// <summary>
@@ -61,10 +71,15 @@ public class MCEditorManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+    }    
+
+    public ABModel AbModel
+    {
+        get
+        {
+            return abModel;
+        }
     }
-
-
-    private ProxyABModel proxyABModel;
 
     // Use this for initialization
     // Use this for initialization
@@ -73,25 +88,53 @@ public class MCEditorManager : MonoBehaviour {
         proxyStates = new List<ProxyABState>();
         proxyTransitions = new List<ProxyABTransition>();
         pins = new List<Pin>(); //ProxyABGateOperator
-        //proxyParam = new List<IProxyABParam>(); //ProxyABParam
         proxyParam = new List<GameObject>(); //ProxyABParam
-        //proxyOperator = new List<IProxyABOperator>();//ProxyABOperator
         proxyOperator = new List<GameObject>();
         proxyActions = new List<ProxyABAction>();
-        //actionsDictionnary = new Dictionary<ABAction, ProxyABAction>();
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
+        /**TEST LOAD**/
         SetupModel();
+
+        /**TEST SAVE**/
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Save_MC();
+        } else if (Input.GetKeyDown(KeyCode.A))
+        {
+            abAction = Instantiate<ProxyABAction>(actionPrefab);
+            abAction2 = Instantiate<ProxyABAction>(actionPrefab);
+        }else if (Input.GetKeyDown(KeyCode.Z))
+        {
+            CreateTransition(abAction.GetComponentInChildren<Pin>(), abAction2.GetComponentInChildren<Pin>());
+        }else if (Input.GetKeyDown(KeyCode.E))
+        {
+            abState = Instantiate<ProxyABState>(statePrefab);
+            abState2 = Instantiate<ProxyABState>(statePrefab);
+        } else if (Input.GetKeyDown(KeyCode.R))
+        {
+            CreateTransition(abState.GetComponentInChildren<Pin>(), abState2.GetComponentInChildren<Pin>());
+        }
+        else if (Input.GetKeyDown(KeyCode.T))
+        {
+            abState = Instantiate<ProxyABState>(statePrefab);
+            abAction = Instantiate<ProxyABAction>(actionPrefab);
+        }
+        else if (Input.GetKeyDown(KeyCode.Y))
+        {
+            CreateTransition(abState.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
+        }
     }
 
     private void SetupModel()
     {
         abModel = LoadMC();
         CreateProxyStates();
- 
-        //DisplayStates();
-        //DisplayOperators();
-        //DisplayParameters();
+
         CreateProxyTransitions();
     }
 
@@ -107,17 +150,18 @@ public class MCEditorManager : MonoBehaviour {
 
         ProxyABState proxyState;
         ProxyABAction proxyAction;
-        foreach (ABState state in this.abModel.States)
+        foreach (ABState state in this.AbModel.States)
         {
 
             Pin start;
             if (state.Action != null)
             {
                 proxyAction = Instantiate<ProxyABAction>(actionPrefab);
+                proxyAction.IsLoaded = true;
                 proxyAction.transform.position = new Vector3(proxyAction.transform.position.x + UnityEngine.Random.Range(-5, 5), proxyAction.transform.position.y + UnityEngine.Random.Range(-5, 5), proxyAction.transform.position.z);
                 Text actionName = proxyAction.GetComponentInChildren<Text>();
                 actionName.text = state.Name;
-                proxyAction.GetComponent<ProxyABAction>().AbAction = state.Action;
+                //proxyAction.GetComponent<ProxyABAction>().AbAction = state.Action;
 
                 proxyActions.Add(proxyAction);
                 actionsDictionnary.Add(state, proxyAction);
@@ -129,8 +173,7 @@ public class MCEditorManager : MonoBehaviour {
                     start.transform.position = proxyAction.transform.position;
                     float radius = proxyAction.transform.localScale.y / 2;
                     start.transform.position = new Vector3(start.transform.position.x, start.transform.position.y + radius, start.transform.position.z);
-                    pins.Add(start); 
-                    //DeploySyntaxeTree(param.Inputs);
+                    pins.Add(start);                     
                     foreach(ABNode node in param.Inputs)
                     {
                         Pin end = RecNodeSynthTree(node);
@@ -140,6 +183,7 @@ public class MCEditorManager : MonoBehaviour {
             }
             else {
                 proxyState = Instantiate<ProxyABState>(statePrefab);
+                proxyState.IsLoaded = true;
                 proxyState.transform.position = new Vector3(proxyState.transform.position.x + UnityEngine.Random.Range(-5, 5), proxyState.transform.position.y + UnityEngine.Random.Range(-5, 5), proxyState.transform.position.z);
                 Text stateName = proxyState.GetComponentInChildren<Text>();
                 stateName.text = state.Name;
@@ -229,40 +273,10 @@ public class MCEditorManager : MonoBehaviour {
             }
 
             proxyParam.Add(proxy);
-            
 
-                /*pin = CreatePinSynthTree(proxy.transform, true);
-                Renderer rend = pin.GetComponent<Renderer>();
-                rend.material.shader = Shader.Find("Specular");
-                rend.material.SetColor("_SpecColor", Color.red);*/
             }
         pin = CreatePinSynthTree(proxy.transform, true);
         return pin;
-    }
-
-
-    void DeploySyntaxeTree(ABNode[] nodes)
-    {
-        foreach (ABNode node in nodes)
-        {
-            if(node is IABOperator)
-            {
-                GameObject ope = Instantiate<GameObject>(operatorPrefab);
-                Text operatorName = ope.GetComponentInChildren<Text>();
-                operatorName.text = node.Output.ToString();
-                proxyOperator.Add(ope);
-               
-                DeploySyntaxeTree(((IABOperator)node).Inputs);
-
-            } else if (node is IABParam)
-            {
-                GameObject param = Instantiate<GameObject>(parameterPrefab);
-                Text paramName = param.GetComponentInChildren<Text>();
-                paramName.text = node.GetType().ToString();
-                proxyParam.Add(param);
-
-            }                    
-        }
     }
 
     void CreateTransitionSyntaxTree(Pin start, Pin end) {
@@ -277,7 +291,7 @@ public class MCEditorManager : MonoBehaviour {
 
         List<Pin> pinList;
         Pin condition = null;
-        for (int i = 0; i < abModel.Transitions.Count; i++) {
+        for (int i = 0; i < AbModel.Transitions.Count; i++) {
             proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
 
             pinList = CreatePinsStates(i);
@@ -285,40 +299,41 @@ public class MCEditorManager : MonoBehaviour {
             proxyABTransition.StartPosition = pinList[0];
             proxyABTransition.EndPosition = pinList[1];
 
-            condition = Instantiate<Pin>(pinPrefab);
-            condition.IsGateOperator = true;
-            condition.transform.parent = proxyABTransition.transform;
-            proxyABTransition.Condition = condition;
+            CreatePinTransition(proxyABTransition);
 
-            if(abModel.Transitions[i].Condition != null) {
-                
-                Pin end = RecNodeSynthTree(abModel.Transitions[i].Condition.Inputs[0]);
-                CreateTransitionSyntaxTree(condition, end);
-                
+            if (AbModel.Transitions[i].Condition != null) {                
+                Pin end = RecNodeSynthTree(AbModel.Transitions[i].Condition.Inputs[0]);
+                CreateTransitionSyntaxTree(proxyABTransition.Condition, end);                
             }
         }         
+    }
+
+    void CreatePinTransition(ProxyABTransition proxyABTransition)
+    {
+        Pin condition = Instantiate<Pin>(pinPrefab);
+        condition.IsGateOperator = true;
+        condition.transform.parent = proxyABTransition.transform;
+        proxyABTransition.Condition = condition;        
     }
 
     List<Pin> CreatePinsStates(int curTransition)
     {
         List<Pin> pinList = new List<Pin>();
 
-        ProxyABState startState = statesDictionnary[abModel.Transitions[curTransition].Start];
-
-        //pins.Add(CreatePin(startState.transform,false,curTransition)); //TODO peut etre a jeter
+        ProxyABState startState = statesDictionnary[AbModel.Transitions[curTransition].Start];        
 
         pinList.Add(CreatePinState(startState.transform, false,true, curTransition));
 
-        if (statesDictionnary.ContainsKey(abModel.Transitions[curTransition].End)) {
+        if (statesDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
 
-            ProxyABState endState = statesDictionnary[abModel.Transitions[curTransition].End];
+            ProxyABState endState = statesDictionnary[AbModel.Transitions[curTransition].End];
 
 
             pinList.Add(CreatePinState(endState.transform, false,false, curTransition));
         }
-        else if (actionsDictionnary.ContainsKey(abModel.Transitions[curTransition].End)) {
+        else if (actionsDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
 
-            ProxyABAction endState = actionsDictionnary[abModel.Transitions[curTransition].End];
+            ProxyABAction endState = actionsDictionnary[AbModel.Transitions[curTransition].End];
 
             pinList.Add(CreatePinState(endState.transform, true,false));
         }
@@ -326,7 +341,7 @@ public class MCEditorManager : MonoBehaviour {
         return pinList;
     }
     
-    Pin CreatePinState(Transform state,bool isAction,bool isStart, [Optional] int curTransition){
+    public Pin CreatePinState(Transform state,bool isAction,bool isStart, [Optional] int curTransition){
         Pin pin;
         pin = Instantiate<Pin>(pinPrefab);
         pin.transform.parent = state;
@@ -334,14 +349,16 @@ public class MCEditorManager : MonoBehaviour {
         float radiusState = state.localScale.y / 2;
         Vector3 newPos;
         if (isAction) {
+            pin.IsActionChild = true;
             newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
         }
         else {
+            pin.IsActionChild = false;
             if (isStart) {
-                newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / abModel.Transitions[curTransition].Start.Outcomes.Count)), pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / abModel.Transitions[curTransition].Start.Outcomes.Count)), pin.transform.position.z);
+                newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / Math.Max(1,AbModel.Transitions[curTransition].Start.Outcomes.Count))), pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / Math.Max(1, AbModel.Transitions[curTransition].Start.Outcomes.Count))), pin.transform.position.z);
             }
             else {
-                newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / abModel.Transitions[curTransition].End.Outcomes.Count)), pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / abModel.Transitions[curTransition].End.Outcomes.Count)), pin.transform.position.z);
+                newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / Math.Max(1,AbModel.Transitions[curTransition].End.Outcomes.Count))), pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / Math.Max(1, AbModel.Transitions[curTransition].End.Outcomes.Count))), pin.transform.position.z);
             }
             
         }
@@ -402,12 +419,86 @@ public class MCEditorManager : MonoBehaviour {
 
     void Save_MC()
     {
+        string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_TEST.csv";
+        StringBuilder csvcontent = new StringBuilder();
+        csvcontent.AppendLine("States,Name,Type");
+        foreach (ABState state in abModel.States)
+        {
+            if(state.Action != null)
+            {
+                csvcontent.AppendLine(state.Id + "," + state.Name + "," + "trigger{"+state.Action.Type.ToString().ToLower()+"}");
+            }
+            else
+            {
+                if (state.Id == 0)
+                {
+                    csvcontent.AppendLine(state.Id + "," + state.Name + ",Init");
+                } else
+                {
+                    csvcontent.AppendLine(state.Id + "," + state.Name + ",Inter");
+                }                
+            }               
+        }
+        csvcontent.AppendLine(",,");
+        csvcontent.AppendLine("Transitions,Start State,End State");
+        foreach(ABTransition trans in abModel.Transitions)
+        {
+            csvcontent.AppendLine(trans.Id + "," + trans.Start.Name + "," + trans.End.Name);
+        }
 
+        File.Delete(csvpath);
+        File.AppendAllText(csvpath, csvcontent.ToString());
+
+        Debug.Log("Save MC");
     }
 
     void Select()
     {
 
+    }
+
+    void CreateTransition(Pin start, Pin end)
+    {
+        ProxyABTransition trans = Instantiate<ProxyABTransition>(transitionPrefab);
+        trans.StartPosition = start;
+        trans.EndPosition = end;
+
+        ProxyABAction startActionParent;
+        ProxyABState startStateParent;
+        ProxyABAction endActionParent;
+        ProxyABState endStateParent;
+
+        if (start.IsActionChild)
+        {
+            startActionParent = start.GetComponentInParent<ProxyABAction>();
+            if (end.IsActionChild)
+            {
+                endActionParent = end.GetComponentInParent<ProxyABAction>();                
+                AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+            }
+            else
+            {
+                endStateParent = end.GetComponentInParent<ProxyABState>();
+                AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
+            }
+
+        } else
+        {
+            startStateParent = start.GetComponentInParent<ProxyABState>();
+            if (end.IsActionChild)
+            {
+                endActionParent = end.GetComponentInParent<ProxyABAction>();
+                AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
+            }
+            else
+            {
+                endStateParent = end.GetComponentInParent<ProxyABState>();
+                AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
+            }
+        }                                               
+        CreatePinTransition(trans);
+
+        Debug.Log(AbModel.Transitions.Count.ToString());
     }
 
     void DeleteTransition()

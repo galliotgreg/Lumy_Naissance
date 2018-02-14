@@ -55,7 +55,7 @@ public class ABModel {
         }
     }
 
-	ABState getState( int stateID ){
+	public ABState getState( int stateID ){
 		if (stateID < 0 || stateID >= states.Count) {
 			return null;
 		}

@@ -8,6 +8,7 @@ using UnityEngine;
 public class Pin : MonoBehaviour {
 
     bool isGateOperator = false;
+    bool isActionChild = false;
 
     public bool IsGateOperator {
         get {
@@ -16,6 +17,19 @@ public class Pin : MonoBehaviour {
 
         set {
             isGateOperator = value;
+        }
+    }
+
+    public bool IsActionChild
+    {
+        get
+        {
+            return isActionChild;
+        }
+
+        set
+        {
+            isActionChild = value;
         }
     }
 
