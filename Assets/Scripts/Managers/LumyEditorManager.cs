@@ -202,6 +202,8 @@ public class LumyEditorManager : MonoBehaviour {
         agentBehavior.enabled = false;
         AgentContext agentContext = editedLumy.GetComponent<AgentContext>();
         agentContext.enabled = false;
+        AgentEntity agentEntity = editedLumy.GetComponent<AgentEntity>();
+        agentEntity.enabled = false;
     }
 
     /// <summary>
