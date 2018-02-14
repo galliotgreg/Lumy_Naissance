@@ -109,7 +109,8 @@ public class AgentEntity : MonoBehaviour
         if (ABManager.instance != null)
         {
             ABManager.instance.RegisterAgent(this);
-        } else
+        }
+        else
         {
             Debug.LogWarning("WARNING ! : ABManager not found");
         }
@@ -122,6 +123,13 @@ public class AgentEntity : MonoBehaviour
     }
 
 	void OnDestroy(){
-		ABManager.instance.UnregisterAgent(this);
-	}
+        if (ABManager.instance != null)
+        {
+            ABManager.instance.UnregisterAgent(this);
+        }
+        else
+        {
+            Debug.LogWarning("WARNING ! : ABManager not found");
+        }
+    }
 }

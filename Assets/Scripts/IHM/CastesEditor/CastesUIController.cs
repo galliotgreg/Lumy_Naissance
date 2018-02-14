@@ -79,7 +79,7 @@ public class CastesUIController : MonoBehaviour {
             GameObject buttonObject = nodeUICast.transform.Find("PanelLumy/PanelAction/btn_Fork").gameObject;
             ForkLumy btnCallBack = buttonObject.GetComponent<ForkLumy>();
             btnCallBack.Init();
-            btnCallBack.Fork();
+            btnCallBack.UIFork();
 
             GameObject leftChild = nodeUICast.transform.GetChild(1).gameObject;
             GameObject rightChild = nodeUICast.transform.GetChild(2).gameObject;

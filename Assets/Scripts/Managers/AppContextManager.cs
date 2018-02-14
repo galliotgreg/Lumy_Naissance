@@ -53,13 +53,13 @@ public class AppContextManager : MonoBehaviour
     /// Casts files suffix
     /// </summary>
     [SerializeField]
-    public string CAST_FILES_SUFFIX = "_behavior.csv";
+    public string CAST_FILES_SUFFIX = "_behavior";
 
     /// <summary>
     /// Casts files suffix
     /// </summary>
     [SerializeField]
-    public string SPECIE_FILES_SUFFIX = "_specie.csv";
+    public string SPECIE_FILES_SUFFIX = "_specie";
 
     /// <summary>
     /// Casts files suffix
@@ -134,21 +134,6 @@ public class AppContextManager : MonoBehaviour
 
     public void SwitchActiveCast(string castName)
     {
-        //Check if specie existe
-        //bool found = false;
-        //foreach (string name in castsFileNames)
-        //{
-        //    if (name == castName)
-        //    {
-        //        found = true;
-        //        break;
-        //    }
-        //}
-        //if (!found)
-        //{
-        //    Debug.LogError(castName + " Does not exists");
-        //}
-
         if (!activeSpecie.Casts.ContainsKey(castName))
         {
             Debug.LogError(castName + " Does not exists");
@@ -201,9 +186,60 @@ public class AppContextManager : MonoBehaviour
         SpecieParser parser = new SpecieParser();
         activeSpecie = parser.Parse(lines);
         string[] tokens = activeSpecieFilePath.Split('/');
-        string name = tokens[tokens.Length - 1].Replace(SPECIE_FILES_SUFFIX, "");
+        string name = tokens[tokens.Length - 1].Replace(SPECIE_FILES_SUFFIX + CSV_EXT, "");
         name = Char.ToUpperInvariant(name[0]) + name.Substring(1);
         activeSpecie.Name = name;
+    }
+
+    private void SaveSpecie()
+    {
+        //Read old file
+        StreamReader reader = new StreamReader(activeSpecieFilePath);
+        List<string> lines = new List<string>();
+        while (reader.Peek() >= 0)
+        {
+            lines.Add(reader.ReadLine());
+        }
+        reader.Close();
+
+        //Build new file
+        //Copy Header
+        string content = lines[0] + "\n"  + lines[1] + "\n" + lines[2] + "\n" + lines[3] + "\n";
+        //Write cast definitions
+        content += "Name,Behavior,Head Size,Components List,\n";
+        foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
+        {
+            Cast curCast = entry.Value;
+            content += curCast.Name + "," + curCast.BehaviorModelIdentifier + "," + curCast.Head.Count + ",";
+            foreach (ComponentInfo compoInfo in curCast.Head)
+            {
+                content += compoInfo.Id + ",";
+            }
+            foreach (ComponentInfo compoInfo in curCast.Tail)
+            {
+                content += compoInfo.Id + ",";
+            }
+            content += "\n";
+        }
+        //Write cast hierarchy
+        content += "Cast, Parent,";
+        foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
+        {
+            Cast curCast = entry.Value;
+
+            if (curCast.Parent != null)
+            {
+                content += curCast.Name + "," + curCast.Parent.Name + ",";
+            } else
+            {
+                content += curCast.Name + ",,";
+            }
+            content += "\n";
+        }
+
+        //Replace file
+        File.Delete(activeSpecieFilePath);
+        File.AppendAllText(activeSpecieFilePath, content);
     }
 
     public string[] GetSpeciesFolderNames()
@@ -218,12 +254,48 @@ public class AppContextManager : MonoBehaviour
 
     public void CreateSpecie(string specieName)
     {
-        throw new NotImplementedException();
+        
+
     }
 
-    public void ForkCast(string specieName)
+    public void ForkCast()
     {
-        throw new NotImplementedException();
+        //Create childs
+        Cast child1 = activeCast.Clone();
+        Cast child2 = activeCast.Clone();
+        
+        child1.Name = activeCast.Name + "_Left";
+        child2.Name = activeCast.Name + "_Right";
+        child1.BehaviorModelIdentifier = 
+            activeCast.BehaviorModelIdentifier.Replace(CAST_FILES_SUFFIX, "")
+            + "_Left" + CAST_FILES_SUFFIX;
+        child2.BehaviorModelIdentifier =
+            activeCast.BehaviorModelIdentifier.Replace(CAST_FILES_SUFFIX, "")
+            + "_Right" + CAST_FILES_SUFFIX;
+
+
+        //Link Childs
+        child1.Childs.Clear();
+        child2.Childs.Clear();
+        child1.Parent = activeCast;
+        child2.Parent = activeCast;
+        activeCast.Childs.Add(child1);
+        activeCast.Childs.Add(child2);
+
+        //Add childs to specie
+        activeSpecie.Casts.Add(child1.Name, child1);
+        activeSpecie.Casts.Add(child2.Name, child2);
+
+        //Copy Behavior files
+        File.Copy(
+            ActiveSpecieFolderPath + activeCast.BehaviorModelIdentifier + CSV_EXT,
+            ActiveSpecieFolderPath + child1.BehaviorModelIdentifier + CSV_EXT);
+        File.Copy(
+            ActiveSpecieFolderPath + activeCast.BehaviorModelIdentifier + CSV_EXT,
+            ActiveSpecieFolderPath + child2.BehaviorModelIdentifier + CSV_EXT);
+
+        //Alter Specie file
+        SaveSpecie();
     }
 
     void Start()
@@ -269,7 +341,7 @@ public class AppContextManager : MonoBehaviour
 
     private string GetFilePathFromSpecieName(string name)
     {
-        string filename = Char.ToLowerInvariant(name[0]) + name.Substring(1) + SPECIE_FILES_SUFFIX;
+        string filename = Char.ToLowerInvariant(name[0]) + name.Substring(1) + SPECIE_FILES_SUFFIX + CSV_EXT;
         return SPECIES_FOLDER_PATH + name + "/" + filename;
     }
 
@@ -298,7 +370,7 @@ public class AppContextManager : MonoBehaviour
         castsFileNames = new string[castFileNamesList.Count];
         for (int i = 0; i < castFileNamesList.Count; i++)
         {
-            string name = castFileNamesList[i].Replace(CAST_FILES_SUFFIX, "");
+            string name = castFileNamesList[i].Replace(CAST_FILES_SUFFIX + CSV_EXT, "");
             castsFileNames[i] = name;
         }
     }
@@ -306,7 +378,7 @@ public class AppContextManager : MonoBehaviour
     private bool IsCastFile(string name)
     {
         //Check if is behavior file
-        string pat = @".+" + CAST_FILES_SUFFIX;
+        string pat = @".+" + CAST_FILES_SUFFIX + CSV_EXT;
         Regex r = new Regex(pat);
         Match m = r.Match(name);
         if (!(m.Length > 0))
