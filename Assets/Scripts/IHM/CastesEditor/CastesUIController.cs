@@ -131,11 +131,4 @@ public class CastesUIController : MonoBehaviour {
         LoadEditedLumy();
         CreateTree();
     }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
-
-
 }

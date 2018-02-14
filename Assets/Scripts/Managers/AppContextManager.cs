@@ -242,6 +242,45 @@ public class AppContextManager : MonoBehaviour
         File.AppendAllText(activeSpecieFilePath, content);
     }
 
+    public void SaveCast()
+    {
+        //Read old file
+        StreamReader reader = new StreamReader(activeSpecieFilePath);
+        List<string> lines = new List<string>();
+        while (reader.Peek() >= 0)
+        {
+            lines.Add(reader.ReadLine());
+        }
+        reader.Close();
+
+        //Re write only cast line
+        string content = "";
+        foreach (string line in lines)
+        {
+            string[] tokens = line.Split(',');
+            if (tokens[0] == activeCast.Name && tokens[1] == activeCast.BehaviorModelIdentifier)
+            {
+                content += activeCast.Name + "," + activeCast.BehaviorModelIdentifier + "," + activeCast.Head.Count + ",";
+                foreach (ComponentInfo compoInfo in activeCast.Head)
+                {
+                    content += compoInfo.Id + ",";
+                }
+                foreach (ComponentInfo compoInfo in activeCast.Tail)
+                {
+                    content += compoInfo.Id + ",";
+                }
+                content += "\n";
+            } else
+            {
+                content += line + "\n";
+            }
+        }
+
+        //Replace file
+        File.Delete(activeSpecieFilePath);
+        File.AppendAllText(activeSpecieFilePath, content);
+    }
+
     public string[] GetSpeciesFolderNames()
     {
         return speciesFolderNames;

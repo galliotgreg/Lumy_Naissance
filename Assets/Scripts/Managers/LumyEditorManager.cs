@@ -126,6 +126,7 @@ public class LumyEditorManager : MonoBehaviour {
     public void PushHead(int compoId)
     {
         Debug.Log("TODO : implement LumyEditorManager.PushHead");
+
     }
 
     /// <summary>
@@ -211,7 +212,35 @@ public class LumyEditorManager : MonoBehaviour {
     /// </summary>
     public void SaveLumy()
     {
-        Debug.Log("TODO : implement LumyEditorManager.SaveLumy");
+        //Sync cast
+        //Retreive Components Infos
+        Cast cast = AppContextManager.instance.ActiveCast;
+        GameObject head = editedLumy.transform.Find("Head").gameObject;
+        GameObject tail = editedLumy.transform.Find("Tail").gameObject;
+        List<ComponentInfo> headCompos = new List<ComponentInfo>();
+        for (int i = 0; i < head.transform.childCount; i++)
+        {
+            GameObject compo = head.transform.GetChild(i).gameObject;
+            ComponentInfo compoInfo = ComponentFactory.instance.CreateComponent(
+                compo.GetComponent<AgentComponent>().Id);
+            headCompos.Add(compoInfo);
+        }
+        List<ComponentInfo> tailCompos = new List<ComponentInfo>();
+        for (int i = 0; i < tail.transform.childCount; i++)
+        {
+            GameObject compo = tail.transform.GetChild(i).gameObject;
+            ComponentInfo compoInfo = ComponentFactory.instance.CreateComponent(
+                compo.GetComponent<AgentComponent>().Id);
+            tailCompos.Add(compoInfo);
+        }
+        //Insert Component Infos
+        cast.Head.Clear();
+        cast.Head.AddRange(headCompos);
+        cast.Tail.Clear();
+        cast.Tail.AddRange(tailCompos);
+
+        //Persist changes
+        AppContextManager.instance.SaveCast();
     }
 
     /// <summary>
