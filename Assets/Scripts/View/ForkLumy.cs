@@ -28,6 +28,14 @@ public class ForkLumy : MonoBehaviour {
 
     public void Fork()
     {
+        UIFork();
+
+        //Invoquer le Forw via le Manager
+        AppContextManager.instance.ForkCast();
+    }
+
+    public void UIFork()
+    {
         //Bloquer le lumy d'origine, qui n'est plus modifiable
         transform.parent.parent.Find("btn_Lumy").GetComponent<Button>().interactable = false;
         transform.parent.gameObject.SetActive(false);
@@ -37,7 +45,7 @@ public class ForkLumy : MonoBehaviour {
             clone.name = "nuee feuille";
             clone.transform.localScale = Vector3.one;
             clone.transform.GetChild(0).Find("btn_Lumy").GetComponent<Button>().interactable = true;
-            clone.transform.localPosition = new Vector3(2f-4*i,-2f, 0);
+            clone.transform.localPosition = new Vector3(2f - 4 * i, -2f, 0);
             //if (clone.transform.childCount > 1) Destroy(clone.transform.GetChild(1).gameObject);
         }
     }

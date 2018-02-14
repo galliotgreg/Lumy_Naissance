@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -86,5 +87,18 @@ public class Cast {
         {
             childs = value;
         }
+    }
+
+    public Cast Clone()
+    {
+        Cast clone = new Cast();
+        clone.name = name;
+        clone.behaviorModelIdentifier = behaviorModelIdentifier;
+        clone.head = new List<ComponentInfo>(head);
+        clone.tail = new List<ComponentInfo>(tail);
+        clone.parent = parent;
+        clone.childs = new List<Cast>(childs);
+
+        return clone;
     }
 }
