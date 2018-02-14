@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProxyABParam<T> : MonoBehaviour, IProxyABParam{
 
     private ABParam<T> abParam;
+    private Pin outcome;
 
     public string Identifier {
         get {
@@ -18,6 +19,19 @@ public class ProxyABParam<T> : MonoBehaviour, IProxyABParam{
         }
     }
 
+    public Pin Outcome
+    {
+        get
+        {
+            return outcome;
+        }
+
+        set
+        {
+            outcome = value;
+        }
+    }
+
     // Use this for initialization
     void Start () {
 		
@@ -27,8 +41,4 @@ public class ProxyABParam<T> : MonoBehaviour, IProxyABParam{
 	void Update () {
 		
 	}
-
-    public ProxyABParam(ABParam<T> param) {
-        abParam = param;
-    }
 }

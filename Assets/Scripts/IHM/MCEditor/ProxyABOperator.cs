@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ProxyABOperator<T> : MonoBehaviour, IProxyABOperator{
     private ABOperator<T> abOperator;
+    private Pin outcome;
+    private List<Pin> incomes;
 
 
     public ABNode[] Inputs {
@@ -12,6 +14,31 @@ public class ProxyABOperator<T> : MonoBehaviour, IProxyABOperator{
         }
 
         set {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public Pin Outcome
+    {
+        get
+        {
+            throw new System.NotImplementedException();
+        }
+
+        set
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public List<Pin> Incomes
+    {
+        get
+        {
+            throw new System.NotImplementedException();
+        }
+        set
+        {
             throw new System.NotImplementedException();
         }
     }
@@ -25,8 +52,4 @@ public class ProxyABOperator<T> : MonoBehaviour, IProxyABOperator{
 	void Update () {
 		
 	}
-
-    public ProxyABOperator(ABOperator<T> ope) {
-        abOperator = ope;
-    }
 }
