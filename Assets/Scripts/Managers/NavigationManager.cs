@@ -103,6 +103,7 @@ public class NavigationManager : MonoBehaviour {
 
         // Zoomer sur le bouton
         GameObject canvas = GameObject.Find(currentScene + "Canvas");
+        canvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
         Vector3 dir = (root.transform.position - camera.transform.position).normalized;
         while (Vector3.Dot(dir, root.transform.position - camera.transform.position) > zoomEndDistance)
         {
