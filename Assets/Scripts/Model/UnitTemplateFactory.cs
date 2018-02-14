@@ -33,7 +33,6 @@ public class UnitTemplateInitializer {
         dst.Name = src.Name;
         dst.Color = src.Color;
         dst.ProdCost = src.ProdCost;
-        dst.BuyCost = src.BuyCost;
 
         //Passive Buff
         dst.MoveSpeedBuff = src.MoveSpeedBuff;

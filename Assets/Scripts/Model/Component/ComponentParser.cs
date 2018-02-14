@@ -149,16 +149,7 @@ public class ComponentParser {
 		}else{
 			throw new ComponentParser_RequiredAttribute_Exception();
 		}*/
-		agent.ProdCost = values[componentIt].Length == 0 ? 0 : float.Parse( values[componentIt] );
-		componentIt++;
-
-		// BUY COST
-		/*if( required( values[componentIt] ) ){
-			agent.BuyCost = float.Parse( values[componentIt] );
-		}else{
-			throw new ComponentParser_RequiredAttribute_Exception();
-		}*/
-		agent.BuyCost = values[componentIt].Length == 0 ? 0 : float.Parse( values[componentIt] );
+		agent.ProdCost = values[componentIt].Length == 0 ? 0 : int.Parse( values[componentIt] );
 		componentIt++;
 
 		return agent;

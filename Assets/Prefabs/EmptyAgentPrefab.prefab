@@ -84,7 +84,6 @@ GameObject:
   - component: {fileID: 114743776689603538}
   - component: {fileID: 114557014208587398}
   - component: {fileID: 114238049092781280}
-  - component: {fileID: 114797667755122866}
   - component: {fileID: 33639599402962088}
   - component: {fileID: 23608124313498414}
   - component: {fileID: 114892884380249330}
@@ -94,6 +93,7 @@ GameObject:
   - component: {fileID: 114107907229580660}
   - component: {fileID: 114662239543177926}
   - component: {fileID: 195848833984645618}
+  - component: {fileID: 114797667755122866}
   m_Layer: 0
   m_Name: EmptyAgentPrefab
   m_TagString: Agent
@@ -354,7 +354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe412959c0bba774795cc7552807bad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 0
   self: {fileID: 1251105846208636}
   home: {fileID: 0}
   enemies: []
@@ -380,7 +379,10 @@ MonoBehaviour:
   color:
     serializedVersion: 2
     rgba: 0
-  tracePrefab: {fileID: 0}
+  tracePrefab: {fileID: 1987368783561748, guid: 226ac1543437f97408a787472e282d97,
+    type: 2}
+  traceUnitPrefab: {fileID: 1782979075011054, guid: 77eb03fd42803084daee13c2fc694898,
+    type: 2}
 --- !u!114 &114743776689603538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -398,7 +400,7 @@ MonoBehaviour:
   behaviorModelIdentifier: 
 --- !u!114 &114797667755122866
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1618866709941296}
@@ -407,6 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82aa6bfea7d13f44ca2087917e38dbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 0
   cast: 
   curPos: {x: 0, y: 0}
   trgPos: {x: 0, y: 0}
@@ -420,8 +423,6 @@ MonoBehaviour:
   nbItem: 0
   atkRange: 0
   pickRange: 0
-  prodCost: 0
-  buyCost: 0
   layTimeCost: 0
   visionRange: 0
 --- !u!114 &114892884380249330
@@ -449,6 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82aa6bfea7d13f44ca2087917e38dbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 0
   cast: 
   curPos: {x: 0, y: 0}
   trgPos: {x: 0, y: 0}
@@ -462,8 +464,6 @@ MonoBehaviour:
   nbItem: 0
   atkRange: 0
   pickRange: NaN
-  prodCost: 0
-  buyCost: 0
   layTimeCost: 0
   visionRange: 0
 --- !u!114 &114973090759279900
@@ -480,6 +480,7 @@ MonoBehaviour:
   coolDownActivate: 1
   coolDownTime: 0.1
   path: []
+  currentPathIndex: 0
 --- !u!195 &195848833984645618
 NavMeshAgent:
   m_ObjectHideFlags: 1

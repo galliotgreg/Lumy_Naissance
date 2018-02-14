@@ -150,57 +150,48 @@ public class GameManager : MonoBehaviour {
         p2_specie = parser.Parse(lines);
     }
 
+	#region Create Unit Templates
     private void CreateUnitTemplates()
     {
-        //Player1 templates (queen first)
-        p1_unitTemplates = new GameObject[p1_specie.Casts.Values.Count];
-        GameObject template = Instantiate(emptyAgentPrefab);
-        template.SetActive(false);
-        UnitTemplateInitializer.InitTemplate(
-            p1_specie.Casts[p1_specie.QueenCastName], template, emptyComponentPrefab);
-
-		template.GetComponent<AgentEntity>().Context.Model.Cast = p1_specie.QueenCastName;
-        //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player1;
-        p1_unitTemplates[0] = template;
-        int ind = 1;
-        foreach (string key in p1_specie.Casts.Keys)
-        {
-            if (key != p1_specie.QueenCastName)
-            {
-                Cast cast = p1_specie.Casts[key];
-                template = Instantiate(emptyAgentPrefab);
-				template.GetComponent<AgentEntity>().Context.Model.Cast = key;
-                //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player1;
-                template.SetActive(false);
-                p1_unitTemplates[ind++] = template;
-                UnitTemplateInitializer.InitTemplate(cast, template, emptyComponentPrefab);
-            }
-        }
-
-        //Player2 templates (queen first)
-        p2_unitTemplates = new GameObject[p2_specie.Casts.Values.Count];
-        template = Instantiate(emptyAgentPrefab);
-        template.SetActive(false);
-        UnitTemplateInitializer.InitTemplate(
-            p2_specie.Casts[p2_specie.QueenCastName], template, emptyComponentPrefab);
-		template.GetComponent<AgentEntity>().Context.Model.Cast = p2_specie.QueenCastName;
-        //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player2;
-        p2_unitTemplates[0] = template;
-        ind = 1;
-        foreach (string key in p2_specie.Casts.Keys)
-        {
-            if (key != p2_specie.QueenCastName)
-            {
-                Cast cast = p2_specie.Casts[key];
-                template = Instantiate(emptyAgentPrefab);
-				template.GetComponent<AgentEntity>().Context.Model.Cast = key;
-                //template.GetComponent<AgentEntity>().Authority = PlayerAuthority.Player2;
-                template.SetActive(false);
-                p2_unitTemplates[ind++] = template;
-                UnitTemplateInitializer.InitTemplate(cast, template, emptyComponentPrefab);
-            }
-        }
+		p1_unitTemplates = createTemplates( p1_specie );
+		p2_unitTemplates = createTemplates( p2_specie );
     }
+
+	GameObject[] createTemplates( Specie specie ){
+		GameObject[] unitTemplates = new GameObject[specie.Casts.Values.Count];
+
+		//queen first
+		unitTemplates[0] = createTemplate( specie.Casts[ specie.QueenCastName ], specie.QueenCastName );
+
+		int ind = 1;
+		foreach (string key in specie.Casts.Keys)
+		{
+			if (key != specie.QueenCastName)
+			{
+				unitTemplates[ind++] = createTemplate( specie.Casts[key], key );
+			}
+		}
+
+		foreach (GameObject template in unitTemplates) {
+			template.GetComponent<AgentEntity> ().Context.setModelValues ();
+		}
+
+		return unitTemplates;
+	}
+
+	GameObject createTemplate( Cast cast, string castName ){
+		GameObject template = Instantiate(emptyAgentPrefab);
+
+		template.SetActive(false);
+		UnitTemplateInitializer.InitTemplate(
+			cast, template, emptyComponentPrefab
+		);
+
+		template.GetComponent<AgentEntity>().Context.Model.Cast = castName;
+
+		return template;
+	}
+	#endregion
 
     private void InitGameObjects()
     {
