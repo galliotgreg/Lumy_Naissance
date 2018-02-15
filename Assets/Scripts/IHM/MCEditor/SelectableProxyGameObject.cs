@@ -12,7 +12,7 @@ public abstract class SelectableProxyGameObject : MonoBehaviour {
 	protected Color selectedColor;
 
 	[SerializeField]
-	protected Renderer meshRenderer;
+	protected Renderer colorRenderer;
 
 	bool selected = false;
 	bool mouseOver = false;
@@ -58,8 +58,8 @@ public abstract class SelectableProxyGameObject : MonoBehaviour {
 	}
 
 	void setColor( Color color ){
-		if (meshRenderer != null) {
-			meshRenderer.material.color = color;
+		if (colorRenderer != null) {
+			colorRenderer.material.color = color;
 		}
 	}
 

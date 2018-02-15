@@ -47,7 +47,7 @@ public class Pin : SelectableProxyGameObject {
 
 	protected override void select ()
 	{
-		if (MCEditorManager.instance.createTransition_Start_Pin() != null ) {
+		if (MCEditorManager.instance.Transition_Pin_Start != null ) {
 			MCEditorManager.instance.createTransition_setEndPin (this);
 
 			base.unselectGameObject ();
@@ -58,7 +58,7 @@ public class Pin : SelectableProxyGameObject {
 
 	protected override void unselect ()
 	{
-		if (MCEditorManager.instance.createTransition_Start_Pin() == this) {
+		if (MCEditorManager.instance.Transition_Pin_Start == this) {
 			MCEditorManager.instance.createTransition_setStartPin ( null );
 		}
 	}

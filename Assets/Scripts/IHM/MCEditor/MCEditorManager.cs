@@ -609,9 +609,17 @@ public class MCEditorManager : MonoBehaviour {
 	Pin transition_Pin_Start = null;
 	ProxyABTransition transition_Selected = null;
 
-	public Pin createTransition_Start_Pin(){
-		return this.transition_Pin_Start;
+	public Pin Transition_Pin_Start {
+		get {
+			return transition_Pin_Start;
+		}
 	}
+	public ProxyABTransition Transition_Selected {
+		get {
+			return transition_Selected;
+		}
+	}
+
 	public void createTransition_setStartPin( Pin pin ){
 		this.transition_Pin_Start = pin;
 	}

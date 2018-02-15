@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProxyABTransition : MonoBehaviour {    
+public class ProxyABTransition : SelectableProxyGameObject {    
 	private ABTransition transition;
     public  Pin startPosition;
     public Pin endPosition;    
@@ -50,10 +50,14 @@ public class ProxyABTransition : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {}
+    void Start () {
+		base.Start ();
+	}
 	
 	// Update is called once per frame
 	void Update () {
+		base.Update ();
+
         if(StartPosition != null && EndPosition != null ) {
 
             Vector3 posDepart = StartPosition.transform.position;
@@ -73,26 +77,28 @@ public class ProxyABTransition : MonoBehaviour {
         return new Vector3((vec1.x + vec2.x) / 2, (vec1.y + vec2.y) / 2, 0);
     }
 
-	void OnMouseDown(){
-		SelectTransition ();
+	#region implemented abstract members of SelectableProxyGameObject
+
+	protected override void select ()
+	{
 		MCEditorManager.instance.selectTransition (this);
 	}
 
-	void SelectTransition(){
-		lineRenderer.material.color = renderSelectedColor;
+	protected override void unselect ()
+	{
+		if (MCEditorManager.instance.Transition_Selected == this) {
+			MCEditorManager.instance.selectTransition (null);
+		}
 	}
-	public void UnselectTransition(){
-		lineRenderer.material.color = renderColor;
-	}
+
+	#endregion
+
+	#region Collider
 
 	[SerializeField]
 	CapsuleCollider collider;
 	[SerializeField]
 	LineRenderer lineRenderer;
-	[SerializeField]
-	Color renderColor;
-	[SerializeField]
-	Color renderSelectedColor;
 
 	private void adjustCollider()
 	{
@@ -113,4 +119,5 @@ public class ProxyABTransition : MonoBehaviour {
 		float angle = Mathf.Rad2Deg * Mathf.Atan (tang);
 		collider.transform.rotation = Quaternion.Euler( new Vector3 (0, 0, 90+angle) );
 	}
+	#endregion
 }
