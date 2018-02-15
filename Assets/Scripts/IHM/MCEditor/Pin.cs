@@ -40,18 +40,50 @@ public class Pin : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (mouseOver) {
+			this.GetComponent<MeshRenderer> ().material.color = hoverColor;
+		} else {
+			if (selected) {
+				this.GetComponent<MeshRenderer> ().material.color = selectedColor;
+			} else {
+				this.GetComponent<MeshRenderer> ().material.color = regularColor;
+			}
+		}
 	}
 
-	void OnMouseDown(){
+	[SerializeField]
+	Color regularColor;
+	[SerializeField]
+	Color hoverColor;
+	[SerializeField]
+	Color selectedColor;
+
+	bool selected = false;
+	bool mouseOver = false;
+
+	void selectPin(){
 		if (MCEditorManager.instance.createTransition_Started ()) {
 			MCEditorManager.instance.createTransition_setEndPin (this);
 		} else {
 			MCEditorManager.instance.createTransition_setStartPin ( this );
 		}
+
+		selected = true;
 	}
 
-	void OnMouseOver(){
-		this.GetComponent<MeshRenderer> ().material.color = Color.red;
+	void unselectPin(){
+		selected = false;
+	}
+
+	void OnMouseDown(){
+		selectPin ();
+	}
+
+	void OnMouseEnter(){
+		mouseOver = true;
+	}
+
+	void OnMouseExit(){
+		mouseOver = false;
 	}
 }
