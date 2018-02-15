@@ -108,7 +108,9 @@ public class MCEditorManager : MonoBehaviour {
 		}
 		// TODO create global list
 		// TODO include operators and params
-		camera.adjustCamera( proxies );
+		if (camera != null) {
+			camera.adjustCamera (proxies);
+		}
 
         /**START TEST SAVE**/
         if (Input.GetKeyDown(KeyCode.S))
