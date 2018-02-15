@@ -50,4 +50,8 @@ public class Pin : MonoBehaviour {
 			MCEditorManager.instance.createTransition_setStartPin ( this );
 		}
 	}
+
+	void OnMouseOver(){
+		this.GetComponent<MeshRenderer> ().material.color = Color.red;
+	}
 }

@@ -120,6 +120,15 @@ public class ABModel {
 		return true;
 	}
 
+	public ABTransition getTransition(int id){
+		foreach( ABTransition t in transitions ){
+			if (t.Id == id) {
+				return t;
+			}
+		}
+		return null;
+	}
+
     public void SetCondition(int transitionId, AB_BoolGate_Operator condition)
     {
         ABTransition transition = FindTransition(transitionId);

@@ -53,6 +53,8 @@ public class MCEditorManager : MonoBehaviour {
         
     /** END TEST SAVE**/
 
+	[SerializeField]
+	MC_Camera camera;
 
     void Awake()
     {
@@ -96,6 +98,18 @@ public class MCEditorManager : MonoBehaviour {
 
     private void Update()
     {
+		// adjust camera
+		List<MonoBehaviour> proxies = new List<MonoBehaviour>();
+		foreach (MonoBehaviour b in proxyStates) {
+			proxies.Add (b);
+		}
+		foreach (MonoBehaviour b in proxyActions) {
+			proxies.Add (b);
+		}
+		// TODO create global list
+		// TODO include operators and params
+		camera.adjustCamera( proxies );
+
         /**START TEST SAVE**/
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -110,7 +124,9 @@ public class MCEditorManager : MonoBehaviour {
         }else if (Input.GetKeyDown(KeyCode.E))
         {
             abState = Instantiate<ProxyABState>(statePrefab);
+			proxyStates.Add (abState);
             abState2 = Instantiate<ProxyABState>(statePrefab);
+			proxyStates.Add (abState2);
         } else if (Input.GetKeyDown(KeyCode.R))
         {
             CreateTransition(abState.GetComponentInChildren<Pin>(), abState2.GetComponentInChildren<Pin>());
@@ -455,19 +471,19 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABAction endActionParent;
         ProxyABState endStateParent;
 
-		int transitionIndex = -1;
+		int transitionId = -1;
         if (start.IsActionChild)
         {
             startActionParent = start.GetComponentInParent<ProxyABAction>();
             if (end.IsActionChild)
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();                
-				transitionIndex = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
             }
             else
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
-				transitionIndex = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
+				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
             }
 
         } else
@@ -476,18 +492,17 @@ public class MCEditorManager : MonoBehaviour {
             if (end.IsActionChild)
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();
-				transitionIndex = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
+				transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
             }
             else
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
-				transitionIndex = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
+				transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
             }
         }                                               
         CreatePinTransition(trans);
-		if( transitionIndex >= 0 && transitionIndex < AbModel.Transitions.Count ){
-			trans.Transition = AbModel.Transitions[ transitionIndex ];
-		}
+
+		trans.Transition = AbModel.getTransition( transitionId );
 
         Debug.Log(AbModel.Transitions.Count.ToString());
     }
