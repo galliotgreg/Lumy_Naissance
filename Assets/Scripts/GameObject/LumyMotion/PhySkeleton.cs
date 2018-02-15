@@ -19,6 +19,19 @@ public class PhySkeleton : MonoBehaviour
     [SerializeField]
     private PhyBone rootBone;
 
+    public bool IsIK
+    {
+        get
+        {
+            return isIK;
+        }
+
+        set
+        {
+            isIK = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -59,13 +72,33 @@ public class PhySkeleton : MonoBehaviour
         join1.DstBones[0] = phyBone;
         join2.SrcBone = phyBone;
 
+        //Get First & last joins
+        PhyJoin firstJoin = null;
+        if (headJoins.Length > 0)
+        {
+            firstJoin = headJoins[0];
+        } else
+        {
+            firstJoin = tailJoins[0];
+        }
+        PhyJoin lastJoin = null;
+        if (tailJoins.Length > 0)
+        {
+            lastJoin = tailJoins[tailJoins.Length - 1];
+        }
+        else
+        {
+            lastJoin = headJoins[tailJoins.Length - 1];
+        }
+
+
         ////Close tail
-        tailJoins[tailJoins.Length - 1].DstBones = new PhyBone[0];
+        lastJoin.DstBones = new PhyBone[0];
 
         //Set root Bone
-        rootBone = headJoins[0].DstBones[0];
-        IKAnkor = headJoins[0].gameObject;
-        IKTarget = tailJoins[tailJoins.Length - 1].gameObject;
+        rootBone = firstJoin.DstBones[0];
+        IKAnkor = firstJoin.gameObject;
+        IKTarget = lastJoin.gameObject;
     }
 
     private PhyJoin[] BuildSubPart(GameObject tail, GameObject lumy)
@@ -115,7 +148,7 @@ public class PhySkeleton : MonoBehaviour
         }
 
         //rootBone.Origin = IKAnkor.transform.position;
-        if (!isIK)
+        if (!IsIK)
         {
             rootBone.Origin = IKAnkor.transform.position;
             ForwardKinematic(rootBone);
