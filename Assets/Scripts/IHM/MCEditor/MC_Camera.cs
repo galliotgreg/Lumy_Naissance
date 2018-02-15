@@ -19,7 +19,7 @@ public class MC_Camera : MonoBehaviour {
 
 	float stateRadius = 1;
 
-	public void adjustCamera( List<MonoBehaviour> states ){
+	public void adjustCamera( List<GameObject> states ){
 		if (states.Count > 1) {
 			Vector2 min = states [0].transform.position;
 			Vector2 max = states [0].transform.position;

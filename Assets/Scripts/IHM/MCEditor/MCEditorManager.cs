@@ -99,15 +99,16 @@ public class MCEditorManager : MonoBehaviour {
     private void Update()
     {
 		// adjust camera
-		List<MonoBehaviour> proxies = new List<MonoBehaviour>();
+		List<GameObject> proxies = new List<GameObject>();
 		foreach (MonoBehaviour b in proxyStates) {
-			proxies.Add (b);
+			proxies.Add (b.gameObject);
 		}
 		foreach (MonoBehaviour b in proxyActions) {
-			proxies.Add (b);
+			proxies.Add (b.gameObject);
 		}
+		proxies.AddRange ( proxyParams );
+		proxies.AddRange ( proxyOperators );
 		// TODO create global list
-		// TODO include operators and params
 		if (camera != null) {
 			camera.adjustCamera (proxies);
 		}
