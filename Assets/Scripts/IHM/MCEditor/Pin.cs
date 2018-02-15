@@ -49,6 +49,12 @@ public class Pin : MonoBehaviour {
 				this.GetComponent<MeshRenderer> ().material.color = regularColor;
 			}
 		}
+
+		if (!mouseOver) {
+			if (Input.GetMouseButton (0)) {
+				unselectPin ();
+			}
+		}
 	}
 
 	[SerializeField]
@@ -62,16 +68,22 @@ public class Pin : MonoBehaviour {
 	bool mouseOver = false;
 
 	void selectPin(){
-		if (MCEditorManager.instance.createTransition_Started ()) {
+		if (MCEditorManager.instance.createTransition_Start_Pin() != null ) {
 			MCEditorManager.instance.createTransition_setEndPin (this);
+
+			unselectPin ();
 		} else {
 			MCEditorManager.instance.createTransition_setStartPin ( this );
-		}
 
-		selected = true;
+			selected = true;
+		}
 	}
 
 	void unselectPin(){
+		if (MCEditorManager.instance.createTransition_Start_Pin() == this) {
+			MCEditorManager.instance.createTransition_setStartPin ( null );
+		}
+
 		selected = false;
 	}
 
