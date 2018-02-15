@@ -36,8 +36,10 @@ public class LumyEditorManager : MonoBehaviour
     [SerializeField]
     private GameObject editedLumy;
     private ComponentInfo selectedLibraryCompo;
-    private ComponentInfo selectedLumyCompo;
-    private ComponentInfo hoveredLumyCompo;
+    [SerializeField]
+    private AgentComponent selectedLumyCompo;
+    [SerializeField]
+    private AgentComponent hoveredLumyCompo;
     private IList<ComponentInfo> compoLibrary;
 
     [SerializeField]
@@ -71,7 +73,7 @@ public class LumyEditorManager : MonoBehaviour
         }
     }
 
-    public ComponentInfo SelectedLumyCompo
+    public AgentComponent SelectedLumyCompo
     {
         get
         {
@@ -84,7 +86,7 @@ public class LumyEditorManager : MonoBehaviour
         }
     }
 
-    public ComponentInfo HoveredLumyCompo
+    public AgentComponent HoveredLumyCompo
     {
         get
         {
@@ -117,7 +119,28 @@ public class LumyEditorManager : MonoBehaviour
 
     void Update()
     {
+        hoveredLumyCompo = FindCompoOnCursor();
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            selectedLumyCompo = FindCompoOnCursor();
+        }
+    }
 
+    private AgentComponent FindCompoOnCursor()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            GameObject pickedObject = hitInfo.collider.gameObject;
+            AgentComponent agentComponent = pickedObject.GetComponent<AgentComponent>();
+            if (agentComponent != null)
+            {
+                return agentComponent;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>
