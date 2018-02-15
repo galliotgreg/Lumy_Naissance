@@ -81,7 +81,7 @@ public class ProxyABState : MonoBehaviour {
             Text actionName = this.GetComponentInChildren<Text>();
             actionName.text = this.Name;
             this.AbState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(Name, null));
-            PinList.Add(MCEditorManager.instance.CreatePinState(this.transform, false, false));
+			PinList.Add(MCEditorManager.instance.CreatePinState(this.AbState, this.transform, false, false));
 
             Debug.Log(MCEditorManager.instance.AbModel.States.Count);
 
