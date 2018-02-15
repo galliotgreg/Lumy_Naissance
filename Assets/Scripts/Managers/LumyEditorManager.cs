@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LumyEditorManager : MonoBehaviour {
+public class LumyEditorManager : MonoBehaviour
+{
     /// <summary>
     /// The static instance of the Singleton for external access
     /// </summary>
@@ -125,8 +126,19 @@ public class LumyEditorManager : MonoBehaviour {
     /// <param name="compoId">The id of the component on the component referencial</param>
     public void PushHead(int compoId)
     {
-        Debug.Log("TODO : implement LumyEditorManager.PushHead");
+        //Add Component
+        ComponentInfo compoInfo = ComponentFactory.instance.CreateComponent(compoId);
+        GameObject compo = Instantiate(emptyComponentPrefab);
+        AgentComponent compoScript = compo.GetComponent<AgentComponent>();
+        UnitTemplateInitializer.CopyComponentValues(compoInfo, compoScript);
+        GameObject head = editedLumy.transform.Find("Head").gameObject;
+        compo.transform.parent = head.transform;
+        compo.transform.SetAsFirstSibling();
 
+        //Update bone links
+        GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
+        PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
+        skeletonScript.BuildSkeleton();
     }
 
     /// <summary>
@@ -144,7 +156,24 @@ public class LumyEditorManager : MonoBehaviour {
     /// <param name="compoId">The id of the component on the component referencial</param>
     public void PushTail(int compoId)
     {
-        Debug.Log("TODO : implement LumyEditorManager.PushTail");
+        //Reopen tail
+        GameObject tail = editedLumy.transform.Find("Tail").gameObject;
+        GameObject lastCompo = tail.transform.GetChild(tail.transform.childCount - 1).gameObject;
+        PhyJoin lastJoin = lastCompo.GetComponent<PhyJoin>();
+        lastJoin.DstBones = new PhyBone[1];
+
+        //Add Component
+        ComponentInfo compoInfo = ComponentFactory.instance.CreateComponent(compoId);
+        GameObject compo = Instantiate(emptyComponentPrefab);
+        AgentComponent compoScript = compo.GetComponent<AgentComponent>();
+        UnitTemplateInitializer.CopyComponentValues(compoInfo, compoScript);
+        compo.transform.parent = tail.transform;
+        compo.transform.SetAsLastSibling();
+
+        //Update bone links
+        GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
+        PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
+        skeletonScript.BuildSkeleton();
     }
 
     /// <summary>
