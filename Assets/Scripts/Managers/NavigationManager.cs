@@ -82,12 +82,14 @@ public class NavigationManager : MonoBehaviour {
 
     public void GoBack(Vector3 sightPoint)
     {
+        // Charger et dépiler la dernière scène de l'historique
         addToPreviousList = false;
         sceneLoaded = false;
         string sceneToGoBackTo = previousScene[previousScene.Count - 1];
         StartCoroutine(SwapScenesCo(sceneToGoBackTo, sightPoint));
         previousScene.RemoveAt(previousScene.Count - 1);
 
+        // Activer et dépiler le dernier volet de l'historique
         if (previousPanel[previousPanel.Count-1] != null)
         {
             StartCoroutine(ActivatePanelCo(sceneToGoBackTo, previousPanel[previousPanel.Count - 1]));
@@ -165,6 +167,7 @@ public class NavigationManager : MonoBehaviour {
             yield return true;
         }
 
+        // Mettre à jour les indicateurs
         addToPreviousList = true;
         lastPanelLoaded = null;
         sceneLoaded = true;
@@ -224,11 +227,15 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator ActivatePanelCo(string nextScene, string panelName)
     {
+        // Attendre que la scène soit entièrement chargée
         yield return new WaitUntil(() => sceneLoaded);
 
+        // Récupérer le canvas de la scène cible et le panel spécifié dusit canvas
         GameObject canvas = GameObject.Find(nextScene + "Canvas");
         GameObject panel = GameObject.Find(nextScene+"Canvas").transform.Find(panelName).gameObject;
 
+
+        // Faire apparaître le panel en fondu
         canvas.GetComponent<CanvasGroup>().alpha = 0f;
         panel.SetActive(true);
         float alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
@@ -239,8 +246,10 @@ public class NavigationManager : MonoBehaviour {
             yield return true;
         }
 
+        // Mettre à jour le dernier panel chargé
         lastPanelLoaded = panelName;
 
+        // Arrêter la coroutine
         StopCoroutine(ActivatePanelCo(nextScene, panelName));
         yield return true;
     }
