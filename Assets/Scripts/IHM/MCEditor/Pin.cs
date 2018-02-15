@@ -42,4 +42,12 @@ public class Pin : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	void OnMouseDown(){
+		if (MCEditorManager.instance.createTransition_Started ()) {
+			MCEditorManager.instance.createTransition_setEndPin (this);
+		} else {
+			MCEditorManager.instance.createTransition_setStartPin ( this );
+		}
+	}
 }
