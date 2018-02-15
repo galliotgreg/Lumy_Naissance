@@ -124,6 +124,10 @@ public class LumyEditorManager : MonoBehaviour
         {
             selectedLumyCompo = FindCompoOnCursor();
         }
+        if (Input.GetKeyUp(KeyCode.Delete))
+        {
+            RemoveSelected();
+        }
     }
 
     private AgentComponent FindCompoOnCursor()
@@ -165,12 +169,23 @@ public class LumyEditorManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Remove the component at the given position from the selected lumy's head
+    /// Remove the selected Component
     /// </summary>
-    /// <param name="compoRank">The position of the component to remove</param>
-    public void RemoveHead(int compoRank)
+    public void RemoveSelected()
     {
-        Debug.Log("TODO : implement LumyEditorManager.RemoveHead");
+        if (selectedLumyCompo == null)
+        {
+            Debug.Log("No component selected");
+            return;
+        }
+
+        //Destroy compo then rebuild bones
+        Destroy(selectedLumyCompo.gameObject);
+        selectedLumyCompo.gameObject.transform.parent = null;
+        selectedLumyCompo = null;
+        GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
+        PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
+        skeletonScript.BuildSkeleton();
     }
 
     /// <summary>
@@ -200,41 +215,12 @@ public class LumyEditorManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Remove the component at the given position from the selected lumy's Tail
-    /// </summary>
-    /// <param name="compoRank">The position of the component to remove</param>
-    public void RemoveTail(int compoRank)
-    {
-        Debug.Log("TODO : implement LumyEditorManager.RemoveTail");
-    }
-
-    /// <summary>
     /// Set the selectedLibraryCompo
     /// </summary>
     /// <param name="compoRank">The position on the component Library</param>
     public void SelectLibraryCompo(int compoRank)
     {
         Debug.Log("TODO : implement LumyEditorManager.SelectLibraryCompo");
-    }
-
-    /// <summary>
-    /// Set the selectedLumyCompo
-    /// </summary>
-    /// <param name="compoRank">The position on the lumy specified part</param>
-    /// <param name="part">The part from wich you want to select a component </param>
-    public void SelectLumyCompo(int compoRank, Part part)
-    {
-        Debug.Log("TODO : implement LumyEditorManager.SelectLumyCompo");
-    }
-
-    /// <summary>
-    /// Set the hoveredLumyCompo
-    /// </summary>
-    /// <param name="compoRank">The position on the lumy specified part</param>
-    /// <param name="part">The part from wich you want to select a component </param>
-    public void HoverLumyCompo(int compoRank, Part part)
-    {
-        Debug.Log("TODO : implement LumyEditorManager.HoverLumyCompo");
     }
 
     /// <summary>
@@ -257,6 +243,11 @@ public class LumyEditorManager : MonoBehaviour
         agentContext.enabled = false;
         AgentEntity agentEntity = editedLumy.GetComponent<AgentEntity>();
         agentEntity.enabled = false;
+
+        //Set lumy to Forward Kinematic
+        GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
+        PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
+        skeletonScript.IsIK = false;
     }
 
     /// <summary>
