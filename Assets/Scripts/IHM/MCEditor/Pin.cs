@@ -5,7 +5,7 @@ using UnityEngine;
 /*
  GameObject de branchement de transition entre deux états
  */  
-public class Pin : SelectableProxyGameObject {
+public class Pin : DragSelectableProxyGameObject {
 
     bool isGateOperator = false;
     bool isActionChild = false;
@@ -49,8 +49,6 @@ public class Pin : SelectableProxyGameObject {
 	{
 		if (MCEditorManager.instance.Transition_Pin_Start != null ) {
 			MCEditorManager.instance.createTransition_setEndPin (this);
-
-			base.unselectGameObject ();
 		} else {
 			MCEditorManager.instance.createTransition_setStartPin ( this );
 		}

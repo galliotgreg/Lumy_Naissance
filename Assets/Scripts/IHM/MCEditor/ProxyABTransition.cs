@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProxyABTransition : SelectableProxyGameObject {    
+public class ProxyABTransition : IsolatedSelectableProxyGameObject {    
 	private ABTransition transition;
     public  Pin startPosition;
     public Pin endPosition;    
