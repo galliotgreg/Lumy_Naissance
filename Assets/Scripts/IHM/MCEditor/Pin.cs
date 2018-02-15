@@ -5,7 +5,7 @@ using UnityEngine;
 /*
  GameObject de branchement de transition entre deux états
  */  
-public class Pin : MonoBehaviour {
+public class Pin : SelectableProxyGameObject {
 
     bool isGateOperator = false;
     bool isActionChild = false;
@@ -40,62 +40,28 @@ public class Pin : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (mouseOver) {
-			this.GetComponent<MeshRenderer> ().material.color = hoverColor;
-		} else {
-			if (selected) {
-				this.GetComponent<MeshRenderer> ().material.color = selectedColor;
-			} else {
-				this.GetComponent<MeshRenderer> ().material.color = regularColor;
-			}
-		}
-
-		if (!mouseOver) {
-			if (Input.GetMouseButton (0)) {
-				unselectPin ();
-			}
-		}
+		base.Update ();
 	}
 
-	[SerializeField]
-	Color regularColor;
-	[SerializeField]
-	Color hoverColor;
-	[SerializeField]
-	Color selectedColor;
+	#region implemented abstract members of SelectableProxyGameObject
 
-	bool selected = false;
-	bool mouseOver = false;
-
-	void selectPin(){
+	protected override void select ()
+	{
 		if (MCEditorManager.instance.createTransition_Start_Pin() != null ) {
 			MCEditorManager.instance.createTransition_setEndPin (this);
 
-			unselectPin ();
+			base.unselectGameObject ();
 		} else {
 			MCEditorManager.instance.createTransition_setStartPin ( this );
-
-			selected = true;
 		}
 	}
 
-	void unselectPin(){
+	protected override void unselect ()
+	{
 		if (MCEditorManager.instance.createTransition_Start_Pin() == this) {
 			MCEditorManager.instance.createTransition_setStartPin ( null );
 		}
-
-		selected = false;
 	}
 
-	void OnMouseDown(){
-		selectPin ();
-	}
-
-	void OnMouseEnter(){
-		mouseOver = true;
-	}
-
-	void OnMouseExit(){
-		mouseOver = false;
-	}
+	#endregion
 }

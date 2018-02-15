@@ -387,7 +387,7 @@ public class MCEditorManager : MonoBehaviour {
         pin = CreatePin(state_transform);
         float radiusState = state_transform.localScale.y / 2;
         Vector3 newPos;
-		Debug.Log ( isAction );
+
         if (isAction) {
             pin.IsActionChild = true;
             newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
