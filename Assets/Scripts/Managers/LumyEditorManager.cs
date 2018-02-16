@@ -232,7 +232,7 @@ public class LumyEditorManager : MonoBehaviour
         //Instanciate
         Cast lumyCast = AppContextManager.instance.ActiveCast;
         editedLumy = Instantiate(emptyAgentPrefab);
-        editedLumy.SetActive(true);
+        editedLumy.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             lumyCast, editedLumy, emptyComponentPrefab);
 
