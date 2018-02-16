@@ -25,13 +25,24 @@ public class MCEditorManager : MonoBehaviour {
     [SerializeField]
     private Pin pinPrefab;
     [SerializeField]
+    private ProxyABOperator operatorPrefab;
     [SerializeField]
+    private ProxyABParam parameterPrefab;
     [SerializeField]
     private ProxyABAction actionPrefab;
     [SerializeField]
     private GameObject[] mcTemplates;
 
     private ABModel abModel;
+
+    // Save function utils
+    private int idNodeSyntTree;
+    private int idNodeInputPin;
+    private ABOperatorFactory opeFactory = new ABOperatorFactory();
+    private ABParamFactory paramFactory = new ABParamFactory();
+    private Dictionary<string, string> operatorDictionary = new Dictionary<string, string>();
+    private Dictionary<string, string> paramDictionary = new Dictionary<string, string>();
+
 
     private Dictionary<ABState,ProxyABState> statesDictionnary;    
     private Dictionary<ABState, ProxyABAction> actionsDictionnary;
@@ -40,12 +51,18 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABAction> proxyActions;
     private List<ProxyABTransition> proxyTransitions;
     private List<Pin> pins; //ProxyABGateOperator    
+    private List<ProxyABOperator> proxyOperators;
+    private List<ProxyABParam> proxyParams;
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
     ProxyABAction abAction2 = null;
     ProxyABState abState = null;
     ProxyABState abState2 = null;
+    ProxyABParam abParam = null;
+    ProxyABOperator aBOperator = null;
+    ProxyABOperator aBOperator2 = null;
+
     /** END TEST SAVE**/
 
 
@@ -79,9 +96,18 @@ public class MCEditorManager : MonoBehaviour {
         proxyStates = new List<ProxyABState>();
         proxyTransitions = new List<ProxyABTransition>();
         pins = new List<Pin>(); //ProxyABGateOperator
+        proxyParams = new List<ProxyABParam>(); //ProxyABParam
+        proxyOperators = new List<ProxyABOperator>();
         proxyActions = new List<ProxyABAction>();
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
+        
+        //usefull for save function
+        opeFactory.CreateDictionnary();
+        paramFactory.CreateDictionnary();
+
+        operatorDictionary = opeFactory.TypeStringToString;
+        paramDictionary = paramFactory.TypeStringToString;
 
         /** LOAD MODEL AND CREATE PROXY OBJECTS **/
         SetupModel();      
@@ -117,6 +143,34 @@ public class MCEditorManager : MonoBehaviour {
         {
             CreateTransition(abState.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
         }
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
+            abParam = Instantiate<ProxyABParam>(parameterPrefab);
+            aBOperator = Instantiate<ProxyABOperator>(operatorPrefab);
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            CreateTransition(abParam.GetComponentInChildren<Pin>(), aBOperator.GetComponentInChildren<Pin>());
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            aBOperator = Instantiate<ProxyABOperator>(operatorPrefab);
+            aBOperator2 = Instantiate<ProxyABOperator>(operatorPrefab);
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            CreateTransition(aBOperator.GetComponentInChildren<Pin>(), aBOperator2.GetComponentInChildren<Pin>());
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            aBOperator = Instantiate<ProxyABOperator>(operatorPrefab);
+            abAction = Instantiate<ProxyABAction>(actionPrefab);
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+            CreateTransition(aBOperator.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
+        }
+
         /**END TEST SAVE**/
     }
 
@@ -195,10 +249,18 @@ public class MCEditorManager : MonoBehaviour {
     //Load syntaxe Tree in a recursive way
     Pin RecNodeSynthTree(ABNode node)
     {
+        ProxyABOperator ope = null;
+        ProxyABParam param = null;
+
         Pin pin = null;
         if (node is IABOperator)
         {
+            ope = Instantiate<ProxyABOperator>(operatorPrefab);
+            ope.IsLoaded = true;
+            ope.transform.position = new Vector3(ope.transform.position.x + UnityEngine.Random.Range(-5, 5), ope.transform.position.y + UnityEngine.Random.Range(-5, 5), ope.transform.position.z);
+            SetNodeName(ope.gameObject, node);
 
+            proxyOperators.Add(ope);
             if ( ((IABOperator)node).Inputs.Length != 0)
             {
                 foreach(ABNode inputNode in ((IABOperator)node).Inputs)
@@ -207,6 +269,7 @@ public class MCEditorManager : MonoBehaviour {
                     {
                         break;
                     }
+                    Pin start = CreatePinSynthTree(ope.transform, true);
                     Pin end = RecNodeSynthTree(inputNode);
 
                     if(end != null)
@@ -215,13 +278,107 @@ public class MCEditorManager : MonoBehaviour {
                     }
                 } 
             }
+            pin = CreatePinSynthTree(ope.transform, true);
         }
         else if (node is IABParam)
         {
+            param = Instantiate<ProxyABParam>(parameterPrefab);
+            param.IsLoaded = true;
+            param.transform.position = new Vector3(param.transform.position.x + UnityEngine.Random.Range(-5, 5), param.transform.position.y + UnityEngine.Random.Range(-5, 5), param.transform.position.z);
             
+            Text paramName = param.GetComponentInChildren<Text>();            
+            paramName.text = GetParamValue(node);
+            proxyParams.Add(param);
 
+            pin = CreatePinSynthTree(param.transform, true);
+        }
+        return pin;
+    }
 
+    string GetParamType(ABNode node)
+    {
+        string type = "";        
+        if (node is ABParam<ABText>)
+        {
+            type = ((ABParam<ABText>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABVec>)
+        {
+            type = ((ABParam<ABVec>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABBool>)
+        {
+            type = ((ABParam<ABBool>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABRef>)
+        {
+            type = ((ABParam<ABRef>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABColor>)
+        {
+            type = ((ABParam<ABColor>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABScalar>)
+        {
+            type = ((ABParam<ABScalar>)node).Value.ToString();
+        }
 
+        else if (node is ABParam<ABTable<ABVec>>)
+        {
+            type = ((ABParam<ABTable<ABVec>>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABTable<ABBool>>)
+        {
+            type = ((ABParam<ABTable<ABBool>>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABTable<ABScalar>>)
+        {
+            type = ((ABParam<ABTable<ABScalar>>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABTable<ABText>>)
+        {
+            type = ((ABParam<ABTable<ABText>>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABTable<ABColor>>)
+        {
+            type = ((ABParam<ABTable<ABColor>>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABTable<ABRef>>)
+        {
+            type = ((ABParam<ABTable<ABRef>>)node).Value.ToString();
+        }
+
+        return type;
+    }
+
+    string GetParamValue(ABNode node)
+    {
+        string text = "";
+        if (node is ABParam<ABText>)
+        {
+            text = ((ABParam<ABText>)node).Value.Value.ToString();
+        }
+        else if (node is ABParam<ABVec>)
+        {
+            text = ((ABParam<ABVec>)node).Value.X.ToString() +";"+ ((ABParam<ABVec>)node).Value.Y.ToString();
+        }
+        else if (node is ABParam<ABBool>)
+        {
+            text = ((ABParam<ABBool>)node).Value.Value.ToString();
+        }
+        else if (node is ABParam<ABRef>)
+        {
+            text = ((ABParam<ABRef>)node).Value.ToString();
+        }
+        else if (node is ABParam<ABColor>)
+        {
+            text = ((ABParam<ABColor>)node).Value.Value.ToString();
+        }
+        else if (node is ABParam<ABScalar>)
+        {
+            text = ((ABParam<ABScalar>)node).Value.Value.ToString();
+        }
+        return text;
     }
 
     void LoadProxyTransitions()
@@ -333,26 +490,105 @@ public class MCEditorManager : MonoBehaviour {
         if (isOperator)
         {
             newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);
+            pin.IsOperatorChild = true;
         }
         else
         {
+            newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);
+            pin.IsParamChild = true;
         }
         pin.transform.position = newPos;
+        
         return pin;
     }
 
     /************** SAVE FUNCTION **************/
 
+    void Save_Ope_Param(int idNodeInput, int idNodeInputPin, ABNode node, StringBuilder syntTreeContent)
+    {
+        int idParentnode = idNodeSyntTree;       
+        if (idNodeSyntTree == 0)
+        {
+            if (node is IABOperator)
+            {
+                string type = operatorDictionary[((IABOperator)node).GetType().ToString()];
+
+                syntTreeContent.AppendLine(idNodeSyntTree + ",operator{" + type + "}");
+                idNodeSyntTree++;
+                idNodeInputPin = 0;
+                foreach (ABNode input in ((IABOperator)node).Inputs)
+                {
+                    /**Recursive function**/
+                    Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
+                    idNodeInputPin++;
+                }
+            }
+            else if (node is IABParam)
+            {
+                syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + "}");
+                idNodeSyntTree++;
+            }
+        }
+        else
+        {            
+            if (node is IABOperator)
+            {
+                string type = operatorDictionary[((IABOperator)node).GetType().ToString()];
+                syntTreeContent.AppendLine(idParentnode + ",operator{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
+                idNodeSyntTree++;
+                idNodeInputPin = 0;
+                foreach (ABNode input in ((IABOperator)node).Inputs)
+                {
+                    /**Recursive function**/
+                    Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
+                    idNodeInputPin++;
+                }
+            }
+            else if (node is IABParam)
+            {
+                string value = GetParamValue(node);
+                string type = paramDictionary[GetParamType(node)];
+
+                if (((IABParam)node).Identifier != "const")
+                {
+                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + type + ":" + ((IABParam)node).Identifier + "}" + "," + idNodeInput + "->" + idNodeInputPin);
+                }
+                else
+                {
+                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "}" + "," + idNodeInput + "->" + idNodeInputPin);
+                    idNodeSyntTree++;
+                }
+            }
+        }              
+    }
+
     void Save_MC()
     {
         string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_TEST.csv";
         StringBuilder csvcontent = new StringBuilder();
+        List<StringBuilder> syntTrees = new List<StringBuilder>();
+
         csvcontent.AppendLine("States,Name,Type");
         foreach (ABState state in abModel.States)
         {
             if(state.Action != null)
             {
                 csvcontent.AppendLine(state.Id + "," + state.Name + "," + "trigger{"+state.Action.Type.ToString().ToLower()+"}");
+                if (state.Action.Parameters[0] != null)
+                {
+                    StringBuilder syntTreeContent = new StringBuilder();
+                    syntTreeContent.AppendLine("Syntax Tree,output,");
+                    syntTreeContent.AppendLine("1,"+state.Name +"->0"+",");
+                    syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
+
+                    idNodeSyntTree = 0;
+                    foreach(ABNode node in state.Action.Parameters[0].Inputs)
+                    {
+                        Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+                    }
+                    syntTreeContent.AppendLine(",,");
+                    syntTrees.Add(syntTreeContent);
+                }
             }
             else
             {
@@ -370,9 +606,30 @@ public class MCEditorManager : MonoBehaviour {
         foreach(ABTransition trans in abModel.Transitions)
         {
             csvcontent.AppendLine(trans.Id + "," + trans.Start.Name + "," + trans.End.Name);
+            if (trans.Condition.Inputs[0]!= null)
+            {
+                StringBuilder syntTreeContent = new StringBuilder();
+                syntTreeContent.AppendLine("Syntax Tree,output,");
+                syntTreeContent.AppendLine("1," + trans.Id + ",");
+                syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
 
+                idNodeSyntTree = 0;
+                foreach (ABNode node in trans.Condition.Inputs)
+                {
+                    Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+                }
+                syntTreeContent.AppendLine(",,");
+                syntTrees.Add(syntTreeContent);
+            }
+        }
+        csvcontent.AppendLine(",,");
         File.Delete(csvpath);
         File.AppendAllText(csvpath, csvcontent.ToString());
+
+        foreach (StringBuilder content in syntTrees)
+        {
+            File.AppendAllText(csvpath, content.ToString());
+        }
         Debug.Log("Save MC");
     }
 
@@ -389,18 +646,82 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABAction endActionParent;
         ProxyABState endStateParent;
 
+        ProxyABOperator startOpeParent;
+        ProxyABParam startParamParent;
+        ProxyABParam endParamParent;
+        ProxyABOperator endOpeParent;
+        
+
         if (start.IsActionChild)
         {
             startActionParent = start.GetComponentInParent<ProxyABAction>();
+
+            if (end.IsOperatorChild)
+            {
+                endOpeParent = end.GetComponentInParent<ProxyABOperator>();
+                start.IsGateOperator = true;
+                startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endOpeParent.AbOperator;               
+            } else if (end.IsParamChild)
+            {
+                endParamParent = end.GetComponentInParent<ProxyABParam>();
+                start.IsGateOperator = true;
+                startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endParamParent.AbParam;
+            }
+            else if (end.IsActionChild)
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();                
                 AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+                CreatePinTransition(trans);
             }
+            else //State case
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
                 AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
+                CreatePinTransition(trans);
             }
 
+        }
+        else if (start.IsOperatorChild)
+        {
+            startOpeParent = start.GetComponentInParent<ProxyABOperator>();
+            if (end.IsOperatorChild)
+            {
+                endOpeParent = end.GetComponentInParent<ProxyABOperator>();
+                start.IsGateOperator = true;
+                startOpeParent.Inputs[startOpeParent.Inputs.Length-1] = (ABNode)endOpeParent.AbOperator;
+                ((ABNode)endOpeParent.AbOperator).Output = (ABNode)startOpeParent.AbOperator;
+            }
+            else if (end.IsParamChild)
+            {
+                endParamParent = end.GetComponentInParent<ProxyABParam>();
+                start.IsGateOperator = true;
+                startOpeParent.Inputs[startOpeParent.Inputs.Length] = (ABNode)endParamParent.AbParam;
+            }
+            else if (end.IsActionChild)
+            {
+                endActionParent = end.GetComponentInParent<ProxyABAction>();
+                end.IsGateOperator = true;
+                endActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)startOpeParent.AbOperator;
+            }
+        }
+        else if (start.IsParamChild)
+        {
+            startParamParent = start.GetComponentInParent<ProxyABParam>();
+            if (end.IsOperatorChild)
+            {
+                endOpeParent = end.GetComponentInParent<ProxyABOperator>();
+                start.IsGateOperator = true;
+                endOpeParent.Inputs[endOpeParent.Inputs.Length-1] = (ABNode)startParamParent.AbParam;
+                ((ABNode)startParamParent.AbParam).Output = (ABNode)endOpeParent.AbOperator;//TODO ma geule
+            }
+            else if (end.IsActionChild)
+            {
+                endActionParent = end.GetComponentInParent<ProxyABAction>();
+                end.IsGateOperator = true;
+                endActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)startParamParent.AbParam;
+            }
+        }
+        else
         {
             startStateParent = start.GetComponentInParent<ProxyABState>();
             if (end.IsActionChild)
@@ -413,7 +734,23 @@ public class MCEditorManager : MonoBehaviour {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
                 AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
             }
+        }                                                               
+    }
 
+    ProxyABOperator CreateOperator()
+    {
+        ProxyABOperator ope;
+        ope = Instantiate<ProxyABOperator>(operatorPrefab);
+        proxyOperators.Add(ope);
+        return ope;
+    }
+
+    ProxyABParam CreateParam()
+    {
+        ProxyABParam param;
+        param = Instantiate<ProxyABParam>(parameterPrefab);
+        proxyParams.Add(param);
+        return param;
     }
 
     void Select()
