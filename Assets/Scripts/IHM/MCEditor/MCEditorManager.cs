@@ -592,18 +592,22 @@ public class MCEditorManager : MonoBehaviour {
     {
 
         Text operatorName = proxy.GetComponentInChildren<Text>();
-        string opeName = node.ToString();
-        char splitter = '_';
-        string[] newName = opeName.Split(splitter);
-        string newOpeName = "";
-
-        for (int i = 1; i < newName.Length - 1; i++)
-        {
-
-            newOpeName += newName[i];
-        }
-        operatorName.text = newOpeName;
+		operatorName.text = getNodeName( node );
     }
+
+	public static string getNodeName( ABNode node ){
+		string opeName = node.ToString();
+		char splitter = '_';
+		string[] newName = opeName.Split(splitter);
+		string newOpeName = "";
+
+		for (int i = 1; i < newName.Length - 1; i++)
+		{
+			newOpeName += newName[i];
+		}
+
+		return newOpeName;
+	}
 
 	#region Transition Create Delete
 	Pin transition_Pin_Start = null;
