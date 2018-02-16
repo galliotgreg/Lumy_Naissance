@@ -801,12 +801,14 @@ public class MCEditorManager : MonoBehaviour {
 
 	void DeleteTransition( ProxyABTransition transition )
     {
-		// Unlink
-		AbModel.UnlinkStates ( transition.Transition.Start.Name, transition.Transition.End.Name );
-		// Remove Pin
-		// Destroy( transition.Condition.gameObject );
-		// Destroy Object
-		Destroy ( transition.gameObject );
+		if (transition != null) {
+			// Unlink
+			AbModel.UnlinkStates (transition.Transition.Start.Name, transition.Transition.End.Name);
+			// Remove Pin
+			// Destroy( transition.Condition.gameObject );
+			// Destroy Object
+			Destroy (transition.gameObject);
+		}
     }
 
     void Move()
