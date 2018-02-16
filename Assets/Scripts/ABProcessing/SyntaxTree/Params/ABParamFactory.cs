@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class ABParamFactory
 {
-    public static IABParam CreateParam(String typeStr, String identifier, String value)
     {
         ParamType type = GetTypeFromStr(typeStr);
         return CreateParam(type, identifier, value);
