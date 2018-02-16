@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class ProxyABOperator: MonoBehaviour, IProxyABOperator{
     [SerializeField]
     private string name;
+    private string type = "B&&BB";
+    private IABOperator abOperator;
+    private Pin outcome = null;
     private List<Pin> incomes;
     bool isLoaded = false;
 
 
     public ABNode[] Inputs {
         get {
+            return abOperator.Inputs;
         }
 
         set {
+            abOperator.Inputs = value;
         }
     }
 
@@ -21,10 +27,12 @@ using UnityEngine.UI;
     {
         get
         {
+            return outcome;
         }
 
         set
         {
+            outcome = value;
         }
     }
 
@@ -32,7 +40,7 @@ using UnityEngine.UI;
     {
         get
         {
-            throw new System.NotImplementedException();
+            return incomes;
         }
         set
         {
@@ -66,17 +74,35 @@ using UnityEngine.UI;
         }
     }
 
+    public IABOperator AbOperator
+    {
+        get
+        {
+            return abOperator;
+        }
+
+        set
+        {
+            abOperator = value;
+        }
+    }
+
     // Use this for initialization
     void Start () {
         if (IsLoaded)// when the Operator is created by loading behavior file
+        {            
             IsLoaded = false;
         }
         else // when the OPerator is created in the editor.
         {
             Text opeName = this.GetComponentInChildren<Text>();
             opeName.text = this.Name;
+            incomes = new List<Pin>();
             incomes.Add(MCEditorManager.instance.CreatePinSynthTree(this.transform, true));
+            outcome = MCEditorManager.instance.CreatePinSynthTree(this.transform, true);
 
+            ABParser abParser = new ABParser();
+            abOperator = abParser.ParseOperator(type);            
         }
     }
 	
