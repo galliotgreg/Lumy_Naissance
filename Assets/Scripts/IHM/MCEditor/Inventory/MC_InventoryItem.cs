@@ -70,9 +70,10 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 	DragObject dragObjectComponent;
 
 	void activateClick(){
-		GameObject proxy = Instantiate (proxyPrefab, this.transform);
+		GameObject proxy = Instantiate (proxyPrefab);
 		inventory.configProxyItem ( proxy, this );
-		dragObjectComponent.startDrag (Instantiate (proxyPrefab), this);
+
+		dragObjectComponent.startDrag (proxy, this);
 	}
 
 	bool hover = false;
