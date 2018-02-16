@@ -35,7 +35,10 @@ public class LumyUIController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        LumyEditorManager.instance.EditedLumy.SetActive(true);
+        if (LumyEditorManager.instance.EditedLumy != null)
+        {
+            LumyEditorManager.instance.EditedLumy.SetActive(true);
+        }
         RetreiveData();
     }
 
