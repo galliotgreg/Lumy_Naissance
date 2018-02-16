@@ -196,9 +196,20 @@ public class GameManager : MonoBehaviour {
     private void InitGameObjects()
     {
         //Hives
-        p1_home = Instantiate(homePrefab, new Vector3(-30f, -0.45f, 0f), Quaternion.identity);
+        GameObject[] hives = GameObject.FindGameObjectsWithTag("Hive"); 
+        if (hives.Length ==2)
+        {
+            p1_home = Instantiate(homePrefab,hives[0].GetComponent<Transform>().position, Quaternion.identity);
+            p2_home = Instantiate(homePrefab,hives[1].GetComponent<Transform>().position, Quaternion.identity);
+           
+        }
+        else
+        {
+            p1_home = Instantiate(homePrefab, new Vector3(-30f, -0.45f, 0f), Quaternion.identity);
+            p2_home = Instantiate(homePrefab, new Vector3(30f, -0.45f, 0f), Quaternion.identity);
+        }
+      
         p1_home.name = "p1_hive";
-        p2_home = Instantiate(homePrefab, new Vector3(30f, -0.45f, 0f), Quaternion.identity);
         p2_home.name = "p2_hive";
         HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
 		p1_hiveScript.Authority = PlayerAuthority.Player1;
