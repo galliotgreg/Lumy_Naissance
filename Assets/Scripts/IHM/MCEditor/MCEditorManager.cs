@@ -54,6 +54,9 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABOperator> proxyOperators;
     private List<ProxyABParam> proxyParams;
 
+	[SerializeField]
+	private string MC_OrigFilePath = "Assets/Inputs/Test/siu_scoot_behavior_TEST.csv";
+
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
     ProxyABAction abAction2 = null;
@@ -65,6 +68,8 @@ public class MCEditorManager : MonoBehaviour {
 
     /** END TEST SAVE**/
 
+	[SerializeField]
+	MC_Camera camera;
 
     void Awake()
     {
@@ -115,6 +120,21 @@ public class MCEditorManager : MonoBehaviour {
 
     private void Update()
     {
+		// adjust camera
+		List<GameObject> proxies = new List<GameObject>();
+		foreach (MonoBehaviour b in proxyStates) {
+			proxies.Add (b.gameObject);
+		}
+		foreach (MonoBehaviour b in proxyActions) {
+			proxies.Add (b.gameObject);
+		}
+		proxies.AddRange ( proxyParams );
+		proxies.AddRange ( proxyOperators );
+		// TODO create global list
+		if (camera != null) {
+			camera.adjustCamera (proxies);
+		}
+
         /**START TEST SAVE**/
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -129,7 +149,9 @@ public class MCEditorManager : MonoBehaviour {
         }else if (Input.GetKeyDown(KeyCode.E))
         {
             abState = Instantiate<ProxyABState>(statePrefab);
+			proxyStates.Add (abState);
             abState2 = Instantiate<ProxyABState>(statePrefab);
+			proxyStates.Add (abState2);
         } else if (Input.GetKeyDown(KeyCode.R))
         {
             CreateTransition(abState.GetComponentInChildren<Pin>(), abState2.GetComponentInChildren<Pin>());
@@ -172,6 +194,11 @@ public class MCEditorManager : MonoBehaviour {
         }
 
         /**END TEST SAVE**/
+		/**Delete Transition**/
+		else if (Input.GetKeyDown(KeyCode.D))
+		{
+			this.deleteSelectedTransition ();
+		}
     }
 
     private void SetupModel()
@@ -187,7 +214,7 @@ public class MCEditorManager : MonoBehaviour {
 
         /**** START TODO ****/
         //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path
-        model = ABManager.instance.LoadABModelFromFile("Assets/Inputs/Test/siu_scoot_behavior_TEST.csv");
+		model = ABManager.instance.LoadABModelFromFile(MC_OrigFilePath);
         /**** END TODO ****/
 
         return model;
@@ -214,20 +241,21 @@ public class MCEditorManager : MonoBehaviour {
                 proxyActions.Add(proxyAction);
                 actionsDictionnary.Add(state, proxyAction);
 
-                foreach (IABGateOperator param in state.Action.Parameters) {
-                    start = Instantiate<Pin>(pinPrefab);
-                    start.IsGateOperator = true;
-                    start.transform.parent = proxyAction.transform;
-                    start.transform.position = proxyAction.transform.position;
-                    float radius = proxyAction.transform.localScale.y / 2;
-                    start.transform.position = new Vector3(start.transform.position.x, start.transform.position.y + radius, start.transform.position.z);
-                    pins.Add(start);                     
-                    foreach(ABNode node in param.Inputs)
-                    {
-                        Pin end = RecNodeSynthTree(node);
-                        CreateTransitionSyntaxTree(start, end);
-                    }
-                }
+				if (state.Action.Parameters != null) {
+					foreach (IABGateOperator param in state.Action.Parameters) {
+						start = Instantiate<Pin> (pinPrefab);
+						start.IsGateOperator = true;
+						start.transform.parent = proxyAction.transform;
+						start.transform.position = proxyAction.transform.position;
+						float radius = proxyAction.transform.localScale.y / 2;
+						start.transform.position = new Vector3 (start.transform.position.x, start.transform.position.y + radius, start.transform.position.z);
+						pins.Add (start);                     
+						foreach (ABNode node in param.Inputs) {
+							Pin end = RecNodeSynthTree (node);
+							CreateTransitionSyntaxTree (start, end);
+						}
+					}
+				}
             }
             else {
                 proxyState = Instantiate<ProxyABState>(statePrefab);
@@ -394,6 +422,7 @@ public class MCEditorManager : MonoBehaviour {
 
             proxyABTransition.StartPosition = pinList[0];
             proxyABTransition.EndPosition = pinList[1];
+			proxyABTransition.Transition = AbModel.Transitions [i];
 
             CreatePinTransition(proxyABTransition);
 
@@ -410,20 +439,20 @@ public class MCEditorManager : MonoBehaviour {
 
         ProxyABState startState = statesDictionnary[AbModel.Transitions[curTransition].Start];        
 
-        pinList.Add(CreatePinState(startState.transform, false,true, curTransition));
+		pinList.Add(CreatePinState(startState.AbState, startState.transform, false,true, curTransition));
 
         if (statesDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
 
             ProxyABState endState = statesDictionnary[AbModel.Transitions[curTransition].End];
 
 
-            pinList.Add(CreatePinState(endState.transform, false,false, curTransition));
+			pinList.Add(CreatePinState(startState.AbState, endState.transform, false,false, curTransition));
         }
         else if (actionsDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
 
             ProxyABAction endState = actionsDictionnary[AbModel.Transitions[curTransition].End];
 
-            pinList.Add(CreatePinState(endState.transform, true,false));
+			pinList.Add(CreatePinState(startState.AbState, endState.transform, true,false));
         }
         
         return pinList;
@@ -457,11 +486,12 @@ public class MCEditorManager : MonoBehaviour {
         proxyABTransition.Condition = condition;
     }
 
-    public Pin CreatePinState(Transform state,bool isAction,bool isStart, [Optional] int curTransition){
+	public Pin CreatePinState(ABState state, Transform state_transform,bool isAction,bool isStart, [Optional] int curTransition){
         Pin pin;
-        pin = CreatePin(state);
-        float radiusState = state.localScale.y / 2;
+        pin = CreatePin(state_transform);
+        float radiusState = state_transform.localScale.y / 2;
         Vector3 newPos;
+
         if (isAction) {
             pin.IsActionChild = true;
             newPos = new Vector3(pin.transform.position.x + (radiusState), pin.transform.position.y, pin.transform.position.z);
@@ -472,7 +502,10 @@ public class MCEditorManager : MonoBehaviour {
                 newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / Math.Max(1,AbModel.Transitions[curTransition].Start.Outcomes.Count))), pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / Math.Max(1, AbModel.Transitions[curTransition].Start.Outcomes.Count))), pin.transform.position.z);
             }
             else {
-                newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / Math.Max(1,AbModel.Transitions[curTransition].End.Outcomes.Count))), pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / Math.Max(1, AbModel.Transitions[curTransition].End.Outcomes.Count))), pin.transform.position.z);
+                newPos = new Vector3(
+					pin.transform.position.x + (radiusState * Mathf.Cos(curTransition * (2 * Mathf.PI) / Math.Max(1, state.Outcomes.Count))),
+					pin.transform.position.y + (radiusState * Mathf.Sin(curTransition * (2 * Mathf.PI) / Math.Max(1, state.Outcomes.Count))),
+					pin.transform.position.z);
             }
             
         }
@@ -564,7 +597,7 @@ public class MCEditorManager : MonoBehaviour {
 
     void Save_MC()
     {
-        string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_TEST.csv";
+        string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_TEST_Edwyn.csv";
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
 
@@ -652,6 +685,7 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABOperator endOpeParent;
         
 
+		int transitionId = -1;
         if (start.IsActionChild)
         {
             startActionParent = start.GetComponentInParent<ProxyABAction>();
@@ -672,12 +706,14 @@ public class MCEditorManager : MonoBehaviour {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();                
                 AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
                 CreatePinTransition(trans);
+				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
             }
             else //State case
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
                 AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
                 CreatePinTransition(trans);
+				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
             }
 
         }
@@ -727,12 +763,12 @@ public class MCEditorManager : MonoBehaviour {
             if (end.IsActionChild)
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();
-                AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
+				transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
             }
             else
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
-                AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
+				transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
             }
         }                                                               
     }
@@ -751,6 +787,9 @@ public class MCEditorManager : MonoBehaviour {
         param = Instantiate<ProxyABParam>(parameterPrefab);
         proxyParams.Add(param);
         return param;
+		trans.Transition = AbModel.getTransition( transitionId );
+
+        Debug.Log(AbModel.Transitions.Count.ToString());
     }
 
     void Select()
@@ -758,9 +797,14 @@ public class MCEditorManager : MonoBehaviour {
 
     }
 
-    void DeleteTransition()
+	void DeleteTransition( ProxyABTransition transition )
     {
-
+		// Unlink
+		AbModel.UnlinkStates ( transition.Transition.Start.Name, transition.Transition.End.Name );
+		// Remove Pin
+		// Destroy( transition.Condition.gameObject );
+		// Destroy Object
+		Destroy ( transition.gameObject );
     }
 
     void Move()
@@ -823,20 +867,60 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
-    void SetNodeName(GameObject proxy, ABNode node)
+    public static void SetNodeName(GameObject proxy, ABNode node)
     {
-
         Text operatorName = proxy.GetComponentInChildren<Text>();
-        string opeName = node.ToString();
-        char splitter = '_';
-        string[] newName = opeName.Split(splitter);
-        string newOpeName = "";
-
-        for (int i = 1; i < newName.Length - 1; i++)
-        {
-
-            newOpeName += newName[i];
-        }
-        operatorName.text = newOpeName;
+		operatorName.text = getNodeName( node );
     }
+
+	public static string getNodeName( ABNode node ){
+		string opeName = node.ToString();
+		char splitter = '_';
+		string[] newName = opeName.Split(splitter);
+		string newOpeName = "";
+
+		for (int i = 1; i < newName.Length - 1; i++)
+		{
+			newOpeName += newName[i];
+		}
+
+		return newOpeName;
+	}
+
+	#region Transition Create Delete
+	Pin transition_Pin_Start = null;
+	ProxyABTransition transition_Selected = null;
+
+	public Pin Transition_Pin_Start {
+		get {
+			return transition_Pin_Start;
+		}
+	}
+	public ProxyABTransition Transition_Selected {
+		get {
+			return transition_Selected;
+		}
+	}
+
+	public void createTransition_setStartPin( Pin pin ){
+		this.transition_Pin_Start = pin;
+	}
+	public void createTransition_setEndPin( Pin pin ){
+		if (this.transition_Pin_Start != null && this.transition_Pin_Start != pin) {
+			this.CreateTransition ( this.transition_Pin_Start, pin );
+			this.transition_Pin_Start = null;
+		}
+	}
+
+	// delete
+	public void selectTransition( ProxyABTransition transition ){
+		this.transition_Selected = transition;
+	}
+	void deleteSelectedTransition(){
+		if (this.transition_Selected != null) {
+			this.DeleteTransition (this.transition_Selected);
+			this.transition_Selected = null;
+		}
+	}
+	#endregion
 }
