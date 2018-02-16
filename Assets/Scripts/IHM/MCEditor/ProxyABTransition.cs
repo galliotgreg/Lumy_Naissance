@@ -100,6 +100,18 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 	[SerializeField]
 	LineRenderer lineRenderer;
 
+	public LineRenderer LineRenderer {
+		get {
+			return lineRenderer;
+		}
+	}
+
+	public CapsuleCollider Collider {
+		get {
+			return collider;
+		}
+	}
+
 	private void adjustCollider()
 	{
 		Vector3 startPoint = lineRenderer.GetPosition (0);

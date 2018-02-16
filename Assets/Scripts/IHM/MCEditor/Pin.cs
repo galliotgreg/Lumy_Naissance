@@ -10,6 +10,9 @@ public class Pin : DragSelectableProxyGameObject {
     bool isGateOperator = false;
     bool isActionChild = false;
 
+	[SerializeField]
+	GameObject transitionPrefab;
+
     public bool IsGateOperator {
         get {
             return isGateOperator;
@@ -37,14 +40,15 @@ public class Pin : DragSelectableProxyGameObject {
     void Start () {
 		
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		base.Update ();
+
+		handleSelectedState ();
 	}
 
 	#region implemented abstract members of SelectableProxyGameObject
-
 	protected override void select ()
 	{
 		if (MCEditorManager.instance.Transition_Pin_Start != null ) {
@@ -61,5 +65,32 @@ public class Pin : DragSelectableProxyGameObject {
 		}
 	}
 
+	ProxyABTransition auxTransition;
+	bool selectNow = false;
+
+	protected void handleSelectedState(){
+		if (Selected) {
+			if (!selectNow) {
+				auxTransition = Instantiate (transitionPrefab).GetComponent<ProxyABTransition> ();
+				auxTransition.Collider.enabled = false;
+
+				selectNow = true;
+			}
+
+			if (auxTransition != null) {
+				// Move
+				auxTransition.LineRenderer.SetPosition( 0, this.transform.position );
+				Vector3 mouse = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+				mouse.z = this.transform.position.z;
+
+				auxTransition.LineRenderer.SetPosition( 1, mouse );
+			}
+		} else {
+			selectNow = false;
+			if (auxTransition != null) {
+				Destroy (auxTransition.gameObject);
+			}
+		}
+	}
 	#endregion
 }
