@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 108853215482228798}
   - component: {fileID: 23289289777060916}
   - component: {fileID: 33248948277815470}
+  - component: {fileID: 135396478008538648}
   m_Layer: 0
   m_Name: EmptyComponentPrefab
   m_TagString: Untagged
@@ -136,7 +137,6 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 0
   prodCost: 0
-  buyCost: 0
   moveSpeedBuff: 0
   actionSpeedBuff: 0
   strengthBuff: 0
@@ -182,3 +182,15 @@ MonoBehaviour:
   lastTime: 0
   delta: 5
   seed: 42
+--- !u!135 &135396478008538648
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1398855149140170}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

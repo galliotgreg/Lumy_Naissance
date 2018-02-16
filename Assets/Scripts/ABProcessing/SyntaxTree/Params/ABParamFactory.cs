@@ -6,6 +6,38 @@ using UnityEngine;
 
 public class ABParamFactory
 {
+    private Dictionary<string, string> typeStringToString = new Dictionary<string, string>();
+
+    public Dictionary<string, string> TypeStringToString
+    {
+        get
+        {
+            return typeStringToString;
+        }
+
+        set
+        {
+            typeStringToString = value;
+        }
+    }
+
+    public void CreateDictionnary()
+    {
+        TypeStringToString.Add("ABBool", "bool");
+        TypeStringToString.Add("ABScalar", "scal");
+        TypeStringToString.Add("ABText", "txt");
+        TypeStringToString.Add("ABVec", "vec");
+        TypeStringToString.Add("ABColor", "color");
+        TypeStringToString.Add("ABRef", "ref");
+        TypeStringToString.Add("ABTable<ABBool>", "bool[]");
+        TypeStringToString.Add("ABTable<ABText>", "txt[]");
+        TypeStringToString.Add("ABTable<ABScalar>", "scal[]");
+        TypeStringToString.Add("ABTable<ABVec>", "vec[]");
+        TypeStringToString.Add("ABTable<ABColor>", "color[]");
+        TypeStringToString.Add("ABTable<ABRef>", "ref[]");
+    }
+
+        public static IABParam CreateParam(String typeStr, String identifier, String value)
     {
         ParamType type = GetTypeFromStr(typeStr);
         return CreateParam(type, identifier, value);

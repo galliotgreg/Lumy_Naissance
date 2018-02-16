@@ -95,6 +95,40 @@ public class ABModel {
         return id;
     }
 
+	public bool UnlinkStates(string startName, string endName)
+	{
+		ABState start = FindState(startName);
+		ABState end = FindState(endName);
+
+		if (start == null || end == null)
+		{
+			throw new NotSupportedException();
+		}
+
+		ABTransition transition = FindTransition(start,end);
+
+		// Remove from transitions
+		if( !transitions.Remove(transition) ){
+			return false;
+		}
+
+		// Remove from start
+		if( start.Outcomes.Remove(transition) ){
+			return false;
+		}
+
+		return true;
+	}
+
+	public ABTransition getTransition(int id){
+		foreach( ABTransition t in transitions ){
+			if (t.Id == id) {
+				return t;
+			}
+		}
+		return null;
+	}
+
     public void SetCondition(int transitionId, AB_BoolGate_Operator condition)
     {
         ABTransition transition = FindTransition(transitionId);
@@ -176,4 +210,16 @@ public class ABModel {
         }
         return null;
     }
+
+	private ABTransition FindTransition(ABState startState, ABState endState)
+	{
+		foreach (ABTransition transition in transitions)
+		{
+			if (transition.Start == startState && transition.End == endState)
+			{
+				return transition;
+			}
+		}
+		return null;
+	}
 }

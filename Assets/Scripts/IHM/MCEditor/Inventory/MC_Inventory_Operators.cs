@@ -22,7 +22,6 @@ public class MC_Inventory_Operators : MC_Inventory {
 			}
 		}
 		setItems ( operators );
-	}
 	
 	// Update is called once per frame
 	void Update () {

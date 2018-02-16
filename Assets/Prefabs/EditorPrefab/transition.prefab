@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4773085050409444}
   - component: {fileID: 120726035657737990}
   - component: {fileID: 114615954408207840}
+  - component: {fileID: 136814883136833938}
   m_Layer: 0
   m_Name: transition
   m_TagString: Untagged
@@ -52,6 +53,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53c8f13a944d299458545398df7d0911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regularColor: {r: 0, g: 0, b: 0, a: 0}
+  hoverColor: {r: 1, g: 0, b: 0, a: 0}
+  selectedColor: {r: 0.15862082, g: 0, b: 1, a: 0}
+  colorRenderer: {fileID: 120726035657737990}
+  startPosition: {fileID: 0}
+  endPosition: {fileID: 0}
+  condition: {fileID: 0}
+  collider: {fileID: 136814883136833938}
+  lineRenderer: {fileID: 120726035657737990}
 --- !u!120 &120726035657737990
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -138,3 +148,16 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!136 &136814883136833938
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1538484094777474}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 2.55
+  m_Height: 0.1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

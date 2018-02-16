@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PhySkeleton : MonoBehaviour {
+public class PhySkeleton : MonoBehaviour
+{
     [SerializeField]
     private GameObject bonePrefab;
 
@@ -18,15 +19,39 @@ public class PhySkeleton : MonoBehaviour {
     [SerializeField]
     private PhyBone rootBone;
 
+    public bool IsIK
+    {
+        get
+        {
+            return isIK;
+        }
+
+        set
+        {
+            isIK = value;
+        }
+    }
+
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         //BuildSkeleton();
         //rootBone.Origin = IKAnkor.transform.position;
         //ForwardKinematic(rootBone);
     }
 
-    private void BuildSkeleton()
+    public void BuildSkeleton()
     {
+        IList<GameObject> bones = new List<GameObject>();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            bones.Add(transform.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < bones.Count; i++)
+        {
+            Destroy(bones[i]);
+        }
+
         GameObject head = gameObject.transform.parent.Find("Head").gameObject;
         GameObject tail = gameObject.transform.parent.Find("Tail").gameObject;
         GameObject lumy = gameObject.transform.parent.gameObject;
@@ -47,18 +72,42 @@ public class PhySkeleton : MonoBehaviour {
         join1.DstBones[0] = phyBone;
         join2.SrcBone = phyBone;
 
-        //Close tail
-        tailJoins[tailJoins.Length - 1].DstBones = new PhyBone[0];
+        //Get First & last joins
+        PhyJoin firstJoin = null;
+        if (headJoins.Length > 0)
+        {
+            firstJoin = headJoins[0];
+        } else
+        {
+            firstJoin = tailJoins[0];
+        }
+        PhyJoin lastJoin = null;
+        if (tailJoins.Length > 0)
+        {
+            lastJoin = tailJoins[tailJoins.Length - 1];
+        }
+        else
+        {
+            lastJoin = headJoins[tailJoins.Length - 1];
+        }
+
+
+        ////Close tail
+        lastJoin.DstBones = new PhyBone[0];
 
         //Set root Bone
-        rootBone = headJoins[0].DstBones[0];
-        IKAnkor = headJoins[0].gameObject;
-        IKTarget = tailJoins[tailJoins.Length - 1].gameObject;
+        rootBone = firstJoin.DstBones[0];
+        IKAnkor = firstJoin.gameObject;
+        IKTarget = lastJoin.gameObject;
     }
 
     private PhyJoin[] BuildSubPart(GameObject tail, GameObject lumy)
     {
-        PhyJoin[] joins = tail.GetComponentsInChildren<PhyJoin>();
+        PhyJoin[] joins = new PhyJoin[tail.transform.childCount];
+        for (int i = 0; i < tail.transform.childCount; i++)
+        {
+            joins[i] = tail.transform.GetChild(i).gameObject.GetComponent<PhyJoin>();
+        }
         //One Joint Case
         if (joins.Length < 2)
         {
@@ -89,7 +138,8 @@ public class PhySkeleton : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         if (rootBone == null)
         {
             BuildSkeleton();
@@ -98,14 +148,15 @@ public class PhySkeleton : MonoBehaviour {
         }
 
         //rootBone.Origin = IKAnkor.transform.position;
-        if (!isIK)
+        if (!IsIK)
         {
             rootBone.Origin = IKAnkor.transform.position;
             ForwardKinematic(rootBone);
         }
         else
         {
-            for (int i = 0; i < IKIter; i++) {
+            for (int i = 0; i < IKIter; i++)
+            {
                 InvertKinematic();
             }
         }
@@ -137,13 +188,14 @@ public class PhySkeleton : MonoBehaviour {
         if (curLimb.Childs.Count == 0)
         {
             return;
-        } else
+        }
+        else
         {
             Vector2 saveRootPos = new Vector2(
                 curLimb.Bones[0].Origin.x,
                 curLimb.Bones[0].Origin.y);
             List<Vector2> rootsInstances = new List<Vector2>();
-            foreach(PhyLimb child in curLimb.Childs)
+            foreach (PhyLimb child in curLimb.Childs)
             {
                 //Reset start
                 child.Bones[0].Origin.Set(saveRootPos.x, saveRootPos.y);
@@ -159,12 +211,12 @@ public class PhySkeleton : MonoBehaviour {
             {
                 centroid += v;
             }
-            centroid /= (float) rootsInstances.Count;
+            centroid /= (float)rootsInstances.Count;
             curLimb.Childs[0].Bones[0].Origin.Set(centroid.x, centroid.y);
 
             IKForwardPass(centroid, curLimb.Bones);
         }
-        
+
     }
 
     private void HierarchyIKBackardPass(PhyLimb rootLimb, Vector2 downTarget)
@@ -176,9 +228,10 @@ public class PhySkeleton : MonoBehaviour {
     {
         PhyLimb limb = new PhyLimb();
         PhyBone curBone = bone;
-        while(true)
+        while (true)
         {
-            if (curBone == null) {
+            if (curBone == null)
+            {
                 break;
             }
 
@@ -193,7 +246,8 @@ public class PhySkeleton : MonoBehaviour {
             if (curBone.HeadJoin.DstBones.Length == 1)
             {
                 curBone = curBone.HeadJoin.DstBones[0];
-            } else if (curBone.HeadJoin.DstBones.Length > 1)
+            }
+            else if (curBone.HeadJoin.DstBones.Length > 1)
             {
                 foreach (PhyBone childBone in curBone.HeadJoin.DstBones)
                 {
@@ -281,20 +335,20 @@ public class PhySkeleton : MonoBehaviour {
     {
         curBone.WorldTeta = curBone.LocalTeta;
         curBone.ComputeEnd();
-            //Get neigbours
-            PhyBone prevBone = null;
-            if (curBone.BaseJoin != null)
-            {
-                prevBone = curBone.BaseJoin.SrcBone;
-            }
+        //Get neigbours
+        PhyBone prevBone = null;
+        if (curBone.BaseJoin != null)
+        {
+            prevBone = curBone.BaseJoin.SrcBone;
+        }
 
-            //Update Cur Bone
-            if (prevBone != null)
-            {
-                curBone.WorldTeta = curBone.LocalTeta + prevBone.WorldTeta;
-                curBone.Origin = prevBone.End;
-                curBone.ComputeEnd();
-            }
+        //Update Cur Bone
+        if (prevBone != null)
+        {
+            curBone.WorldTeta = curBone.LocalTeta + prevBone.WorldTeta;
+            curBone.Origin = prevBone.End;
+            curBone.ComputeEnd();
+        }
 
         //Update Next Bone on next step
         if (curBone.HeadJoin != null)

@@ -48,6 +48,18 @@ public class AppContextManager : MonoBehaviour
     /// Path to the folder hosting all available species
     /// </summary>
     [SerializeField]
+    private string PLAYER1_FOLDER_PATH = "Assets/Inputs/Player1/";
+
+    /// <summary>
+    /// Path to the folder hosting all available species
+    /// </summary>
+    [SerializeField]
+    private string PLAYER2_FOLDER_PATH = "Assets/Inputs/Player2/";
+
+    /// <summary>
+    /// Path to the folder hosting all available species
+    /// </summary>
+    [SerializeField]
     private string SPECIES_FOLDER_PATH = "Assets/Inputs/Species/";
     /// <summary>
     /// Casts files suffix
@@ -143,6 +155,37 @@ public class AppContextManager : MonoBehaviour
         //Set Specie path
         activeCast = activeSpecie.Casts[castName];
         activeBehaviorPath = GetPathFromCastName(castName);
+    }
+
+    public void LoadPlayerSpecies(string player1SpecieName, string player2SpecieName)
+    {
+        //Free Folders
+        DirectoryInfo di = new DirectoryInfo(PLAYER1_FOLDER_PATH);
+        foreach (FileInfo file in di.GetFiles())
+        {
+            file.Delete();
+        }
+         di = new DirectoryInfo(PLAYER2_FOLDER_PATH);
+        foreach (FileInfo file in di.GetFiles())
+        {
+            file.Delete();
+        }
+
+        //Copy files
+        di = new DirectoryInfo(SPECIES_FOLDER_PATH + player1SpecieName + "/");
+        foreach (FileInfo file in di.GetFiles())
+        {
+            File.Copy(
+            file.FullName,
+            PLAYER1_FOLDER_PATH + file.Name);
+        }
+        di = new DirectoryInfo(SPECIES_FOLDER_PATH + player2SpecieName + "/");
+        foreach (FileInfo file in di.GetFiles())
+        {
+            File.Copy(
+            file.FullName,
+            PLAYER2_FOLDER_PATH + file.Name);
+        }
     }
 
     public void SwitchActiveSpecie(string specieName)
