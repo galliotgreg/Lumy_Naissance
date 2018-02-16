@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LumyUIController : MonoBehaviour {
     /// <summary>
@@ -26,18 +28,51 @@ public class LumyUIController : MonoBehaviour {
         }
     }
 
+    [SerializeField]
+    private GameObject libraryCompPrefab;
+    [SerializeField]
+    private GameObject voletGauche;
+
     // Use this for initialization
     void Start () {
         LumyEditorManager.instance.EditedLumy.SetActive(true);
+        RetreiveData();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void RetreiveData()
+    {
+        int nbColumns = 4;
+        IList<ComponentInfo> compos = LumyEditorManager.instance.CompoLibrary;
+        for (int i = 0; i < compos.Count; i++)
+        {
+            //Instanciate Compo button
+            GameObject libComp = Instantiate(libraryCompPrefab);
+            LibraryCompoData compoData = libComp.GetComponent<LibraryCompoData>();
+            compoData.ComponentInfo = compos[i];
+
+            //Set position
+            int x = i % nbColumns;
+            int y = i / nbColumns;
+            RectTransform rectTransform = libComp.GetComponent<RectTransform>();
+            rectTransform.localPosition = new Vector3(-160f + x * 110f, 380f - y * 140f, 0f);
+            libComp.transform.SetParent(voletGauche.transform, false);
+
+            //Congigure Button
+            Text text = libComp.transform.Find("Text").gameObject.GetComponent<Text>();
+            text.text = compoData.ComponentInfo.Name;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
     void OnDestroy()
     {
-        LumyEditorManager.instance.EditedLumy.SetActive(false);
+        if (LumyEditorManager.instance.EditedLumy != null)
+        {
+            LumyEditorManager.instance.EditedLumy.SetActive(false);
+        }
     }
 }
