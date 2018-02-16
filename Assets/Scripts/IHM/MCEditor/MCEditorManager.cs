@@ -25,9 +25,7 @@ public class MCEditorManager : MonoBehaviour {
     [SerializeField]
     private Pin pinPrefab;
     [SerializeField]
-    private GameObject operatorPrefab;
     [SerializeField]
-    private GameObject parameterPrefab;
     [SerializeField]
     private ProxyABAction actionPrefab;
     [SerializeField]
@@ -42,15 +40,12 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABAction> proxyActions;
     private List<ProxyABTransition> proxyTransitions;
     private List<Pin> pins; //ProxyABGateOperator    
-    private List<GameObject> proxyOperators;
-    private List<GameObject> proxyParams;
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
     ProxyABAction abAction2 = null;
     ProxyABState abState = null;
     ProxyABState abState2 = null;
-        
     /** END TEST SAVE**/
 
 
@@ -84,8 +79,6 @@ public class MCEditorManager : MonoBehaviour {
         proxyStates = new List<ProxyABState>();
         proxyTransitions = new List<ProxyABTransition>();
         pins = new List<Pin>(); //ProxyABGateOperator
-        proxyParams = new List<GameObject>(); //ProxyABParam
-        proxyOperators = new List<GameObject>();
         proxyActions = new List<ProxyABAction>();
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
@@ -202,15 +195,10 @@ public class MCEditorManager : MonoBehaviour {
     //Load syntaxe Tree in a recursive way
     Pin RecNodeSynthTree(ABNode node)
     {
-        GameObject proxy = null;
         Pin pin = null;
         if (node is IABOperator)
         {
-            proxy = Instantiate<GameObject>(operatorPrefab);
-            proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
-            SetNodeName(proxy, node);
 
-            proxyOperators.Add(proxy);
             if ( ((IABOperator)node).Inputs.Length != 0)
             {
                 foreach(ABNode inputNode in ((IABOperator)node).Inputs)
@@ -219,7 +207,6 @@ public class MCEditorManager : MonoBehaviour {
                     {
                         break;
                     }
-                    Pin start = CreatePinSynthTree(proxy.transform, true);
                     Pin end = RecNodeSynthTree(inputNode);
 
                     if(end != null)
@@ -231,34 +218,10 @@ public class MCEditorManager : MonoBehaviour {
         }
         else if (node is IABParam)
         {
-            proxy = Instantiate<GameObject>(parameterPrefab);
-            proxy.transform.position = new Vector3(proxy.transform.position.x + UnityEngine.Random.Range(-5, 5), proxy.transform.position.y + UnityEngine.Random.Range(-5, 5), proxy.transform.position.z);
             
-            Text paramName = proxy.GetComponentInChildren<Text>();            
-            if(node is ABParam<ABText>) {
-                paramName.text = ((ABParam<ABText>)node).Value.ToString();
-            }else if (node is ABParam<ABVec>) {
-                paramName.text = ((ABParam<ABVec>)node).Value.ToString();
-            }
-            else if(node is ABParam<ABBool>) {
-                paramName.text = ((ABParam<ABBool>)node).Value.ToString();
-            }
-            else if(node is ABParam<ABRef>) {
-                paramName.text = ((ABParam<ABRef>)node).Value.ToString();
-            }
-            else if(node is ABParam<ABColor>) {
-                paramName.text = ((ABParam<ABColor>)node).Value.ToString();
 
-            }
-            else if(node is ABParam<ABScalar>) {
-                paramName.text = ((ABParam<ABScalar>)node).Value.ToString();
-            }
 
-            proxyParams.Add(proxy);
 
-            }
-        pin = CreatePinSynthTree(proxy.transform, true);
-        return pin;
     }
 
     void LoadProxyTransitions()
@@ -310,22 +273,6 @@ public class MCEditorManager : MonoBehaviour {
     }
 
     /************** PROXY CREATION FUNCTIONS **************/
-
-    GameObject CreateOperator()
-    {
-        GameObject ope; 
-        ope = Instantiate<GameObject>(operatorPrefab);
-        proxyOperators.Add(ope);
-        return ope;
-    }
-
-    GameObject CreateParam()
-    {
-        GameObject param;
-        param = Instantiate<GameObject>(parameterPrefab);
-        proxyOperators.Add(param);
-        return param;
-    }
 
     // In a syntaxe tree a transition don't need a pin ( only for connect syntaxe tree to action or transition between state and action/state)
     void CreateTransitionSyntaxTree(Pin start, Pin end)
@@ -389,7 +336,6 @@ public class MCEditorManager : MonoBehaviour {
         }
         else
         {
-            newPos = new Vector3(pin.transform.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), pin.transform.position.z);            
         }
         pin.transform.position = newPos;
         return pin;
@@ -424,7 +370,6 @@ public class MCEditorManager : MonoBehaviour {
         foreach(ABTransition trans in abModel.Transitions)
         {
             csvcontent.AppendLine(trans.Id + "," + trans.Start.Name + "," + trans.End.Name);
-        }
 
         File.Delete(csvpath);
         File.AppendAllText(csvpath, csvcontent.ToString());
@@ -447,18 +392,15 @@ public class MCEditorManager : MonoBehaviour {
         if (start.IsActionChild)
         {
             startActionParent = start.GetComponentInParent<ProxyABAction>();
-            if (end.IsActionChild)
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();                
                 AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
             }
-            else
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
                 AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
             }
 
-        } else
         {
             startStateParent = start.GetComponentInParent<ProxyABState>();
             if (end.IsActionChild)
@@ -471,10 +413,7 @@ public class MCEditorManager : MonoBehaviour {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
                 AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
             }
-        }                                               
-        CreatePinTransition(trans);
 
-        Debug.Log(AbModel.Transitions.Count.ToString());
     }
 
     void Select()
