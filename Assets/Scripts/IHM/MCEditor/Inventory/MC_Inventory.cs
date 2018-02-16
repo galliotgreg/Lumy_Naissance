@@ -29,6 +29,7 @@ public abstract class MC_Inventory : MonoBehaviour {
 			GameObject newItem = Instantiate (itemPrefab);
 			MC_InventoryItem inventoryItem = newItem.GetComponent<MC_InventoryItem> ();
 			inventoryItem.Item = item;
+			inventoryItem.ProxyPrefab = proxyPrefab;
 			inventoryItem.transform.SetParent ( container.transform );
 
 			configItem ( inventoryItem );
