@@ -2351,6 +2351,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 816132537}
+--- !u!1 &823246307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 823246309}
+  - component: {fileID: 823246308}
+  m_Layer: 0
+  m_Name: ABManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &823246308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 823246307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c3ed7746a6ff2b47be969bd77a9eafc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fps: 1
+  INPUTS_FOLDER_PATH: Assets/Inputs/
+--- !u!4 &823246309
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 823246307}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8195561, y: -0.20220864, z: -0.41055298}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &866113357
 GameObject:
   m_ObjectHideFlags: 0
@@ -3467,6 +3509,60 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!1 &1072515482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1072515484}
+  - component: {fileID: 1072515483}
+  m_Layer: 0
+  m_Name: MCEditorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1072515483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1072515482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd640ad06f2ab449a43c34bbfc38bc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statePrefab: {fileID: 114982164584323468, guid: d407002516f1adc4baed91d43637ceea,
+    type: 2}
+  transitionPrefab: {fileID: 114615954408207840, guid: a64ca151ae8e56b418ed1abdf78528d0,
+    type: 2}
+  pinPrefab: {fileID: 114283751197350292, guid: bde872f3612945541a9cb2b75d61c0ee,
+    type: 2}
+  operatorPrefab: {fileID: 114100829090054108, guid: 7e17d04df551622488792468c01d180b,
+    type: 2}
+  parameterPrefab: {fileID: 114228603632393952, guid: d221de39703880d49a2c94d44304acfe,
+    type: 2}
+  actionPrefab: {fileID: 114003601275317380, guid: b7379c04e248b674d882cb6ca865cef8,
+    type: 2}
+  mcTemplates: []
+  MC_OrigFilePath: Assets/Inputs/Test/siu_scoot_behavior_TEST.csv
+--- !u!4 &1072515484
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1072515482}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8195561, y: -0.20220864, z: -0.41055298}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1094317515
 GameObject:
   m_ObjectHideFlags: 0

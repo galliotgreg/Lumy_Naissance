@@ -108,8 +108,8 @@ public class Pin : DragSelectableProxyGameObject {
 			if (auxTransition != null) {
 				// Move
 				auxTransition.LineRenderer.SetPosition( 0, this.transform.position );
-				Vector3 mouse = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-				mouse.z = this.transform.position.z;
+				Vector3 mouse = Camera.main.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+				//mouse.z = this.transform.position.z;
 
 				auxTransition.LineRenderer.SetPosition( 1, mouse );
 			}

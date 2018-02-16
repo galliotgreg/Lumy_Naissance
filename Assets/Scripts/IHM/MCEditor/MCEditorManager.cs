@@ -68,9 +68,6 @@ public class MCEditorManager : MonoBehaviour {
 
     /** END TEST SAVE**/
 
-	[SerializeField]
-	MC_Camera camera;
-
     void Awake()
     {
         //Check if instance already exists and set it to this if not
@@ -121,20 +118,21 @@ public class MCEditorManager : MonoBehaviour {
     private void Update()
     {
 		// adjust camera
-		List<GameObject> proxies = new List<GameObject>();
+		/*List<GameObject> proxies = new List<GameObject>();
 		foreach (MonoBehaviour b in proxyStates) {
 			proxies.Add (b.gameObject);
 		}
 		foreach (MonoBehaviour b in proxyActions) {
 			proxies.Add (b.gameObject);
 		}
-        //proxies.AddRange ( proxyParams );
-        //proxies.AddRange ( proxyOperators );
+        proxies.AddRange ( proxyParams );
+        proxies.AddRange ( proxyOperators );
         // TODO create global list
 
+		MC_Camera camera = Camera.main.GetComponent<MC_Camera>();
         if (camera != null) {
 			camera.adjustCamera (proxies);
-		}
+		}*/
 
         /**START TEST SAVE**/
         if (Input.GetKeyDown(KeyCode.S))
