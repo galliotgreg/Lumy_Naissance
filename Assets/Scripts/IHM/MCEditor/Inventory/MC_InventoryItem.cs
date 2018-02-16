@@ -31,6 +31,17 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		}
 	}
 
+	MC_Inventory inventory;
+
+	public MC_Inventory Inventory {
+		get {
+			return inventory;
+		}
+		set {
+			inventory = value;
+		}
+	}
+
 	[SerializeField]
 	UnityEngine.UI.Text text;
 
@@ -59,6 +70,8 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 	DragObject dragObjectComponent;
 
 	void activateClick(){
+		GameObject proxy = Instantiate (proxyPrefab, this.transform);
+		inventory.configProxyItem ( proxy, this );
 		dragObjectComponent.startDrag (Instantiate (proxyPrefab), this);
 	}
 

@@ -31,7 +31,7 @@ public class DragObject : MonoBehaviour {
 	private void updatePosition (GameObject _objectToDrag){
 		if (_objectToDrag != null) {
 			Camera cam = GameObject.Find ("Main Camera").GetComponent<Camera> ();
-			Vector3 mouse = cam.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane-cam.transform.position.z));
+			Vector3 mouse = cam.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, -cam.transform.position.z));
 			mouse.z = _objectToDrag.transform.position.z;
 
 			_objectToDrag.transform.position = mouse;

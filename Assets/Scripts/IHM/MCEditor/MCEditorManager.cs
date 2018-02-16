@@ -588,9 +588,8 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
-    void SetNodeName(GameObject proxy, ABNode node)
+    public static void SetNodeName(GameObject proxy, ABNode node)
     {
-
         Text operatorName = proxy.GetComponentInChildren<Text>();
 		operatorName.text = getNodeName( node );
     }

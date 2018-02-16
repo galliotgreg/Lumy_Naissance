@@ -32,10 +32,12 @@ public abstract class MC_Inventory : MonoBehaviour {
 			inventoryItem.ProxyPrefab = proxyPrefab;
 			inventoryItem.transform.SetParent ( container.transform );
 
+			inventoryItem.Inventory = this;
 			configItem ( inventoryItem );
 		}
 	}
 
 	protected abstract void configItem ( MC_InventoryItem item );
+	public abstract void configProxyItem ( GameObject proxy, MC_InventoryItem item );
 	#endregion
 }
