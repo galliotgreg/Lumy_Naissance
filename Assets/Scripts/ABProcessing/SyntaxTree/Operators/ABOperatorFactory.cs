@@ -243,7 +243,6 @@ public class ABOperatorFactory {
                 type = OperatorType.Vec_Get_Ref_Txt;
                 break;
 			case "V[]getRT":
-			type = OperatorType.VecTab_Get_Ref_Txt;
 				break;
             case "V[]getR[]T":
                 type = OperatorType.VecTab_Get_RefTab_Txt;
