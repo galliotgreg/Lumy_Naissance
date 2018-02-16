@@ -128,10 +128,11 @@ public class MCEditorManager : MonoBehaviour {
 		foreach (MonoBehaviour b in proxyActions) {
 			proxies.Add (b.gameObject);
 		}
-		proxies.AddRange ( proxyParams );
-		proxies.AddRange ( proxyOperators );
-		// TODO create global list
-		if (camera != null) {
+        //proxies.AddRange ( proxyParams );
+        //proxies.AddRange ( proxyOperators );
+        // TODO create global list
+
+        if (camera != null) {
 			camera.adjustCamera (proxies);
 		}
 
@@ -597,7 +598,7 @@ public class MCEditorManager : MonoBehaviour {
 
     void Save_MC()
     {
-        string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_TEST_Edwyn.csv";
+        string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_TEST.csv";
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
 
@@ -787,7 +788,8 @@ public class MCEditorManager : MonoBehaviour {
         param = Instantiate<ProxyABParam>(parameterPrefab);
         proxyParams.Add(param);
         return param;
-		trans.Transition = AbModel.getTransition( transitionId );
+
+		//trans.Transition = AbModel.getTransition( transitionId );
 
         Debug.Log(AbModel.Transitions.Count.ToString());
     }

@@ -196,9 +196,20 @@ public class GameManager : MonoBehaviour {
     private void InitGameObjects()
     {
         //Hives
-        p1_home = Instantiate(homePrefab, new Vector3(-30f, -0.45f, 0f), Quaternion.identity);
+        GameObject[] hives = GameObject.FindGameObjectsWithTag("Hive"); 
+        if (hives.Length ==2)
+        {
+            p1_home = Instantiate(homePrefab,hives[0].GetComponent<Transform>().position, Quaternion.identity);
+            p2_home = Instantiate(homePrefab,hives[1].GetComponent<Transform>().position, Quaternion.identity);
+           
+        }
+        else
+        {
+            p1_home = Instantiate(homePrefab, new Vector3(-30f, -0.45f, 0f), Quaternion.identity);
+            p2_home = Instantiate(homePrefab, new Vector3(30f, -0.45f, 0f), Quaternion.identity);
+        }
+      
         p1_home.name = "p1_hive";
-        p2_home = Instantiate(homePrefab, new Vector3(30f, -0.45f, 0f), Quaternion.identity);
         p2_home.name = "p2_hive";
         HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
 		p1_hiveScript.Authority = PlayerAuthority.Player1;
@@ -221,9 +232,9 @@ public class GameManager : MonoBehaviour {
 		Unit_GameObj_Manager.instance.Homes = new List<HomeScript>(){ p1_hiveScript, p2_hiveScript };
 
         //Queens
-        GameObject p1_queen = Instantiate(p1_unitTemplates[0], new Vector3(-30f, 0f, 0f), Quaternion.identity);
+        GameObject p1_queen = Instantiate(p1_unitTemplates[0], p1_home.transform.position, Quaternion.identity);
         p1_queen.name = "p1_queen";
-        GameObject p2_queen = Instantiate(p2_unitTemplates[0], new Vector3(30f, 0f, 0f), Quaternion.identity);
+        GameObject p2_queen = Instantiate(p2_unitTemplates[0], p2_home.transform.position, Quaternion.identity);
         p2_queen.name = "p2_queen";
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);

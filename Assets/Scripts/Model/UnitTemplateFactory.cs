@@ -26,7 +26,7 @@ public class UnitTemplateInitializer {
         }
     }
 
-    private static void CopyComponentValues(ComponentInfo src, AgentComponent dst)
+    public static void CopyComponentValues(ComponentInfo src, AgentComponent dst)
     {
         //Generic
         dst.Id = src.Id;

@@ -144,8 +144,8 @@ public class ABParser
             node.Output = (ABNode) curGateOperator;
         }
     }
-
-    private IABParam ParseParam(string typeParams)
+    
+    public IABParam ParseParam(string typeParams)
     {
         char[] separators = { ' ', '=', ':' };
         String[] tokens = typeParams.Split(separators);
@@ -161,7 +161,7 @@ public class ABParser
         return null;
     }
 
-    private IABOperator ParseOperator(string typeParams)
+    public IABOperator ParseOperator(string typeParams)
     {
         return ABOperatorFactory.CreateOperator(typeParams);
     }

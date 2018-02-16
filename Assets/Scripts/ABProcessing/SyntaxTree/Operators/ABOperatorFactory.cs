@@ -5,10 +5,115 @@ using UnityEngine;
 
 public class ABOperatorFactory {
 
+    private Dictionary<string, string> typeStringToString = new Dictionary<string, string>();
+
+    public Dictionary<string, string> TypeStringToString
+    {
+        get
+        {
+            return typeStringToString;
+        }
+
+        set
+        {
+            typeStringToString = value;
+        }
+    }
+
     public static IABOperator CreateOperator(String typeStr)
     {
         OperatorType type = GetTypeFromStr(typeStr);
         return CreateOperator(type);
+    }
+
+    public void CreateDictionnary()
+    {
+        TypeStringToString.Add("AB_Bool_And_Bool_Bool_Operator", "B&&BB");
+        TypeStringToString.Add("AB_BoolTab_Agg_BoolStar_Operator", "B[]aggB*");
+        TypeStringToString.Add("AB_Bool_Equals_Bool_Bool_Operator", "B==BB");
+        TypeStringToString.Add("AB_Bool_Get_Ref_Txt_Operator", "BgetRT");
+        TypeStringToString.Add("AB_BoolTab_GetRefTab_Txt_Operator", "B[]getR[]T");
+        TypeStringToString.Add("AB_Bool_Get_BoolTab_Scal_Operator", "BgetB[]S");
+        TypeStringToString.Add("AB_Bool_IsSet_Bool_Operator", "BisSetB");
+        TypeStringToString.Add("AB_Bool_NotEquals_Bool_Bool_Operator", "B!=BB");
+        TypeStringToString.Add("AB_Scal_Size_BoolTab_Operator", "SsizeB[]");
+        TypeStringToString.Add("AB_ColorTab_Agg_CStar_Operator", "C[]aggC*");
+        TypeStringToString.Add("AB_Bool_Equals_Color_Color_Operator", "B==CC");
+        TypeStringToString.Add("AB_Color_Get_Ref_Txt_Operator", "CgetRT");
+        TypeStringToString.Add("AB_ColorTab_Get_RefTab_Txt_Operator", "C[]getR[]T");
+        TypeStringToString.Add("AB_Color_Get_ColorTab_Scal_Operator", "CgetC[]S");
+        TypeStringToString.Add("AB_Bool_IsSet_Color_Operator", "BisSetC");
+        TypeStringToString.Add("AB_Bool_NotEquals_Color_Color_Operator", "B!=CC");
+        TypeStringToString.Add("AB_Scal_Size_ColorTab_Operator", "SsizeC[]");
+        TypeStringToString.Add("AB_Scal_Dist_Vec_Vec_Operator", "SdistVV");
+        TypeStringToString.Add("AB_ScalTab_Dist_VecTab_Vec_Operator", "S[]distV[]V");
+        TypeStringToString.Add("AB_Bool_GreaterThan_Scal_Scal_Operator", "B>SS");
+        TypeStringToString.Add("AB_Bool_LessThan_Scal_Scal_Operator", "B<SS");
+        TypeStringToString.Add("AB_Scal_MinId_ScalTab_Operator", "SminIdS[]");
+        TypeStringToString.Add("AB_Scal_MaxId_ScalTab_Operator", "SmaxIdS[]");
+        TypeStringToString.Add("AB_Bool_Not_Bool_Operator", "B!B");
+        TypeStringToString.Add("AB_Bool_Or_Bool_Bool_Operator", "B||BB");
+        TypeStringToString.Add("AB_Vec_RandCircle_Vec_Scal_Operator", "VrandCircleVS");
+        TypeStringToString.Add("AB_Bool_RefEquals_Ref_Ref_Operator", "B==RR");
+        TypeStringToString.Add("AB_RefTab_Agg_RefStar_Operator", "R[]aggR*");
+        TypeStringToString.Add("AB_Ref_Get_Ref_Txt_Operator", "RgetRT");
+        TypeStringToString.Add("AB_RefTab_Get_RefTab_Txt_Operator", "R[]getR[]T");
+        TypeStringToString.Add("AB_RefTab_WhereEquals_RefTab_Txt_Bool_Operator", "R[]where==R[]TB");
+        TypeStringToString.Add("AB_RefTab_WhereEquals_RefTab_Txt_Color_Operator", "R[]where==R[]TC");
+        TypeStringToString.Add("AB_RefTab_WhereEquals_RefTab_Txt_Ref_Operator", "R[]where==R[]TR");
+        TypeStringToString.Add("AB_RefTab_WhereEquals_RefTab_Txt_Scal_Operator", "R[]where==R[]TS");
+        TypeStringToString.Add("AB_RefTab_WhereEquals_RefTab_Txt_Txt_Operator", "R[]where==R[]TT");
+        TypeStringToString.Add("AB_RefTab_WhereEquals_RefTab_Txt_Vec_Operator", "R[]where==R[]TV");
+        TypeStringToString.Add("AB_RefTab_WhereLess_RefTab_Txt_Scal_Operator", "R[]where<R[]TS");
+        TypeStringToString.Add("AB_RefTab_WhereGreater_RefTab_Txt_Scal_Operator", "R[]where>R[]TS");
+        TypeStringToString.Add("AB_RefTab_WhereNotEquals_RefTab_Txt_Bool_Operator", "R[]where!=R[]TB");
+        TypeStringToString.Add("AB_RefTab_WhereNotEquals_RefTab_Txt_Color_Operator", "R[]where!=R[]TC");
+        TypeStringToString.Add("AB_RefTab_WhereNotEquals_RefTab_Txt_Ref_Operator", "R[]where!=R[]TR");
+        TypeStringToString.Add("AB_RefTab_WhereNotEquals_RefTab_Txt_Scal_Operator", "R[]where!=R[]TS");
+        TypeStringToString.Add("AB_RefTab_WhereNotEquals_RefTab_Txt_Txt_Operator", "R[]where!=R[]TT");
+        TypeStringToString.Add("AB_RefTab_WhereNotEquals_RefTab_Txt_Vec_Operator", "R[]where!=R[]TV");
+        TypeStringToString.Add("AB_Bool_IsSet_Ref_Operator", "BisSetR");
+        TypeStringToString.Add("AB_Bool_NotEquals_Ref_Ref_Operator", "B!=RR");
+        TypeStringToString.Add("AB_Scal_Size_RefTab_Operator", "SsizeR[]");
+        TypeStringToString.Add("AB_ScalTab_Agg_ScalStar_Operator", "S[]aggS*");
+        TypeStringToString.Add("AB_Scal_Div_Scal_Scal_Operator", "S/SS");
+        TypeStringToString.Add("AB_Bool_Equals_Scal_Scal_Operator", "B==SS");
+        TypeStringToString.Add("AB_Scal_Get_Ref_Txt_Operator", "SgetRT");
+        TypeStringToString.Add("AB_ScalTab_Get_RefTab_Txt_Operator", "S[]getR[]T");
+        TypeStringToString.Add("AB_Scal_Get_ScalTab_Scal_Operator", "SgetS[]S");
+        TypeStringToString.Add("AB_Bool_IsSet_Scal_Operator", "BisSetS");
+        TypeStringToString.Add("AB_Bool_NotEquals_Scal_Scal_Operator", "B!=SS");
+        TypeStringToString.Add("AB_Scal_Prod_Scal_Scal_Operator", "S*SS");
+        TypeStringToString.Add("AB_Scal_Size_ScalTab_Operator", "SsizeS[]");
+        TypeStringToString.Add("AB_Scal_Sub_Scal_Scal_Operator", "S-SS");
+        TypeStringToString.Add("AB_Scal_Sum_Scal_Scal_Operator", "S+SS");
+        TypeStringToString.Add("AB_TxtTab_Agg_TxtStar_Operator", "T[]aggT*");
+        TypeStringToString.Add("AB_Bool_Equals_Txt_Txt_Operator", "B==TT");
+        TypeStringToString.Add("AB_Txt_Get_Ref_Txt_Operator", "TgetRT");
+        TypeStringToString.Add("AB_TxtTab_Get_RefTab_Txt_Operator", "T[]getR[]T");
+        TypeStringToString.Add("AB_Txt_Get_TxtTab_Scal_Operator", "TgetT[]S");
+        TypeStringToString.Add("AB_Bool_IsSet_Txt_Operator", "BisSetT");
+        TypeStringToString.Add("AB_Bool_NotEquals_Txt_Txt_Operator", "B!=TT");
+        TypeStringToString.Add("AB_Scal_Size_TxtTab_Operator", "SsizeT[]");
+        TypeStringToString.Add("AB_VecTab_Agg_VecStar_Operator", "V[]aggV*");
+        TypeStringToString.Add("AB_Vec_Cross_Vec_Vec_Operator", "VXVV");
+        TypeStringToString.Add("AB_Scal_Dot_Vec_Vec_Operator", "S.VV");
+        TypeStringToString.Add("AB_Bool_Equals_Vec_Vec_Operator", "B==VV");
+        TypeStringToString.Add("AB_Vec_Get_Ref_Txt_Operator", "VgetRT");
+        TypeStringToString.Add("AB_VecTab_Get_Ref_Txt_Operator", "V[]getRT");
+        TypeStringToString.Add("AB_VecTab_Get_RefTab_Txt_Operator", "V[]getR[]T");
+        TypeStringToString.Add("AB_Vec_Get_VecTab_Scal_Operator", "VgetV[]S");
+        TypeStringToString.Add("AB_Bool_IsSet_Vec_Operator", "BisSetV");
+        TypeStringToString.Add("AB_Bool_NotEquals_Vec_Vec_Operator", "B!=VV");
+        TypeStringToString.Add("AB_Vec_Prod_Vec_Scal_Operator", "V*VS");
+        TypeStringToString.Add("AB_Vec_Prod_Scal_Vec_Operator", "V*SV");
+        TypeStringToString.Add("AB_Scal_Size_VecTable_Operator", "SsizeV[]");
+        TypeStringToString.Add("AB_Vec_Sub_Vec_Vec_Operator", "V-VV");
+        TypeStringToString.Add("AB_Vec_Sum_Vec_Vec_Operator", "V+VV");
+        TypeStringToString.Add("AB_Vec_TermDiv_Vec_Vec_Operator", "V/VV");
+        TypeStringToString.Add("AB_Vec_TermProd_Vec_Vec_Operator", "V*VV");
+        TypeStringToString.Add("AB_Scal_MinVal_ScalTab_Operator", "SminValS[]");
+        TypeStringToString.Add("AB_Ref_Get_RefTab_Scal_Operator", "RgetR[]S");
     }
 
     private static OperatorType GetTypeFromStr(string typeStr)
@@ -243,6 +348,7 @@ public class ABOperatorFactory {
                 type = OperatorType.Vec_Get_Ref_Txt;
                 break;
 			case "V[]getRT":
+			    type = OperatorType.VecTab_Get_Ref_Txt;
 				break;
             case "V[]getR[]T":
                 type = OperatorType.VecTab_Get_RefTab_Txt;
