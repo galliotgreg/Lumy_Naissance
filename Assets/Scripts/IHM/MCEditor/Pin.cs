@@ -9,6 +9,8 @@ public class Pin : MonoBehaviour {
 
     bool isGateOperator = false;
     bool isActionChild = false;
+    bool isParamChild = false;
+    bool isOperatorChild = false;
 
     public bool IsGateOperator {
         get {
@@ -30,6 +32,32 @@ public class Pin : MonoBehaviour {
         set
         {
             isActionChild = value;
+        }
+    }
+
+    public bool IsParamChild
+    {
+        get
+        {
+            return isParamChild;
+        }
+
+        set
+        {
+            isParamChild = value;
+        }
+    }
+
+    public bool IsOperatorChild
+    {
+        get
+        {
+            return isOperatorChild;
+        }
+
+        set
+        {
+            isOperatorChild = value;
         }
     }
 
