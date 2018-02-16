@@ -60,6 +60,7 @@ public class ProxyABAction : MonoBehaviour {
     // Use this for initialization
     void Start () {
         if (IsLoaded)// when the Action is created by loading behavior file
+        {            
             isLoaded = false;
         }
         else // when the Action is created in the editor.
@@ -68,6 +69,7 @@ public class ProxyABAction : MonoBehaviour {
             Text actionName = this.GetComponentInChildren<Text>();
             actionName.text = this.name;             
             this.abState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(name, abAction));            
+            pinList.Add(MCEditorManager.instance.CreatePinState(this.transform, true, false));                        
         }
     }
 	
