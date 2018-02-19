@@ -118,7 +118,7 @@ public class ABParamFactory
                 ABColor colorVal = TypeFactory.CreateEmptyColor();
                 if (value != null)
                 {
-                    switch (value)
+                    switch (value.ToLower())
                     {
                         case "red":
                             colorVal.Value = ABColor.Color.Red;

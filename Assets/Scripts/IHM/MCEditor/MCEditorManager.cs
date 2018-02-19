@@ -54,8 +54,8 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABOperator> proxyOperators;
     private List<ProxyABParam> proxyParams;
 
-	[SerializeField]
-	private string MC_OrigFilePath = "Assets/Inputs/Test/siu_scoot_behavior_TEST.csv";
+    [SerializeField]
+    private string MC_OrigFilePath = "Assets/Inputs/Test/siu_scoot_behavior_LOAD_SAVE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*siu_scoot_behavior_LOAD_TEST.csv";*/
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
@@ -138,14 +138,15 @@ public class MCEditorManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.S))
         {
             Save_MC();
-        } else if (Input.GetKeyDown(KeyCode.A))
+        } else if (Input.GetKeyDown(KeyCode.O))
         {
-            abAction = Instantiate<ProxyABAction>(actionPrefab);
-            abAction2 = Instantiate<ProxyABAction>(actionPrefab);
-        }else if (Input.GetKeyDown(KeyCode.Z))
+            CreateOperator();
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
         {
-            CreateTransition(abAction.GetComponentInChildren<Pin>(), abAction2.GetComponentInChildren<Pin>());
-        }else if (Input.GetKeyDown(KeyCode.E))
+            CreateParam();
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             abState = Instantiate<ProxyABState>(statePrefab);
 			proxyStates.Add (abState);
@@ -251,8 +252,11 @@ public class MCEditorManager : MonoBehaviour {
 						pins.Add (start);                     
 						foreach (ABNode node in param.Inputs) {
 							Pin end = RecNodeSynthTree (node);
-							CreateTransitionSyntaxTree (start, end);
-						}
+                            if (end != null)
+                            {
+                                CreateTransitionSyntaxTree (start, end);
+                            }
+                        }
 					}
 				}
             }
@@ -352,27 +356,33 @@ public class MCEditorManager : MonoBehaviour {
 
         else if (node is ABParam<ABTable<ABVec>>)
         {
-            type = ((ABParam<ABTable<ABVec>>)node).Value.ToString();
+            type = "ABTable<ABVec>";
+            //type = ((ABParam<ABTable<ABVec>>)node).Value.ToString();
         }
         else if (node is ABParam<ABTable<ABBool>>)
         {
-            type = ((ABParam<ABTable<ABBool>>)node).Value.ToString();
+            type = "ABTable<ABBool>";
+            //type = ((ABParam<ABTable<ABBool>>)node).Value.ToString();
         }
         else if (node is ABParam<ABTable<ABScalar>>)
         {
-            type = ((ABParam<ABTable<ABScalar>>)node).Value.ToString();
+            type = "ABTable<ABScalar>";
+            //type = ((ABParam<ABTable<ABScalar>>)node).Value.ToString();
         }
         else if (node is ABParam<ABTable<ABText>>)
         {
-            type = ((ABParam<ABTable<ABText>>)node).Value.ToString();
+            type = "ABTable<ABText>";
+            //type = ((ABParam<ABTable<ABText>>)node).Value.ToString();
         }
         else if (node is ABParam<ABTable<ABColor>>)
         {
-            type = ((ABParam<ABTable<ABColor>>)node).Value.ToString();
+            type = "ABTable<ABColor>";
+            //type = ((ABParam<ABTable<ABColor>>)node).Value.ToString();
         }
         else if (node is ABParam<ABTable<ABRef>>)
         {
-            type = ((ABParam<ABTable<ABRef>>)node).Value.ToString();
+            type = "ABTable<ABRef>";
+            //type = ((ABParam<ABTable<ABRef>>)node).Value.ToString();
         }
 
         return type;
@@ -545,7 +555,7 @@ public class MCEditorManager : MonoBehaviour {
             {
                 string type = operatorDictionary[((IABOperator)node).GetType().ToString()];
 
-                syntTreeContent.AppendLine(idNodeSyntTree + ",operator{" + type + "}");
+                syntTreeContent.AppendLine(idNodeSyntTree + ",operator{" + type + "},");
                 idNodeSyntTree++;
                 idNodeInputPin = 0;
                 foreach (ABNode input in ((IABOperator)node).Inputs)
@@ -557,7 +567,7 @@ public class MCEditorManager : MonoBehaviour {
             }
             else if (node is IABParam)
             {
-                syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + "}");
+                syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + "},");
                 idNodeSyntTree++;
             }
         }
@@ -565,7 +575,14 @@ public class MCEditorManager : MonoBehaviour {
         {            
             if (node is IABOperator)
             {
-                string type = operatorDictionary[((IABOperator)node).GetType().ToString()];
+                string type = "";
+                if (!operatorDictionary.ContainsKey(((IABOperator)node).GetType().ToString()))
+                {
+                    Debug.LogError(((IABOperator)node).GetType().ToString() + " n'est pas dans la le dictionnaire des opérateurs. Vérifier l'orthographe Dans le fichier ABOperatorFactory");
+                } else
+                {
+                    type = operatorDictionary[((IABOperator)node).GetType().ToString()];
+                }
                 syntTreeContent.AppendLine(idParentnode + ",operator{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
                 idNodeSyntTree++;
                 idNodeInputPin = 0;
@@ -579,7 +596,16 @@ public class MCEditorManager : MonoBehaviour {
             else if (node is IABParam)
             {
                 string value = GetParamValue(node);
-                string type = paramDictionary[GetParamType(node)];
+                string type = "";
+
+
+                if (!paramDictionary.ContainsKey(GetParamType(node)))
+                {
+                    Debug.LogError(GetParamType(node) + " n'est pas dans la le dictionnaire des parameters. Vérifier l'orthographe Dans le fichier ABParamFactory");
+                } else
+                {
+                    type = paramDictionary[GetParamType(node)];
+                }
 
                 if (((IABParam)node).Identifier != "const")
                 {
@@ -596,7 +622,7 @@ public class MCEditorManager : MonoBehaviour {
 
     void Save_MC()
     {
-        string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_TEST.csv";
+        string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_LOAD_SAVE_TEST.csv";
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
 
@@ -605,8 +631,8 @@ public class MCEditorManager : MonoBehaviour {
         {
             if(state.Action != null)
             {
-                csvcontent.AppendLine(state.Id + "," + state.Name + "," + "trigger{"+state.Action.Type.ToString().ToLower()+"}");
-                if (state.Action.Parameters[0] != null)
+                csvcontent.AppendLine(state.Id + "," + state.Name + "," + "trigger{"+state.Action.Type.ToString().ToLower()+"}");                
+                if (state.Action.Parameters[0].Inputs[0] != null)
                 {
                     StringBuilder syntTreeContent = new StringBuilder();
                     syntTreeContent.AppendLine("Syntax Tree,output,");
@@ -638,20 +664,23 @@ public class MCEditorManager : MonoBehaviour {
         foreach(ABTransition trans in abModel.Transitions)
         {
             csvcontent.AppendLine(trans.Id + "," + trans.Start.Name + "," + trans.End.Name);
-            if (trans.Condition.Inputs[0]!= null)
+            if (trans.Condition != null)
             {
-                StringBuilder syntTreeContent = new StringBuilder();
-                syntTreeContent.AppendLine("Syntax Tree,output,");
-                syntTreeContent.AppendLine("1," + trans.Id + ",");
-                syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
-
-                idNodeSyntTree = 0;
-                foreach (ABNode node in trans.Condition.Inputs)
+                if (trans.Condition.Inputs[0] != null)
                 {
-                    Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+                    StringBuilder syntTreeContent = new StringBuilder();
+                    syntTreeContent.AppendLine("Syntax Tree,output,");
+                    syntTreeContent.AppendLine("1," + trans.Id + ",");
+                    syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
+
+                    idNodeSyntTree = 0;
+                    foreach (ABNode node in trans.Condition.Inputs)
+                    {
+                        Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+                    }
+                    syntTreeContent.AppendLine(",,");
+                    syntTrees.Add(syntTreeContent);
                 }
-                syntTreeContent.AppendLine(",,");
-                syntTrees.Add(syntTreeContent);
             }
         }
         csvcontent.AppendLine(",,");
@@ -770,6 +799,12 @@ public class MCEditorManager : MonoBehaviour {
 				transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
             }
         }                                                               
+    }
+
+    ProxyABAction CreateAction()
+    {
+        ProxyABAction action = Instantiate<ProxyABAction>(actionPrefab);
+            return action;
     }
 
     ProxyABOperator CreateOperator()

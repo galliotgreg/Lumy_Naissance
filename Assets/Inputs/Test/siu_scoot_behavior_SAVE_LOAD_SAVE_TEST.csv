@@ -1,0 +1,27 @@
+States,Name,Type
+0,INIT,Init
+1,goto water,trigger{goto}
+,,
+Transitions,Start State,End State
+0,INIT,goto water
+,,
+Syntax Tree,output,
+1,goto water->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,operator{RgetR[]S},1->0
+3,operator{R[]where==R[]TC},2->0
+4,param{ref[]:resources},3->0
+4,param{const txt=color},3->1
+5,param{const color=Blue},3->2
+6,operator{SminIdS[]},2->1
+7,operator{S[]distV[]V},6->0
+8,operator{V[]getR[]T},7->0
+9,param{ref[]:bRes},8->0
+9,param{const txt=pos},8->1
+10,operator{VgetRT},7->1
+11,param{ref:self},10->0
+11,param{const txt=curPos},10->1
+12,param{const txt=pos},1->1
+,,
