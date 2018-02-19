@@ -10,6 +10,11 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public static GameManager instance = null;
 
+    //Timer 
+    private float timerLeft = 300 ; 
+
+
+
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -85,6 +90,19 @@ public class GameManager : MonoBehaviour {
         set
         {
             p2_home = value;
+        }
+    }
+
+    public float TimerLeft
+    {
+        get
+        {
+            return timerLeft;
+        }
+
+        set
+        {
+            timerLeft = value;
         }
     }
 
@@ -278,6 +296,63 @@ public class GameManager : MonoBehaviour {
             return p2_home.GetComponent<HomeScript>();
         }
     }
+
+    /// <summary>
+    /// GetAllResources of the player passed in parameters 
+    /// </summary>
+    /// <returns>Return a tab[3] of floats : 0 is RedResources, 1 is GreenResources, 2 is BlueResources</returns>
+    public float[] GetResources(PlayerAuthority authority)
+    {
+        float[] resourcesAmount = { 0, 0, 0 }; 
+        if(authority == PlayerAuthority.Player1)
+        {
+            HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
+            p1_hiveScript.Authority = PlayerAuthority.Player1;
+            resourcesAmount[0] = p1_hiveScript.RedResAmout;
+            resourcesAmount[1] = p1_hiveScript.GreenResAmout;
+            resourcesAmount[2] = p1_hiveScript.BlueResAmout;
+            return resourcesAmount; 
+        }
+        else if (authority == PlayerAuthority.Player2)
+        {
+            HomeScript p2_hiveScript = p1_home.GetComponent<HomeScript>();
+            p2_hiveScript.Authority = PlayerAuthority.Player2;
+            resourcesAmount[0] = p2_hiveScript.RedResAmout;
+            resourcesAmount[1] = p2_hiveScript.GreenResAmout;
+            resourcesAmount[2] = p2_hiveScript.BlueResAmout;
+            return resourcesAmount;  
+        }
+        return null; 
+    }
+
+    //private float sumResources(float[] resources, PlayerAuthority authority)
+    //{
+    //    float resSum =0; 
+    //    if (authority == PlayerAuthority.Player1)
+    //    {
+    //        HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
+    //        p1_hiveScript.Authority = PlayerAuthority.Player1;
+    //        resourcesAmount[0] = p1_hiveScript.RedResAmout;
+    //        resourcesAmount[1] = p1_hiveScript.GreenResAmout;
+    //        resourcesAmount[2] = p1_hiveScript.BlueResAmout;
+    //    }
+    //}
+    
+    public void Update()
+    {
+        //First Win Condition Timer 
+        timerLeft -= Time.deltaTime;
+        if (timerLeft <= 0)
+        {
+            Debug.Log("GameOver");
+            Debug.LogWarning("TODO: Instantiate GameOver");
+
+        }//    if(GetResources(PlayerAuthority.Player1) >))
+        //}
+        ////Second Win Condition Prysme
+    }
+    
+
 
 	public HomeScript GetEnemyHome(PlayerAuthority authority)
 	{
