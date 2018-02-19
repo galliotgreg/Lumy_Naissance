@@ -179,16 +179,27 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator SwapLayersCo(string nextScene, string newLayer)
     {
-        
+
+        // Fondre au noir
+        GameObject darkScreen = GameObject.Find("DarkScreen");
+        Image darkImg = darkScreen.GetComponent<Image>();
+        float darkAlpha = darkImg.color.a;
+        while (darkAlpha < 1.0f)
+        {
+            darkAlpha = darkScreen.GetComponent<Image>().color.a;
+            darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a + fadeStep);
+            yield return true;
+        }
+
         // Faire disparaître la strate-mère initiale en fondu 
         GameObject canvas = GameObject.Find(currentLayer + "Canvas");
         float alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
-        while (alphaLayer > 0.0f)
+        /*while (alphaLayer > 0.0f)
         {
             alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
             canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
             yield return true;
-        }
+        }*/
 
         // Attendre la fin du déchargement de la strate-mère initiale
         AsyncOperation unloadLayer = SceneManager.UnloadSceneAsync(currentLayer);
@@ -212,6 +223,14 @@ public class NavigationManager : MonoBehaviour {
         {
             alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
             canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
+            yield return true;
+        }
+
+        // Fondre depuis le noir
+        while (darkAlpha > 0f)
+        {
+            darkAlpha = darkScreen.GetComponent<Image>().color.a;
+            darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a - fadeStep);
             yield return true;
         }
 
