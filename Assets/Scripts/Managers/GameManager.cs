@@ -11,8 +11,13 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
     //Timer 
-    private float timerLeft = 300 ; 
+    [SerializeField]
+    private float timerLeft = 10 ;
+    private bool gameNotOver = true; 
 
+    //Queen Ref
+    private GameObject p1_queen;
+    private GameObject p2_queen; 
 
 
     /// <summary>
@@ -111,6 +116,44 @@ public class GameManager : MonoBehaviour {
     {
         SetupMatch();
     }
+
+    public void Update()
+    {
+        //First Win Condition Timer 
+        if(gameNotOver)
+        {
+            timerLeft -= Time.deltaTime;
+            Debug.Log(timerLeft);
+            if (timerLeft <= 0)
+            {
+                gameNotOver = false;
+                Debug.Log("Game Over");
+                if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2)) 
+                    Debug.Log("Player 1 Won with : " + sumResources(PlayerAuthority.Player1));
+                else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
+                    Debug.Log("Player 2 Won with : " + sumResources(PlayerAuthority.Player2));
+                else
+                    Debug.Log("Equality ? Player1 : " + sumResources(PlayerAuthority.Player1) + "Player2: " + sumResources(PlayerAuthority.Player2));
+                return; 
+            }
+            //second win condition prysme
+            if (p1_queen == null)
+            {
+                Debug.Log("Game Over Player2 won");
+                gameNotOver = false;
+                return;
+            }
+            else if (p2_queen == null)
+            {
+                Debug.Log("Game Over Player1 Won");
+                gameNotOver = false;
+                return; 
+            }
+
+        }
+
+    }
+
 
     private void SetupMatch()
     {
@@ -250,9 +293,9 @@ public class GameManager : MonoBehaviour {
 		Unit_GameObj_Manager.instance.Homes = new List<HomeScript>(){ p1_hiveScript, p2_hiveScript };
 
         //Queens
-        GameObject p1_queen = Instantiate(p1_unitTemplates[0], p1_home.transform.position, Quaternion.identity);
+        p1_queen = Instantiate(p1_unitTemplates[0], p1_home.transform.position, Quaternion.identity);
         p1_queen.name = "p1_queen";
-        GameObject p2_queen = Instantiate(p2_unitTemplates[0], p2_home.transform.position, Quaternion.identity);
+        p2_queen = Instantiate(p2_unitTemplates[0], p2_home.transform.position, Quaternion.identity);
         p2_queen.name = "p2_queen";
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);
@@ -325,36 +368,32 @@ public class GameManager : MonoBehaviour {
         return null; 
     }
 
-    //private float sumResources(float[] resources, PlayerAuthority authority)
-    //{
-    //    float resSum =0; 
-    //    if (authority == PlayerAuthority.Player1)
-    //    {
-    //        HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
-    //        p1_hiveScript.Authority = PlayerAuthority.Player1;
-    //        resourcesAmount[0] = p1_hiveScript.RedResAmout;
-    //        resourcesAmount[1] = p1_hiveScript.GreenResAmout;
-    //        resourcesAmount[2] = p1_hiveScript.BlueResAmout;
-    //    }
-    //}
-    
-    public void Update()
+    private float sumResources(PlayerAuthority authority)
     {
-        //First Win Condition Timer 
-        timerLeft -= Time.deltaTime;
-        if (timerLeft <= 0)
+        float resSum = 0;
+        if (authority == PlayerAuthority.Player1)
         {
-            Debug.Log("GameOver");
-            Debug.LogWarning("TODO: Instantiate GameOver");
-
-        }//    if(GetResources(PlayerAuthority.Player1) >))
-        //}
-        ////Second Win Condition Prysme
+            HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
+            p1_hiveScript.Authority = PlayerAuthority.Player1;
+            resSum += p1_hiveScript.RedResAmout;
+            resSum += p1_hiveScript.GreenResAmout;
+            resSum += p1_hiveScript.BlueResAmout;
+        }
+        else if (authority == PlayerAuthority.Player2)
+        {
+            HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
+            p2_hiveScript.Authority = PlayerAuthority.Player1;
+            resSum += p2_hiveScript.RedResAmout;
+            resSum += p2_hiveScript.GreenResAmout;
+            resSum += p2_hiveScript.BlueResAmout;
+        }
+        return resSum; 
     }
-    
+
+   
 
 
-	public HomeScript GetEnemyHome(PlayerAuthority authority)
+public HomeScript GetEnemyHome(PlayerAuthority authority)
 	{
 		if (authority == PlayerAuthority.Player1)
 		{
