@@ -127,7 +127,6 @@ public class GameManager : MonoBehaviour {
             if (timerLeft <= 0)
             {
                 gameNotOver = false;
-                Debug.Log("Game Over");
                 if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2)) 
                     Debug.Log("Player 1 Won with : " + sumResources(PlayerAuthority.Player1));
                 else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
@@ -139,13 +138,13 @@ public class GameManager : MonoBehaviour {
             //second win condition prysme
             if (p1_queen == null)
             {
-                Debug.Log("Game Over Player2 won");
+                Debug.Log("Game Over Player2 Won, Player 1 lost the Prysme");
                 gameNotOver = false;
                 return;
             }
             else if (p2_queen == null)
             {
-                Debug.Log("Game Over Player1 Won");
+                Debug.Log("Game Over Player1 Won, Player 2 lost the Prysme");
                 gameNotOver = false;
                 return; 
             }
