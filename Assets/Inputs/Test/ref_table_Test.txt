@@ -1,0 +1,17 @@
+States,Name,Type
+0,INIT,Init
+2,trace water to home,trigger{trace}
+,,
+Transitions,Start State,End State
+0,INIT,trace water to home
+,,
+Syntax Tree,output,
+0,0,
+Nodes,Type,output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=0},0->1
+2,operator{SsizeR[]},0->0
+3,operator{R[]where==R[]TC},2->0
+4,param{ref[]:resources},3->0
+5,param{const txt=color},3->1
+6,param{const color=blue},3->2
