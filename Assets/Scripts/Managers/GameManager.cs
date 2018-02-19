@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour {
 
     //Templates & Prefabs
     [SerializeField]
+    private GameObject prysmePrefab;
+    [SerializeField]
     private GameObject emptyAgentPrefab;
     [SerializeField]
     private GameObject emptyComponentPrefab;
@@ -158,12 +160,13 @@ public class GameManager : MonoBehaviour {
     }
 
 	GameObject[] createTemplates( Specie specie ){
-		GameObject[] unitTemplates = new GameObject[specie.Casts.Values.Count];
+		GameObject[] unitTemplates = new GameObject[specie.Casts.Values.Count + 1];
 
-		//queen first
-		unitTemplates[0] = createTemplate( specie.Casts[ specie.QueenCastName ], specie.QueenCastName );
+        //queen first
+        unitTemplates[0] = createPrysmeTemplate();
+            //createTemplate( specie.Casts[ specie.QueenCastName ], specie.QueenCastName );
 
-		int ind = 1;
+        int ind = 1;
 		foreach (string key in specie.Casts.Keys)
 		{
 			if (key != specie.QueenCastName)
@@ -179,7 +182,24 @@ public class GameManager : MonoBehaviour {
 		return unitTemplates;
 	}
 
-	GameObject createTemplate( Cast cast, string castName ){
+    private GameObject createPrysmeTemplate()
+    {
+        GameObject template = Instantiate(emptyAgentPrefab);
+
+        //Disable physic
+        template.GetComponentInChildren<PhySkeleton>().enabled = false; ;
+
+        template.SetActive(false);
+        UnitTemplateInitializer.InitPrysmeTemplate(
+            template, emptyComponentPrefab
+        );
+
+        template.GetComponent<AgentEntity>().Context.Model.Cast = "Prysme";
+
+        return template;
+    }
+
+    GameObject createTemplate( Cast cast, string castName ){
 		GameObject template = Instantiate(emptyAgentPrefab);
 
 		template.SetActive(false);

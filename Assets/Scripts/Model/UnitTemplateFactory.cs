@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitTemplateInitializer {
+    private static readonly string PRYSME_BEHAVIOR_IDENTIFIER = "prysme_behavior";
+
     public static void InitTemplate(Cast cast, GameObject agentTemplate, GameObject componentTemplate)
     {
 		AgentEntity agentEntity = agentTemplate.GetComponent<AgentEntity>();
@@ -24,6 +26,12 @@ public class UnitTemplateInitializer {
             componentObject.transform.parent = tailObject.transform;
             CopyComponentValues(agentComponent, componentObject.GetComponent<AgentComponent>());
         }
+    }
+
+    public static void InitPrysmeTemplate(GameObject agentTemplate, GameObject componentTemplate)
+    {
+        AgentEntity agentEntity = agentTemplate.GetComponent<AgentEntity>();
+        agentEntity.BehaviorModelIdentifier = PRYSME_BEHAVIOR_IDENTIFIER;
     }
 
     public static void CopyComponentValues(ComponentInfo src, AgentComponent dst)
