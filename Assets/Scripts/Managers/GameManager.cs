@@ -10,6 +10,16 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public static GameManager instance = null;
 
+    //Timer 
+    [SerializeField]
+    private float timerLeft = 10 ;
+    private bool gameNotOver = true; 
+
+    //Queen Ref
+    private GameObject p1_queen;
+    private GameObject p2_queen; 
+
+
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -42,6 +52,8 @@ public class GameManager : MonoBehaviour {
     public string PLAYER2_SPECIE_FOLDER = "Player2/";
 
     //Templates & Prefabs
+    [SerializeField]
+    private GameObject prysmePrefab;
     [SerializeField]
     private GameObject emptyAgentPrefab;
     [SerializeField]
@@ -88,11 +100,61 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public float TimerLeft
+    {
+        get
+        {
+            return timerLeft;
+        }
+
+        set
+        {
+            timerLeft = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
         SetupMatch();
     }
+
+    public void Update()
+    {
+        //First Win Condition Timer 
+        if(gameNotOver)
+        {
+            timerLeft -= Time.deltaTime;
+            Debug.Log(timerLeft);
+            if (timerLeft <= 0)
+            {
+                gameNotOver = false;
+                if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2)) 
+                    Debug.Log("Player 1 Won with : " + sumResources(PlayerAuthority.Player1));
+                else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
+                    Debug.Log("Player 2 Won with : " + sumResources(PlayerAuthority.Player2));
+                else
+                    Debug.Log("Equality ? Player1 : " + sumResources(PlayerAuthority.Player1) + "Player2: " + sumResources(PlayerAuthority.Player2));
+                return; 
+            }
+            //second win condition prysme
+            if (p1_queen == null)
+            {
+                Debug.Log("Game Over Player2 Won, Player 1 lost the Prysme");
+                gameNotOver = false;
+                return;
+            }
+            else if (p2_queen == null)
+            {
+                Debug.Log("Game Over Player1 Won, Player 2 lost the Prysme");
+                gameNotOver = false;
+                return; 
+            }
+
+        }
+
+    }
+
 
     private void SetupMatch()
     {
@@ -158,12 +220,12 @@ public class GameManager : MonoBehaviour {
     }
 
 	GameObject[] createTemplates( Specie specie ){
-		GameObject[] unitTemplates = new GameObject[specie.Casts.Values.Count];
+		GameObject[] unitTemplates = new GameObject[specie.Casts.Values.Count + 1];
 
-		//queen first
-		unitTemplates[0] = createTemplate( specie.Casts[ specie.QueenCastName ], specie.QueenCastName );
+        //queen first
+        unitTemplates[0] = createPrysmeTemplate();
 
-		int ind = 1;
+        int ind = 1;
 		foreach (string key in specie.Casts.Keys)
 		{
 			if (key != specie.QueenCastName)
@@ -179,7 +241,24 @@ public class GameManager : MonoBehaviour {
 		return unitTemplates;
 	}
 
-	GameObject createTemplate( Cast cast, string castName ){
+    private GameObject createPrysmeTemplate()
+    {
+        GameObject template = Instantiate(emptyAgentPrefab);
+
+        //Disable physic
+        template.GetComponentInChildren<PhySkeleton>().enabled = false; ;
+
+        template.SetActive(false);
+        UnitTemplateInitializer.InitPrysmeTemplate(
+            template, emptyComponentPrefab
+        );
+
+        template.GetComponent<AgentEntity>().Context.Model.Cast = "Prysme";
+
+        return template;
+    }
+
+    GameObject createTemplate( Cast cast, string castName ){
 		GameObject template = Instantiate(emptyAgentPrefab);
 
 		template.SetActive(false);
@@ -232,9 +311,9 @@ public class GameManager : MonoBehaviour {
 		Unit_GameObj_Manager.instance.Homes = new List<HomeScript>(){ p1_hiveScript, p2_hiveScript };
 
         //Queens
-        GameObject p1_queen = Instantiate(p1_unitTemplates[0], p1_home.transform.position, Quaternion.identity);
+        p1_queen = Instantiate(p1_unitTemplates[0], p1_home.transform.position, Quaternion.identity);
         p1_queen.name = "p1_queen";
-        GameObject p2_queen = Instantiate(p2_unitTemplates[0], p2_home.transform.position, Quaternion.identity);
+        p2_queen = Instantiate(p2_unitTemplates[0], p2_home.transform.position, Quaternion.identity);
         p2_queen.name = "p2_queen";
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);
@@ -279,7 +358,60 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-	public HomeScript GetEnemyHome(PlayerAuthority authority)
+    /// <summary>
+    /// GetAllResources of the player passed in parameters 
+    /// </summary>
+    /// <returns>Return a tab[3] of floats : 0 is RedResources, 1 is GreenResources, 2 is BlueResources</returns>
+    public float[] GetResources(PlayerAuthority authority)
+    {
+        float[] resourcesAmount = { 0, 0, 0 }; 
+        if(authority == PlayerAuthority.Player1)
+        {
+            HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
+            p1_hiveScript.Authority = PlayerAuthority.Player1;
+            resourcesAmount[0] = p1_hiveScript.RedResAmout;
+            resourcesAmount[1] = p1_hiveScript.GreenResAmout;
+            resourcesAmount[2] = p1_hiveScript.BlueResAmout;
+            return resourcesAmount; 
+        }
+        else if (authority == PlayerAuthority.Player2)
+        {
+            HomeScript p2_hiveScript = p1_home.GetComponent<HomeScript>();
+            p2_hiveScript.Authority = PlayerAuthority.Player2;
+            resourcesAmount[0] = p2_hiveScript.RedResAmout;
+            resourcesAmount[1] = p2_hiveScript.GreenResAmout;
+            resourcesAmount[2] = p2_hiveScript.BlueResAmout;
+            return resourcesAmount;  
+        }
+        return null; 
+    }
+
+    private float sumResources(PlayerAuthority authority)
+    {
+        float resSum = 0;
+        if (authority == PlayerAuthority.Player1)
+        {
+            HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
+            p1_hiveScript.Authority = PlayerAuthority.Player1;
+            resSum += p1_hiveScript.RedResAmout;
+            resSum += p1_hiveScript.GreenResAmout;
+            resSum += p1_hiveScript.BlueResAmout;
+        }
+        else if (authority == PlayerAuthority.Player2)
+        {
+            HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
+            p2_hiveScript.Authority = PlayerAuthority.Player1;
+            resSum += p2_hiveScript.RedResAmout;
+            resSum += p2_hiveScript.GreenResAmout;
+            resSum += p2_hiveScript.BlueResAmout;
+        }
+        return resSum; 
+    }
+
+   
+
+
+public HomeScript GetEnemyHome(PlayerAuthority authority)
 	{
 		if (authority == PlayerAuthority.Player1)
 		{

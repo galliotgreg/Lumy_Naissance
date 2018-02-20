@@ -135,7 +135,7 @@ public class ABParser
             outputNode.Inputs[pinId] = node;
             if (node == null || outputNode == null)
             {
-                Debug.Log(node.GetType());
+                Debug.LogWarning(node.GetType());
             }
             node.Output = (ABNode)outputNode;
         } else
