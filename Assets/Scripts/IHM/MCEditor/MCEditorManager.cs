@@ -391,6 +391,9 @@ public class MCEditorManager : MonoBehaviour {
 	}
 
 	#region ACTION
+	public static ProxyABAction instantiateAction( ABState state ){
+		return instantiateAction( state, calculateActionPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
+	}
 	public static ProxyABAction instantiateAction( ABState state, Vector3 position, Transform parent){
 		return instantiateAction( state, position, MCEditorManager.instance.ActionPrefab, MCEditorManager.instance.PinPrefab, parent);
 	}
