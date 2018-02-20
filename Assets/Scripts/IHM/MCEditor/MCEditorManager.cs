@@ -967,7 +967,10 @@ public class MCEditorManager : MonoBehaviour {
             // Transition between Action/State and Action/State
             if (transition.Condition != null)
             {
-                if (!transition.StartPosition.IsOperatorChild || !transition.StartPosition.IsOperatorChild && !transition.EndPosition.IsOperatorChild || !transition.EndPosition.IsOperatorChild)
+				if ( (!(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut)
+					|| !(transition.StartPosition.Pin_Type == Pin.PinType.Param) )
+					&& (!(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut)
+					|| !(transition.EndPosition.Pin_Type == Pin.PinType.Param)))
                 {
                     AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
                 }
@@ -1019,29 +1022,29 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABOperator proxyOpeEnd = null;
         ProxyABParam proxyParam = null;
 
-        if (start.IsOperatorChild)
+		if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
         {
             proxyOpeStart = start.GetComponentInParent<ProxyABOperator>();
-            if (end.IsParamChild)
+			if (end.Pin_Type == Pin.PinType.Param)
             {
                 proxyParam = end.GetComponentInParent<ProxyABParam>();
                 UnlinkOperator_Param(proxyOpeStart, proxyParam);
             }
-            else if (end.IsOperatorChild)
+			else if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
             {
                 proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
                 UnlinkOperator_Operator(proxyOpeStart, proxyOpeEnd);
             }
         }
-        else if (end.IsOperatorChild)
+		else if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
         {
             proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
-            if (start.IsParamChild)
+			if (start.Pin_Type == Pin.PinType.Param)
             {
                 proxyParam = start.GetComponentInParent<ProxyABParam>();
                 UnlinkOperator_Param(proxyOpeStart, proxyParam);
             }
-            else if (start.IsOperatorChild)
+			else if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
             {
                 proxyOpeEnd = start.GetComponentInParent<ProxyABOperator>();
                 UnlinkOperator_Operator(proxyOpeStart, proxyOpeEnd);
