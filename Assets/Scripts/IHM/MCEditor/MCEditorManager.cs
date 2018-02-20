@@ -237,7 +237,7 @@ public class MCEditorManager : MonoBehaviour {
             }
 			// States
             else {
-				proxyState = instantiateState (state, calculateStatePosition (MCparent), statePrefab, MCparent.transform);
+				proxyState = instantiateState (state, abModel.InitStateId == state.Id, calculateStatePosition (MCparent), statePrefab, pinPrefab, MCparent.transform);
 				this.registerState ( state, proxyState );
             }
         }
@@ -291,7 +291,7 @@ public class MCEditorManager : MonoBehaviour {
         for (int i = 0; i < AbModel.Transitions.Count; i++) {
 			List<Pin> pinList = LoadPinsStates(i);
 			proxyABTransition = instantiateTransition ( pinList[0], pinList[1], true, transitionPrefab, pinPrefab, MCparent );
-			// ATTENTION
+			// todo ATTENTION
 			proxyABTransition.Transition = AbModel.Transitions [i];
 
             if (AbModel.Transitions[i].Condition != null) {                
@@ -307,20 +307,20 @@ public class MCEditorManager : MonoBehaviour {
 
         ProxyABState startState = statesDictionnary[AbModel.Transitions[curTransition].Start];        
 
-		pinList.Add(CreatePinState(startState.AbState, startState.transform, false,true, curTransition));
+		// Instantiate OutCome Pin in the state
+		pinList.Add( instantiatePin( Pin.PinType.TransitionOut, calculatePinPosition( startState.AbState, startState.gameObject, true, curTransition ), pinPrefab, startState.transform ) );
 
         if (statesDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
-
             ProxyABState endState = statesDictionnary[AbModel.Transitions[curTransition].End];
 
-
-			pinList.Add(CreatePinState(startState.AbState, endState.transform, false,false, curTransition));
+			// Recovery income Pin
+			pinList.Add( getPins ( endState.gameObject, Pin.PinType.TransitionIn )[0] );
         }
         else if (actionsDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
 
             ProxyABAction endState = actionsDictionnary[AbModel.Transitions[curTransition].End];
 
-			pinList.Add(CreatePinState(startState.AbState, endState.transform, true,false));
+			pinList.Add( getPins ( endState.gameObject, Pin.PinType.TransitionIn )[0] );
         }
         
         return pinList;
@@ -361,6 +361,9 @@ public class MCEditorManager : MonoBehaviour {
 			}
 		}
 
+		// Income
+		instantiatePin (Pin.PinType.TransitionIn, calculatePinPosition (result), pinPrefab, result.transform);
+
 		return result;
 	}
 
@@ -375,7 +378,7 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region STATE
-	public static ProxyABState instantiateState( ABState state, Vector3 position, ProxyABState prefab, Transform parent ){
+	public static ProxyABState instantiateState( ABState state, bool init, Vector3 position, ProxyABState prefab, Pin pinPrefab, Transform parent ){
 		ProxyABState result = Instantiate<ProxyABState>(prefab, parent);
 		result.IsLoaded = true;
 		result.transform.position = position;
@@ -384,6 +387,11 @@ public class MCEditorManager : MonoBehaviour {
 		stateName.text = state.Name;
 
 		result.GetComponent<ProxyABState>().AbState = state;
+
+		// Income Pin
+		if (!init) {
+			instantiatePin (Pin.PinType.TransitionIn, calculatePinPosition (result), pinPrefab, result.transform);
+		}
 
 		return result;
 	}
@@ -454,7 +462,7 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region PIN
-	public Pin CreatePinState(ABState state, Transform state_transform, bool isAction, bool isStart, [Optional] int curTransition){
+	/*public Pin CreatePinState(ABState state, Transform state_transform, bool isAction, bool isStart, [Optional] int curTransition){
 		if (isAction) {
 			// Action
 			ProxyABAction action = state_transform.GetComponent<ProxyABAction> ();
@@ -466,7 +474,7 @@ public class MCEditorManager : MonoBehaviour {
 			Pin pin = instantiatePin ( Pin.PinType.TransitionOut, calculatePinPosition ( state, state_transform.gameObject, isStart, curTransition ), pinPrefab, state_transform );
 			return pin;
 		}
-	}
+	}*/
 
 	public static Pin instantiatePin( Pin.PinType pinType, Vector3 position, Pin prefab, Transform parent ){
 		Pin result = Instantiate<Pin> (prefab, parent);
@@ -481,6 +489,11 @@ public class MCEditorManager : MonoBehaviour {
 	}
 
 	public static Vector3 calculatePinPosition( ProxyABAction parent ){
+		float radius = parent.transform.localScale.y / 2;
+		return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
+	}
+
+	public static Vector3 calculatePinPosition( ProxyABState parent ){
 		float radius = parent.transform.localScale.y / 2;
 		return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
 	}

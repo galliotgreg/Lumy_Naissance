@@ -65,7 +65,7 @@ public class Pin : DragSelectableProxyGameObject {
 			MCEditorManager.instance.createTransition_setStartPin ( null );
 		}
 	}
-
+		
 	ProxyABTransition auxTransition;
 	bool selectNow = false;
 
