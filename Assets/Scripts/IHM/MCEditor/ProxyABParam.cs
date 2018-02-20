@@ -85,8 +85,9 @@ public class ProxyABParam : MonoBehaviour, IProxyABParam{
         else // when the OPerator is created in the editor.
         {
             Text paramName = this.GetComponentInChildren<Text>();
-            paramName.text = this.Name;            
-            outcome = (MCEditorManager.instance.CreatePinSynthTree(this.transform, false));
+            paramName.text = this.Name;
+			// Created on MCEDITORMANAGER
+			outcome = MCEditorManager.getPins( this.gameObject, Pin.PinType.Param )[0];
 
             ABParser abParser = new ABParser();
             abParam = abParser.ParseParam(type);                        
