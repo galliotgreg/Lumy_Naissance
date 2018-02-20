@@ -9,18 +9,20 @@ public class MC_Inventory_Actions : MC_Inventory {
 		base.Start ();
 
 		// Load Operators
-		/*List<System.Object> actions = new List<System.Object> ();
+		List<System.Object> actions = new List<System.Object> ();
 		foreach (ActionType actionType in System.Enum.GetValues( typeof( ActionType ) )) {
 			if (actionType != ActionType.None) {
 				try{
-					actions.Add (ABActionFactory.CreateAction( actionType ));
+					ABState state = new ABState( -1, actionType.ToString() );
+					state.Action = ABActionFactory.CreateAction( actionType );
+					actions.Add ( state );
 				}
 				catch(System.NotImplementedException ex){
 					Debug.Log (ex);
 				}
 			}
 		}
-		setItems ( actions );*/
+		setItems ( actions );
 	}
 	
 	// Update is called once per frame
@@ -32,13 +34,12 @@ public class MC_Inventory_Actions : MC_Inventory {
 
 	protected override void configItem (MC_InventoryItem item)
 	{
-		//item.Text.text = MCEditorManager.getNodeName(item.Item);
+		item.Text.text = ((ABState)item.Item).Name;
 	}
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		return null;
-		//return MCEditorManager.instantiateAction ( (ABAction)item.Item ).gameObject;
+		return MCEditorManager.instantiateAction ( (ABState)item.Item ).gameObject;
 	}
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)

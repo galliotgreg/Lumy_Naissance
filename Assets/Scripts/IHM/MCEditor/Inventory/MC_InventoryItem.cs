@@ -20,9 +20,9 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		}
 	}
 
-	protected ABNode item;
+	protected System.Object item;
 
-	public ABNode Item {
+	public System.Object Item {
 		get {
 			return item;
 		}
