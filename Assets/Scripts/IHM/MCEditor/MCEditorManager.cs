@@ -498,6 +498,9 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region PARAM
+	public static ProxyABParam instantiateParam( IABParam paramObj, bool isLoaded ){
+		return instantiateParam ( paramObj, isLoaded, calculateParamPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
+	}
 	public static ProxyABParam instantiateParam( IABParam paramObj, bool isLoaded, Vector3 position, Transform parent ){
 		return instantiateParam ( paramObj, isLoaded, position, MCEditorManager.instance.ParameterPrefab, MCEditorManager.instance.PinPrefab, parent );
 	}
@@ -506,9 +509,15 @@ public class MCEditorManager : MonoBehaviour {
 		result.IsLoaded = isLoaded;
 		result.transform.position = position;
 
+		result.AbParam = paramObj;
+
 		// Set text
-		Text paramName = result.GetComponentInChildren<Text>();            
-		paramName.text = GetParamValue( (ABNode)paramObj );
+		Text paramName = result.GetComponentInChildren<Text> ();
+		if (isLoaded) {
+			paramName.text = GetParamValue ((ABNode)paramObj);
+		} else {
+			paramName.text = paramObj.Identifier + " : " + GetParamValue ((ABNode)paramObj);
+		}
 
 		// Outcome pin
 		instantiatePin( Pin.PinType.Param, calculatePinPosition (result), pinPrefab, result.transform );
@@ -802,7 +811,6 @@ public class MCEditorManager : MonoBehaviour {
 		{
 			type = ((ABParam<ABScalar>)node).Value.ToString();
 		}
-
 		else if (node is ABParam<ABTable<ABVec>>)
 		{
 			type = ((ABParam<ABTable<ABVec>>)node).Value.ToString();
@@ -831,32 +839,44 @@ public class MCEditorManager : MonoBehaviour {
 		return type;
 	}
 
-	static string GetParamValue(ABNode node)
+	public static string GetParamValue(ABNode node)
 	{
 		string text = "";
 		if (node is ABParam<ABText>)
 		{
-			text = ((ABParam<ABText>)node).Value.Value.ToString();
+			if (((ABParam<ABText>)node).Value != null) {
+				text += ((ABParam<ABText>)node).Value.Value.ToString ();
+			}
 		}
 		else if (node is ABParam<ABVec>)
 		{
-			text = ((ABParam<ABVec>)node).Value.X.ToString() +";"+ ((ABParam<ABVec>)node).Value.Y.ToString();
+			if (((ABParam<ABVec>)node).Value != null) {
+				text += ((ABParam<ABVec>)node).Value.X.ToString () + ";" + ((ABParam<ABVec>)node).Value.Y.ToString ();
+			}
 		}
 		else if (node is ABParam<ABBool>)
 		{
-			text = ((ABParam<ABBool>)node).Value.Value.ToString();
+			if (((ABParam<ABBool>)node).Value != null) {
+				text += ((ABParam<ABBool>)node).Value.Value.ToString ();
+			}
 		}
 		else if (node is ABParam<ABRef>)
 		{
-			text = ((ABParam<ABRef>)node).Value.ToString();
+			if (((ABParam<ABRef>)node).Value != null) {
+				text += ((ABParam<ABRef>)node).Value.ToString ();
+			}
 		}
 		else if (node is ABParam<ABColor>)
 		{
-			text = ((ABParam<ABColor>)node).Value.Value.ToString();
+			if (((ABParam<ABColor>)node).Value != null) {
+				text += ((ABParam<ABColor>)node).Value.Value.ToString ();
+			}
 		}
 		else if (node is ABParam<ABScalar>)
 		{
-			text = ((ABParam<ABScalar>)node).Value.Value.ToString();
+			if (((ABParam<ABScalar>)node).Value != null) {
+				text += ((ABParam<ABScalar>)node).Value.Value.ToString ();
+			}
 		}
 		return text;
 	}
