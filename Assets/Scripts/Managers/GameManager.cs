@@ -224,7 +224,6 @@ public class GameManager : MonoBehaviour {
 
         //queen first
         unitTemplates[0] = createPrysmeTemplate();
-            //createTemplate( specie.Casts[ specie.QueenCastName ], specie.QueenCastName );
 
         int ind = 1;
 		foreach (string key in specie.Casts.Keys)
