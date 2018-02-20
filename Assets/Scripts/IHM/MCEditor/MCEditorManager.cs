@@ -288,6 +288,7 @@ public class MCEditorManager : MonoBehaviour {
         {
             ope = Instantiate<ProxyABOperator>(operatorPrefab);
             ope.IsLoaded = true;
+            ope.AbOperator = (IABOperator)node;
             ope.transform.position = new Vector3(ope.transform.position.x + UnityEngine.Random.Range(-5, 5), ope.transform.position.y + UnityEngine.Random.Range(-5, 5), ope.transform.position.z);
             SetNodeName(ope.gameObject, node);
 
@@ -315,13 +316,14 @@ public class MCEditorManager : MonoBehaviour {
         {
             param = Instantiate<ProxyABParam>(parameterPrefab);
             param.IsLoaded = true;
+            param.AbParam = (IABParam)node;
             param.transform.position = new Vector3(param.transform.position.x + UnityEngine.Random.Range(-5, 5), param.transform.position.y + UnityEngine.Random.Range(-5, 5), param.transform.position.z);
             
             Text paramName = param.GetComponentInChildren<Text>();            
             paramName.text = GetParamValue(node);
             proxyParams.Add(param);
 
-            pin = CreatePinSynthTree(param.transform, true);
+            pin = CreatePinSynthTree(param.transform, false);
         }
         return pin;
     }
@@ -835,8 +837,20 @@ public class MCEditorManager : MonoBehaviour {
 	void DeleteTransition( ProxyABTransition transition )
     {
 		if (transition != null) {
-			// Unlink
-			AbModel.UnlinkStates (transition.Transition.Start.Name, transition.Transition.End.Name);
+
+            // Transition between Action/State and Action/State
+            if (transition.Condition != null)
+            {
+                if (!transition.StartPosition.IsOperatorChild || !transition.StartPosition.IsOperatorChild && !transition.EndPosition.IsOperatorChild || !transition.EndPosition.IsOperatorChild)
+                {
+                    AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
+                }
+            } else
+            {
+                RemoveTransitionSyntTree(transition);
+            }
+            // Unlink            
+ 		               
 			// Remove Pin
 			// Destroy( transition.Condition.gameObject );
 			// Destroy Object
@@ -868,6 +882,82 @@ public class MCEditorManager : MonoBehaviour {
 
     }
 
+    /************** REMOVE TRANSTION FUNCTIONS **************/
+
+    private void RemoveTransitionSyntTree(ProxyABTransition transition)
+    {
+        Pin start = transition.StartPosition;
+        Pin end = transition.EndPosition;
+
+        ProxyABOperator proxyOpeStart = null;
+        ProxyABOperator proxyOpeEnd = null;
+        ProxyABParam proxyParam = null;
+
+        if (start.IsOperatorChild)
+        {
+            proxyOpeStart = start.GetComponentInParent<ProxyABOperator>();
+            if (end.IsParamChild)
+            {
+                proxyParam = end.GetComponentInParent<ProxyABParam>();
+                UnlinkOperator_Param(proxyOpeStart, proxyParam);
+            }
+            else if (end.IsOperatorChild)
+            {
+                proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
+                UnlinkOperator_Operator(proxyOpeStart, proxyOpeEnd);
+            }
+        }
+        else if (end.IsOperatorChild)
+        {
+            proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
+            if (start.IsParamChild)
+            {
+                proxyParam = start.GetComponentInParent<ProxyABParam>();
+                UnlinkOperator_Param(proxyOpeStart, proxyParam);
+            }
+            else if (start.IsOperatorChild)
+            {
+                proxyOpeEnd = start.GetComponentInParent<ProxyABOperator>();
+                UnlinkOperator_Operator(proxyOpeStart, proxyOpeEnd);
+            }
+        }        
+    }
+
+    private void UnlinkOperator_Operator(ProxyABOperator proxyOpeStart, ProxyABOperator proxyOpeEnd)
+    {
+        for (int i = 0; i < proxyOpeStart.Inputs.Length; i++)
+        {
+            if (proxyOpeStart.Inputs[i] == ((ABNode)(proxyOpeEnd.AbOperator)))
+            {
+                proxyOpeStart.Inputs[i] = null;
+            }
+        }
+        for (int i = 0; i < proxyOpeEnd.Inputs.Length; i++)
+        {
+            if (proxyOpeEnd.Inputs[i] == ((ABNode)(proxyOpeStart.AbOperator)))
+            {
+                proxyOpeEnd.Inputs[i] = null;
+            }
+        }
+    }
+
+    private void UnlinkOperator_Param(ProxyABOperator proxyOpeStart, ProxyABParam proxyParam)
+    {
+
+        string idRemoveObject = proxyParam.AbParam.Identifier;
+        for (int i = 0; i < proxyOpeStart.AbOperator.Inputs.Length; i++)
+        {
+            ABNode node = proxyOpeStart.AbOperator.Inputs[i];
+            if(node != null)
+            {
+                if (((IABParam)(node)).Identifier == idRemoveObject)
+                {
+                    node.Output = null;
+                    proxyOpeStart.AbOperator.Inputs[i] = null;
+                }
+            }            
+        }
+    }
 
     /************** DISPLAY FUNCTIONS **************/
 

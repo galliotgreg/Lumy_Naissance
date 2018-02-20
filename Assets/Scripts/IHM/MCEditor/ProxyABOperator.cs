@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ProxyABOperator: MonoBehaviour, IProxyABOperator{
     [SerializeField]
     private string name;
-    private string type = "B&&BB";
+    private string type;
     private IABOperator abOperator;
     private Pin outcome = null;
     private List<Pin> incomes;
