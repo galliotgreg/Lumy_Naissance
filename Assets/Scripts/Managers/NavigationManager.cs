@@ -276,14 +276,16 @@ public class NavigationManager : MonoBehaviour {
             {
                 if (c.name != "Main Camera")
                 {
+                    camera.GetComponent<AudioListener>().enabled = false;
                     camera = c;
-                    Debug.Log(c.name);
+                    camera.GetComponent<AudioListener>().enabled = true;
                 }
             }
             else
             {
+                camera.GetComponent<AudioListener>().enabled = false;
                 camera = c;
-                Debug.Log(c.name);
+                camera.GetComponent<AudioListener>().enabled = true;
             }
         }
     }
