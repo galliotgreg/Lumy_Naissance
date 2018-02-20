@@ -36,9 +36,9 @@ public class MC_Inventory_Operators : MC_Inventory {
 		item.Text.text = MCEditorManager.getNodeName(item.Item);
 	}
 
-	public override void configProxyItem (GameObject proxy, MC_InventoryItem item)
+	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		MCEditorManager.SetNodeName (proxy, item.Item);
+		return MCEditorManager.instantiateOperator ((IABOperator)item.Item, false).gameObject;
 	}
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)

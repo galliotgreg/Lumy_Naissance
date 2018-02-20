@@ -7,6 +7,7 @@ public class ProxyABState : MonoBehaviour {
     [SerializeField]
     private string name;  
     private ABState abState;
+	private Pin income;
     private List<Pin> pinList;
     private bool isLoaded = false;
 
@@ -50,6 +51,15 @@ public class ProxyABState : MonoBehaviour {
         }
     }
 
+	public Pin Income {
+		get {
+			return income;
+		}
+		set {
+			income = value;
+		}
+	}
+
     public bool IsLoaded
     {
         get
@@ -81,7 +91,8 @@ public class ProxyABState : MonoBehaviour {
             actionName.text = this.Name;
             this.AbState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(Name, null));          
 
-			PinList.Add(MCEditorManager.instance.CreatePinState(this.AbState, this.transform, false, false));
+			income = MCEditorManager.getPins( this.gameObject, Pin.PinType.TransitionIn )[0];
+			pinList = MCEditorManager.getPins( this.gameObject, Pin.PinType.TransitionOut );
 
             Debug.Log(MCEditorManager.instance.AbModel.States.Count);
 

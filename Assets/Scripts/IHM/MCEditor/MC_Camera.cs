@@ -6,7 +6,7 @@ public class MC_Camera : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		HandleCameras ( false );
 	}
 
 	// Update is called once per frame
@@ -15,7 +15,7 @@ public class MC_Camera : MonoBehaviour {
 	}
 
 	[SerializeField]
-	Camera camera;
+	Camera MCcamera;
 
 	float stateRadius = 1;
 
@@ -45,13 +45,30 @@ public class MC_Camera : MonoBehaviour {
 			float statesHeight = max.y - min.y + stateRadius;
 			float statesWidth = max.x - min.x + stateRadius;
 
-			camera.orthographicSize = Mathf.Max (statesHeight, statesWidth);
+			MCcamera.orthographicSize = Mathf.Max (statesHeight, statesWidth);
 
 			// adjust camera position
-			camera.transform.position = new Vector3 (min.x + statesWidth / 2f - stateRadius / 2f, min.y + statesHeight / 2f - stateRadius / 2f, camera.transform.position.z);
+			MCcamera.transform.position = new Vector3 (min.x + statesWidth / 2f - stateRadius / 2f, min.y + statesHeight / 2f - stateRadius / 2f, MCcamera.transform.position.z);
 		} else if (states.Count == 1) {
-			camera.orthographicSize = Mathf.Max (2*stateRadius);
-			camera.transform.position = new Vector3 ( states[0].transform.position.x, states[0].transform.position.y, camera.transform.position.z);
+			MCcamera.orthographicSize = Mathf.Max (2*stateRadius);
+			MCcamera.transform.position = new Vector3 ( states[0].transform.position.x, states[0].transform.position.y, MCcamera.transform.position.z);
 		}
 	}
+
+	#region Enable/Disable Cameras
+	void HandleCameras( bool enable ){
+		// Disable Cameras
+		Camera[] cameras = Camera.allCameras;
+		foreach( Camera cam in cameras ){
+			if (cam != MCcamera) {
+				cam.gameObject.SetActive( enable );
+			}
+		}
+		MCcamera.gameObject.SetActive (!enable);
+	}
+
+	void OnDestroy(){
+		HandleCameras( true );
+	}
+	#endregion
 }

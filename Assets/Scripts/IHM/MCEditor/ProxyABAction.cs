@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ProxyABAction : MonoBehaviour {
-
     [SerializeField]
     private string name;
     [SerializeField]
@@ -70,7 +69,7 @@ public class ProxyABAction : MonoBehaviour {
             actionName.text = this.name;             
             this.abState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(name, abAction));            
 
-			pinList.Add(MCEditorManager.instance.CreatePinState(AbState, this.transform, true, false));
+			pinList = MCEditorManager.getPins ( this.gameObject, Pin.PinType.ActionParam );
 
             Debug.Log(MCEditorManager.instance.AbModel.States.Count);
             

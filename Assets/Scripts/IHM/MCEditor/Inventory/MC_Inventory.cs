@@ -24,15 +24,11 @@ public abstract class MC_Inventory : MonoBehaviour {
 	[SerializeField]
 	protected GameObject itemPrefab;
 
-	[SerializeField]
-	GameObject proxyPrefab;
-
 	protected void setItems (List<ABNode> items){
 		foreach( ABNode item in items ){
 			GameObject newItem = Instantiate (itemPrefab);
 			MC_InventoryItem inventoryItem = newItem.GetComponent<MC_InventoryItem> ();
 			inventoryItem.Item = item;
-			inventoryItem.ProxyPrefab = proxyPrefab;
 			inventoryItem.transform.SetParent ( container.transform );
 
 			inventoryItem.Inventory = this;
@@ -41,7 +37,7 @@ public abstract class MC_Inventory : MonoBehaviour {
 	}
 
 	protected abstract void configItem ( MC_InventoryItem item );
-	public abstract void configProxyItem ( GameObject proxy, MC_InventoryItem item );
+	public abstract GameObject instantiateProxy ( MC_InventoryItem item );
 	#endregion
 
 	#region Drop

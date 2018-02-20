@@ -55,23 +55,10 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 	}
 
 	[SerializeField]
-	GameObject proxyPrefab;
-
-	public GameObject ProxyPrefab {
-		get {
-			return proxyPrefab;
-		}
-		set {
-			proxyPrefab = value;
-		}
-	}
-
-	[SerializeField]
 	DragObject dragObjectComponent;
 
 	void activateClick(){
-		GameObject proxy = Instantiate (proxyPrefab);
-		inventory.configProxyItem ( proxy, this );
+		GameObject proxy = inventory.instantiateProxy (this);
 
 		dragObjectComponent.startDrag (proxy, this);
 	}
