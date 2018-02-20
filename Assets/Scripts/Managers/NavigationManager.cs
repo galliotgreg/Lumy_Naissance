@@ -41,6 +41,7 @@ public class NavigationManager : MonoBehaviour {
     public float zoomStep = 0.1f;
     public float fadeStep = 0.05f;
 
+    private bool layerUnloaded = true;
     private bool layerLoaded = true;
     private bool addToPreviousList = true;
     private bool sceneLoaded = false;
@@ -138,14 +139,25 @@ public class NavigationManager : MonoBehaviour {
         if (newLayer != currentLayer)
         {
             layerLoaded = false;
+            layerUnloaded = false;
             StartCoroutine(SwapLayersCo(nextScene, newLayer));
         }
-        while (!layerLoaded)
+
+        while (!layerUnloaded)
         {
             yield return null;
         }
 
         SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(true);
+
+        findPriorityCamera();
+
+        while (!layerLoaded)
+        {
+            yield return null;
+        }
+
+        
 
         // Mettre à jour les propriétés du gestionnaire
         if (addToPreviousList)
@@ -198,27 +210,13 @@ public class NavigationManager : MonoBehaviour {
             yield return null;
         }
 
+        layerUnloaded = true;
+
         // Attendre la fin du chargement de la strate-mère de destination
         AsyncOperation loadLayer = SceneManager.LoadSceneAsync(newLayer, LoadSceneMode.Additive);
         while (!loadLayer.isDone)
         {
             yield return null;
-        }
-
-        // Trouver la caméra prioritaire
-        Camera[] camList = Camera.allCameras;
-        foreach (Camera c in camList)
-        {
-            if (Camera.allCamerasCount >= 2)
-            {
-                if (c.name != "Main Camera")
-                {
-                    camera = c;
-                }
-            } else
-            {
-                camera = c;
-            }
         }
 
         // Fondre depuis le noir
@@ -266,5 +264,27 @@ public class NavigationManager : MonoBehaviour {
         // Arrêter la coroutine
         StopCoroutine(ActivatePanelCo(nextScene, panelName));
         yield return true;
+    }
+
+    void findPriorityCamera()
+    {
+        // Trouver la caméra prioritaire
+        Camera[] camList = Camera.allCameras;
+        foreach (Camera c in camList)
+        {
+            if (Camera.allCamerasCount >= 2)
+            {
+                if (c.name != "Main Camera")
+                {
+                    camera = c;
+                    Debug.Log(c.name);
+                }
+            }
+            else
+            {
+                camera = c;
+                Debug.Log(c.name);
+            }
+        }
     }
 }
