@@ -978,14 +978,14 @@ public class MCEditorManager : MonoBehaviour {
 			if (end.Pin_Type == Pin.PinType.ActionParam)
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();
-				addConditionPin ( trans, pinPrefab );
+                addConditionPin(trans, pinPrefab);
                 transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
                 trans.Transition = AbModel.getTransition(transitionId);
             }
             else
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
-				addConditionPin ( trans, pinPrefab );
+                addConditionPin(trans, pinPrefab);
                 transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
                 trans.Transition = AbModel.getTransition(transitionId);
             }
