@@ -55,7 +55,7 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABParam> proxyParams;
 
     [SerializeField]
-    private string MC_OrigFilePath = "Assets/Inputs/Test/siu_scoot_behavior_LOAD_SAVE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*siu_scoot_behavior_LOAD_TEST.csv";*/
+    private string MC_OrigFilePath = "Assets/Inputs/Test/GREG_TRANS_STATE_STATE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*siu_scoot_behavior_LOAD_TEST.csv";*/
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
@@ -234,6 +234,7 @@ public class MCEditorManager : MonoBehaviour {
             {
                 proxyAction = Instantiate<ProxyABAction>(actionPrefab);
                 proxyAction.IsLoaded = true;
+                proxyAction.AbState = state;
                 proxyAction.transform.position = new Vector3(proxyAction.transform.position.x + UnityEngine.Random.Range(-5, 5), proxyAction.transform.position.y + UnityEngine.Random.Range(-5, 5), proxyAction.transform.position.z);
                 Text actionName = proxyAction.GetComponentInChildren<Text>();
                 actionName.text = state.Name;                
@@ -263,6 +264,7 @@ public class MCEditorManager : MonoBehaviour {
             else {
                 proxyState = Instantiate<ProxyABState>(statePrefab);
                 proxyState.IsLoaded = true;
+                proxyState.AbState = state;
                 proxyState.transform.position = new Vector3(proxyState.transform.position.x + UnityEngine.Random.Range(-5, 5), proxyState.transform.position.y + UnityEngine.Random.Range(-5, 5), proxyState.transform.position.z);
                 Text stateName = proxyState.GetComponentInChildren<Text>();
                 stateName.text = state.Name;
@@ -761,7 +763,7 @@ public class MCEditorManager : MonoBehaviour {
             {
                 endParamParent = end.GetComponentInParent<ProxyABParam>();
                 start.IsGateOperator = true;
-                startOpeParent.Inputs[startOpeParent.Inputs.Length] = (ABNode)endParamParent.AbParam;
+                startOpeParent.Inputs[startOpeParent.Inputs.Length-1] = (ABNode)endParamParent.AbParam;
             }
             else if (end.IsActionChild)
             {
@@ -777,7 +779,7 @@ public class MCEditorManager : MonoBehaviour {
             {
                 endOpeParent = end.GetComponentInParent<ProxyABOperator>();
                 start.IsGateOperator = true;
-                endOpeParent.Inputs[endOpeParent.Inputs.Length-1] = (ABNode)startParamParent.AbParam;
+                endOpeParent.Inputs[endOpeParent.Inputs.Length-1] = (ABNode)startParamParent.AbParam;                
                 ((ABNode)startParamParent.AbParam).Output = (ABNode)endOpeParent.AbOperator;//TODO ma geule
             }
             else if (end.IsActionChild)

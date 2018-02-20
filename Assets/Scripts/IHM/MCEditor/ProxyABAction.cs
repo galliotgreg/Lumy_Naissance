@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ProxyABAction : MonoBehaviour {
-
     [SerializeField]
     private string name;
     [SerializeField]
