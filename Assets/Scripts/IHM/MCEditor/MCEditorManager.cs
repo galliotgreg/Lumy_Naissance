@@ -735,17 +735,17 @@ public class MCEditorManager : MonoBehaviour {
             }
             else if (end.IsActionChild)
             {
-                endActionParent = end.GetComponentInParent<ProxyABAction>();                
-                AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+                endActionParent = end.GetComponentInParent<ProxyABAction>();                               
                 CreatePinTransition(trans);
 				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+                trans.Transition = AbModel.getTransition(transitionId);
             }
             else //State case
             {
-                endStateParent = end.GetComponentInParent<ProxyABState>();
-                AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
+                endStateParent = end.GetComponentInParent<ProxyABState>();               
                 CreatePinTransition(trans);
 				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
+                trans.Transition = AbModel.getTransition(transitionId);
             }
 
         }
@@ -795,12 +795,16 @@ public class MCEditorManager : MonoBehaviour {
             if (end.IsActionChild)
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();
-				transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
+                CreatePinTransition(trans);
+                transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
+                trans.Transition = AbModel.getTransition(transitionId);
             }
             else
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
-				transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
+                CreatePinTransition(trans);
+                transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
+                trans.Transition = AbModel.getTransition(transitionId);
             }
         }                                                               
     }
@@ -843,7 +847,7 @@ public class MCEditorManager : MonoBehaviour {
             // Transition between Action/State and Action/State
             if (transition.Condition != null)
             {
-                if (!transition.StartPosition.IsOperatorChild || !transition.StartPosition.IsOperatorChild && !transition.EndPosition.IsOperatorChild || !transition.EndPosition.IsOperatorChild)
+                if ((!transition.StartPosition.IsOperatorChild || !transition.StartPosition.IsParamChild) && (!transition.EndPosition.IsParamChild || !transition.EndPosition.IsOperatorChild))
                 {
                     AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
                 }
