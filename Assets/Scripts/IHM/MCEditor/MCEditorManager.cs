@@ -415,6 +415,7 @@ public class MCEditorManager : MonoBehaviour {
 		ProxyABOperator result = Instantiate<ProxyABOperator> (prefab, parent);
 		result.IsLoaded = isLoaded;
 		result.transform.position = position;
+		result.AbOperator = operatorObj;
 		SetNodeName( result.gameObject, (ABNode)operatorObj );
 
 		// Create Pins

@@ -191,16 +191,6 @@ public class NavigationManager : MonoBehaviour {
             yield return true;
         }
 
-        // Faire disparaître la strate-mère initiale en fondu 
-        GameObject canvas = GameObject.Find(currentLayer + "Canvas");
-        float alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
-        /*while (alphaLayer > 0.0f)
-        {
-            alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
-            canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
-            yield return true;
-        }*/
-
         // Attendre la fin du déchargement de la strate-mère initiale
         AsyncOperation unloadLayer = SceneManager.UnloadSceneAsync(currentLayer);
         while (!unloadLayer.isDone)
@@ -215,15 +205,20 @@ public class NavigationManager : MonoBehaviour {
             yield return null;
         }
 
-        // Faire apparaître la strate-mère de destination en fondu 
-        canvas = GameObject.Find(newLayer + "Canvas");
-        canvas.GetComponent<CanvasGroup>().alpha = 0f;
-        alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
-        while (alphaLayer < 1.0f)
+        // Trouver la caméra prioritaire
+        Camera[] camList = Camera.allCameras;
+        foreach (Camera c in camList)
         {
-            alphaLayer = canvas.GetComponent<CanvasGroup>().alpha;
-            canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
-            yield return true;
+            if (Camera.allCamerasCount >= 2)
+            {
+                if (c.name != "Main Camera")
+                {
+                    camera = c;
+                }
+            } else
+            {
+                camera = c;
+            }
         }
 
         // Fondre depuis le noir
