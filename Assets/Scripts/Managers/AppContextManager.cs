@@ -159,6 +159,16 @@ public class AppContextManager : MonoBehaviour
 
     public void LoadPlayerSpecies(string player1SpecieName, string player2SpecieName)
     {
+        //Create Dirs in needed
+        if (!Directory.Exists(PLAYER1_FOLDER_PATH))
+        {
+            Directory.CreateDirectory(PLAYER1_FOLDER_PATH);
+        }
+        if (!Directory.Exists(PLAYER2_FOLDER_PATH))
+        {
+            Directory.CreateDirectory(PLAYER2_FOLDER_PATH);
+        }
+
         //Free Folders
         DirectoryInfo di = new DirectoryInfo(PLAYER1_FOLDER_PATH);
         foreach (FileInfo file in di.GetFiles())
