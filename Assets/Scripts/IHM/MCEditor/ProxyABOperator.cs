@@ -97,9 +97,9 @@ public class ProxyABOperator: MonoBehaviour, IProxyABOperator{
         {
             Text opeName = this.GetComponentInChildren<Text>();
             opeName.text = this.Name;
-            incomes = new List<Pin>();
-            incomes.Add(MCEditorManager.instance.CreatePinSynthTree(this.transform, true));
-            outcome = MCEditorManager.instance.CreatePinSynthTree(this.transform, true);
+			// Created on MCEditorManager
+			incomes = MCEditorManager.getPins( this.gameObject, Pin.PinType.OperatorIn );
+			outcome = MCEditorManager.getPins( this.gameObject, Pin.PinType.OperatorOut )[0];
 
             ABParser abParser = new ABParser();
             abOperator = abParser.ParseOperator(type);            

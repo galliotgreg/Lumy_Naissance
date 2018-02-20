@@ -14,7 +14,7 @@ public class Pin : DragSelectableProxyGameObject {
 		ActionParam,	// Action : param (gateOperator)
 		OperatorIn,		// Operator : param
 		OperatorOut,	// Operator : result
-		Value			// Constant/Reference
+		Param			// Constant/Reference
 	};
 
 	[SerializeField]

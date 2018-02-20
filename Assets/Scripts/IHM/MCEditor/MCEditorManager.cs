@@ -14,8 +14,6 @@ public class MCEditorManager : MonoBehaviour {
     /// The static instance of the Singleton for external access
     /// </summary>
     public static MCEditorManager instance = null;
-    private int curStateId;
-    private int curTransId;
 
     //Templates & Prefabs
     [SerializeField]
@@ -30,11 +28,10 @@ public class MCEditorManager : MonoBehaviour {
     private ProxyABParam parameterPrefab;
     [SerializeField]
     private ProxyABAction actionPrefab;
-    [SerializeField]
-    private GameObject[] mcTemplates;
 
 	[SerializeField]
 	private GameObject MC_Container;	// Parent for the MC
+	Transform MCparent;
 
     private ABModel abModel;
 
@@ -114,29 +111,14 @@ public class MCEditorManager : MonoBehaviour {
         operatorDictionary = opeFactory.TypeStringToString;
         paramDictionary = paramFactory.TypeStringToString;
 
+		MCparent = (MC_Container == null ? this.transform : MC_Container.transform);
+
         /** LOAD MODEL AND CREATE PROXY OBJECTS **/
         SetupModel();
     }
 
     private void Update()
     {
-		// adjust camera
-		/*List<GameObject> proxies = new List<GameObject>();
-		foreach (MonoBehaviour b in proxyStates) {
-			proxies.Add (b.gameObject);
-		}
-		foreach (MonoBehaviour b in proxyActions) {
-			proxies.Add (b.gameObject);
-		}
-        proxies.AddRange ( proxyParams );
-        proxies.AddRange ( proxyOperators );
-        // TODO create global list
-
-		MC_Camera camera = Camera.main.GetComponent<MC_Camera>();
-        if (camera != null) {
-			camera.adjustCamera (proxies);
-		}*/
-
         /**START TEST SAVE**/
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -222,200 +204,99 @@ public class MCEditorManager : MonoBehaviour {
         return model;
     }
 
-    /************** LOAD MODEL FUNCTIONS  **************/
-
+	#region LOAD MODEL FUNCTIONS
     void LoadProxyStates() {
 
         ProxyABState proxyState;
         ProxyABAction proxyAction;
-
-		Transform parent = (MC_Container == null ? this.transform : MC_Container.transform);
 
         foreach (ABState state in this.AbModel.States)
         {
 			// Actions
             if (state.Action != null)
             {
-				proxyAction = instantiateAction (state, calculateActionPosition (parent), actionPrefab, parent );
+				proxyAction = instantiateAction (state, calculateActionPosition (MCparent), actionPrefab, pinPrefab, MCparent );
 				this.registerAction ( state, proxyAction );
 
-				// Create pins for parameters
+				// Create SyntaxTrees
+				List<Pin> pins = getPins( proxyAction.gameObject, Pin.PinType.ActionParam );
 				if (state.Action.Parameters != null) {
-					foreach (IABGateOperator param in state.Action.Parameters) {
-						Pin start = instantiatePin ( Pin.PinType.ActionParam, calculatePinPosition(proxyAction), pinPrefab, proxyAction.transform );
+					for (int i = 0; i < state.Action.Parameters.Length; i++) {
+						IABGateOperator param = state.Action.Parameters [i];
+
+						Pin start = pins [i];
 						registerPin (start);
 
 						// create syntaxTree for each Param
 						foreach (ABNode node in param.Inputs) {
 							Pin end = RecNodeSynthTree (node);
-							CreateTransitionSyntaxTree (start, end);
+							instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, MCparent.transform );
 						}
 					}
 				}
             }
 			// States
             else {
-				proxyState = instantiateState (state, calculateStatePosition (parent), statePrefab, parent);
+				proxyState = instantiateState (state, calculateStatePosition (MCparent), statePrefab, MCparent.transform);
 				this.registerState ( state, proxyState );
             }
         }
     }
 
     //Load syntaxe Tree in a recursive way
+	// return the outcome pin
     Pin RecNodeSynthTree(ABNode node)
     {
-        ProxyABOperator ope = null;
-        ProxyABParam param = null;
-
-        Pin pin = null;
         if (node is IABOperator)
         {
-            ope = Instantiate<ProxyABOperator>(operatorPrefab);
-            ope.IsLoaded = true;
-            ope.transform.position = new Vector3(ope.transform.position.x + UnityEngine.Random.Range(-5, 5), ope.transform.position.y + UnityEngine.Random.Range(-5, 5), ope.transform.position.z);
-            SetNodeName(ope.gameObject, node);
+			ProxyABOperator ope = instantiateOperator( (IABOperator)node, true, calculateOperatorPosition( MCparent ), operatorPrefab, pinPrefab, MCparent );
+			registerOperator (ope);
+		    
+			// Creating params trees
+			List<Pin> pins = getPins( ope.gameObject, Pin.PinType.OperatorIn );
+			for(int i=0; i<((IABOperator)node).Inputs.Length; i++){
+				ABNode inputNode = ((IABOperator)node).Inputs [i];
+				Pin start = pins[i];
 
-            proxyOperators.Add(ope);
-            if ( ((IABOperator)node).Inputs.Length != 0)
-            {
-                foreach(ABNode inputNode in ((IABOperator)node).Inputs)
+                if(inputNode == null)
                 {
-                    if(inputNode == null)
-                    {
-                        break;
-                    }
-                    Pin start = CreatePinSynthTree(ope.transform, true);
-                    Pin end = RecNodeSynthTree(inputNode);
+                    break;
+                }
 
-                    if(end != null)
-                    {
-                        CreateTransitionSyntaxTree(start, end);
-                    }
-                } 
+                Pin end = RecNodeSynthTree(inputNode);
+
+                if(end != null)
+                {
+					instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, MCparent.transform );
+                }
             }
-            pin = CreatePinSynthTree(ope.transform, true);
+
+			// Outcome
+			return getPins( ope.gameObject, Pin.PinType.OperatorOut )[0];
         }
         else if (node is IABParam)
         {
-            param = Instantiate<ProxyABParam>(parameterPrefab);
-            param.IsLoaded = true;
-            param.transform.position = new Vector3(param.transform.position.x + UnityEngine.Random.Range(-5, 5), param.transform.position.y + UnityEngine.Random.Range(-5, 5), param.transform.position.z);
-            
-            Text paramName = param.GetComponentInChildren<Text>();            
-            paramName.text = GetParamValue(node);
-            proxyParams.Add(param);
+			ProxyABParam param = instantiateParam ( (IABParam)node, true, calculateParamPosition( MCparent ), parameterPrefab, pinPrefab, MCparent );
+			registerParam ( param );
 
-            pin = CreatePinSynthTree(param.transform, true);
+			return getPins (param.gameObject, Pin.PinType.Param) [0];
         }
-        return pin;
-    }
-
-    string GetParamType(ABNode node)
-    {
-        string type = "";        
-        if (node is ABParam<ABText>)
-        {
-            type = ((ABParam<ABText>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABVec>)
-        {
-            type = ((ABParam<ABVec>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABBool>)
-        {
-            type = ((ABParam<ABBool>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABRef>)
-        {
-            type = ((ABParam<ABRef>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABColor>)
-        {
-            type = ((ABParam<ABColor>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABScalar>)
-        {
-            type = ((ABParam<ABScalar>)node).Value.ToString();
-        }
-
-        else if (node is ABParam<ABTable<ABVec>>)
-        {
-            type = ((ABParam<ABTable<ABVec>>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABTable<ABBool>>)
-        {
-            type = ((ABParam<ABTable<ABBool>>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABTable<ABScalar>>)
-        {
-            type = ((ABParam<ABTable<ABScalar>>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABTable<ABText>>)
-        {
-            type = ((ABParam<ABTable<ABText>>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABTable<ABColor>>)
-        {
-            type = ((ABParam<ABTable<ABColor>>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABTable<ABRef>>)
-        {
-            type = ((ABParam<ABTable<ABRef>>)node).Value.ToString();
-        }
-
-        return type;
-    }
-
-    string GetParamValue(ABNode node)
-    {
-        string text = "";
-        if (node is ABParam<ABText>)
-        {
-            text = ((ABParam<ABText>)node).Value.Value.ToString();
-        }
-        else if (node is ABParam<ABVec>)
-        {
-            text = ((ABParam<ABVec>)node).Value.X.ToString() +";"+ ((ABParam<ABVec>)node).Value.Y.ToString();
-        }
-        else if (node is ABParam<ABBool>)
-        {
-            text = ((ABParam<ABBool>)node).Value.Value.ToString();
-        }
-        else if (node is ABParam<ABRef>)
-        {
-            text = ((ABParam<ABRef>)node).Value.ToString();
-        }
-        else if (node is ABParam<ABColor>)
-        {
-            text = ((ABParam<ABColor>)node).Value.Value.ToString();
-        }
-        else if (node is ABParam<ABScalar>)
-        {
-            text = ((ABParam<ABScalar>)node).Value.Value.ToString();
-        }
-        return text;
+		return null;
     }
 
     void LoadProxyTransitions()
     {
         ProxyABTransition proxyABTransition;
 
-        List<Pin> pinList;
-        Pin condition = null;
         for (int i = 0; i < AbModel.Transitions.Count; i++) {
-            proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
-
-            pinList = LoadPinsStates(i);
-
-            proxyABTransition.StartPosition = pinList[0];
-            proxyABTransition.EndPosition = pinList[1];
+			List<Pin> pinList = LoadPinsStates(i);
+			proxyABTransition = instantiateTransition ( pinList[0], pinList[1], true, transitionPrefab, pinPrefab, MCparent );
+			// ATTENTION
 			proxyABTransition.Transition = AbModel.Transitions [i];
-
-            CreatePinTransition(proxyABTransition);
 
             if (AbModel.Transitions[i].Condition != null) {                
                 Pin end = RecNodeSynthTree(AbModel.Transitions[i].Condition.Inputs[0]);
-                CreateTransitionSyntaxTree(proxyABTransition.Condition, end);                
+				instantiateTransition ( proxyABTransition.Condition, end, false, transitionPrefab, pinPrefab, MCparent );
             }
         }         
     }
@@ -444,11 +325,26 @@ public class MCEditorManager : MonoBehaviour {
         
         return pinList;
     }
+	#endregion
 
-    /************** PROXY CREATION FUNCTIONS **************/
+	#region PROXY CREATION FUNCTIONS
+
+	public static List<Pin> getPins( GameObject obj, Pin.PinType pinType ){
+		List<Pin> result = new List<Pin> ();
+
+		Pin[] pins = obj.GetComponentsInChildren<Pin>();
+
+		foreach (Pin p in pins) {
+			if (p.Pin_Type == pinType) {
+				result.Add ( p );
+			}
+		}
+
+		return result;
+	}
 
 	#region ACTION
-	public static ProxyABAction instantiateAction( ABState state, Vector3 position, ProxyABAction prefab, Transform parent ){
+	public static ProxyABAction instantiateAction( ABState state, Vector3 position, ProxyABAction prefab, Pin pinPrefab, Transform parent ){
 		ProxyABAction result = Instantiate<ProxyABAction>( prefab, parent );
 		result.IsLoaded = true;
 		result.transform.position = position;
@@ -457,6 +353,13 @@ public class MCEditorManager : MonoBehaviour {
 		actionName.text = state.Name;
 
 		result.GetComponent<ProxyABAction>().AbState = state;
+
+		// Create Pins
+		if (state.Action.Parameters != null) {
+			foreach (IABGateOperator param in state.Action.Parameters) {
+				Pin start = instantiatePin (Pin.PinType.ActionParam, calculatePinPosition (result), pinPrefab, result.transform);
+			}
+		}
 
 		return result;
 	}
@@ -496,12 +399,75 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region OPERATOR
+	public static ProxyABOperator instantiateOperator( IABOperator operatorObj, bool isLoaded, Vector3 position, ProxyABOperator prefab, Pin pinPrefab, Transform parent ){
+		ProxyABOperator result = Instantiate<ProxyABOperator> (prefab, parent);
+		result.IsLoaded = isLoaded;
+		result.transform.position = position;
+		SetNodeName( result.gameObject, (ABNode)operatorObj );
+
+		// Create Pins
+		foreach(ABNode inputNode in operatorObj.Inputs)
+		{
+			Pin start = instantiatePin (Pin.PinType.OperatorIn, calculatePinPosition (result), pinPrefab, result.transform);
+		}
+
+		// Outcome pin
+		instantiatePin( Pin.PinType.OperatorOut, calculatePinPosition (result), pinPrefab, result.transform );
+
+		return result;
+	}
+
+	public static Vector3 calculateOperatorPosition( Transform parent ){
+		return new Vector3(UnityEngine.Random.Range(-5, 5),UnityEngine.Random.Range(-5, 5), parent.position.z);
+	}
+
+	public void registerOperator( ProxyABOperator proxyOperator ){
+		proxyOperators.Add( proxyOperator );
+	}
 	#endregion
 
-	#region VALUE
+	#region PARAM
+	public static ProxyABParam instantiateParam( IABParam paramObj, bool isLoaded, Vector3 position, ProxyABParam prefab, Pin pinPrefab, Transform parent ){
+		ProxyABParam result = Instantiate<ProxyABParam> (prefab, parent);
+		result.IsLoaded = isLoaded;
+		result.transform.position = position;
+
+		// Set text
+		Text paramName = result.GetComponentInChildren<Text>();            
+		paramName.text = GetParamValue( (ABNode)paramObj );
+
+		// Outcome pin
+		instantiatePin( Pin.PinType.Param, calculatePinPosition (result), pinPrefab, result.transform );
+
+		return result;
+	}
+
+	public static Vector3 calculateParamPosition( Transform parent ){
+		return new Vector3(UnityEngine.Random.Range(-5, 5),UnityEngine.Random.Range(-5, 5), parent.position.z);
+	}
+
+	public void registerParam( ProxyABParam proxyParam ){
+		proxyParams.Add( proxyParam );
+	}
+	#endregion
+
 	#endregion
 
 	#region PIN
+	public Pin CreatePinState(ABState state, Transform state_transform, bool isAction, bool isStart, [Optional] int curTransition){
+		if (isAction) {
+			// Action
+			ProxyABAction action = state_transform.GetComponent<ProxyABAction> ();
+			Pin pin = instantiatePin (Pin.PinType.ActionParam, calculatePinPosition (action), pinPrefab, action.transform);
+			return pin;
+		} else {
+			// State
+			// todo verify isstart : in/out
+			Pin pin = instantiatePin ( Pin.PinType.TransitionOut, calculatePinPosition ( state, state_transform.gameObject, isStart, curTransition ), pinPrefab, state_transform );
+			return pin;
+		}
+	}
+
 	public static Pin instantiatePin( Pin.PinType pinType, Vector3 position, Pin prefab, Transform parent ){
 		Pin result = Instantiate<Pin> (prefab, parent);
 		result.Pin_Type = pinType;
@@ -541,62 +507,46 @@ public class MCEditorManager : MonoBehaviour {
 	}
 
 	public static Vector3 calculatePinPosition( ProxyABOperator parent ){
+		int childCount = parent.transform.childCount;
 		float radius = parent.transform.localScale.y / 2;
-		return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
+		return new Vector3(parent.transform.position.x + (radius * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)),
+							parent.transform.position.y + (radius* Mathf.Sin(childCount * (2 * Mathf.PI) / 4)),
+							parent.transform.position.z
+		);
 	}
 
 	public static Vector3 calculatePinPosition( ProxyABParam parent ){
+		int childCount = parent.transform.childCount;
 		float radius = parent.transform.localScale.y / 2;
-		return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
+		return new Vector3(parent.transform.position.x + (radius * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)),
+			parent.transform.position.y + (radius* Mathf.Sin(childCount * (2 * Mathf.PI) / 4)),
+			parent.transform.position.z
+		);
 	}
 	#endregion
 
-    // In a syntaxe tree a transition don't need a pin ( only for connect syntaxe tree to action or transition between state and action/state)
-    void CreateTransitionSyntaxTree(Pin start, Pin end)
-    {
-        ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab);
-        proxyABTransition.StartPosition = start;
-        proxyABTransition.EndPosition = end;
-    }
+	#region TRANSITION
+	public static ProxyABTransition instantiateTransition( Pin start, Pin end, bool createCondition, ProxyABTransition transitionPrefab, Pin pinPrefab, Transform parent ){
+		ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab, parent);
 
-    //Create pin for connect a syntaxe tree on a transition
-    void CreatePinTransition(ProxyABTransition proxyABTransition)
-    {
-		Pin conditionPin = instantiatePin( Pin.PinType.Condition, calculatePinPosition( proxyABTransition ), pinPrefab, proxyABTransition.transform );
-        proxyABTransition.Condition = conditionPin;
+		proxyABTransition.StartPosition = start;
+		proxyABTransition.EndPosition = end;
+
+		if (createCondition) {
+			addConditionPin ( proxyABTransition, pinPrefab );
+		}
 
 		// TODO register?
-    }
+		return proxyABTransition;
+	}
 
-	public Pin CreatePinState(ABState state, Transform state_transform, bool isAction, bool isStart, [Optional] int curTransition){
+	public static void addConditionPin( ProxyABTransition proxyABTransition, Pin pinPrefab ){
+		Pin conditionPin = instantiatePin( Pin.PinType.Condition, calculatePinPosition( proxyABTransition ), pinPrefab, proxyABTransition.transform );
+		proxyABTransition.Condition = conditionPin;
+	}
+	#endregion
 
-		if (isAction) {
-			// Action
-			ProxyABAction action = state_transform.GetComponent<ProxyABAction> ();
-			Pin pin = instantiatePin (Pin.PinType.ActionParam, calculatePinPosition (action), pinPrefab, action.transform);
-			return pin;
-		} else {
-			// State
-			// todo verify isstart : in/out
-			Pin pin = instantiatePin ( Pin.PinType.TransitionOut, calculatePinPosition ( state, state_transform.gameObject, isStart, curTransition ), pinPrefab, state_transform );
-			return pin;
-		}
-    }
-
-    public Pin CreatePinSynthTree(Transform node, bool isOperator)
-    {
-		int childCount = node.transform.childCount;
-		float radiusState = node.localScale.y / 2;
-		Vector3 newPos = new Vector3(node.position.x + (radiusState * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)), node.position.y + (radiusState * Mathf.Sin(childCount * (2 * Mathf.PI) / 4)), node.position.z);
-
-		// todo verify in/out
-		Pin pin = instantiatePin( ( isOperator ? Pin.PinType.OperatorOut : Pin.PinType.Value ), newPos, pinPrefab, node );
-        
-        return pin;
-    }
-
-    /************** SAVE FUNCTION **************/
-
+	#region SAVE FUNCTION
     void Save_Ope_Param(int idNodeInput, int idNodeInputPin, ABNode node, StringBuilder syntTreeContent)
     {
         int idParentnode = idNodeSyntTree;       
@@ -726,13 +676,97 @@ public class MCEditorManager : MonoBehaviour {
         Debug.Log("Save MC");
     }
 
-    /************** EDITOR FUNCTIONS **************/
+	string GetParamType(ABNode node)
+	{
+		string type = "";        
+		if (node is ABParam<ABText>)
+		{
+			type = ((ABParam<ABText>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABVec>)
+		{
+			type = ((ABParam<ABVec>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABBool>)
+		{
+			type = ((ABParam<ABBool>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABRef>)
+		{
+			type = ((ABParam<ABRef>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABColor>)
+		{
+			type = ((ABParam<ABColor>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABScalar>)
+		{
+			type = ((ABParam<ABScalar>)node).Value.ToString();
+		}
 
+		else if (node is ABParam<ABTable<ABVec>>)
+		{
+			type = ((ABParam<ABTable<ABVec>>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABTable<ABBool>>)
+		{
+			type = ((ABParam<ABTable<ABBool>>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABTable<ABScalar>>)
+		{
+			type = ((ABParam<ABTable<ABScalar>>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABTable<ABText>>)
+		{
+			type = ((ABParam<ABTable<ABText>>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABTable<ABColor>>)
+		{
+			type = ((ABParam<ABTable<ABColor>>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABTable<ABRef>>)
+		{
+			type = ((ABParam<ABTable<ABRef>>)node).Value.ToString();
+		}
+
+		return type;
+	}
+
+	static string GetParamValue(ABNode node)
+	{
+		string text = "";
+		if (node is ABParam<ABText>)
+		{
+			text = ((ABParam<ABText>)node).Value.Value.ToString();
+		}
+		else if (node is ABParam<ABVec>)
+		{
+			text = ((ABParam<ABVec>)node).Value.X.ToString() +";"+ ((ABParam<ABVec>)node).Value.Y.ToString();
+		}
+		else if (node is ABParam<ABBool>)
+		{
+			text = ((ABParam<ABBool>)node).Value.Value.ToString();
+		}
+		else if (node is ABParam<ABRef>)
+		{
+			text = ((ABParam<ABRef>)node).Value.ToString();
+		}
+		else if (node is ABParam<ABColor>)
+		{
+			text = ((ABParam<ABColor>)node).Value.Value.ToString();
+		}
+		else if (node is ABParam<ABScalar>)
+		{
+			text = ((ABParam<ABScalar>)node).Value.Value.ToString();
+		}
+		return text;
+	}
+	#endregion
+
+    #region EDITOR FUNCTIONS
     void CreateTransition(Pin start, Pin end)
 	{
-		ProxyABTransition trans = Instantiate<ProxyABTransition> (transitionPrefab);
-		trans.StartPosition = start;
-		trans.EndPosition = end;
+		ProxyABTransition trans = instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, MCparent.transform );
 
 		ProxyABAction startActionParent;
 		ProxyABState startStateParent;
@@ -775,7 +809,7 @@ public class MCEditorManager : MonoBehaviour {
 				//start.IsGateOperator = true;
 				start.Pin_Type = Pin.PinType.OperatorIn;
                 startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endOpeParent.AbOperator;               
-			} else if (end.Pin_Type == Pin.PinType.Value)
+			} else if (end.Pin_Type == Pin.PinType.Param)
             {
                 endParamParent = end.GetComponentInParent<ProxyABParam>();
                 //start.IsGateOperator = true;
@@ -786,14 +820,14 @@ public class MCEditorManager : MonoBehaviour {
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();                
                 AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
-                CreatePinTransition(trans);
+				addConditionPin ( trans, pinPrefab );
 				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
             }
             else //State case
             {
                 endStateParent = end.GetComponentInParent<ProxyABState>();
                 AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
-                CreatePinTransition(trans);
+				addConditionPin ( trans, pinPrefab );
 				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
             }
 
@@ -809,7 +843,7 @@ public class MCEditorManager : MonoBehaviour {
                 startOpeParent.Inputs[startOpeParent.Inputs.Length-1] = (ABNode)endOpeParent.AbOperator;
                 ((ABNode)endOpeParent.AbOperator).Output = (ABNode)startOpeParent.AbOperator;
             }
-			else if (end.Pin_Type == Pin.PinType.Value)
+			else if (end.Pin_Type == Pin.PinType.Param)
             {
                 endParamParent = end.GetComponentInParent<ProxyABParam>();
                 //start.IsGateOperator = true;
@@ -824,7 +858,7 @@ public class MCEditorManager : MonoBehaviour {
                 endActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)startOpeParent.AbOperator;
             }
         }
-		else if (start.Pin_Type == Pin.PinType.Value)
+		else if (start.Pin_Type == Pin.PinType.Param)
         {
             startParamParent = start.GetComponentInParent<ProxyABParam>();
 			if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
@@ -919,10 +953,9 @@ public class MCEditorManager : MonoBehaviour {
     {
 
     }
+	#endregion
 
-
-    /************** DISPLAY FUNCTIONS **************/
-
+	#region DISPLAY FUNCTIONS
     void DisplayStates()
     {
         for (int i = 0; i < proxyStates.Count; i++)
@@ -975,6 +1008,7 @@ public class MCEditorManager : MonoBehaviour {
 
 		return newOpeName;
 	}
+	#endregion
 
 	#region Transition Create Delete
 	Pin transition_Pin_Start = null;
