@@ -61,9 +61,13 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private GameObject homePrefab;
     [SerializeField]
+    private GameObject gameParamsPrefab;
+    [SerializeField]
     private GameObject[] p1_unitTemplates;
     [SerializeField]
     private GameObject[] p2_unitTemplates;
+    [SerializeField]
+    private GameObject gameParam;
 
     //Instancied Game Objects
     [SerializeField]
@@ -113,6 +117,19 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public GameObject GameParam
+    {
+        get
+        {
+            return gameParam;
+        }
+
+        set
+        {
+            gameParam = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -158,9 +175,16 @@ public class GameManager : MonoBehaviour {
 
     private void SetupMatch()
     {
+        SetupGameParams();
         ParseSpecies();
         CreateUnitTemplates();
         InitGameObjects();
+    }
+
+    private void SetupGameParams()
+    {
+        gameParam = Instantiate(gameParamsPrefab);
+        gameParam.transform.parent = this.transform;
     }
 
     private void ParseSpecies()
@@ -219,7 +243,7 @@ public class GameManager : MonoBehaviour {
 		p2_unitTemplates = createTemplates( p2_specie );
     }
 
-	GameObject[] createTemplates( Specie specie ){
+	GameObject[] createTemplates( Specie specie ) {
 		GameObject[] unitTemplates = new GameObject[specie.Casts.Values.Count + 1];
 
         //queen first
@@ -244,6 +268,7 @@ public class GameManager : MonoBehaviour {
     private GameObject createPrysmeTemplate()
     {
         GameObject template = Instantiate(emptyAgentPrefab);
+        template.transform.parent = this.transform;
 
         //Disable physic
         template.GetComponentInChildren<PhySkeleton>().enabled = false; ;
@@ -260,8 +285,9 @@ public class GameManager : MonoBehaviour {
 
     GameObject createTemplate( Cast cast, string castName ){
 		GameObject template = Instantiate(emptyAgentPrefab);
+        template.transform.parent = this.transform;
 
-		template.SetActive(false);
+        template.SetActive(false);
 		UnitTemplateInitializer.InitTemplate(
 			cast, template, emptyComponentPrefab
 		);
@@ -317,8 +343,13 @@ public class GameManager : MonoBehaviour {
         p2_queen.name = "p2_queen";
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);
+        p1_queen.GetComponent<AgentEntity>().GameParams =
+            gameParam.GetComponent<GameParamsScript>();
+        p2_queen.GetComponent<AgentEntity>().GameParams = 
+            gameParam.GetComponent<GameParamsScript>();
 
-		p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
+
+        p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
 		p2_hiveScript.addUnit( p2_queen.GetComponent<AgentEntity>() );
     }
 
