@@ -7,62 +7,35 @@ using UnityEngine;
  */  
 public class Pin : DragSelectableProxyGameObject {
 
-    bool isGateOperator = false;
-    bool isActionChild = false;
-    bool isParamChild = false;
-    bool isOperatorChild = false;
+	public enum PinType{
+		Condition,		// Transition : condition
+		TransitionIn,	// Action/State : transition in
+		TransitionOut,	// State : transition out
+		ActionParam,	// Action : param (gateOperator)
+		OperatorIn,		// Operator : param
+		OperatorOut,	// Operator : result
+		Param			// Constant/Reference
+	};
 
 	[SerializeField]
+	PinType pin_Type;
+
+	[SerializeField]
+	/// <summary>
+	/// Prefab that implements a Transition
+	/// </summary>
 	GameObject transitionPrefab;
 
-    public bool IsGateOperator {
-        get {
-            return isGateOperator;
-        }
-
-        set {
-            isGateOperator = value;
-        }
-    }
-
-    public bool IsActionChild
-    {
-        get
-        {
-            return isActionChild;
-        }
-
-        set
-        {
-            isActionChild = value;
-        }
-    }
-
-    public bool IsParamChild
-    {
-        get
-        {
-            return isParamChild;
-        }
-
-        set
-        {
-            isParamChild = value;
-        }
-    }
-
-    public bool IsOperatorChild
-    {
-        get
-        {
-            return isOperatorChild;
-        }
-
-        set
-        {
-            isOperatorChild = value;
-        }
-    }
+	#region PROPERTIES
+	public PinType Pin_Type {
+		get {
+			return pin_Type;
+		}
+		set {
+			pin_Type = value;
+		}
+	}
+	#endregion
 
     // Use this for initialization
     void Start () {
@@ -92,7 +65,7 @@ public class Pin : DragSelectableProxyGameObject {
 			MCEditorManager.instance.createTransition_setStartPin ( null );
 		}
 	}
-
+		
 	ProxyABTransition auxTransition;
 	bool selectNow = false;
 
