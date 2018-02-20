@@ -17,8 +17,10 @@ public class GameManager : MonoBehaviour {
 
     //Queen Ref
     private GameObject p1_queen;
-    private GameObject p2_queen; 
+    private GameObject p2_queen;
 
+    public enum Winner { Player1,Player2,Equality, None };
+    private Winner winnerPlayer; 
 
     /// <summary>
     /// Enforce Singleton properties
@@ -113,6 +115,21 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public Winner WinnerPlayer
+    {
+        get
+        {
+            return winnerPlayer;
+        }
+
+        set
+        {
+            winnerPlayer = value;
+        }
+    }
+
+
+
     // Use this for initialization
     void Start()
     {
@@ -121,40 +138,43 @@ public class GameManager : MonoBehaviour {
 
     public void Update()
     {
-        //First Win Condition Timer 
-        if(gameNotOver)
+        if (gameNotOver)
         {
-            timerLeft -= Time.deltaTime;
-            Debug.Log(timerLeft);
-            if (timerLeft <= 0)
-            {
-                gameNotOver = false;
-                if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2)) 
-                    Debug.Log("Player 1 Won with : " + sumResources(PlayerAuthority.Player1));
-                else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
-                    Debug.Log("Player 2 Won with : " + sumResources(PlayerAuthority.Player2));
-                else
-                    Debug.Log("Equality ? Player1 : " + sumResources(PlayerAuthority.Player1) + "Player2: " + sumResources(PlayerAuthority.Player2));
-                return; 
-            }
-            //second win condition prysme
-            if (p1_queen == null)
-            {
-                Debug.Log("Game Over Player2 Won, Player 1 lost the Prysme");
-                gameNotOver = false;
-                return;
-            }
-            else if (p2_queen == null)
-            {
-                Debug.Log("Game Over Player1 Won, Player 2 lost the Prysme");
-                gameNotOver = false;
-                return; 
-            }
-
+            WinCondition();
         }
-
     }
 
+
+    private void WinCondition()
+    {
+        //WIN CONDITION PRYSME
+        if (p1_queen == null)
+        {
+            gameNotOver = false; 
+            winnerPlayer = Winner.Player2;
+            return; 
+        }
+        else if (p2_queen == null)
+        {
+            gameNotOver = false;
+            winnerPlayer = Winner.Player1;
+            return; 
+        }
+
+        //WIN CONDITION RESOURCES 
+        timerLeft -= Time.deltaTime;
+        if (timerLeft <= 0)
+        {
+            gameNotOver = false; 
+            if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2))
+                winnerPlayer = Winner.Player1;
+            else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
+                winnerPlayer = Winner.Player2;
+            else
+                winnerPlayer = Winner.Equality; 
+        }
+      
+    }
 
     private void SetupMatch()
     {
