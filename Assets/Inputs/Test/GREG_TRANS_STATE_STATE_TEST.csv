@@ -5,7 +5,6 @@ States,Name,Type
 3,goto water,trigger{goto}
 ,,
 Transitions,Start State,End State
-0,INIT,goto water
-1,grow,goto water
-2,grow,fight
-
+0,INIT,grow
+1,INIT,fight
+2,fight,goto water

@@ -33,12 +33,12 @@ public class MC_Inventory_Operators : MC_Inventory {
 
 	protected override void configItem (MC_InventoryItem item)
 	{
-		item.Text.text = MCEditorManager.getNodeName((ABNode)item.Item);
+		item.Text.text = MCEditor_Proxy.getNodeName((ABNode)item.Item);
 	}
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		return MCEditorManager.instantiateOperator ((IABOperator)item.Item, false).gameObject;
+		return MCEditor_Proxy_Factory.instantiateOperator((IABOperator)item.Item, false).gameObject;
 	}
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)

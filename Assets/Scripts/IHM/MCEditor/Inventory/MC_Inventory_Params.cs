@@ -60,7 +60,7 @@ public class MC_Inventory_Params : MC_Inventory {
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		ProxyABParam result = MCEditorManager.instantiateParam( (IABParam)item.Item, false );
+		ProxyABParam result = MCEditor_Proxy_Factory.instantiateParam( (IABParam)item.Item, false );
 		UnityEngine.UI.Text paramName = result.GetComponentInChildren<UnityEngine.UI.Text>();
 		paramName.text = ((IABParam)item.Item).Identifier;
 		return result.gameObject;

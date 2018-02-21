@@ -51,6 +51,16 @@ public class NavigationManager : MonoBehaviour {
         StartCoroutine(InitSceneLayers());
     }
 
+    public string GetCurrentScene()
+    {
+        return this.currentScene;
+    }
+    public Camera GetCurrentCamera()
+    {
+        return this.camera;
+    }
+
+
     IEnumerator InitSceneLayers()
     {
         AsyncOperation loadScene = SceneManager.LoadSceneAsync(initialScene, LoadSceneMode.Additive);
