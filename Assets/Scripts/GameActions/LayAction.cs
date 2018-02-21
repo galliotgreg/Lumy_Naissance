@@ -41,6 +41,9 @@ public class LayAction : GameAction {
             GameManager.instance.GameParam.GetComponent<GameParamsScript>();
     }
 
+    /// <summary>
+    /// TODO check if used. Remove if not
+    /// </summary>
 	private void Lay(){
 		Lay (currentTemplate, currentCost);
 	}
