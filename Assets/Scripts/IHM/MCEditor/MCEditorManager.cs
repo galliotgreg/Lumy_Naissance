@@ -541,20 +541,6 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region PIN
-	/*public Pin CreatePinState(ABState state, Transform state_transform, bool isAction, bool isStart, [Optional] int curTransition){
-		if (isAction) {
-			// Action
-			ProxyABAction action = state_transform.GetComponent<ProxyABAction> ();
-			Pin pin = instantiatePin (Pin.PinType.ActionParam, calculatePinPosition (action), pinPrefab, action.transform);
-			return pin;
-		} else {
-			// State
-			// todo verify isstart : in/out
-			Pin pin = instantiatePin ( Pin.PinType.TransitionOut, calculatePinPosition ( state, state_transform.gameObject, isStart, curTransition ), pinPrefab, state_transform );
-			return pin;
-		}
-	}*/
-
 	public static Pin instantiatePin( Pin.PinType pinType, Vector3 position, Pin prefab, Transform parent ){
 		Pin result = Instantiate<Pin> (prefab, parent);
 		result.Pin_Type = pinType;
@@ -567,6 +553,7 @@ public class MCEditorManager : MonoBehaviour {
 		pins.Add (pin);
 	}
 
+	// Pin : Action : fixed number of pins
 	public static Vector3 calculatePinPosition( Pin.PinType pinType, ProxyABAction parent ){
 		float radius = parent.transform.localScale.y / 2;
 		if (pinType == Pin.PinType.TransitionIn) {
@@ -585,12 +572,8 @@ public class MCEditorManager : MonoBehaviour {
 			);
 		}
 	}
-	public static Vector3 calculatePinPosition( ProxyABAction parent ){
-		int childCount = parent.transform.childCount;
-		float radius = parent.transform.localScale.y / 2;
-		return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
-	}
 
+	// Pin : State : Outcome pins is variant
 	public static Vector3 calculatePinPosition( ProxyABState parent ){
 		float radius = parent.transform.localScale.y / 2;
 		return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
@@ -626,13 +609,10 @@ public class MCEditorManager : MonoBehaviour {
 		);
 	}
 
+	// Pin : Param : fixed number of pins
 	public static Vector3 calculatePinPosition( ProxyABParam parent ){
-		int childCount = parent.transform.childCount;
 		float radius = parent.transform.localScale.y / 2;
-		return new Vector3(parent.transform.position.x + (radius * Mathf.Cos(childCount * (2 * Mathf.PI) / 4)),
-			parent.transform.position.y + (radius* Mathf.Sin(childCount * (2 * Mathf.PI) / 4)),
-			parent.transform.position.z
-		);
+		return new Vector3 (parent.transform.position.x, parent.transform.position.y - radius, parent.transform.position.z);
 	}
 	#endregion
 
@@ -986,7 +966,8 @@ public class MCEditorManager : MonoBehaviour {
 				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
                 trans.Transition = AbModel.getTransition(transitionId);
             }
-            Pin newPin = instantiatePin(Pin.PinType.ActionParam, calculatePinPosition(startActionParent), pinPrefab, startActionParent.transform);
+			// TODO why this pin is created?
+			Pin newPin = instantiatePin(Pin.PinType.ActionParam, calculatePinPosition( Pin.PinType.ActionParam, startActionParent ), pinPrefab, startActionParent.transform);
             startActionParent.AddPin(newPin);
         }
 		else if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
