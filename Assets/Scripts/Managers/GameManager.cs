@@ -147,6 +147,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        ABManager.instance.Reset(true);
         SetupMatch();
     }
 
