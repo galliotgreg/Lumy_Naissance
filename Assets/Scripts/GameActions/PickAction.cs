@@ -15,6 +15,7 @@ public class PickAction : GameAction {
 		}
 	}
 
+   
 	#region implemented abstract members of GameAction
 	protected override void initAction ()
 	{
@@ -27,38 +28,40 @@ public class PickAction : GameAction {
 
 	protected override void activateAction ()
 	{
-        Debug.Log("Execute Pick");
-        if (item is GameObject)
+        if (!item is GameObject || item == null)
         {
+            return;
+        }
             ResourceScript resource = item.GetComponent<ResourceScript>();
 
-            if (resource != null)
-            {
-                // Check if the player close to the resource
-                if ((this.agentAttr.CurPos - resource.Location).magnitude <= this.agentAttr.PickRange)
-                {
+        if (resource == null)
+        {
+            return; 
+        }
+        // Check if the player close to the resource
+        if (!((this.agentAttr.CurPos - resource.Location).magnitude <= this.agentAttr.PickRange))
+        {
+            return;
+        }
 
-                    if (Unit_GameObj_Manager.instance.pickResource(resource))
-                    {
-                        // Can carry the item?
-                        if (this.agentAttr.NbItem >= this.agentAttr.NbItemMax)
-                        {
-                            // Drop some item
-                            Debug.Log("Drop");
-                            Unit_GameObj_Manager.instance.dropResource(this.agentAttr.removeLastResource());
-                        }
-
-                        // Carry it
-                        this.agentAttr.addResource(resource);
-                        // Associate gameobject
-                        resource.transform.parent = this.agentEntity.transform;
-                    }
-                    else
-                    {
-                        throw new System.Exception("resource not found into the manager");
-                    }
-                }
-            }
+        // Can carry the item?
+        if (this.agentAttr.NbItem >= this.agentAttr.NbItemMax)
+        {
+            return; 
+        }
+        
+        if (Unit_GameObj_Manager.instance.pickResource(resource))
+        {
+            // Carry it
+            
+            GameObject res = this.agentAttr.addResource(item);
+            // Associate gameobject
+            //GameObject mineral = Instantiate(Resources.Load("Prefabs/Environment/"));
+            res.transform.parent = this.agentEntity.transform;
+        }
+        else
+        {
+            throw new System.Exception("resource not found into the manager");
         }
     }
 

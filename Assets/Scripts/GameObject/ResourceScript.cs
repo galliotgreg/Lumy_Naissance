@@ -8,6 +8,10 @@ public class ResourceScript : MonoBehaviour {
 	[SerializeField]
 	private int key;
 
+    [AttrName(Identifier = "stock")]
+    [SerializeField]
+    private int stock;
+
     [AttrName(Identifier = "pos")]
     [SerializeField]
 	private Vector2 location;
@@ -44,7 +48,20 @@ public class ResourceScript : MonoBehaviour {
 		}
 	}
 
-	void Awake(){
+    public int Stock
+    {
+        get
+        {
+            return stock;
+        }
+
+        set
+        {
+            stock = value;
+        }
+    }
+
+    void Awake(){
 		key = this.GetHashCode();
 	}
 
@@ -56,6 +73,10 @@ public class ResourceScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		this.Location = positionFromTransform ();
+        if(Stock <=0 )
+        {
+            Destroy(gameObject); 
+        }
 	}
 
 	Vector2 positionFromTransform(){
