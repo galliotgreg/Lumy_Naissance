@@ -143,9 +143,6 @@ public class AgentContext : MonoBehaviour
 
     void Awake(){
 		this.model = self.GetComponent<AgentScript>();
-
-        //TODO Ask edwin if realy needed
-		setModelValues ();
     }
 
     // Use this for initialization
@@ -167,6 +164,7 @@ public class AgentContext : MonoBehaviour
 	public void setModelValues(){
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
+
 		// vitality
 		this.model.VitalityMax = 5;
 		// strength
@@ -186,8 +184,9 @@ public class AgentContext : MonoBehaviour
 		Debug.LogWarning( "TODO : pickRange = visionRange" );
 		this.model.PickRange = 0;
 
-		// ProdCost
-		AgentScript.ResourceCost cost = getCost( agentComponents );
+        // ProdCost
+        ABModel behaviorModel = ABManager.instance.FindABModel(entity.BehaviorModelIdentifier);
+		AgentScript.ResourceCost cost = getCost( agentComponents, behaviorModel);
 		this.model.ProdCost = cost.Resources;
 		// layTimeCost
 		this.model.LayTimeCost = getCooldown( agentComponents );
@@ -254,7 +253,7 @@ public class AgentContext : MonoBehaviour
 	/// </summary>
 	/// <param name="agentComponents">Agent's Components</param>
 	/// <returns>The cost.</returns>
-	AgentScript.ResourceCost getCost( AgentComponent[] agentComponents ){
-        return CostManager.instance.ComputeCost(agentComponents);
+	AgentScript.ResourceCost getCost( AgentComponent[] agentComponents, ABModel beahaviorModel ){
+        return CostManager.instance.ComputeCost(agentComponents, beahaviorModel);
 	}
 }
