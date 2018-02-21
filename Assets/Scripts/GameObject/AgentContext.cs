@@ -144,6 +144,7 @@ public class AgentContext : MonoBehaviour
     void Awake(){
 		this.model = self.GetComponent<AgentScript>();
 
+        //TODO Ask edwin if realy needed
 		setModelValues ();
     }
 
@@ -254,22 +255,6 @@ public class AgentContext : MonoBehaviour
 	/// <param name="agentComponents">Agent's Components</param>
 	/// <returns>The cost.</returns>
 	AgentScript.ResourceCost getCost( AgentComponent[] agentComponents ){
-		// TODO Change Cost Evaluation Method
-		AgentScript.ResourceCost resultCost = new AgentScript.ResourceCost();
-
-		foreach (AgentComponent component in agentComponents)
-		{
-			Color32 color = component.Color;
-			if (color.Equals(new Color32(255, 0, 0, 255)))
-				resultCost.addResource (ABColor.Color.Red, component.ProdCost);
-			else if (color.Equals(new Color32(0, 255, 0, 255)))
-				resultCost.addResource (ABColor.Color.Green, component.ProdCost);
-			else if (color.Equals(new Color32(0, 0, 255, 255)))
-				resultCost.addResource (ABColor.Color.Blue, component.ProdCost);
-			else
-				Debug.LogWarning("Component has no good color TODO Implement new strategy");
-		}
-
-		return resultCost;
+        return CostManager.instance.ComputeCost(agentComponents);
 	}
 }
