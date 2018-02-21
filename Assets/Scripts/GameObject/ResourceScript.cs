@@ -73,6 +73,10 @@ public class ResourceScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		this.Location = positionFromTransform ();
+        if(Stock <=0 )
+        {
+            Destroy(gameObject); 
+        }
 	}
 
 	Vector2 positionFromTransform(){

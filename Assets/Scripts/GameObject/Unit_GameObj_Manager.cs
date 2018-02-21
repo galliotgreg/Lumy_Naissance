@@ -77,20 +77,27 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	public bool pickResource( ResourceScript resource ){
+        if (resource.Stock >1)
+        {
+            return true; 
+        }
+
 		if( this.resources.Remove( resource ) ){
-			// Disabling resource when picking
-			resource.gameObject.SetActive( false );
 			return true;
 		}
 		return false;
 	}
-	public bool dropResource( ResourceScript resource ){
+	public bool dropResource(ResourceScript resource ){
 		if( !this.resources.Contains( resource ) ){
 			this.resources.Add( resource );
-
+            Vector3 pos =  resource.gameObject.transform.position;
+            resource.gameObject.transform.SetParent(this.transform);
+            resource.gameObject.transform.position = pos; 
+       //     Instantiate(resource.gameObject);
+          //  resource.gameObject.transform.SetParent(this.transform); 
 			// Enabling resource when droping
-			resource.gameObject.SetActive( true );
-			resource.transform.SetParent( this.transform );
+			//resource.gameObject.SetActive( true );
+			//resource.transform.SetParent( this.transform );
 			return true;
 		}
 		return false;
