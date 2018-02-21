@@ -410,7 +410,7 @@ public class MCEditorManager : MonoBehaviour {
 		// Create Pins
 		if (state.Action.Parameters != null) {
 			foreach (IABGateOperator param in state.Action.Parameters) {
-				Pin start = instantiatePin (Pin.PinType.ActionParam, calculatePinPosition (result), pinPrefab, result.transform);
+				Pin start = instantiatePin (Pin.PinType.ActionParam, calculatePinPosition (Pin.PinType.ActionParam,result), pinPrefab, result.transform);
                 result.AddPin(start);
 			}
 		}
@@ -582,11 +582,11 @@ public class MCEditorManager : MonoBehaviour {
 			);
 		}
 	}
-	/*public static Vector3 calculatePinPosition( ProxyABAction parent ){
+	public static Vector3 calculatePinPosition( ProxyABAction parent ){
 		int childCount = parent.transform.childCount;
 		float radius = parent.transform.localScale.y / 2;
 		return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
-	}*/
+	}
 
 	public static Vector3 calculatePinPosition( ProxyABState parent ){
 		float radius = parent.transform.localScale.y / 2;
