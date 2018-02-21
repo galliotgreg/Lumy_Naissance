@@ -30,7 +30,7 @@ public class MCEditorManager : MonoBehaviour {
     private Dictionary<string, string> paramDictionary = new Dictionary<string, string>();
 
 
-    private Dictionary<ABState,ProxyABState> statesDictionnary;    
+    private Dictionary<ABState, ProxyABState> statesDictionnary;    
     private Dictionary<ABState, ProxyABAction> actionsDictionnary;
 
     private List<ProxyABState> proxyStates;

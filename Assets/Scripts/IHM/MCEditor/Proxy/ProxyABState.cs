@@ -109,6 +109,12 @@ public class ProxyABState : MCEditor_Proxy {
 			Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result), result.transform);
 		}
 
+		// Outcome Pin 
+		foreach(ABTransition transition in state.Outcomes) 
+		{ 
+			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(result), result.transform); 
+		}
+
 		return result;
 	}
 
