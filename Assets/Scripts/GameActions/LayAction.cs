@@ -35,6 +35,10 @@ public class LayAction : GameAction {
 		child.name = child.GetComponent<AgentEntity> ().CastName;
         //Increment Population 
 		this.agentEntity.Home.addUnit( child.GetComponent<AgentEntity>() );
+
+        //Set GameParams
+        child.GetComponent<AgentEntity>().GameParams =
+            GameManager.instance.GameParam.GetComponent<GameParamsScript>();
     }
 
 	private void Lay(){

@@ -17,8 +17,10 @@ public class GameManager : MonoBehaviour {
 
     //Queen Ref
     private GameObject p1_queen;
-    private GameObject p2_queen; 
+    private GameObject p2_queen;
 
+    public enum Winner { Player1,Player2,Equality, None };
+    private Winner winnerPlayer; 
 
     /// <summary>
     /// Enforce Singleton properties
@@ -61,9 +63,13 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private GameObject homePrefab;
     [SerializeField]
+    private GameObject gameParamsPrefab;
+    [SerializeField]
     private GameObject[] p1_unitTemplates;
     [SerializeField]
     private GameObject[] p2_unitTemplates;
+    [SerializeField]
+    private GameObject gameParam;
 
     //Instancied Game Objects
     [SerializeField]
@@ -113,6 +119,31 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public GameObject GameParam
+    {
+        get
+        {
+            return gameParam;
+        }
+
+        set
+        {
+            gameParam = value;
+        }
+    }
+
+    public Winner WinnerPlayer
+    {
+        get
+        {
+            return winnerPlayer;
+        }
+        set
+        {
+             winnerPlayer = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -121,46 +152,56 @@ public class GameManager : MonoBehaviour {
 
     public void Update()
     {
-        //First Win Condition Timer 
-        if(gameNotOver)
+        if (gameNotOver)
         {
-            timerLeft -= Time.deltaTime;
-            Debug.Log(timerLeft);
-            if (timerLeft <= 0)
-            {
-                gameNotOver = false;
-                if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2)) 
-                    Debug.Log("Player 1 Won with : " + sumResources(PlayerAuthority.Player1));
-                else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
-                    Debug.Log("Player 2 Won with : " + sumResources(PlayerAuthority.Player2));
-                else
-                    Debug.Log("Equality ? Player1 : " + sumResources(PlayerAuthority.Player1) + "Player2: " + sumResources(PlayerAuthority.Player2));
-                return; 
-            }
-            //second win condition prysme
-            if (p1_queen == null)
-            {
-                Debug.Log("Game Over Player2 Won, Player 1 lost the Prysme");
-                gameNotOver = false;
-                return;
-            }
-            else if (p2_queen == null)
-            {
-                Debug.Log("Game Over Player1 Won, Player 2 lost the Prysme");
-                gameNotOver = false;
-                return; 
-            }
-
+            WinCondition();
         }
-
     }
 
 
+    private void WinCondition()
+    {
+        //WIN CONDITION PRYSME
+        if (p1_queen == null)
+        {
+            gameNotOver = false; 
+            winnerPlayer = Winner.Player2;
+            return; 
+        }
+        else if (p2_queen == null)
+        {
+            gameNotOver = false;
+            winnerPlayer = Winner.Player1;
+            return; 
+        }
+
+        //WIN CONDITION RESOURCES 
+        timerLeft -= Time.deltaTime;
+        if (timerLeft <= 0)
+        {
+            gameNotOver = false; 
+            if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2))
+                winnerPlayer = Winner.Player1;
+            else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
+                winnerPlayer = Winner.Player2;
+            else
+                winnerPlayer = Winner.Equality; 
+        }
+      
+    }
+
     private void SetupMatch()
     {
+        SetupGameParams();
         ParseSpecies();
         CreateUnitTemplates();
         InitGameObjects();
+    }
+
+    private void SetupGameParams()
+    {
+        gameParam = Instantiate(gameParamsPrefab);
+        gameParam.transform.parent = this.transform;
     }
 
     private void ParseSpecies()
@@ -219,7 +260,7 @@ public class GameManager : MonoBehaviour {
 		p2_unitTemplates = createTemplates( p2_specie );
     }
 
-	GameObject[] createTemplates( Specie specie ){
+	GameObject[] createTemplates( Specie specie ) {
 		GameObject[] unitTemplates = new GameObject[specie.Casts.Values.Count + 1];
 
         //queen first
@@ -244,6 +285,7 @@ public class GameManager : MonoBehaviour {
     private GameObject createPrysmeTemplate()
     {
         GameObject template = Instantiate(emptyAgentPrefab);
+        template.transform.parent = this.transform;
 
         //Disable physic
         template.GetComponentInChildren<PhySkeleton>().enabled = false; ;
@@ -260,8 +302,9 @@ public class GameManager : MonoBehaviour {
 
     GameObject createTemplate( Cast cast, string castName ){
 		GameObject template = Instantiate(emptyAgentPrefab);
+        template.transform.parent = this.transform;
 
-		template.SetActive(false);
+        template.SetActive(false);
 		UnitTemplateInitializer.InitTemplate(
 			cast, template, emptyComponentPrefab
 		);
@@ -317,8 +360,13 @@ public class GameManager : MonoBehaviour {
         p2_queen.name = "p2_queen";
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);
+        p1_queen.GetComponent<AgentEntity>().GameParams =
+            gameParam.GetComponent<GameParamsScript>();
+        p2_queen.GetComponent<AgentEntity>().GameParams = 
+            gameParam.GetComponent<GameParamsScript>();
 
-		p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
+
+        p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
 		p2_hiveScript.addUnit( p2_queen.GetComponent<AgentEntity>() );
     }
 

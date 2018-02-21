@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class AgentContext : MonoBehaviour
 {
+    [BindParam(Identifier = "game")]
+    [SerializeField]
+    private GameObject gameParams;
+
     [BindParam(Identifier = "self")]
     [SerializeField]
     private GameObject self;
@@ -122,9 +126,22 @@ public class AgentContext : MonoBehaviour
             traces = value;
         }
     }
-	#endregion
 
-	void Awake(){
+    public GameObject GameParams
+    {
+        get
+        {
+            return gameParams;
+        }
+
+        set
+        {
+            gameParams = value;
+        }
+    }
+    #endregion
+
+    void Awake(){
 		this.model = self.GetComponent<AgentScript>();
 
 		setModelValues ();

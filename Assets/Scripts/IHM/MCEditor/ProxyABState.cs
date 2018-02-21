@@ -87,17 +87,13 @@ public class ProxyABState : MonoBehaviour {
         }
         else // when the Action is created in the editor.
         {            
-            Text actionName = this.GetComponentInChildren<Text>();
-            actionName.text = this.Name;
-            this.AbState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(Name, null));          
+            //this.AbState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(Name, null));          
 
 			income = MCEditorManager.getPins( this.gameObject, Pin.PinType.TransitionIn )[0];
 			pinList = MCEditorManager.getPins( this.gameObject, Pin.PinType.TransitionOut );
 
-            Debug.Log(MCEditorManager.instance.AbModel.States.Count);
-
-
-        }
+            //Debug.Log(MCEditorManager.instance.AbModel.States.Count);
+		}
     }
 
     public void AddPin(Pin pin)

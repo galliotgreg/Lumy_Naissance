@@ -17,21 +17,21 @@ public class MCEditorManager : MonoBehaviour {
 
     //Templates & Prefabs
     [SerializeField]
-    private ProxyABState statePrefab;
+	private ProxyABState statePrefab;
     [SerializeField]
-    private ProxyABTransition transitionPrefab;
+	private ProxyABTransition transitionPrefab;
     [SerializeField]
-    private Pin pinPrefab;
+	private Pin pinPrefab;
     [SerializeField]
-    private ProxyABOperator operatorPrefab;
+	private ProxyABOperator operatorPrefab;
     [SerializeField]
-    private ProxyABParam parameterPrefab;
+	private ProxyABParam parameterPrefab;
     [SerializeField]
-    private ProxyABAction actionPrefab;
+	private ProxyABAction actionPrefab;
 
 	[SerializeField]
 	private GameObject MC_Container;	// Parent for the MC
-	Transform MCparent;
+	Transform mCparent;
 
     private ABModel abModel;
 
@@ -65,8 +65,51 @@ public class MCEditorManager : MonoBehaviour {
     ProxyABParam abParam = null;
     ProxyABOperator aBOperator = null;
     ProxyABOperator aBOperator2 = null;
-
     /** END TEST SAVE**/
+
+	#region PROPERTIES
+	public Transform MCparent {
+		get {
+			return mCparent;
+		}
+	}
+
+	public ProxyABState StatePrefab {
+		get {
+			return statePrefab;
+		}
+	}
+
+	public ProxyABAction ActionPrefab {
+		get {
+			return actionPrefab;
+		}
+	}
+		
+	public ProxyABParam ParameterPrefab {
+		get {
+			return parameterPrefab;
+		}
+	}
+
+	public ProxyABOperator OperatorPrefab {
+		get {
+			return operatorPrefab;
+		}
+	}
+
+	public Pin PinPrefab {
+		get {
+			return pinPrefab;
+		}
+	}
+
+	public ProxyABTransition TransitionPrefab {
+		get {
+			return transitionPrefab;
+		}
+	}
+	#endregion
 
     void Awake()
     {
@@ -111,7 +154,7 @@ public class MCEditorManager : MonoBehaviour {
         operatorDictionary = opeFactory.TypeStringToString;
         paramDictionary = paramFactory.TypeStringToString;
 
-		MCparent = (MC_Container == null ? this.transform : MC_Container.transform);
+		mCparent = (MC_Container == null ? this.transform : MC_Container.transform);
 
         /** LOAD MODEL AND CREATE PROXY OBJECTS **/
         SetupModel();
@@ -216,7 +259,7 @@ public class MCEditorManager : MonoBehaviour {
 			// Actions
             if (state.Action != null)
             {
-				proxyAction = instantiateAction (state, calculateActionPosition (MCparent), actionPrefab, pinPrefab, MCparent );
+				proxyAction = instantiateAction (state, calculateActionPosition (mCparent), actionPrefab, pinPrefab, mCparent );
 				this.registerAction ( state, proxyAction );
 
 				// Create SyntaxTrees
@@ -233,7 +276,7 @@ public class MCEditorManager : MonoBehaviour {
 							Pin end = RecNodeSynthTree (node);
                             if (end != null)
                             {
-							instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, MCparent.transform );
+							instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, mCparent.transform );
                             }
                         }
 					}
@@ -241,7 +284,7 @@ public class MCEditorManager : MonoBehaviour {
             }
 			// States
             else {
-				proxyState = instantiateState (state, abModel.InitStateId == state.Id, calculateStatePosition (MCparent), statePrefab, pinPrefab, MCparent.transform);
+				proxyState = instantiateState (state, abModel.InitStateId == state.Id, calculateStatePosition (mCparent), statePrefab, pinPrefab, mCparent.transform);
 				this.registerState ( state, proxyState );
             }
         }
@@ -253,7 +296,7 @@ public class MCEditorManager : MonoBehaviour {
     {
         if (node is IABOperator)
         {
-			ProxyABOperator ope = instantiateOperator( (IABOperator)node, true, calculateOperatorPosition( MCparent ), operatorPrefab, pinPrefab, MCparent );
+			ProxyABOperator ope = instantiateOperator( (IABOperator)node, true, calculateOperatorPosition( mCparent ), operatorPrefab, pinPrefab, mCparent );
 			registerOperator (ope);
 		    
 			// Creating params trees
@@ -271,7 +314,7 @@ public class MCEditorManager : MonoBehaviour {
 
                 if(end != null)
                 {
-					instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, MCparent.transform );
+					instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, mCparent.transform );
                 }
             }
 
@@ -280,7 +323,7 @@ public class MCEditorManager : MonoBehaviour {
         }
         else if (node is IABParam)
         {
-			ProxyABParam param = instantiateParam ( (IABParam)node, true, calculateParamPosition( MCparent ), parameterPrefab, pinPrefab, MCparent );
+			ProxyABParam param = instantiateParam ( (IABParam)node, true, calculateParamPosition( mCparent ), parameterPrefab, pinPrefab, mCparent );
 			registerParam ( param );
 
 			return getPins (param.gameObject, Pin.PinType.Param) [0];
@@ -294,13 +337,13 @@ public class MCEditorManager : MonoBehaviour {
 
         for (int i = 0; i < AbModel.Transitions.Count; i++) {
 			List<Pin> pinList = LoadPinsStates(i);
-			proxyABTransition = instantiateTransition ( pinList[0], pinList[1], true, transitionPrefab, pinPrefab, MCparent );
+			proxyABTransition = instantiateTransition ( pinList[0], pinList[1], true, transitionPrefab, pinPrefab, mCparent );
 			// todo ATTENTION
 			proxyABTransition.Transition = AbModel.Transitions [i];
 
             if (AbModel.Transitions[i].Condition != null) {                
                 Pin end = RecNodeSynthTree(AbModel.Transitions[i].Condition.Inputs[0]);
-				instantiateTransition ( proxyABTransition.Condition, end, false, transitionPrefab, pinPrefab, MCparent );
+				instantiateTransition ( proxyABTransition.Condition, end, false, transitionPrefab, pinPrefab, mCparent );
             }
         }         
     }
@@ -348,7 +391,13 @@ public class MCEditorManager : MonoBehaviour {
 	}
 
 	#region ACTION
-	public static ProxyABAction instantiateAction( ABState state, Vector3 position, ProxyABAction prefab, Pin pinPrefab, Transform parent ){
+	public static ProxyABAction instantiateAction( ABState state ){
+		return instantiateAction( state, calculateActionPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
+	}
+	public static ProxyABAction instantiateAction( ABState state, Vector3 position, Transform parent){
+		return instantiateAction( state, position, MCEditorManager.instance.ActionPrefab, MCEditorManager.instance.PinPrefab, parent);
+	}
+	public static ProxyABAction instantiateAction( ABState state, Vector3 position, ProxyABAction prefab, Pin pinPrefab, Transform parent){
 		ProxyABAction result = Instantiate<ProxyABAction>( prefab, parent );
 		result.IsLoaded = true;
 		result.transform.position = position;
@@ -383,10 +432,17 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region STATE
+	public static ProxyABState instantiateState( ABState state, bool init ){
+		return instantiateState (state, init, calculateStatePosition (MCEditorManager.instance.MCparent), MCEditorManager.instance.MCparent);
+	}
+	public static ProxyABState instantiateState( ABState state, bool init, Vector3 position, Transform parent ){
+		return instantiateState ( state, init, position, MCEditorManager.instance.StatePrefab, MCEditorManager.instance.PinPrefab, parent );
+	}
 	public static ProxyABState instantiateState( ABState state, bool init, Vector3 position, ProxyABState prefab, Pin pinPrefab, Transform parent ){
 		ProxyABState result = Instantiate<ProxyABState>(prefab, parent);
 		result.IsLoaded = true;
 		result.transform.position = position;
+		result.AbState = state;
 
 		Text stateName = result.GetComponentInChildren<Text>();
 		stateName.text = state.Name;
@@ -412,6 +468,12 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region OPERATOR
+	public static ProxyABOperator instantiateOperator( IABOperator operatorObj, bool isLoaded ){
+		return instantiateOperator ( operatorObj, isLoaded, calculateOperatorPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
+	}
+	public static ProxyABOperator instantiateOperator( IABOperator operatorObj, bool isLoaded, Vector3 position, Transform parent ){
+		return instantiateOperator ( operatorObj, isLoaded, position, MCEditorManager.instance.OperatorPrefab, MCEditorManager.instance.PinPrefab, parent );
+	}
 	public static ProxyABOperator instantiateOperator( IABOperator operatorObj, bool isLoaded, Vector3 position, ProxyABOperator prefab, Pin pinPrefab, Transform parent ){
 		ProxyABOperator result = Instantiate<ProxyABOperator> (prefab, parent);
 		result.IsLoaded = isLoaded;
@@ -441,15 +503,27 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region PARAM
+	public static ProxyABParam instantiateParam( IABParam paramObj, bool isLoaded ){
+		return instantiateParam ( paramObj, isLoaded, calculateParamPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
+	}
+	public static ProxyABParam instantiateParam( IABParam paramObj, bool isLoaded, Vector3 position, Transform parent ){
+		return instantiateParam ( paramObj, isLoaded, position, MCEditorManager.instance.ParameterPrefab, MCEditorManager.instance.PinPrefab, parent );
+	}
 	public static ProxyABParam instantiateParam( IABParam paramObj, bool isLoaded, Vector3 position, ProxyABParam prefab, Pin pinPrefab, Transform parent ){
 		ProxyABParam result = Instantiate<ProxyABParam> (prefab, parent);
 		result.IsLoaded = isLoaded;
         result.AbParam = paramObj;
         result.transform.position = position;
 
+		result.AbParam = paramObj;
+
 		// Set text
-		Text paramName = result.GetComponentInChildren<Text>();            
-		paramName.text = GetParamValue( (ABNode)paramObj );
+		Text paramName = result.GetComponentInChildren<Text> ();
+		if (isLoaded) {
+			paramName.text = GetParamValue ((ABNode)paramObj);
+		} else {
+			paramName.text = paramObj.Identifier + " : " + GetParamValue ((ABNode)paramObj);
+		}
 
 		// Outcome pin
 		instantiatePin( Pin.PinType.Param, calculatePinPosition (result), pinPrefab, result.transform );
@@ -464,8 +538,6 @@ public class MCEditorManager : MonoBehaviour {
 	public void registerParam( ProxyABParam proxyParam ){
 		proxyParams.Add( proxyParam );
 	}
-	#endregion
-
 	#endregion
 
 	#region PIN
@@ -546,8 +618,12 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region TRANSITION
+	public static ProxyABTransition instantiateTransition( Pin start, Pin end, bool createCondition, Transform parent ){
+		return instantiateTransition ( start, end, createCondition, MCEditorManager.instance.TransitionPrefab, MCEditorManager.instance.PinPrefab, parent );
+	}
 	public static ProxyABTransition instantiateTransition( Pin start, Pin end, bool createCondition, ProxyABTransition transitionPrefab, Pin pinPrefab, Transform parent ){
 		ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab, parent);
+		proxyABTransition.transform.position = start.transform.position+ (start.transform.position - end.transform.position)/2;
 
 		proxyABTransition.StartPosition = start;
 		proxyABTransition.EndPosition = end;
@@ -565,7 +641,7 @@ public class MCEditorManager : MonoBehaviour {
 		proxyABTransition.Condition = conditionPin;
 	}
 	#endregion
-
+	#endregion
 	#region SAVE FUNCTION
     void Save_Ope_Param(int idNodeInput, int idNodeInputPin, ABNode node, StringBuilder syntTreeContent)
     {
@@ -755,7 +831,6 @@ public class MCEditorManager : MonoBehaviour {
 		{
 			type = ((ABParam<ABScalar>)node).Value.ToString();
 		}
-
 		else if (node is ABParam<ABTable<ABVec>>)
 		{
 			type = ((ABParam<ABTable<ABVec>>)node).Value.ToString();
@@ -784,32 +859,44 @@ public class MCEditorManager : MonoBehaviour {
 		return type;
 	}
 
-	static string GetParamValue(ABNode node)
+	public static string GetParamValue(ABNode node)
 	{
 		string text = "";
 		if (node is ABParam<ABText>)
 		{
-			text = ((ABParam<ABText>)node).Value.Value.ToString();
+			if (((ABParam<ABText>)node).Value != null) {
+				text += ((ABParam<ABText>)node).Value.Value.ToString ();
+			}
 		}
 		else if (node is ABParam<ABVec>)
 		{
-			text = ((ABParam<ABVec>)node).Value.X.ToString() +";"+ ((ABParam<ABVec>)node).Value.Y.ToString();
+			if (((ABParam<ABVec>)node).Value != null) {
+				text += ((ABParam<ABVec>)node).Value.X.ToString () + ";" + ((ABParam<ABVec>)node).Value.Y.ToString ();
+			}
 		}
 		else if (node is ABParam<ABBool>)
 		{
-			text = ((ABParam<ABBool>)node).Value.Value.ToString();
+			if (((ABParam<ABBool>)node).Value != null) {
+				text += ((ABParam<ABBool>)node).Value.Value.ToString ();
+			}
 		}
 		else if (node is ABParam<ABRef>)
 		{
-			text = ((ABParam<ABRef>)node).Value.ToString();
+			if (((ABParam<ABRef>)node).Value != null) {
+				text += ((ABParam<ABRef>)node).Value.ToString ();
+			}
 		}
 		else if (node is ABParam<ABColor>)
 		{
-			text = ((ABParam<ABColor>)node).Value.Value.ToString();
+			if (((ABParam<ABColor>)node).Value != null) {
+				text += ((ABParam<ABColor>)node).Value.Value.ToString ();
+			}
 		}
 		else if (node is ABParam<ABScalar>)
 		{
-			text = ((ABParam<ABScalar>)node).Value.Value.ToString();
+			if (((ABParam<ABScalar>)node).Value != null) {
+				text += ((ABParam<ABScalar>)node).Value.Value.ToString ();
+			}
 		}
 		return text;
 	}
@@ -818,7 +905,7 @@ public class MCEditorManager : MonoBehaviour {
     #region EDITOR FUNCTIONS
     void CreateTransition(Pin start, Pin end)
 	{
-		ProxyABTransition trans = instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, MCparent.transform );
+		ProxyABTransition trans = instantiateTransition ( start, end, false, transitionPrefab, pinPrefab, mCparent.transform );
 
 		ProxyABAction startActionParent;
 		ProxyABState startStateParent;
@@ -848,9 +935,6 @@ public class MCEditorManager : MonoBehaviour {
 
 		int transitionId = -1;
 
-		// ACTION
-		// action 	<- state | operator | param(gate)
-		// action 	->
 		if (start.Pin_Type == Pin.PinType.ActionParam)
         {
             startActionParent = start.GetComponentInParent<ProxyABAction>();
@@ -1213,7 +1297,7 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
-    public static void SetNodeName(GameObject proxy, ABNode node)
+    static void SetNodeName(GameObject proxy, ABNode node)
     {
         Text operatorName = proxy.GetComponentInChildren<Text>();
 		operatorName.text = getNodeName( node );

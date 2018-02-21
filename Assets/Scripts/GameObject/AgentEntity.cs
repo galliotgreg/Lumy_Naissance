@@ -8,6 +8,8 @@ public class AgentEntity : MonoBehaviour
     private int id;
 
 	private HomeScript home;
+    private GameParamsScript gameParams;
+
     [SerializeField]
     private AgentBehavior behaviour;
     [SerializeField]
@@ -28,6 +30,18 @@ public class AgentEntity : MonoBehaviour
 			home = value;
 			this.context.Home = value.gameObject;
 		}
+	}
+
+    public GameParamsScript GameParams {
+		get {
+			return gameParams;
+		}
+        set {
+            gameParams = value;
+
+            this.context.GameParams = value.gameObject;
+
+        }
 	}
 
     public AgentBehavior Behaviour
