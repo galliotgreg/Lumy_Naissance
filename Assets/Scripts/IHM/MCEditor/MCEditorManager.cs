@@ -454,6 +454,12 @@ public class MCEditorManager : MonoBehaviour {
 			instantiatePin (Pin.PinType.TransitionIn, calculatePinPosition (result), pinPrefab, result.transform);
 		}
 
+        // Outcome Pin
+        foreach(ABTransition transition in state.Outcomes)
+        {
+            Pin pin = instantiatePin(Pin.PinType.TransitionOut, calculatePinPosition(result), pinPrefab, result.transform);
+        }
+
 		return result;
 	}
 
@@ -625,7 +631,21 @@ public class MCEditorManager : MonoBehaviour {
 		ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab, parent);
 		proxyABTransition.transform.position = start.transform.position+ (start.transform.position - end.transform.position)/2;
 
-		proxyABTransition.StartPosition = start;
+        if(start.Pin_Type == Pin.PinType.TransitionOut)
+        {
+            ProxyABState stateParent = start.GetComponentInParent<ProxyABState>();
+            Pin pin = instantiatePin(Pin.PinType.TransitionOut, calculatePinPosition(stateParent), pinPrefab, stateParent.transform);
+            stateParent.AddPin(pin);
+        }
+
+        if(end.Pin_Type == Pin.PinType.TransitionOut)
+        {
+            ProxyABState stateParent = end.GetComponentInParent<ProxyABState>();
+            Pin pin = instantiatePin(Pin.PinType.TransitionOut, calculatePinPosition(stateParent), pinPrefab, stateParent.transform);
+            stateParent.AddPin(pin);
+        }
+
+        proxyABTransition.StartPosition = start;
 		proxyABTransition.EndPosition = end;
 
 		if (createCondition) {

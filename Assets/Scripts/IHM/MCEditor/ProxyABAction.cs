@@ -79,10 +79,25 @@ public class ProxyABAction : MonoBehaviour {
     public void AddPin(Pin pin)
     {
         PinList.Add(pin);
+        calculatePinPosition();
     }
 
-	// Update is called once per frame
-	void Update () {
+    public void calculatePinPosition()
+    {
+        int childCount = pinList.Count;
+        float radius = this.transform.localScale.y / 2;
+        int i = 1;
+        foreach (Pin pin in pinList)
+        {
+            pin.transform.position = new Vector3(this.transform.position.x + (radius * Mathf.Cos(childCount * (i * Mathf.PI) / 4)),
+                                                this.transform.position.y + (radius * Mathf.Sin(childCount * (i * Mathf.PI) / 4)),
+                                                this.transform.position.z);
+            i++;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
                 
     }
 }
