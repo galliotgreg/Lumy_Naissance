@@ -431,6 +431,9 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region STATE
+	public static ProxyABState instantiateState( ABState state, bool init ){
+		return instantiateState (state, init, calculateStatePosition (MCEditorManager.instance.MCparent), MCEditorManager.instance.MCparent);
+	}
 	public static ProxyABState instantiateState( ABState state, bool init, Vector3 position, Transform parent ){
 		return instantiateState ( state, init, position, MCEditorManager.instance.StatePrefab, MCEditorManager.instance.PinPrefab, parent );
 	}
@@ -438,6 +441,7 @@ public class MCEditorManager : MonoBehaviour {
 		ProxyABState result = Instantiate<ProxyABState>(prefab, parent);
 		result.IsLoaded = true;
 		result.transform.position = position;
+		result.AbState = state;
 
 		Text stateName = result.GetComponentInChildren<Text>();
 		stateName.text = state.Name;
@@ -617,6 +621,7 @@ public class MCEditorManager : MonoBehaviour {
 	}
 	public static ProxyABTransition instantiateTransition( Pin start, Pin end, bool createCondition, ProxyABTransition transitionPrefab, Pin pinPrefab, Transform parent ){
 		ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(transitionPrefab, parent);
+		proxyABTransition.transform.position = start.transform.position+ (start.transform.position - end.transform.position)/2;
 
 		proxyABTransition.StartPosition = start;
 		proxyABTransition.EndPosition = end;
