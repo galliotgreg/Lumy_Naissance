@@ -574,10 +574,13 @@ public class MCEditorManager : MonoBehaviour {
 			return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
 		} else {
 			// Param
-			int childCount = getPins( parent.gameObject, pinType ).Count;
+			// +1 income
+			int childCount = getPins( parent.gameObject, pinType ).Count + 1;
+			int totalPins = parent.AbState.Action.Parameters.Length + 1;
+			float angle = childCount * (2 * Mathf.PI) / (float)totalPins;
 			return new Vector3 (
-				parent.transform.position.x + (radius * Mathf.Cos (childCount * (2 * Mathf.PI) / Math.Max (1, parent.AbState.Action.Parameters.Length+1))),
-				parent.transform.position.y + (radius * Mathf.Sin (childCount * (2 * Mathf.PI) / Math.Max (1, parent.AbState.Action.Parameters.Length+1))),
+				parent.transform.position.x + (radius * Mathf.Sin ( angle ) ),
+				parent.transform.position.y + (radius * Mathf.Cos ( angle ) ),
 				parent.transform.position.z
 			);
 		}
