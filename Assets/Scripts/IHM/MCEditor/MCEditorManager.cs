@@ -416,7 +416,7 @@ public class MCEditorManager : MonoBehaviour {
 		}
 
 		// Income
-		instantiatePin (Pin.PinType.TransitionIn, calculatePinPosition (result), pinPrefab, result.transform);
+		instantiatePin (Pin.PinType.TransitionIn, calculatePinPosition (Pin.PinType.TransitionIn,result), pinPrefab, result.transform);
 
 		return result;
 	}
@@ -567,10 +567,26 @@ public class MCEditorManager : MonoBehaviour {
 		pins.Add (pin);
 	}
 
-	public static Vector3 calculatePinPosition( ProxyABAction parent ){
+	public static Vector3 calculatePinPosition( Pin.PinType pinType, ProxyABAction parent ){
+		float radius = parent.transform.localScale.y / 2;
+		if (pinType == Pin.PinType.TransitionIn) {
+			// Income
+			return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
+		} else {
+			// Param
+			int childCount = getPins( parent.gameObject, pinType ).Count;
+			return new Vector3 (
+				parent.transform.position.x + (radius * Mathf.Cos (childCount * (2 * Mathf.PI) / Math.Max (1, parent.AbState.Action.Parameters.Length+1))),
+				parent.transform.position.y + (radius * Mathf.Sin (childCount * (2 * Mathf.PI) / Math.Max (1, parent.AbState.Action.Parameters.Length+1))),
+				parent.transform.position.z
+			);
+		}
+	}
+	/*public static Vector3 calculatePinPosition( ProxyABAction parent ){
+		int childCount = parent.transform.childCount;
 		float radius = parent.transform.localScale.y / 2;
 		return new Vector3 (parent.transform.position.x, parent.transform.position.y + radius, parent.transform.position.z);
-	}
+	}*/
 
 	public static Vector3 calculatePinPosition( ProxyABState parent ){
 		float radius = parent.transform.localScale.y / 2;
@@ -642,6 +658,7 @@ public class MCEditorManager : MonoBehaviour {
 	}
 	#endregion
 	#endregion
+
 	#region SAVE FUNCTION
     void Save_Ope_Param(int idNodeInput, int idNodeInputPin, ABNode node, StringBuilder syntTreeContent)
     {
