@@ -32,7 +32,7 @@ public class MC_Inventory_States : MC_Inventory {
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		ProxyABState result = MCEditorManager.instantiateState( (ABState)item.Item, ((ABState)item.Item).Id == 0 );
+		ProxyABState result = MCEditor_Proxy_Factory.instantiateState( (ABState)item.Item, ((ABState)item.Item).Id == 0 );
 		return result.gameObject;
 	}
 

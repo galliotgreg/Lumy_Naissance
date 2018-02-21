@@ -3727,6 +3727,7 @@ GameObject:
   - component: {fileID: 1072515484}
   - component: {fileID: 1072515483}
   - component: {fileID: 1072515485}
+  - component: {fileID: 1072515486}
   m_Layer: 0
   m_Name: MCEditorManager
   m_TagString: Untagged
@@ -3745,18 +3746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd640ad06f2ab449a43c34bbfc38bc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statePrefab: {fileID: 114982164584323468, guid: d407002516f1adc4baed91d43637ceea,
-    type: 2}
-  transitionPrefab: {fileID: 114615954408207840, guid: a64ca151ae8e56b418ed1abdf78528d0,
-    type: 2}
-  pinPrefab: {fileID: 114283751197350292, guid: bde872f3612945541a9cb2b75d61c0ee,
-    type: 2}
-  operatorPrefab: {fileID: 114100829090054108, guid: 7e17d04df551622488792468c01d180b,
-    type: 2}
-  parameterPrefab: {fileID: 114228603632393952, guid: d221de39703880d49a2c94d44304acfe,
-    type: 2}
-  actionPrefab: {fileID: 114003601275317380, guid: b7379c04e248b674d882cb6ca865cef8,
-    type: 2}
   MC_Container: {fileID: 0}
   MC_OrigFilePath: Assets/Inputs/Test/siu_scoot_behavior_TEST.csv
 --- !u!4 &1072515484
@@ -3784,6 +3773,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MCcamera: {fileID: 61961873}
+--- !u!114 &1072515486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1072515482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6092a8d91354e4d9b6a62ee4b821e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statePrefab: {fileID: 114982164584323468, guid: d407002516f1adc4baed91d43637ceea,
+    type: 2}
+  actionPrefab: {fileID: 114003601275317380, guid: b7379c04e248b674d882cb6ca865cef8,
+    type: 2}
+  operatorPrefab: {fileID: 114100829090054108, guid: 7e17d04df551622488792468c01d180b,
+    type: 2}
+  parameterPrefab: {fileID: 114228603632393952, guid: d221de39703880d49a2c94d44304acfe,
+    type: 2}
+  transitionPrefab: {fileID: 114615954408207840, guid: a64ca151ae8e56b418ed1abdf78528d0,
+    type: 2}
+  pinPrefab: {fileID: 114283751197350292, guid: bde872f3612945541a9cb2b75d61c0ee,
+    type: 2}
 --- !u!1 &1094317515
 GameObject:
   m_ObjectHideFlags: 0
