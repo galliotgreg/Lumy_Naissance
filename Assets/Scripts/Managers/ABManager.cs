@@ -43,6 +43,11 @@ public class ABManager : MonoBehaviour {
     private List<ABModel> models = new List<ABModel>();
     private List<ABInstance> instances = new List<ABInstance>(); 
 
+	/// <summary>
+	/// If true, the agents's models will be evaluated.
+	/// </summary>
+	bool executeFrame = false;
+
     // Use this for initialization
     void Start () {
         
@@ -53,7 +58,9 @@ public class ABManager : MonoBehaviour {
     {
         if (cooldown < 0)
         {
-            Frame();
+			if (executeFrame) {
+				Frame ();
+			}
             cooldown = 1f / fps;
         } else
         {
@@ -100,6 +107,21 @@ public class ABManager : MonoBehaviour {
 			agent.setAction (action, actionParams.ToArray ());
         }
     }
+
+	/// <summary>
+	/// Reset the ABManager.
+	/// </summary>
+	/// <param name="executeFrame">If set to <c>true</c>, enable frame function.</param>
+	public void Reset( bool executeFrame ){
+		this.executeFrame = executeFrame;
+
+		// agents
+		this.agents = new List<AgentEntity>();
+		// models
+		this.models = new List<ABModel>();
+		// instances
+		this.instances = new List<ABInstance>();
+	}
 
     public ABInstance FindABInstance(int agentId)
     {

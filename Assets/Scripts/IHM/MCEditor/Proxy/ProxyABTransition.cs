@@ -132,4 +132,41 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		collider.transform.rotation = Quaternion.Euler( new Vector3 (0, 0, 90+angle) );
 	}
 	#endregion
+
+	#region INSTANTIATE
+	public static ProxyABTransition instantiate( Pin start, Pin end, bool createCondition ){
+		return instantiate ( start, end, createCondition,  MCEditorManager.instance.MCparent );
+	}
+	public static ProxyABTransition instantiate( Pin start, Pin end, bool createCondition, Transform parent ){
+		ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(MCEditor_Proxy_Factory.instance.TransitionPrefab, parent);
+		proxyABTransition.transform.position = start.transform.position + (start.transform.position - end.transform.position)/2;
+
+		if(start.Pin_Type == Pin.PinType.TransitionOut) 
+		{ 
+			ProxyABState stateParent = start.GetComponentInParent<ProxyABState>(); 
+			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(stateParent), stateParent.transform); 
+		} 
+
+		if(end.Pin_Type == Pin.PinType.TransitionOut) 
+		{ 
+			ProxyABState stateParent = end.GetComponentInParent<ProxyABState>(); 
+			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(stateParent), stateParent.transform); 
+		} 
+
+		proxyABTransition.StartPosition = start;
+		proxyABTransition.EndPosition = end;
+
+		if (createCondition) {
+			addConditionPin ( proxyABTransition );
+		}
+
+		// TODO register?
+		return proxyABTransition;
+	}
+
+	public static void addConditionPin( ProxyABTransition proxyABTransition ){
+		Pin conditionPin = Pin.instantiate( Pin.PinType.Condition, Pin.calculatePinPosition( proxyABTransition ), proxyABTransition.transform );
+		proxyABTransition.Condition = conditionPin;
+	}
+	#endregion
 }
