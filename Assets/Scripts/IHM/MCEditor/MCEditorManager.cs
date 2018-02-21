@@ -55,7 +55,7 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABParam> proxyParams;
 
     [SerializeField]
-    private string MC_OrigFilePath = "Assets/Inputs/Test/GREG_TRANS_STATE_STATE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*siu_scoot_behavior_LOAD_TEST.csv";*/
+    private string MC_OrigFilePath = "Assets/Inputs/Test/GREG_TRANS_STATE_STATE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*GREG_TRANS_STATE_STATE_TEST.csv /*siu_scoot_behavior_LOAD_TEST.csv";*/
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
@@ -177,8 +177,8 @@ public class MCEditorManager : MonoBehaviour {
         {
             CreateTransition(aBOperator.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
         }
-
         /**END TEST SAVE**/
+
 		/**Delete Transition**/
 		else if (Input.GetKeyDown(KeyCode.D))
 		{
@@ -362,6 +362,7 @@ public class MCEditorManager : MonoBehaviour {
 		if (state.Action.Parameters != null) {
 			foreach (IABGateOperator param in state.Action.Parameters) {
 				Pin start = instantiatePin (Pin.PinType.ActionParam, calculatePinPosition (result), pinPrefab, result.transform);
+                result.AddPin(start);
 			}
 		}
 
@@ -443,7 +444,8 @@ public class MCEditorManager : MonoBehaviour {
 	public static ProxyABParam instantiateParam( IABParam paramObj, bool isLoaded, Vector3 position, ProxyABParam prefab, Pin pinPrefab, Transform parent ){
 		ProxyABParam result = Instantiate<ProxyABParam> (prefab, parent);
 		result.IsLoaded = isLoaded;
-		result.transform.position = position;
+        result.AbParam = paramObj;
+        result.transform.position = position;
 
 		// Set text
 		Text paramName = result.GetComponentInChildren<Text>();            
@@ -586,7 +588,20 @@ public class MCEditorManager : MonoBehaviour {
             }
             else if (node is IABParam)
             {
-                syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + "},");
+                string value = GetParamValue(node);
+                string type = "";
+
+
+                if (!paramDictionary.ContainsKey(GetParamType(node)))
+                {
+                    Debug.LogError(GetParamType(node) + " n'est pas dans la le dictionnaire des parameters. Vérifier l'orthographe Dans le fichier ABParamFactory");
+                }
+                else
+                {
+                    type = paramDictionary[GetParamType(node)];
+                }
+
+                syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "},");
                 idNodeSyntTree++;
             }
         }
@@ -855,21 +870,20 @@ public class MCEditorManager : MonoBehaviour {
             }
 			else if (end.Pin_Type == Pin.PinType.ActionParam)
             {
-                endActionParent = end.GetComponentInParent<ProxyABAction>();                
-                AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+                endActionParent = end.GetComponentInParent<ProxyABAction>();                               
 				addConditionPin ( trans, pinPrefab );
 				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
                 trans.Transition = AbModel.getTransition(transitionId);
             }
             else //State case
             {
-                endStateParent = end.GetComponentInParent<ProxyABState>();
-                AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
+                endStateParent = end.GetComponentInParent<ProxyABState>();                
 				addConditionPin ( trans, pinPrefab );
 				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
                 trans.Transition = AbModel.getTransition(transitionId);
             }
-
+            Pin newPin = instantiatePin(Pin.PinType.ActionParam, calculatePinPosition(startActionParent), pinPrefab, startActionParent.transform);
+            startActionParent.AddPin(newPin);
         }
 		else if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
         {
@@ -912,7 +926,7 @@ public class MCEditorManager : MonoBehaviour {
             {
                 endActionParent = end.GetComponentInParent<ProxyABAction>();
                 //end.IsGateOperator = true;
-				end.Pin_Type = Pin.PinType.OperatorIn;
+				end.Pin_Type = Pin.PinType.OperatorIn;                
                 endActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)startParamParent.AbParam;
             }
         }
@@ -956,10 +970,6 @@ public class MCEditorManager : MonoBehaviour {
         param = Instantiate<ProxyABParam>(parameterPrefab);
         proxyParams.Add(param);
         return param;
-
-		//trans.Transition = AbModel.getTransition( transitionId );
-
-        Debug.Log(AbModel.Transitions.Count.ToString());
     }
 
     void Select()
@@ -1028,35 +1038,111 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABOperator proxyOpeStart = null;
         ProxyABOperator proxyOpeEnd = null;
         ProxyABParam proxyParam = null;
+        ProxyABAction proxyAction = null;
 
-		if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
+        /*START ACTION CASES*/
+        if(start.Pin_Type == Pin.PinType.ActionParam)
+        {
+            proxyAction = start.GetComponentInParent<ProxyABAction>();
+            /*ACTION -> PARAM */
+            if (end.Pin_Type == Pin.PinType.Param)
+            {
+                proxyParam = end.GetComponentInParent<ProxyABParam>();
+                UnlinkAction_Param(proxyAction, proxyParam);
+            }
+            /*ACTION -> OPERATOR */
+            else if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
+            {
+                proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
+                UnlinkAction_Operator(proxyAction, proxyOpeEnd);
+            }
+        }
+        /* START OPERATOR CASES */
+		else if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
         {
             proxyOpeStart = start.GetComponentInParent<ProxyABOperator>();
+            /* OPERATOR -> PARAM */
 			if (end.Pin_Type == Pin.PinType.Param)
             {
                 proxyParam = end.GetComponentInParent<ProxyABParam>();
                 UnlinkOperator_Param(proxyOpeStart, proxyParam);
             }
-			else if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
+            /* OPERATOR -> OPERATOR */
+            else if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
             {
                 proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
                 UnlinkOperator_Operator(proxyOpeStart, proxyOpeEnd);
             }
+            /* OPERATOR -> ACTION */
+            else if(end.Pin_Type == Pin.PinType.ActionParam)
+            {
+                proxyAction = end.GetComponentInParent<ProxyABAction>();
+                UnlinkAction_Operator(proxyAction, proxyOpeStart);
+            }
         }
+
+        /* END OPERATOR CASES */
 		else if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
         {
             proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
+            /* PARAM -> OPERATOR */
 			if (start.Pin_Type == Pin.PinType.Param)
             {
                 proxyParam = start.GetComponentInParent<ProxyABParam>();
-                UnlinkOperator_Param(proxyOpeStart, proxyParam);
+                UnlinkOperator_Param(proxyOpeEnd, proxyParam);
             }
+            /* OPERATOR -> OPERATOR */
 			else if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
             {
                 proxyOpeEnd = start.GetComponentInParent<ProxyABOperator>();
                 UnlinkOperator_Operator(proxyOpeStart, proxyOpeEnd);
             }
+            /* ACTION -> OPERATOR */
+            else if (start.Pin_Type == Pin.PinType.ActionParam)
+            {
+                proxyAction = end.GetComponentInParent<ProxyABAction>();
+                UnlinkAction_Operator(proxyAction, proxyOpeEnd);
+            }
         }        
+    }
+
+    private void UnlinkAction_Param(ProxyABAction proxyAction, ProxyABParam proxyParam)
+    {
+        for (int j = 0; j < proxyAction.AbState.Action.Parameters.Length; j++)
+        {
+            for (int i = 0; i < proxyAction.AbState.Action.Parameters[j].Inputs.Length; i++)
+            {
+                if (proxyAction.AbState.Action.Parameters[j].Inputs[i] == ((ABNode)proxyParam.AbParam))
+                {
+                    proxyAction.AbState.Action.Parameters[j].Inputs[i] = null;
+                }
+            }
+        }
+        
+        if (((ABNode)proxyParam.AbParam).Output != null)
+        {
+            ((ABNode)proxyParam.AbParam).Output = null;
+        }        
+    }
+
+    private void UnlinkAction_Operator(ProxyABAction proxyAction, ProxyABOperator proxyOperator)
+    {
+        for (int j = 0; j < proxyAction.AbState.Action.Parameters.Length; j++)
+        {
+           
+            for (int i = 0; i < proxyAction.AbState.Action.Parameters[j].Inputs.Length; i++)
+            {
+                if (proxyAction.AbState.Action.Parameters[j].Inputs[i] == ((ABNode)proxyOperator.AbOperator))
+                {
+                    proxyAction.AbState.Action.Parameters[j].Inputs[i] = null;
+                }
+            }                        
+        }
+        
+        if(((ABNode)proxyOperator.AbOperator).Output != null)
+        {
+            ((ABNode)proxyOperator.AbOperator).Output = null;
+        }
     }
 
     private void UnlinkOperator_Operator(ProxyABOperator proxyOpeStart, ProxyABOperator proxyOpeEnd)
@@ -1079,7 +1165,6 @@ public class MCEditorManager : MonoBehaviour {
 
     private void UnlinkOperator_Param(ProxyABOperator proxyOpeStart, ProxyABParam proxyParam)
     {
-
         string idRemoveObject = proxyParam.AbParam.Identifier;
         for (int i = 0; i < proxyOpeStart.AbOperator.Inputs.Length; i++)
         {
