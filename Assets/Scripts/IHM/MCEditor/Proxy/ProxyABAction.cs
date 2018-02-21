@@ -73,6 +73,7 @@ else // when the Action is created in the editor.
 	// TODO ATTENTION
 	//this.abState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(name, abAction));
 }
+		calculatePinPosition ();
 	}
 
 	public void calculatePinPosition() 
