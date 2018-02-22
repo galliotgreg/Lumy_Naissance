@@ -36,10 +36,19 @@ public class ForkLumy : MonoBehaviour {
     }
 
     public void UIFork()
-    { 
+    {
         //Bloquer le lumy d'origine, qui n'est plus modifiable
         transform.parent.parent.Find("btn_Lumy").GetComponent<Button>().interactable = false;
         transform.parent.gameObject.SetActive(false);
+        //Activation du bouton Merge du nouveau parent
+        transform.parent.parent.Find("btn_Merge").gameObject.SetActive(true);
+
+        //Desactivé la possibilité de Merge depuis un ancien parent
+        if (transform.parent.parent.parent.parent.name != "PanelNuéeSelectionnée")
+        {
+            transform.parent.parent.parent.parent.Find("PanelLumy").Find("btn_Merge").gameObject.SetActive(false);
+        }
+
         for (int i = 0; i < 2; i++)
         {
             var clone = Instantiate(nueeprefab, nuee.transform);
@@ -49,5 +58,6 @@ public class ForkLumy : MonoBehaviour {
             clone.transform.localPosition = new Vector3(2f - 4 * i, -2f, 0);
             //if (clone.transform.childCount > 1) Destroy(clone.transform.GetChild(1).gameObject);
         }
+
     }
 }
