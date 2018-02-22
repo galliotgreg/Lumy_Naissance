@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class MCEditor_InventoryPanel : MonoBehaviour {
 
 	[SerializeField]
+	Canvas canvas;
+	[SerializeField]
 	List<MCEditor_InventoryPanel_Item> items;
 
 	float itemButton_RelativeHeight = 0.05f;
@@ -30,7 +32,6 @@ public class MCEditor_InventoryPanel : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
 
 	public void selectItem( MCEditor_InventoryPanel_Item item ){
@@ -43,6 +44,10 @@ public class MCEditor_InventoryPanel : MonoBehaviour {
 		}
 
 		adjustItems ();
+
+		// trick for updating canvas
+		canvas.scaleFactor = 2;
+		canvas.scaleFactor = 1;
 	}
 
 	void adjustItems(){
