@@ -16,10 +16,10 @@ public class DropArea : MonoBehaviour {
 	void Update(){
 	}
 
-	void OnMouseEnter(){
+	public void MouseEnter(){
 		hover = true;
 	}
-	void OnMouseExit(){
+	public void MouseExit(){
 		hover = false;
 	}
 }
