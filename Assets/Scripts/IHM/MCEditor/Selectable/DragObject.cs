@@ -43,7 +43,7 @@ public class DragObject : MonoBehaviour {
 		this.objectToDrag = _objectToDrag;
 		this.dragActivator = activator;
 	}
-	protected void OnMouseUp(){
+	public void mouseUp(){
 		dragging = false;
 		dragActivator.endDrag ( this.objectToDrag );
 		this.objectToDrag = null;

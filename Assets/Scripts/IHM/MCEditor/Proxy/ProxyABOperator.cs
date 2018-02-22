@@ -119,5 +119,26 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 	public static Vector3 calculateOperatorPosition( Transform parent ){
 		return new Vector3(UnityEngine.Random.Range(-5, 5),UnityEngine.Random.Range(-5, 5), parent.position.z);
 	}
-	#endregion
+
+    private void calculatePinPosition()
+    {
+        float radius = this.transform.localScale.y / 2;
+        int outPin = 1;
+
+        foreach (Pin pin in Incomes)
+        {
+            pin.transform.position = new Vector3(
+                this.transform.position.x + (radius * Mathf.Cos(outPin * (2 * Mathf.PI) / Mathf.Max(1, Incomes.Count) / 2)),
+                this.transform.position.y + (radius * Mathf.Sin(outPin * (2 * Mathf.PI) / Mathf.Max(1, Incomes.Count) / 2)),
+                this.transform.position.z
+            );
+            outPin++;
+        }
+
+        Outcome.transform.position = new Vector3(
+                this.transform.position.x,
+                this.transform.position.y - radius,
+                this.transform.position.z);
+    }
+    #endregion
 }
