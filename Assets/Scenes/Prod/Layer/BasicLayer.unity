@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.22380304, g: 0.24376729, b: 0.26534945, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -202,6 +202,48 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 999
   m_TargetDisplay: 0
+--- !u!1 &195347048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 195347050}
+  - component: {fileID: 195347049}
+  m_Layer: 0
+  m_Name: ABManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &195347049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 195347048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c3ed7746a6ff2b47be969bd77a9eafc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fps: 1
+  INPUTS_FOLDER_PATH: Assets/Inputs/
+--- !u!4 &195347050
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 195347048}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1106732075
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,6 +354,48 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f20101717a6dab4f847503ac16696ec, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &1389244965
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4859866115314562, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 11.411443
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859866115314562, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 3.3817635
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859866115314562, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -7.8129196
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859866115314562, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859866115314562, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859866115314562, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859866115314562, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859866115314562, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: c1b9f6bcb19ab9545885dc4c20b22639, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1587241765
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +408,6 @@ GameObject:
   - component: {fileID: 1587241768}
   - component: {fileID: 1587241767}
   - component: {fileID: 1587241766}
-  - component: {fileID: 1587241771}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -403,18 +486,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1587241771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1587241765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 389153d3f091c47478a54366e1413033, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camera: {fileID: 1587241769}
 --- !u!1001 &1644895372
 Prefab:
   m_ObjectHideFlags: 0

@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 33765690268433576}
   - component: {fileID: 135908077034764462}
   - component: {fileID: 23831365364304070}
-  - component: {fileID: 114003601275317380}
+  - component: {fileID: 114957753714725530}
   m_Layer: 0
   m_Name: action
   m_TagString: Untagged
@@ -118,19 +118,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1991256928399342}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114003601275317380
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1991256928399342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dab962a71e023d64faabf235b734b5cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: Goto
-  action: Goto
 --- !u!114 &114087870126042864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -201,6 +188,19 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: New Text
+--- !u!114 &114957753714725530
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1991256928399342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffdb197eb93520f41982209ba31057cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: Action
+  action: 
 --- !u!135 &135908077034764462
 SphereCollider:
   m_ObjectHideFlags: 1

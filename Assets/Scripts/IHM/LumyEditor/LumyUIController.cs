@@ -32,6 +32,13 @@ public class LumyUIController : MonoBehaviour {
     private GameObject libraryCompPrefab;
     [SerializeField]
     private GameObject voletGauche;
+    [SerializeField]
+    private GameObject infobulle;
+    [Range(0, 3)]
+    public float infobulleX;
+    [Range(0, 6)]
+    public float infobulleY;
+
 
     // Use this for initialization
     void Start () {
@@ -68,8 +75,25 @@ public class LumyUIController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
-	}
+
+        if (LumyEditorManager.instance.HoveredLumyCompo != null && LumyEditorManager.instance.SelectedLumyCompo == null)
+        {
+            infobulle.SetActive(true);
+            infobulle.transform.position = LumyEditorManager.instance.HoveredLumyCompo.transform.position;
+            infobulle.transform.position += new Vector3(infobulleX,infobulleY,0f);
+            
+            /*
+            infobulle.transform.Find("Strength").GetComponent<Text>;
+            LumyEditorManager.instance.HoveredLumyCompo.StrengthBuff.ToString(); */
+            
+        }
+
+        else
+        {
+            infobulle.SetActive(false); 
+        }
+        
+    }
 
     void OnDestroy()
     {

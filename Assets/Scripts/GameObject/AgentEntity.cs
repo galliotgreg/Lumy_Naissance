@@ -8,6 +8,8 @@ public class AgentEntity : MonoBehaviour
     private int id;
 
 	private HomeScript home;
+    private GameParamsScript gameParams;
+
     [SerializeField]
     private AgentBehavior behaviour;
     [SerializeField]
@@ -28,6 +30,18 @@ public class AgentEntity : MonoBehaviour
 			home = value;
 			this.context.Home = value.gameObject;
 		}
+	}
+
+    public GameParamsScript GameParams {
+		get {
+			return gameParams;
+		}
+        set {
+            gameParams = value;
+
+            this.context.GameParams = value.gameObject;
+
+        }
 	}
 
     public AgentBehavior Behaviour
@@ -93,8 +107,23 @@ public class AgentEntity : MonoBehaviour
 	}
 
 	public AgentComponent[] getAgentComponents (){
-		return this.GetComponentsInChildren<AgentComponent> ();
-	}
+        GameObject head = transform.Find("Head").gameObject;
+        GameObject tail = transform.Find("Tail").gameObject;
+        AgentComponent[] headCompos = head.GetComponentsInChildren<AgentComponent>();
+        AgentComponent[] tailCompos = tail.GetComponentsInChildren<AgentComponent>();
+        AgentComponent[] agentCompos = new AgentComponent[headCompos.Length + tailCompos.Length];
+        int i = 0;
+        foreach (AgentComponent compo in headCompos)
+        {
+            agentCompos[i++] = compo;
+        }
+        foreach (AgentComponent compo in tailCompos)
+        {
+            agentCompos[i++] = compo;
+        }
+
+        return agentCompos;
+    }
 
     // Use this for initialization
     void Awake()

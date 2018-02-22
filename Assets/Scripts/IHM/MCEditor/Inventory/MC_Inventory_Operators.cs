@@ -9,12 +9,12 @@ public class MC_Inventory_Operators : MC_Inventory {
 		base.Start ();
 
 		// Load Operators
-		List<ABNode> operators = new List<ABNode> ();
+		List<System.Object> operators = new List<System.Object> ();
 		foreach (OperatorType operatorType in System.Enum.GetValues( typeof( OperatorType ) )) {
 		//foreach (OperatorType operatorType in new List<OperatorType>(){OperatorType.BoolTab_Agg_BoolStar}) {	// test : 1 item
 			if (operatorType != OperatorType.None) {
 				try{
-					operators.Add ( (ABNode) ABOperatorFactory.CreateOperator( operatorType ) );
+					operators.Add ( ABOperatorFactory.CreateOperator( operatorType ) );
 				}
 				catch(System.NotImplementedException ex){
 					Debug.Log (ex);
@@ -33,12 +33,12 @@ public class MC_Inventory_Operators : MC_Inventory {
 
 	protected override void configItem (MC_InventoryItem item)
 	{
-		item.Text.text = MCEditorManager.getNodeName(item.Item);
+		item.Text.text = MCEditor_Proxy.getNodeName((ABNode)item.Item);
 	}
 
-	public override void configProxyItem (GameObject proxy, MC_InventoryItem item)
+	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		MCEditorManager.SetNodeName (proxy, item.Item);
+		return MCEditor_Proxy_Factory.instantiateOperator((IABOperator)item.Item, false).gameObject;
 	}
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)

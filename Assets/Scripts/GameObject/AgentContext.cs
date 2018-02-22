@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class AgentContext : MonoBehaviour
 {
+    [BindParam(Identifier = "game")]
+    [SerializeField]
+    private GameObject gameParams;
+
     [BindParam(Identifier = "self")]
     [SerializeField]
     private GameObject self;
@@ -122,12 +126,23 @@ public class AgentContext : MonoBehaviour
             traces = value;
         }
     }
-	#endregion
 
-	void Awake(){
+    public GameObject GameParams
+    {
+        get
+        {
+            return gameParams;
+        }
+
+        set
+        {
+            gameParams = value;
+        }
+    }
+    #endregion
+
+    void Awake(){
 		this.model = self.GetComponent<AgentScript>();
-
-		setModelValues ();
     }
 
     // Use this for initialization
@@ -149,6 +164,7 @@ public class AgentContext : MonoBehaviour
 	public void setModelValues(){
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
+
 		// vitality
 		this.model.VitalityMax = 5;
 		// strength
@@ -168,8 +184,9 @@ public class AgentContext : MonoBehaviour
 		Debug.LogWarning( "TODO : pickRange = visionRange" );
 		this.model.PickRange = 0;
 
-		// ProdCost
-		AgentScript.ResourceCost cost = getCost( agentComponents );
+        // ProdCost
+        ABModel behaviorModel = ABManager.instance.FindABModel(entity.BehaviorModelIdentifier);
+		AgentScript.ResourceCost cost = getCost( agentComponents, behaviorModel);
 		this.model.ProdCost = cost.Resources;
 		// layTimeCost
 		this.model.LayTimeCost = getCooldown( agentComponents );
@@ -236,23 +253,7 @@ public class AgentContext : MonoBehaviour
 	/// </summary>
 	/// <param name="agentComponents">Agent's Components</param>
 	/// <returns>The cost.</returns>
-	AgentScript.ResourceCost getCost( AgentComponent[] agentComponents ){
-		// TODO Change Cost Evaluation Method
-		AgentScript.ResourceCost resultCost = new AgentScript.ResourceCost();
-
-		foreach (AgentComponent component in agentComponents)
-		{
-			Color32 color = component.Color;
-			if (color.Equals(new Color32(255, 0, 0, 255)))
-				resultCost.addResource (ABColor.Color.Red, component.ProdCost);
-			else if (color.Equals(new Color32(0, 255, 0, 255)))
-				resultCost.addResource (ABColor.Color.Green, component.ProdCost);
-			else if (color.Equals(new Color32(0, 0, 255, 255)))
-				resultCost.addResource (ABColor.Color.Blue, component.ProdCost);
-			else
-				Debug.LogWarning("Component has no good color TODO Implement new strategy");
-		}
-
-		return resultCost;
+	AgentScript.ResourceCost getCost( AgentComponent[] agentComponents, ABModel beahaviorModel ){
+        return CostManager.instance.ComputeCost(agentComponents, beahaviorModel);
 	}
 }

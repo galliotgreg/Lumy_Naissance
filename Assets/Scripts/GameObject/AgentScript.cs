@@ -58,7 +58,11 @@ public class AgentScript : MonoBehaviour {
 	[SerializeField]
 	private float visionRange;
 
-	private List<ResourceScript> carryingResources = new List<ResourceScript>();
+    [SerializeField]
+    private GameObject mineral;  
+
+
+    private List<GameObject> carryingResources = new List<GameObject>();
 
 	#region Properties
     public string Cast
@@ -256,16 +260,41 @@ public class AgentScript : MonoBehaviour {
 	}
 	#endregion
 
-	public void addResource( ResourceScript resource ){
-		this.carryingResources.Add( resource );
-		this.nbItem = this.carryingResources.Count;
+	public GameObject addResource(GameObject resourceGO ){
+        //ResourceSpot
+        ResourceScript resource = resourceGO.GetComponent<ResourceScript>(); 
+        resource.Stock -= 1;
+        //ResourceMineral 
+
+       
+        GameObject res  = Instantiate(mineral);
+        res.transform.SetParent(this.transform);
+        res.GetComponent<ResourceScript>().Stock = 1;
+        res.GetComponent<ResourceScript>().Color = resource.Color;
+
+        this.carryingResources.Add(res);
+        foreach(GameObject go in carryingResources)
+        {
+            int stock = go.GetComponent<ResourceScript>().Stock;
+            this.nbItem += stock; 
+        }
+
+        return res; 
 	}
-	public ResourceScript removeLastResource(){
+    //Remove all Resources 
+	public List<GameObject> removeResource(){
 		if( this.carryingResources.Count > 0 ){
-			ResourceScript result = this.carryingResources[ this.carryingResources.Count-1 ];
-			this.carryingResources.Remove( result );
-			this.nbItem = this.carryingResources.Count;
-			return result;
+            List<GameObject> listRes =  new List<GameObject>(); 
+            foreach (GameObject res in carryingResources)
+            {
+                listRes.Add(res); 
+            }
+            nbItem = 0;
+            this.carryingResources.Clear();
+            //ResourceScript result = this.carryingResources[ this.carryingResources.Count-1 ];
+            //this.carryingResources.Remove( result );
+            //this.nbItem = this.carryingResources.Count;
+            return listRes;
 		}
 		return null;
 	}
