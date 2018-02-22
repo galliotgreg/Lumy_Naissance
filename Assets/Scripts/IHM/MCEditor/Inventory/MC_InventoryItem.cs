@@ -10,14 +10,8 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		rect.localScale = new Vector3 (1, 1, 1);
 	}
 
-	bool click = false;
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0)) {
-			if (hover) {
-				activateClick ();
-			}
-		}
 	}
 
 	protected System.Object item;
@@ -57,18 +51,10 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 	[SerializeField]
 	DragObject dragObjectComponent;
 
-	void activateClick(){
+	public void activateClick(){
 		GameObject proxy = inventory.instantiateProxy (this);
 
 		dragObjectComponent.startDrag (proxy, this);
-	}
-
-	bool hover = false;
-	void OnMouseEnter(){
-		hover = true;
-	}
-	void OnMouseExit(){
-		hover = false;
 	}
 
 	#region IDragObjectActivator implementation
