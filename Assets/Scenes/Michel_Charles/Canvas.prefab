@@ -399,8 +399,9 @@ GameObject:
   - component: {fileID: 222864074309652892}
   - component: {fileID: 114812910146216548}
   - component: {fileID: 114169550604917008}
+  - component: {fileID: 114072898314300860}
   m_Layer: 5
-  m_Name: Button
+  m_Name: AnnulerBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -433,6 +434,7 @@ GameObject:
   - component: {fileID: 224230267891351838}
   - component: {fileID: 222020885578797712}
   - component: {fileID: 114569459690194782}
+  - component: {fileID: 114170275932988192}
   m_Layer: 5
   m_Name: R1_R2_Time_PlayBtn
   m_TagString: Untagged
@@ -558,7 +560,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1436598240313072
 GameObject:
   m_ObjectHideFlags: 1
@@ -1165,6 +1167,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114072898314300860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1342006076791592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 239f74603de3d5f41bc03c5e03aa3cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114109797572550966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1281,6 +1294,18 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114170275932988192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1349312312238460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4da45feda206fba42b2398f80afa0f15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  afficherSiTouche: {fileID: 1421226798428286}
 --- !u!114 &114175233962781488
 MonoBehaviour:
   m_ObjectHideFlags: 1
