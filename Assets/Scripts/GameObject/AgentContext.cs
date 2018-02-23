@@ -11,7 +11,7 @@ public class AgentContext : MonoBehaviour
     [BindParam(Identifier = "self")]
     [SerializeField]
     private GameObject self;
-    [BindParam(Identifier = "hive")]
+    [BindParam(Identifier = "home")]
     [SerializeField]
     private GameObject home;
 

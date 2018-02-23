@@ -84,7 +84,7 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
     }
 
     Vector3 CalculABBGOPinPosition(Vector3 vec1, Vector3 vec2) {
-        return new Vector3((vec1.x + vec2.x) / 2, (vec1.y + vec2.y) / 2, 0);
+		return Pin.calculatePinPosition ( this );
     }
 
 	#region implemented abstract members of SelectableProxyGameObject
@@ -128,7 +128,7 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		Vector3 endPoint = lineRenderer.GetPosition (1);
 
 		collider.height = Vector3.Distance (startPoint, endPoint);
-		collider.radius = lineRenderer.startWidth;
+		collider.radius = lineRenderer.startWidth/2;
 
 		Vector3 midPoint = (endPoint-startPoint)/2 + startPoint;
 		collider.transform.position = midPoint;
