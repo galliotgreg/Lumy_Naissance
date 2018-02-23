@@ -66,8 +66,7 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
                 adjustPinPosition();
             } else
             {
-                //TODO : Gérer ce cas particulier
-                Debug.Log("transition -> Syntax tree");
+                //TODO : Gérer ce cas particulier                
             }            
 
             Vector3 posDepart = StartPosition.transform.position;

@@ -7,7 +7,7 @@ States,Name,Type
 Transitions,Start State,End State
 0,INIT,grow
 1,INIT,fight
-3,fight,goto water
+2,fight,goto water
 ,,
 Syntax Tree,output,
 1,0,
@@ -15,4 +15,7 @@ Nodes,Type,output (Node -> Input)
 0,operator{V[]aggV*},
 1,operator{VgetRT},0->0
 2,operator{RgetR[]S},1->0
+3,param{ref:self},2->0
+3,param{const txt=trgPos},2->1
+4,param{ref:self},1->1
 ,,

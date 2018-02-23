@@ -8,8 +8,9 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
     private IABParam abParam;
     [SerializeField]
     private string name;
-    private string type = "const scal=5";
+    private string type;
     private bool isLoaded = false;
+    private bool isPositioned = false;
 
     public string Identifier {
         get {
@@ -67,6 +68,19 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
         set
         {
             abParam = value;
+        }
+    }
+
+    public bool IsPositioned
+    {
+        get
+        {
+            return isPositioned;
+        }
+
+        set
+        {
+            isPositioned = value;
         }
     }
 
