@@ -276,7 +276,7 @@ public class AppContextManager : MonoBehaviour
 
         //Build new file
         //Copy Header
-        string content = lines[0] + "\n"  + lines[1] + "\n" + lines[2] + "\n" + lines[3] + "\n";
+        string content = lines[0] + "\n"  + lines[1] + "\n";
         //Write cast definitions
         content += "Name,Behavior,Head Size,Components List,\n";
         foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
@@ -394,7 +394,8 @@ public class AppContextManager : MonoBehaviour
             GetFolderPathFromSpecieName(specieFolderName) + specieName + SPECIE_FILES_SUFFIX + CSV_EXT);
 
         // Set created as active
-        SwitchActiveSpecie(specieFolderName);
+        CastesUIController.instance.CreateSwarmSelectionButons();
+        CastesUIController.instance.SelectActiveSwarm(specieFolderName);
     }
 
     public void ForkCast()
