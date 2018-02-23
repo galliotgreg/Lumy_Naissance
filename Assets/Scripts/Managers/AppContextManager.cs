@@ -398,6 +398,23 @@ public class AppContextManager : MonoBehaviour
         CastesUIController.instance.SelectActiveSwarm(specieFolderName);
     }
 
+    public void UnforkCast()
+    {
+        //Remove Behaviod files
+        Cast child1 = activeCast.Childs[0];
+        Cast child2 = activeCast.Childs[1];
+        File.Delete(ActiveSpecieFolderPath + child1.BehaviorModelIdentifier + CSV_EXT);
+        File.Delete(ActiveSpecieFolderPath + child2.BehaviorModelIdentifier + CSV_EXT);
+
+        //Remove childs from specie
+        activeSpecie.Casts.Remove(child1.Name);
+        activeSpecie.Casts.Remove(child2.Name);
+        activeCast.Childs.Clear();
+
+        //Alter Specie file
+        SaveSpecie();
+    }
+
     public void ForkCast()
     {
         //Create childs
