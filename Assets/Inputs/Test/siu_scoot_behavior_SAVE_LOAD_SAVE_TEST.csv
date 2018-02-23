@@ -5,7 +5,14 @@ States,Name,Type
 3,goto water,trigger{goto}
 ,,
 Transitions,Start State,End State
-2,grow,fight
-3,goto water,INIT
-4,grow,goto water
+0,INIT,grow
+1,INIT,fight
+3,fight,goto water
+,,
+Syntax Tree,output,
+1,0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,operator{RgetR[]S},1->0
 ,,

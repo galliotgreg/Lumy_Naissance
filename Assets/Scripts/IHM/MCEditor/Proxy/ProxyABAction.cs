@@ -93,7 +93,7 @@ else // when the Action is created in the editor.
 	// Update is called once per frame 
 	void Update () { 
 
-}
+    }
 
 #region Instantiate
 public static ProxyABAction instantiate( ABState state ){

@@ -738,20 +738,57 @@ public class MCEditorManager : MonoBehaviour {
         else
         {
             startStateParent = start.GetComponentInParent<ProxyABState>();
-			if (end.Pin_Type == Pin.PinType.ActionParam)
+            if (!startStateParent)
             {
-                endActionParent = end.GetComponentInParent<ProxyABAction>();
-				ProxyABTransition.addConditionPin ( trans );
-                transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
-                trans.Transition = AbModel.getTransition(transitionId);
-            }
-            else
+                startActionParent = start.GetComponentInParent<ProxyABAction>();
+                if (end.Pin_Type == Pin.PinType.ActionParam)
+                {
+                    endActionParent = end.GetComponentInParent<ProxyABAction>();
+                    ProxyABTransition.addConditionPin(trans);
+                    transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+                    trans.Transition = AbModel.getTransition(transitionId);
+                }
+                else
+                {
+                    ProxyABTransition.addConditionPin(trans);
+                    endStateParent = end.GetComponentInParent<ProxyABState>();
+                    if (!endStateParent)
+                    {
+                        endActionParent = end.GetComponentInParent<ProxyABAction>();
+                        transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+                    }
+                    else
+                    {
+                        transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
+                    }
+                    trans.Transition = AbModel.getTransition(transitionId);
+                }
+
+            } else
             {
-                endStateParent = end.GetComponentInParent<ProxyABState>();
-				ProxyABTransition.addConditionPin ( trans );
-                transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
-                trans.Transition = AbModel.getTransition(transitionId);
-            }
+                if (end.Pin_Type == Pin.PinType.ActionParam)
+                {
+                    endActionParent = end.GetComponentInParent<ProxyABAction>();
+                    ProxyABTransition.addConditionPin(trans);
+                    transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
+                    trans.Transition = AbModel.getTransition(transitionId);
+                }
+                else
+                {
+                    ProxyABTransition.addConditionPin(trans);
+                    endStateParent = end.GetComponentInParent<ProxyABState>();
+                    if (!endStateParent)
+                    {
+                        endActionParent = end.GetComponentInParent<ProxyABAction>();
+                        transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
+                    }
+                    else
+                    {
+                        transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
+                    }
+                    trans.Transition = AbModel.getTransition(transitionId);
+                }
+            }			
         }                                                               
     }
 

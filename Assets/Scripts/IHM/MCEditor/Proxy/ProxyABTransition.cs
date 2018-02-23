@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ProxyABTransition : IsolatedSelectableProxyGameObject {    
@@ -59,6 +60,15 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		base.Update ();
 
         if(StartPosition != null && EndPosition != null ) {
+
+            if(startPosition.Pin_Type != Pin.PinType.Condition && endPosition.Pin_Type != Pin.PinType.Condition)
+            {
+                adjustPinPosition();
+            } else
+            {
+                //TODO : Gérer ce cas particulier
+                Debug.Log("transition -> Syntax tree");
+            }            
 
             Vector3 posDepart = StartPosition.transform.position;
             Vector3 posArrivee = EndPosition.transform.position;
@@ -168,5 +178,80 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		Pin conditionPin = Pin.instantiate( Pin.PinType.Condition, Pin.calculatePinPosition( proxyABTransition ), proxyABTransition.transform );
 		proxyABTransition.Condition = conditionPin;
 	}
-	#endregion
+
+    //Minimise distance between two pin
+    private void adjustPinPosition()
+    {
+        GameObject startParent = GetParent(startPosition);
+        GameObject endParent = GetParent(endPosition);
+        Vector3 direction = new Vector3();
+        if (!(startPosition.Pin_Type == Pin.PinType.Condition) || !(endPosition.Pin_Type == Pin.PinType.Condition))
+        {
+            direction = computeDirection(startParent.transform.position, endParent.transform.position);
+        }            
+
+        float radiusStart = startParent.transform.localScale.y / 2;
+        float radiusEnd = endParent.transform.localScale.y / 2;
+
+        startPosition.transform.position = new Vector3(
+            startParent.transform.position.x + (radiusStart * direction.x),
+            startParent.transform.position.y + (radiusStart * direction.y),
+            startParent.transform.position.z
+            );
+
+        endPosition.transform.position = new Vector3(
+            endParent.transform.position.x + (-radiusEnd * direction.x),
+            endParent.transform.position.y + (-radiusEnd * direction.y),
+            endParent.transform.position.z
+            );
+    }
+    private GameObject GetParent(Pin pin)
+    {
+        GameObject parent = null;
+        if (pin.Pin_Type == Pin.PinType.OperatorIn || pin.Pin_Type == Pin.PinType.OperatorOut)
+        {
+            parent = pin.GetComponentInParent<ProxyABOperator>().gameObject;
+        }
+        else if (pin.Pin_Type == Pin.PinType.Param)
+        {
+            parent = pin.GetComponentInParent<ProxyABParam>().gameObject;
+        }
+        else if (pin.Pin_Type == Pin.PinType.ActionParam)
+        {
+            parent = pin.GetComponentInParent<ProxyABAction>().gameObject;
+        }
+        else if (pin.Pin_Type == Pin.PinType.TransitionIn || pin.Pin_Type == Pin.PinType.TransitionOut)
+        {
+            ProxyABState parentTemp = pin.GetComponentInParent<ProxyABState>();
+            if (!parentTemp)
+            {
+                parent = pin.GetComponentInParent<ProxyABAction>().gameObject;
+            } else
+            {
+                parent = parentTemp.gameObject;
+            }
+        }                        
+        return parent;
+    }
+
+    private float computeNorme(Vector3 vec)
+    {
+        float norme = (float)Math.Sqrt(vec.x * vec.x + vec.y * vec.y);
+        if (norme == 0)
+            norme = 1;
+        return norme;        
+    }
+
+    private Vector3 computeDirection(Vector3 vec1, Vector3 vec2)
+    {
+        Vector3 res = new Vector3(vec2.x - vec1.x, vec2.y - vec1.y, 0);
+        float norme = computeNorme(res);
+        float res_norm_x = res.x / norme;
+        float res_norm_y = res.y / norme;
+
+        res = new Vector3(res_norm_x, res_norm_y, 0);
+        return res;
+    }
+
+    #endregion
 }
