@@ -126,4 +126,13 @@ public static Vector3 calculateActionPosition( Transform parent ){
 	return new Vector3(UnityEngine.Random.Range(-5, 5),UnityEngine.Random.Range(-5, 5), parent.position.z);
 }
 #endregion
+
+	#region implemented abstract members of MCEditor_Proxy
+
+	public override void click ()
+	{
+		throw new System.NotImplementedException ();
+	}
+
+	#endregion
 }

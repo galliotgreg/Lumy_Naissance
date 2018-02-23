@@ -139,7 +139,12 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 			tang*=-1;
 		}
 		float angle = Mathf.Rad2Deg * Mathf.Atan (tang);
-		collider.transform.rotation = Quaternion.Euler( new Vector3 (0, 0, 90+angle) );
+		try{
+			collider.transform.rotation = Quaternion.Euler( new Vector3 (0, 0, 90+angle) );
+		}
+		catch(System.Exception ex){
+			Debug.LogWarning (ex.Message);
+		}
 	}
 	#endregion
 

@@ -4,12 +4,32 @@ using UnityEngine;
 
 public class MCEditor_DialogBoxManager : MonoBehaviour {
 
+	#region SINGLETON
+	// The static instance of the Singleton for external access
+	public static MCEditor_DialogBoxManager instance = null;
+
+	// Enforce Singleton properties
+	void Awake()
+	{
+		//Check if instance already exists and set it to this if not
+		if (instance == null)
+		{
+			instance = this;
+		}
+
+		//Enforce the unicity of the Singleton
+		else if (instance != this)
+		{
+			Destroy(gameObject);
+		}
+	}
+	#endregion
+
 	[SerializeField]
-	MCEditor_DialogBox_Value valuePrefab;
+	MCEditor_DialogBox_Param valuePrefab;
 
 	// Use this for initialization
 	void Start () {
-		instantiateValue (new Vector2 (1, 3));
 	}
 	
 	// Update is called once per frame
@@ -17,7 +37,8 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 		
 	}
 
-	public MCEditor_DialogBox_Value instantiateValue( Vector2 position ){
-		return MCEditor_DialogBox_Value.instantiate (valuePrefab, position, this.transform);
+	public MCEditor_DialogBox_Param instantiateValue( ProxyABParam param, Vector2 position ){
+		Vector3 pos3D = new Vector3 ( position.x, position.y, -4 );
+		return MCEditor_DialogBox_Param.instantiate( param, valuePrefab, pos3D, this.transform);
 	}
 }
