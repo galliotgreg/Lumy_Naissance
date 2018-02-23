@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
     public enum Winner { Player1,Player2,Equality, None };
     private Winner winnerPlayer; 
 
+
+
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -199,6 +201,7 @@ public class GameManager : MonoBehaviour {
         InitGameObjects();
     }
 
+
     private void SetupGameParams()
     {
         gameParam = Instantiate(gameParamsPrefab);
@@ -369,6 +372,22 @@ public class GameManager : MonoBehaviour {
 
         p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
 		p2_hiveScript.addUnit( p2_queen.GetComponent<AgentEntity>() );
+
+        InitResources(); 
+    }
+
+    private void InitResources() {
+        List<ResourceScript> listResources = new List<ResourceScript>(); 
+        ResourceScript [] list; 
+        list = FindObjectsOfType<ResourceScript>();
+        if (list.Length <=0 || list == null) {
+            return;
+        }
+        for (int i=0;i<list.Length;i++) {
+            listResources.Add(list[i]); 
+        }
+
+        Unit_GameObj_Manager.instance.Resources = listResources; 
     }
 
     public GameObject GetUnitTemplate(PlayerAuthority authority, string castName)

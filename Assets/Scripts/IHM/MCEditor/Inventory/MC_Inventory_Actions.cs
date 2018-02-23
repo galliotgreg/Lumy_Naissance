@@ -10,8 +10,8 @@ public class MC_Inventory_Actions : MC_Inventory {
 
 		// Load Operators
 		List<System.Object> actions = new List<System.Object> ();
-		foreach (ActionType actionType in System.Enum.GetValues( typeof( ActionType ) )) {
-			// TODO filter by enable actions
+		foreach (ActionType actionType in LumyEditorManager.instance.EditedLumy.GetComponent< AgentEntity >().getAgentActions() ){
+			// filter by enable actions
 			if (actionType != ActionType.None) {
 				try{
 					ABState state = new ABState( -1, actionType.ToString() );

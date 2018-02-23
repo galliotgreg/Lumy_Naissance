@@ -61,9 +61,13 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 
         if(StartPosition != null && EndPosition != null ) {
 
-            if(!(startPosition.Pin_Type == Pin.PinType.Condition) || !(endPosition.Pin_Type == Pin.PinType.Condition))
+            if(startPosition.Pin_Type != Pin.PinType.Condition && endPosition.Pin_Type != Pin.PinType.Condition)
             {
                 adjustPinPosition();
+            } else
+            {
+                //TODO : Gérer ce cas particulier
+                Debug.Log("transition -> Syntax tree");
             }            
 
             Vector3 posDepart = StartPosition.transform.position;
@@ -80,7 +84,7 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
     }
 
     Vector3 CalculABBGOPinPosition(Vector3 vec1, Vector3 vec2) {
-        return new Vector3((vec1.x + vec2.x) / 2, (vec1.y + vec2.y) / 2, 0);
+		return Pin.calculatePinPosition ( this );
     }
 
 	#region implemented abstract members of SelectableProxyGameObject
@@ -124,7 +128,7 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		Vector3 endPoint = lineRenderer.GetPosition (1);
 
 		collider.height = Vector3.Distance (startPoint, endPoint);
-		collider.radius = lineRenderer.startWidth;
+		collider.radius = lineRenderer.startWidth/2;
 
 		Vector3 midPoint = (endPoint-startPoint)/2 + startPoint;
 		collider.transform.position = midPoint;
@@ -180,7 +184,11 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
     {
         GameObject startParent = GetParent(startPosition);
         GameObject endParent = GetParent(endPosition);
-        Vector3 direction = computeDirection(startParent.transform.position, endParent.transform.position);
+        Vector3 direction = new Vector3();
+        if (!(startPosition.Pin_Type == Pin.PinType.Condition) || !(endPosition.Pin_Type == Pin.PinType.Condition))
+        {
+            direction = computeDirection(startParent.transform.position, endParent.transform.position);
+        }            
 
         float radiusStart = startParent.transform.localScale.y / 2;
         float radiusEnd = endParent.transform.localScale.y / 2;
