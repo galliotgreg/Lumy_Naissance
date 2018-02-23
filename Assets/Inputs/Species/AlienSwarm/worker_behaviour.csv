@@ -1,0 +1,220 @@
+States,Name,Type
+0,INIT,Init
+1,green found,Inter
+2,trace found,Inter
+3,back to hive,trigger{goto}
+4,go to green,trigger{goto}
+5,pick green,trigger{pick}
+6,go to green trace,trigger{goto}
+7,go to red trace,trigger{goto}
+8,nothing interesting,Inter
+9,go to hive,trigger{goto}
+10,red found,Inter
+11,go to red,trigger{goto}
+12,pick red,trigger{pick}
+,,
+Transitions,Start State,End State
+0,INIT,green found
+1,INIT,red found
+2,INIT,trace found
+3,INIT,back to hive
+4,INIT,nothing interesting
+5,green found,go to green
+6,green found,pick green
+7,trace found,go to green trace
+8,trace found,go to red trace
+9,nothing interesting,go to hive
+10,red found,go to red
+11,red found,pick red
+,,
+Syntax Tree,Output,
+0,0,
+Nodes,Type,Output (Node -> Input)
+0,operator{B<SS},
+1,param{const scale=1},0->1
+2,operator{SsizeR[]},0->0
+3,operator{R[]where==R[]TC},2->0
+4,param{const txt = color},3->0
+5,param{const color = green},3->1
+6,param{ref[]:res},3->2
+,,
+Syntax Tree,Output,
+0,3,
+Nodes,Type,Output (Node -> Input)
+0,operator{BgetRT},
+1,param{cons txt = is full},0->1
+2,param{ref=self},0->2
+,,
+Syntax Tree,Output,
+0,6,
+Nodes,Type,Output (Node -> Input)
+0,operator{B<SS},
+1,param{const scale = 1},0->0
+2,operator{SminIdS[]},0->1
+3,operator{S[]distV[]V},2->0
+4,operator{VgetRT},3->0
+5,param{vec:curPos},4->0
+6,param{ref=self},4->1
+7,operator{VgetR[]V},3->1
+8,param{const txt = pos},7->0
+9,operator{R[]where==R[]TC},7->1
+10,param{ref[]:res},9->0
+11,param{const color = green},9->1
+12,param{const txt = color},9->2
+,,
+Syntax Tree,Output,
+0,1,
+Nodes,Type,Output (Node -> Input)
+0,operator{B<SS},
+1,param{const scale=1},0->1
+2,operator{SsizeR[]},0->0
+3,operator{R[]where==R[]TC},2->0
+4,param{const txt = color},3->0
+5,param{const color = red},3->1
+6,param{ref[]:res},3->2
+,,
+Syntax Tree,Output,
+0,11,
+Nodes,Type,Output (Node -> Input)
+0,operator{B<SS},
+1,param{const scale = 1},0->0
+2,operator{SminIdS[]},0->1
+3,operator{S[]distV[]V},2->0
+4,operator{VgetRT},3->0
+5,param{vec:curPos},4->0
+6,param{ref=self},4->1
+7,operator{VgetR[]V},3->1
+8,param{const txt = pos},7->0
+9,operator{R[]where==R[]TC},7->1
+10,param{ref[]:res},9->0
+11,param{const color = red},9->1
+12,param{const txt = color},9->2
+,,
+Syntax Tree,Output,
+0,back to hive->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref=hive},1->0
+,,
+Syntax Tree,Output,
+0,go to green->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{const txt = pos},1->0
+3,operator{VgetRT},1->1
+4,"operator{RgetR[]S""}",3->0
+5,operator{R[]where==R[]TC},4->0
+6,param{const txt = color},5->0
+7,param{const color = green},5->1
+8,param{ref[]=res},5->2
+9,operator{SminIdS[]},4->1
+10,operator{S[]distV[]V},9->0
+11,operator{VgetRT},10->0
+12,param{ref=self},11->0
+13,param{vec:curPos},11->1
+14,operator{V[]getR[]T},10->1
+15,param{const txt = pos},14->0
+16,operator{R[]where==R[]TC},14->1
+17,param{ref[]:res},16->0
+18,param{const color = green},16->1
+19,param{const txt = color},16->2
+,,
+Syntax Tree,Output,
+0,pick green->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{RgetR[]S},
+1,operator{R[]where==R[]TC},0->0
+2,param{const txt = color},1->0
+3,param{const color = green},1->1
+4,param{ref[]:res},1->2
+5,operator{SminIdS[]},0->1
+6,operator{S[]distV[]V},5->0
+7,operator{VgetRT},6->0
+8,param{ref=self},7->0
+9,param{const txt = color},7->1
+10,operator{V[]getR[]T},6->1
+11,param{const txt = pos},10->0
+12,operator{R[]where==R[]TC},10->1
+13,param{const txt = color},12->0
+14,param{const color = green},12->1
+15,param{res[]:res},12->3
+,,
+Syntax Tree,Output,
+0,go to green trace->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{RgetR[]S},
+1,param{ref[]=traces},0->0
+2,operator{SminIdS[]},0->1
+3,operator{SgetRT},2->0
+4,param{const txt = age},3->0
+5,operator{R[]where==R[]TC},3->1
+6,param{const color = green},5->0
+7,param{ref[]=traces},5->1
+8,param{const txt = color},5->2
+,,
+Syntax Tree,Output,
+0,go to red trace->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{RgetR[]S},
+1,param{ref[]=traces},0->0
+2,operator{SminIdS[]},0->1
+3,operator{SgetRT},2->0
+4,param{const txt = age},3->0
+5,operator{R[]where==R[]TC},3->1
+6,param{const color = red},5->0
+7,param{ref[]=traces},5->1
+8,param{const txt = color},5->2
+,,
+Syntax Tree,Output,
+0,go to hive->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref=hive},1->0
+3,param{const txt = pos},1->1
+,,
+Syntax Tree,Output,
+0,go to red->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{const txt = pos},1->0
+3,operator{VgetRT},1->1
+4,"operator{RgetR[]S""}",3->0
+5,operator{R[]where==R[]TC},4->0
+6,param{const txt = color},5->0
+7,param{const color = red},5->1
+8,param{ref[]=res},5->2
+9,operator{SminIdS[]},4->1
+10,operator{S[]distV[]V},9->0
+11,operator{VgetRT},10->0
+12,param{ref=self},11->0
+13,param{vec:curPos},11->1
+14,operator{V[]getR[]T},10->1
+15,param{const txt = pos},14->0
+16,operator{R[]where==R[]TC},14->1
+17,param{ref[]:res},16->0
+18,param{const color = red},16->1
+19,param{const txt = color},16->2
+,,
+Syntax Tree,Output,
+0,pick red->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{RgetR[]S},
+1,operator{R[]where==R[]TC},0->0
+2,param{const txt = color},1->0
+3,param{const color = red},1->1
+4,param{ref[]:res},1->2
+5,operator{SminIdS[]},0->1
+6,operator{S[]distV[]V},5->0
+7,operator{VgetRT},6->0
+8,param{ref=self},7->0
+9,param{const txt = color},7->1
+10,operator{V[]getR[]T},6->1
+11,param{const txt = pos},10->0
+12,operator{R[]where==R[]TC},10->1
+13,param{const txt = color},12->0
+14,param{const color = red},12->1
+15,param{res[]:res},12->3
