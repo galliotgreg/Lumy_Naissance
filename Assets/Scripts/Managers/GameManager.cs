@@ -257,11 +257,11 @@ public class GameManager : MonoBehaviour {
 	#region Create Unit Templates
     private void CreateUnitTemplates()
     {
-		p1_unitTemplates = createTemplates( p1_specie );
-		p2_unitTemplates = createTemplates( p2_specie );
+		p1_unitTemplates = createTemplates( p1_specie, PlayerAuthority.Player1 );
+		p2_unitTemplates = createTemplates( p2_specie, PlayerAuthority.Player2);
     }
 
-	GameObject[] createTemplates( Specie specie ) {
+	GameObject[] createTemplates( Specie specie, PlayerAuthority authority ) {
 		GameObject[] unitTemplates = new GameObject[specie.Casts.Values.Count + 1];
 
         //queen first
@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		foreach (GameObject template in unitTemplates) {
-			template.GetComponent<AgentEntity> ().Context.setModelValues ();
+			template.GetComponent<AgentEntity> ().Context.setModelValues (authority);
 		}
 
 		return unitTemplates;
