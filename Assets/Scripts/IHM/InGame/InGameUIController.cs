@@ -13,13 +13,15 @@ public class InGameUIController : MonoBehaviour
     public static InGameUIController instance = null;
 
 
+    /// <summary>
+    /// Resources 
+    /// </summary>
     [SerializeField]
     private Text J1_Red_Resources;
     [SerializeField]
     private Text J1_Green_Resources;
     [SerializeField]
     private Text J1_Blue_Resources;
-
     [SerializeField]
     private Text J2_Red_Resources;
     [SerializeField]
@@ -27,10 +29,23 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text J2_Blue_Resources;
 
+    /// <summary>
+    /// Timer 
+    /// </summary>
     [SerializeField]
     private Text timer;
 
-
+    /// <summary>
+    /// Exit Menu
+    /// </summary>
+    [SerializeField]
+    private GameObject exitMenu;
+    [SerializeField]
+    private Button quit_ExitMenu;
+    [SerializeField]
+    private Button cancel_ExitMenu;
+    [SerializeField]
+    private Canvas canvas; 
 
     /// <summary>
     /// Enforce Singleton properties
@@ -57,9 +72,7 @@ public class InGameUIController : MonoBehaviour
     {
         Init();
         if(!isNotNull())
-        {
             return; 
-        }
     }
 
     /// <summary>
@@ -67,7 +80,14 @@ public class InGameUIController : MonoBehaviour
     /// </summary>
 	private void Init()
     {
+        //Get gameManager Instance 
         gameManager = GameManager.instance;
+
+        Camera camera = NavigationManager.instance.GetCurrentCamera();
+        canvas.worldCamera = camera; 
+        //Init all Listener
+        cancel_ExitMenu.onClick.AddListener(CloseExitMenu);
+        quit_ExitMenu.onClick.AddListener(ExitGame); 
     }
 
 
@@ -75,7 +95,19 @@ public class InGameUIController : MonoBehaviour
     void Update()
     {
         CheckWinCondition();
+        CheckButtons(); 
         UpdateUI();
+      
+    }
+
+    /// <summary>
+    /// Check all the buttons on the Scene 
+    /// </summary>
+    private void CheckButtons()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            exitMenu.SetActive(true);
+        
     }
 
     /// <summary>
@@ -101,6 +133,10 @@ public class InGameUIController : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Update the UI with the parameters : Resources and Timer
+    /// </summary>
     private void UpdateUI()
     {
         //Get Resources values in game Manager
@@ -135,6 +171,11 @@ public class InGameUIController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Check is Resources from GameManager is ok
+    /// </summary>
+    /// <param name="res"></param>
+    /// <returns></returns>
     private bool CheckRes(float[] res)
     {
         if (res == null)
@@ -151,6 +192,10 @@ public class InGameUIController : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Check is UI gameobjetcs are not null 
+    /// </summary>
+    /// <returns>Return a boolean</returns>
     private bool isNotNull()
     {
         if (J1_Red_Resources == null)
@@ -189,6 +234,17 @@ public class InGameUIController : MonoBehaviour
             return false; 
         }
         return true; 
+    }
+
+    private void CloseExitMenu()
+    {
+        Debug.Log("WAA"); 
+        exitMenu.SetActive(false);
+    }
+
+    private void ExitGame()
+    {
+        Debug.LogWarning("TODO : EXIT GAME --> GOTO PERSONALISED MAP"); 
     }
 }
 
