@@ -151,6 +151,7 @@ public class GameManager : MonoBehaviour {
     {
         ABManager.instance.Reset(true);
         SetupMatch();
+        
     }
 
     public void Update()
@@ -199,6 +200,7 @@ public class GameManager : MonoBehaviour {
         ParseSpecies();
         CreateUnitTemplates();
         InitGameObjects();
+        winnerPlayer = Winner.None; 
     }
 
 
@@ -454,7 +456,7 @@ public class GameManager : MonoBehaviour {
         return null; 
     }
 
-    private float sumResources(PlayerAuthority authority)
+    public float sumResources(PlayerAuthority authority)
     {
         float resSum = 0;
         if (authority == PlayerAuthority.Player1)

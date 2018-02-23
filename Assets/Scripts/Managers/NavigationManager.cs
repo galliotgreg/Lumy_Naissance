@@ -120,6 +120,7 @@ public class NavigationManager : MonoBehaviour {
         Vector3 dir = (root.transform.position - camera.transform.position).normalized;
         while (Vector3.Dot(dir, root.transform.position - camera.transform.position) > zoomEndDistance)
         {
+            Debug.Log(Vector3.Dot(dir, root.transform.position - camera.transform.position));
             Vector3 towards = Vector3.MoveTowards(
                 root.transform.position,
                 camera.transform.position + root.transform.position - sightPoint,
