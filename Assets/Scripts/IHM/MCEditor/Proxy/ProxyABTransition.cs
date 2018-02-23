@@ -61,9 +61,13 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 
         if(StartPosition != null && EndPosition != null ) {
 
-            if(!(startPosition.Pin_Type == Pin.PinType.Condition) || !(endPosition.Pin_Type == Pin.PinType.Condition))
+            if(startPosition.Pin_Type != Pin.PinType.Condition && endPosition.Pin_Type != Pin.PinType.Condition)
             {
                 adjustPinPosition();
+            } else
+            {
+                //TODO : Gérer ce cas particulier
+                Debug.Log("transition -> Syntax tree");
             }            
 
             Vector3 posDepart = StartPosition.transform.position;
@@ -180,7 +184,11 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
     {
         GameObject startParent = GetParent(startPosition);
         GameObject endParent = GetParent(endPosition);
-        Vector3 direction = computeDirection(startParent.transform.position, endParent.transform.position);
+        Vector3 direction = new Vector3();
+        if (!(startPosition.Pin_Type == Pin.PinType.Condition) || !(endPosition.Pin_Type == Pin.PinType.Condition))
+        {
+            direction = computeDirection(startParent.transform.position, endParent.transform.position);
+        }            
 
         float radiusStart = startParent.transform.localScale.y / 2;
         float radiusEnd = endParent.transform.localScale.y / 2;
