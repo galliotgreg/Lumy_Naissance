@@ -125,6 +125,40 @@ public class AgentEntity : MonoBehaviour
         return agentCompos;
     }
 
+	public List<ActionType> getAgentActions (){
+		List<ActionType> result = new List<ActionType> ();
+
+		foreach (AgentComponent comp in this.getAgentComponents()) {
+			if (comp.IsAction) {
+				if (comp.EnableGotoHold) {
+					if (!result.Contains (ActionType.Goto)) {
+						result.Add (ActionType.Goto);
+					}
+				}
+				if (comp.EnableLay) {
+					if (!result.Contains (ActionType.Lay)) {
+						result.Add (ActionType.Lay);
+					}
+				}
+				if (comp.EnablePickDrop) {
+					if (!result.Contains (ActionType.Pick)) {
+						result.Add (ActionType.Pick);
+					}
+					if (!result.Contains (ActionType.Drop)) {
+						result.Add (ActionType.Drop);
+					}
+				}
+				if (comp.EnableStrike) {
+					if (!result.Contains (ActionType.Strike)) {
+						result.Add (ActionType.Strike);
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
     // Use this for initialization
     void Awake()
     {

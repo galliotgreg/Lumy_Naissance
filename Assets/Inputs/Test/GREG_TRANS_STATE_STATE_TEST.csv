@@ -8,3 +8,10 @@ Transitions,Start State,End State
 0,INIT,grow
 1,INIT,fight
 2,fight,goto water
+,,
+Syntax Tree,output,
+0,0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,operator{RgetR[]S},1->0

@@ -27,9 +27,13 @@ public abstract class MC_Inventory : MonoBehaviour {
 	protected void setItems (List<System.Object> items){
 		foreach( System.Object item in items ){
 			GameObject newItem = Instantiate (itemPrefab);
+
 			MC_InventoryItem inventoryItem = newItem.GetComponent<MC_InventoryItem> ();
 			inventoryItem.Item = item;
 			inventoryItem.transform.SetParent ( container.transform );
+
+			// adjust position
+			newItem.transform.position = container.transform.position;
 
 			inventoryItem.Inventory = this;
 			configItem ( inventoryItem );

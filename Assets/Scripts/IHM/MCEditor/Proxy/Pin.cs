@@ -26,6 +26,8 @@ public class Pin : DragSelectableProxyGameObject {
 	/// </summary>
 	GameObject transitionPrefab;
 
+	Camera trackingCamera;
+
 	#region PROPERTIES
 	public PinType Pin_Type {
 		get {
@@ -39,7 +41,7 @@ public class Pin : DragSelectableProxyGameObject {
 
     // Use this for initialization
     void Start () {
-		
+		trackingCamera = ( MCEditor_BringToFront_Camera.CanvasCamera != null ? MCEditor_BringToFront_Camera.CanvasCamera : Camera.main );
 	}
 
 	// Update is called once per frame
@@ -81,7 +83,7 @@ public class Pin : DragSelectableProxyGameObject {
 			if (auxTransition != null) {
 				// Move
 				auxTransition.LineRenderer.SetPosition( 0, this.transform.position );
-				Vector3 mouse = Camera.main.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+				Vector3 mouse = trackingCamera.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, -trackingCamera.transform.position.z));
 				//mouse.z = this.transform.position.z;
 
 				auxTransition.LineRenderer.SetPosition( 1, mouse );
