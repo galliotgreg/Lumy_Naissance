@@ -189,6 +189,9 @@ public class NavigationManager : MonoBehaviour {
             yield return true;
         }
 
+        // Mettre à jour la caméra du canvas
+        canvas.GetComponent<Canvas>().worldCamera = camera;
+
         // Mettre à jour les indicateurs
         addToPreviousList = true;
         lastPanelLoaded = null;
