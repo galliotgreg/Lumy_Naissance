@@ -162,6 +162,7 @@ public class ABManager : MonoBehaviour {
                 + GetInputSubFolder(agent)
                 + agent.BehaviorModelIdentifier
                 + ".csv");
+            models.Add(model);
         }
         ABInstance instance = CreateABInstanceFromModel(model);
         instance.AgentId = agent.Id;

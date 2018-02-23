@@ -99,7 +99,7 @@ public class CastesUIController : MonoBehaviour {
         LumyEditorManager.instance.LoadLumy(castName);
     }
 
-    private void CreateSwarmSelectionButons()
+    public void CreateSwarmSelectionButons()
     {
         string[] speciesNames = AppContextManager.instance.GetSpeciesFolderNames();
         for (int i=0; i < speciesNames.Length; i++)
@@ -125,7 +125,7 @@ public class CastesUIController : MonoBehaviour {
         }
     }
 
-    private void SelectActiveSwarm(string swarmName)
+    public void SelectActiveSwarm(string swarmName)
     {
         AppContextManager.instance.SwitchActiveSpecie(swarmName);
         LoadEditedLumy();
