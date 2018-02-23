@@ -126,14 +126,14 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &61961870
 AudioListener:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 61961869}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!92 &61961871
 Behaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +191,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 61961869}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1725846085}
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1638374293}
   m_HandleRect: {fileID: 1638374292}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -399,6 +399,7 @@ GameObject:
   - component: {fileID: 149024348}
   - component: {fileID: 149024347}
   - component: {fileID: 149024346}
+  - component: {fileID: 149024350}
   m_Layer: 5
   m_Name: EditeurMCSceneCanvas
   m_TagString: Untagged
@@ -483,9 +484,9 @@ Canvas:
   m_GameObject: {fileID: 149024344}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_RenderMode: 1
+  m_Camera: {fileID: 61961873}
+  m_PlaneDistance: 5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -495,6 +496,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &149024350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 149024344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615568b957fd57b428b3b75a5f4c41eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasCam: {fileID: 61961873}
+  canvas: {fileID: 149024349}
 --- !u!1 &157517592
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,7 +863,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2110574395}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2489
+  m_Size: 0.24890003
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3051,7 +3065,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 999505068}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.28666666
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4007,8 +4021,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 393822062}
   m_HandleRect: {fileID: 393822061}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.5
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5497,7 +5511,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1155912036}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.28666666
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7213,7 +7227,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 888475087}
   m_HandleRect: {fileID: 888475086}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7502,8 +7516,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2026384699}
   m_HandleRect: {fileID: 2026384698}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.5
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9539,7 +9553,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 245449302}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.28666666
+  m_Size: 0.2866667
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
