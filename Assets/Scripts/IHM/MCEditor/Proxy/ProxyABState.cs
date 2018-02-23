@@ -86,8 +86,8 @@ public class ProxyABState : MCEditor_Proxy {
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        //calculatePinPosition();
+    }
 
 	#region INSTANTIATE
 	public static ProxyABState instantiate( ABState state, bool init ){
@@ -109,10 +109,12 @@ public class ProxyABState : MCEditor_Proxy {
 			Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result), result.transform);
 		}
 
-		// Outcome Pin 
+        // Outcome Pin 
+        int outPin = 1;
 		foreach(ABTransition transition in state.Outcomes) 
 		{ 
-			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(result), result.transform); 
+			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(state, result.gameObject, true, outPin), result.transform);
+            outPin++;
 		}
 
 		return result;
@@ -121,5 +123,34 @@ public class ProxyABState : MCEditor_Proxy {
 	public static Vector3 calculateStatePosition( Transform parent ){
 		return new Vector3(UnityEngine.Random.Range(-5, 5),UnityEngine.Random.Range(-5, 5), parent.position.z);
 	}
+
+    private void calculatePinPosition()
+    {
+        float radius = this.transform.localScale.y / 2;
+        int outPin = 1;
+
+        if (abState.Name.ToLower() == "init")
+        {
+            foreach (Pin pin in Outcomes)
+            {
+                pin.transform.position = new Vector3(
+                    this.transform.position.x + (radius * Mathf.Cos(outPin * (2 * Mathf.PI) / Mathf.Max(1, Outcomes.Count))),
+                    this.transform.position.y + (radius * Mathf.Sin(outPin * (2 * Mathf.PI) / Mathf.Max(1, Outcomes.Count))),
+                    this.transform.position.z
+                );
+                outPin++;
+            }
+        } else {
+            foreach (Pin pin in Outcomes)
+            {
+                pin.transform.position = new Vector3(
+                    this.transform.position.x + (radius * Mathf.Cos(outPin * (2 * Mathf.PI) / Mathf.Max(1, Outcomes.Count)/-2)),
+                    this.transform.position.y + (radius * Mathf.Sin(outPin * (2 * Mathf.PI) / Mathf.Max(1, Outcomes.Count)/-2)),
+                    this.transform.position.z
+                );
+                outPin++;
+            }
+        }
+    }
 	#endregion
 }

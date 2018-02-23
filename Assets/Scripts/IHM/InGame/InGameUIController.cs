@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InGameUIController : MonoBehaviour {
 
@@ -46,7 +47,8 @@ public class InGameUIController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        CheckWinCondition(); 	    	
+        CheckWinCondition();
+        CheckResources(); 
 	}
 
     /// <summary>
@@ -72,9 +74,23 @@ public class InGameUIController : MonoBehaviour {
         }
     }
 
-    private void GetResources(PlayerAuthority player)
+    private void CheckResources()
     {
-        gameManager.GetResources(player); 
+        float[] res = gameManager.GetResources(PlayerAuthority.Player1);
+        GameObject resRedJ1 = GameObject.Find("red_numJ1");
+        if (resRedJ1 == null)
+        {
+            return;
+        }
+        Text text = resRedJ1.GetComponent<Text>();
+        if (text == null)
+        {
+            return;
+        }
+            text.text = "" + res[0]; 
+
+
+        
     }
 
 
