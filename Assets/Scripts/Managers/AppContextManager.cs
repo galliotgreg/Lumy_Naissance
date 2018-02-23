@@ -61,6 +61,19 @@ public class AppContextManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private string SPECIES_FOLDER_PATH = "Assets/Inputs/Species/";
+
+    /// <summary>
+    /// Path to the folder hosting the specie template
+    /// </summary>
+    [SerializeField]
+    private string TEMPLATE_FOLDER_PATH = "Assets/Inputs/SpecieTemplate/";
+
+    /// <summary>
+    /// Path to the folder hosting the specie template
+    /// </summary>
+    [SerializeField]
+    private string TEMPLATE_SPECIE_FILE_NAME = "XXX_specie";
+
     /// <summary>
     /// Casts files suffix
     /// </summary>
@@ -72,6 +85,12 @@ public class AppContextManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     public string SPECIE_FILES_SUFFIX = "_specie";
+
+    /// <summary>
+    /// Default specie name radix
+    /// </summary>
+    [SerializeField]
+    public string DEFAULT_SPECIE_NAME = "maNuee";
 
     /// <summary>
     /// Casts files suffix
@@ -257,7 +276,7 @@ public class AppContextManager : MonoBehaviour
 
         //Build new file
         //Copy Header
-        string content = lines[0] + "\n"  + lines[1] + "\n" + lines[2] + "\n" + lines[3] + "\n";
+        string content = lines[0] + "\n"  + lines[1] + "\n";
         //Write cast definitions
         content += "Name,Behavior,Head Size,Components List,\n";
         foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
@@ -346,8 +365,37 @@ public class AppContextManager : MonoBehaviour
 
     public void CreateSpecie(string specieName)
     {
-        
+        string specieFolderName = Char.ToUpperInvariant(specieName[0]) + specieName.Substring(1);
 
+        //Check is specie already exists
+        foreach (string curFolderName in speciesFolderNames)
+        {
+            if (specieFolderName == curFolderName)
+            {
+                Debug.LogError("Cannot create " + specieName + " because this name is already used !");
+            }
+        }
+
+        // Create Folder
+        Directory.CreateDirectory(GetFolderPathFromSpecieName(specieFolderName));
+
+        //Update Data
+        UpdateSpeciesFoldersNames();
+
+        //Create Files 
+        DirectoryInfo di = new DirectoryInfo(TEMPLATE_FOLDER_PATH);
+        foreach (FileInfo file in di.GetFiles())
+        {
+            File.Copy(
+            file.FullName,
+            GetFolderPathFromSpecieName(specieFolderName) + file.Name);
+        }
+        File.Move(GetFolderPathFromSpecieName(specieFolderName) + TEMPLATE_SPECIE_FILE_NAME + CSV_EXT,
+            GetFolderPathFromSpecieName(specieFolderName) + specieName + SPECIE_FILES_SUFFIX + CSV_EXT);
+
+        // Set created as active
+        CastesUIController.instance.CreateSwarmSelectionButons();
+        CastesUIController.instance.SelectActiveSwarm(specieFolderName);
     }
 
     public void ForkCast()

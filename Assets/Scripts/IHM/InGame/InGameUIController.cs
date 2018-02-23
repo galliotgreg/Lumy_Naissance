@@ -106,8 +106,7 @@ public class InGameUIController : MonoBehaviour
     private void CheckButtons()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-            exitMenu.SetActive(true);
-        
+            exitMenu.SetActive(!exitMenu.activeSelf);
     }
 
     /// <summary>
