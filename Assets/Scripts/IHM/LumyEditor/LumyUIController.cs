@@ -38,8 +38,10 @@ public class LumyUIController : MonoBehaviour {
     public float infobulleX;
     [Range(0, 6)]
     public float infobulleY;
+    [Range(0f, 0.7f)]
+    public float deltaTexte;
    
-    private float decalageTextes = 0;
+    private float deltaY = 0;
 
     private Text nameText;
     private Text prodCostText;
@@ -270,16 +272,15 @@ public class LumyUIController : MonoBehaviour {
 
                 else
                 {
-                    decalageTextes += 0.5f;
-                    listeTextes[i].SetActive(true);
-                    listeTextes[i].transform.position = infobulle.transform.Find("firstSlot").gameObject.transform.position + new Vector3(0f, -decalageTextes, 0f);
                     
+                    listeTextes[i].SetActive(true);
+                    listeTextes[i].transform.position = listeTextes[0].transform.position + new Vector3(0f, -deltaY, 0f);
+                    deltaY += deltaTexte;
+
                 }
 
-                Debug.Log("delta=" + decalageTextes);
-               
             }
-            decalageTextes = 0;
+            deltaY = 0;
         }
         else
         {
