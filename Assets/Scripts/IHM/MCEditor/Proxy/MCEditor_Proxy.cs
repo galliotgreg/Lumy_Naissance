@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public abstract class MCEditor_Proxy : MonoBehaviour {
 
@@ -44,5 +45,16 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
 		return newOpeName;
 	}
+	#endregion
+
+	public abstract void click ();
+
+	#region IPointerClickHandler implementation
+
+	public void OnMouseDown ()
+	{
+		click ();
+	}
+
 	#endregion
 }

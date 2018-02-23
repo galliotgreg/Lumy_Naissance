@@ -11,7 +11,7 @@ public class AgentContext : MonoBehaviour
     [BindParam(Identifier = "self")]
     [SerializeField]
     private GameObject self;
-    [BindParam(Identifier = "hive")]
+    [BindParam(Identifier = "home")]
     [SerializeField]
     private GameObject home;
 
@@ -161,7 +161,8 @@ public class AgentContext : MonoBehaviour
 		this.Traces = extractGameObj( Unit_GameObj_Manager.instance.tracesInRange( this.entity ).ToArray() );
     }
 
-	public void setModelValues(){
+	public void setModelValues(PlayerAuthority authority)
+    {
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
 
@@ -185,8 +186,19 @@ public class AgentContext : MonoBehaviour
 		this.model.PickRange = 0;
 
         // ProdCost
-        ABModel behaviorModel = ABManager.instance.FindABModel(entity.BehaviorModelIdentifier);
-		AgentScript.ResourceCost cost = getCost( agentComponents, behaviorModel);
+       // ABModel behaviorModel = ABManager.instance.FindABModel(entity.BehaviorModelIdentifier);
+        string playerFolder = GameManager.instance.PLAYER1_SPECIE_FOLDER;
+        if (authority == PlayerAuthority.Player2)
+        {
+            playerFolder = GameManager.instance.PLAYER2_SPECIE_FOLDER;
+        }
+        string path = GameManager.instance.INPUTS_FOLDER_PATH
+                + playerFolder
+                + entity.BehaviorModelIdentifier
+                + ".csv";
+        ABModel behaviorModel = ABManager.instance.LoadABModelFromFile(path);
+
+        AgentScript.ResourceCost cost = getCost( agentComponents, behaviorModel);
 		this.model.ProdCost = cost.Resources;
 		// layTimeCost
 		this.model.LayTimeCost = getCooldown( agentComponents );
@@ -253,7 +265,7 @@ public class AgentContext : MonoBehaviour
 	/// </summary>
 	/// <param name="agentComponents">Agent's Components</param>
 	/// <returns>The cost.</returns>
-	AgentScript.ResourceCost getCost( AgentComponent[] agentComponents, ABModel beahaviorModel ){
-        return CostManager.instance.ComputeCost(agentComponents, beahaviorModel);
+	AgentScript.ResourceCost getCost( AgentComponent[] agentComponents, ABModel behaviorModel ){
+        return CostManager.instance.ComputeCost(agentComponents, behaviorModel);
 	}
 }

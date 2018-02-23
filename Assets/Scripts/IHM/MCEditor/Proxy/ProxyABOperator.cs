@@ -141,4 +141,13 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
                 this.transform.position.z);
     }
     #endregion
+
+	#region implemented abstract members of MCEditor_Proxy
+
+	public override void click ()
+	{
+		throw new System.NotImplementedException ();
+	}
+
+	#endregion
 }

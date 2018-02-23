@@ -32,6 +32,8 @@ public class CostManager : MonoBehaviour
     [SerializeField]
     private float phy_rate = 1.1f;
     [SerializeField]
+    private float phy_lambda = 1f;
+    [SerializeField]
     private float mc_param_fixed_cost = 10f;
     [SerializeField]
     private float mc_inter_fixed_cost = 10f;
@@ -200,16 +202,85 @@ public class CostManager : MonoBehaviour
 
     private float ComputePhyCoef(int rank)
     {
-        return Mathf.Pow(phy_rate, (float) rank);
+        return phy_lambda * Mathf.Pow(phy_rate, (float) rank);
     }
 
     private float ComputeBehaviorCost(ABModel behaviorModel)
     {
-        float mc_cost;
+        float mc_cost = 0f;
+        foreach (ABState state in behaviorModel.States)
+        {
+            if (state.Id == 0) 
+            {
+                mc_cost += mc_param_coef * mc_param_fixed_cost;
+            }
+            if (state.Action != null) // Etat Final
+            {
+                mc_cost += mc_param_coef * mc_param_fixed_cost; //price;
+            }
+            else if (state.Action == null) //Etat Intermediaire
+            {
+                mc_cost += mc_inter_coef * mc_inter_fixed_cost;//price;
 
-        //TODO SOMETHING
+            }
+        }
 
-        return 1f;
+        //Retreive root nodes
+        IList<ABNode> rootNodes = new List<ABNode>();
+        foreach (ABState state in behaviorModel.States)
+        {
+            if (state.Action != null)
+            {
+                foreach (ABNode param in state.Action.Parameters)
+                {
+                    rootNodes.Add(param);
+                }
+            }
+        }
+        foreach (ABTransition trans in behaviorModel.Transitions)
+        {
+            if (trans.Condition != null)
+            {
+                rootNodes.Add(trans.Condition);
+            }
+        }
+
+        //Sweep root nodes
+        foreach (ABNode node in rootNodes)
+        {
+            IABGateOperator abOperator = (IABGateOperator)node;
+            if (abOperator.Inputs[0] == null)
+            {
+                Debug.Log("");
+            }
+            mc_cost += ComputeTreeCost(abOperator.Inputs[0]);
+        }
+
+        return (float) Math.Log(mc_cost, 2f);
+    }
+
+    private float ComputeTreeCost(ABNode node)
+    {
+        //Compute curent
+        if (node is IABParam)
+        {
+            return mc_param_coef * mc_param_fixed_cost;
+        } else if (node is IABOperator)
+        {
+            float cost = 0f;
+            cost += mc_operator_coef * mc_operator_fixed_cost;
+            IABOperator abOperator = (IABOperator) node;
+            foreach (ABNode child in abOperator.Inputs)
+            {
+                if (child != null)
+                {
+                    cost += ComputeTreeCost(child);
+                }
+            }
+            return cost;
+        }
+
+        throw new NotSupportedException("Trying to acces a ABNode that is not a ABNode");
     }
 
     private float MergeCosts(float phys, float mc)

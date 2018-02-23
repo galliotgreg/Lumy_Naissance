@@ -17,6 +17,7 @@ public class AfficherMenu : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             afficherSiTouche.SetActive(!afficherSiTouche.activeSelf);
+            Debug.Log("WAZAAA");
         }
 	}
 }

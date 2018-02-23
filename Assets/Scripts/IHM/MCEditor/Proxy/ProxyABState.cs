@@ -153,4 +153,13 @@ public class ProxyABState : MCEditor_Proxy {
         }
     }
 	#endregion
+
+	#region implemented abstract members of MCEditor_Proxy
+
+	public override void click ()
+	{
+		throw new System.NotImplementedException ();
+	}
+
+	#endregion
 }

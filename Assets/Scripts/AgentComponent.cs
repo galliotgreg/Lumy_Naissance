@@ -259,6 +259,12 @@ public class AgentComponent : MonoBehaviour {
 			enableLay = value;
 		}
 	}
+
+	public bool IsAction{
+		get{
+			return EnableGotoHold || EnableLay || EnablePickDrop || EnableStrike;
+		}
+	}
 	#endregion
 
 	#region Sensors

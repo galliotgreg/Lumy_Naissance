@@ -8,6 +8,8 @@ public class DragObject : MonoBehaviour {
 	GameObject objectToDrag;
 	IDragObjectActivator dragActivator;
 
+	Camera trackingCamera;
+
 	#region PROPERTIES
 	public bool Dragging {
 		get {
@@ -18,7 +20,7 @@ public class DragObject : MonoBehaviour {
 
 	// Use this for initialization
 	protected void Start () {
-
+		trackingCamera = ( MCEditor_BringToFront_Camera.CanvasCamera != null ? MCEditor_BringToFront_Camera.CanvasCamera : Camera.main );
 	}
 
 	// Update is called once per frame
@@ -30,21 +32,25 @@ public class DragObject : MonoBehaviour {
 
 	private void updatePosition (GameObject _objectToDrag){
 		if (_objectToDrag != null) {
-			Camera cam = GameObject.Find ("Main Camera").GetComponent<Camera> ();
-			Vector3 mouse = cam.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, -cam.transform.position.z));
-			//mouse.z = _objectToDrag.transform.position.z;
+			Vector3 mouse = trackingCamera.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, -trackingCamera.transform.position.z));
+
+			// Bring Object to front
+			mouse.z = trackingCamera.transform.position.z+2f;
 
 			_objectToDrag.transform.position = mouse;
 		}
 	}
-
+		
+	float startZposition;
 	public void startDrag( GameObject _objectToDrag, IDragObjectActivator activator ){
 		dragging = true;
+		startZposition = _objectToDrag.transform.position.z;
 		this.objectToDrag = _objectToDrag;
 		this.dragActivator = activator;
 	}
 	public void mouseUp(){
 		dragging = false;
+		this.objectToDrag.transform.position = new Vector3( this.objectToDrag.transform.position.x, this.objectToDrag.transform.position.y, startZposition );
 		dragActivator.endDrag ( this.objectToDrag );
 		this.objectToDrag = null;
 		this.dragActivator = null;
