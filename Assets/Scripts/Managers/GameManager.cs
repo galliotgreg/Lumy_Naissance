@@ -180,7 +180,6 @@ public class GameManager : MonoBehaviour {
 
         //WIN CONDITION RESOURCES 
         timerLeft -= Time.deltaTime;
-        Debug.Log(timerLeft); 
         if (timerLeft <= 0)
         {
             gameNotOver = false; 

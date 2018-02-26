@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AB_RefTab_WhereEquals_RefTab_Txt_Color_Operator : ABOperator<ABTable<ABRef>>
 {
@@ -29,11 +30,16 @@ public class AB_RefTab_WhereEquals_RefTab_Txt_Color_Operator : ABOperator<ABTabl
         //Return
         ABTable<ABRef> result = TypeFactory.CreateEmptyTable<ABRef>();
 
+        IList<ABRef> listResult = new List<ABRef>();
         for (int i = 0; i < tab.Values.Length; i++) {
 
             if (tab.Values[i].GetAttr(text.Value) != null && ((ABColor)tab.Values[i].GetAttr(text.Value)).Value == b1.Value) {
-                result.Values[i] = tab.Values[i];
+                listResult.Add(tab.Values[i]);
             }
+        }
+        result.Values = new ABRef[listResult.Count];
+        for (int i=0; i < listResult.Count; i++) {
+            result.Values[i] = listResult[i];
         }
 
         return result;

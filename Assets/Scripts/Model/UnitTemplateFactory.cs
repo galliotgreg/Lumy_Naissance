@@ -24,6 +24,7 @@ public class UnitTemplateInitializer {
     private static readonly bool PRYSME_GOTO_HOLD = false;
     private static readonly bool PRYSME_STRIKE = false;
     private static readonly bool PRYSME_PICK_DROP = false;
+    private static readonly bool PRYSME_TRACE_SPREAD = false;
     private static readonly bool PRYSME_LAY = true;
     private static readonly float PRYSME_VISION_RANGE = 0f;
     private static readonly float PRYSME_VIBRATION_RANGE = 0f;
@@ -96,6 +97,7 @@ public class UnitTemplateInitializer {
         prysmeComponent.EnableStrike = PRYSME_STRIKE;
         prysmeComponent.EnablePickDrop = PRYSME_PICK_DROP;
         prysmeComponent.EnableLay = PRYSME_LAY;
+        prysmeComponent.EnableTraceSpread = PRYSME_TRACE_SPREAD;
 
         //Sensors
         prysmeComponent.VisionRange = PRYSME_VISION_RANGE;
@@ -132,6 +134,7 @@ public class UnitTemplateInitializer {
         dst.EnableStrike = src.EnableStrike;
         dst.EnablePickDrop = src.EnablePickDrop;
         dst.EnableLay = src.EnableLay;
+        dst.EnableTraceSpread = src.EnableTraceSpread;
 
         //Sensors
         dst.VisionRange = src.VisionRange;

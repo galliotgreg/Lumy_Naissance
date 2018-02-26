@@ -110,7 +110,7 @@ public class ABParser
 
         //Create Node
         ABNode node = null;
-        //Debug.Log(typeName + " " + typeParams);
+        Debug.Log(typeName + " " + typeParams);
         switch (typeName)
         {
             case "operator":
