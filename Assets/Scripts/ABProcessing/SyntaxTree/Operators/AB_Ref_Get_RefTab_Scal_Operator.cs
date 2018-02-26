@@ -15,6 +15,10 @@
         ABNode input2 = Inputs[1];
         s = OperatorHelper.Instance.getScalarParam(context, input2);
 
+        if(s.Value == -1) {
+            throw new System.NotSupportedException("User error: Index out of bound on AB_Ref_Get_RefTab_Scal_Operator");
+        }
+
         //Build then return Result
         return tab.Values[(int)s.Value];
     }

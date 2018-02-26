@@ -144,7 +144,7 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 
 	public override void click ()
 	{
-		Vector2 pos = new Vector2 (transform.position.x + 1, transform.position.y + 1);
+		Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
 		MCEditor_DialogBox_Param dlg = MCEditor_DialogBoxManager.instance.instantiateValue (this, pos);
 	}
 
