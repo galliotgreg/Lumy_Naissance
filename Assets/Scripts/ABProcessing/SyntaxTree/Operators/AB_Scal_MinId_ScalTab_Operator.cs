@@ -16,7 +16,9 @@
         ABScalar[] values = new ABScalar[tab.Values.Length];
         if (tab.Values.Length == 0)
         {
-            return TypeFactory.CreateEmptyScalar();
+            ABScalar defaultScal = TypeFactory.CreateEmptyScalar();
+            defaultScal.Value = -1;
+            return defaultScal;
         }
 
         int minId = 0;
