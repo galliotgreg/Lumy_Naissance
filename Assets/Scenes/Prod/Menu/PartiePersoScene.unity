@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -735,6 +735,22 @@ MonoBehaviour:
     type: 2}
   player1SwarmSelectionPanel: {fileID: 667558442}
   player2SwarmSelectionPanel: {fileID: 575431068}
+  resourcesStock: {fileID: 1286146576}
+  startResources: {fileID: 355616876}
+  gameTimer: {fileID: 1918451477}
+  lumyLimit: {fileID: 1429774427}
+  minGisement: 125
+  mediumGisement: 250
+  maxGisement: 500
+  minRes: 10
+  mediumRes: 25
+  maxRes: 50
+  minTimer: 100
+  mediumTimer: 300
+  maxTimer: 420
+  minLumy: 50
+  mediumLumy: 100
+  maxLumy: 250
 --- !u!1 &215840409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,7 +1239,7 @@ GameObject:
   - component: {fileID: 355616877}
   - component: {fileID: 355616876}
   m_Layer: 5
-  m_Name: Dropdown (1)
+  m_Name: StartResources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3962,7 +3978,7 @@ GameObject:
   - component: {fileID: 1286146577}
   - component: {fileID: 1286146576}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: StockSize
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4390,8 +4406,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 44634f18ea9342e4898d78b2fe3e87d0, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4450,7 +4466,7 @@ GameObject:
   - component: {fileID: 1429774428}
   - component: {fileID: 1429774427}
   m_Layer: 5
-  m_Name: Dropdown (3)
+  m_Name: LumyLimit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6029,7 +6045,7 @@ GameObject:
   - component: {fileID: 1918451478}
   - component: {fileID: 1918451477}
   m_Layer: 5
-  m_Name: Dropdown (2)
+  m_Name: GameTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
