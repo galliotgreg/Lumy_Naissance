@@ -110,7 +110,7 @@ public class ABParser
 
         //Create Node
         ABNode node = null;
-        Debug.Log(typeName + " " + typeParams);
+        //Debug.Log(typeName + " " + typeParams);
         switch (typeName)
         {
             case "operator":
@@ -118,6 +118,7 @@ public class ABParser
                 break;
             case "param":
                 node = (ABNode)ParseParam(typeParams);
+
                 break;
             default:
                 throw new NotSupportedException("Node type" + typeName + " not handled !");
