@@ -25,7 +25,9 @@ public class MC_Inventory_Params : MC_Inventory {
 		// Scalar
 		parameters.Add ( new ABScalParam ("scal", null));
 		// Text
-		parameters.Add ( new ABTextParam ("text", null));
+		ABText t = new ABText();
+		t.Value = "text";
+		parameters.Add ( new ABTextParam ("text", t ) );
 		// Boolean
 		ABBool abBoolTrue = new ABBool ();
 		abBoolTrue.Value = true;
