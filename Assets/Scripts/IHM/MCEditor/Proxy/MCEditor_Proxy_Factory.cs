@@ -39,6 +39,8 @@ public class MCEditor_Proxy_Factory : MonoBehaviour {
 	private ProxyABTransition transitionPrefab;
 	[SerializeField]
 	private Pin pinPrefab;
+    [SerializeField]
+    private Pin pinOutPrefab;
 
 	void Start(){}
 	void Update(){}
@@ -82,10 +84,23 @@ public class MCEditor_Proxy_Factory : MonoBehaviour {
 			return pinPrefab;
 		}
 	}
-	#endregion
 
-	#region INSTANTIATE
-	public static ProxyABState instantiateState( ABState state, bool init ){
+    public Pin PinOutPrefab
+    {
+        get
+        {
+            return pinOutPrefab;
+        }
+
+        set
+        {
+            pinOutPrefab = value;
+        }
+    }
+    #endregion
+
+    #region INSTANTIATE
+    public static ProxyABState instantiateState( ABState state, bool init ){
 		return ProxyABState.instantiate (state, init);
 	}
 

@@ -56,6 +56,10 @@ public class SwitchAction : MonoBehaviour {
             {
                 transform.parent.Find("btn_Merge").gameObject.SetActive(true);
             }
+
+            Text txt = transform.Find("Text").gameObject.GetComponent<Text>();
+            AppContextManager.instance.SwitchActiveCast(txt.text);
+            CastesUIController.instance.LoadEditedLumy();
         }
         else //Fermeture du lumy ouvert (reselectionné pour simplement le fermer
         {
