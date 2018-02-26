@@ -90,13 +90,16 @@ public class LayAction : GameAction {
 		AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
 
 		currentCost = new AgentScript.ResourceCost( unitEntity.Context.Model.ProdCost );
-		if ( CheckResources( currentTemplate, currentCost ) ){
-			DecreaseResources( currentCost );
+        if (!CheckResources(currentTemplate, currentCost))
+            return;
+        if (this.agentEntity.Home.getPopulation().Count >= SwapManager.instance.GetPlayerNbLumy())
+            return; 
 
-			this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
-			// wait for cooldownTime
-			Invoke( "Lay", this.CoolDownTime );
-		}
+		DecreaseResources( currentCost );
+
+		this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
+		// wait for cooldownTime
+		Invoke( "Lay", this.CoolDownTime );
 	}
 
 	protected override void activateAction ()
