@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class CostManager : MonoBehaviour
 {
+    static int compteur_param = 0;
+    static int compteur_operateur = 0;
+    static int compteur_general = 0;
+
     /// <summary>
     /// The static instance of the Singleton for external access
     /// </summary>
@@ -234,6 +237,7 @@ public class CostManager : MonoBehaviour
                 foreach (ABNode param in state.Action.Parameters)
                 {
                     rootNodes.Add(param);
+
                 }
             }
         }
@@ -244,14 +248,13 @@ public class CostManager : MonoBehaviour
                 rootNodes.Add(trans.Condition);
             }
         }
-
         //Sweep root nodes
         foreach (ABNode node in rootNodes)
         {
             IABGateOperator abOperator = (IABGateOperator)node;
             if (abOperator.Inputs[0] == null)
             {
-                Debug.Log("");
+                Debug.Log("abOperator.Inputs[0] == null");
             }
             mc_cost += ComputeTreeCost(abOperator.Inputs[0]);
         }
@@ -261,7 +264,9 @@ public class CostManager : MonoBehaviour
 
     private float ComputeTreeCost(ABNode node)
     {
-        //Compute curent
+        Debug.Log(compteur_general);
+        compteur_general++;
+        //Compute current
         if (node is IABParam)
         {
             return mc_param_coef * mc_param_fixed_cost;
@@ -269,14 +274,18 @@ public class CostManager : MonoBehaviour
         {
             float cost = 0f;
             cost += mc_operator_coef * mc_operator_fixed_cost;
+            compteur_operateur++;
+
             IABOperator abOperator = (IABOperator) node;
             foreach (ABNode child in abOperator.Inputs)
             {
                 if (child != null)
                 {
+                    compteur_operateur++;
                     cost += ComputeTreeCost(child);
                 }
             }
+           // Debug.Log(cost);
             return cost;
         }
 
