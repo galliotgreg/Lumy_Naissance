@@ -5,18 +5,7 @@ using UnityEngine.EventSystems;
 
 public abstract class MCEditor_DialogBox : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
-	[SerializeField]
-	Canvas canvas;
-
-	// TODO :  ATTENTION : the hover flag is used to detect a click that deactive the dialog. It must start as FALSE, but it is considering that the click is still valid and destroies the dialog
-	// TODO :  ATTENTION : the dialog is not handling the mouse events
-	bool hover = true;
-
-	public Vector2 Size {
-		get {
-			return canvas.GetComponent<RectTransform>().rect.size;
-		}
-	}
+	bool hover = false;
 
 	// Use this for initialization
 	protected void Start () {
@@ -24,11 +13,18 @@ public abstract class MCEditor_DialogBox : MonoBehaviour, IPointerEnterHandler, 
 	}
 	
 	// Update is called once per frame
+	bool clickReleased = false;
 	protected void Update () {
-		if (Input.GetMouseButtonDown (0)) {
-			if( !hover ){
-				// Deactivate
-				close();
+		if (clickReleased) {
+			if (Input.GetMouseButtonDown (0)) {
+				if (!hover) {
+					// Deactivate
+					close ();
+				}
+			}
+		} else {
+			if (!(Input.GetMouseButtonDown (0))) {
+				clickReleased = true;
 			}
 		}
 	}
@@ -43,14 +39,8 @@ public abstract class MCEditor_DialogBox : MonoBehaviour, IPointerEnterHandler, 
 
 	#region IPointerEnterHandler implementation
 
-	public void OnMouseEnter(){
-		Debug.Log ("in");
-		hover = true;
-	}
-
 	public void OnPointerEnter (PointerEventData eventData)
 	{
-		Debug.Log ("in i");
 		hover = true;
 	}
 
@@ -58,28 +48,18 @@ public abstract class MCEditor_DialogBox : MonoBehaviour, IPointerEnterHandler, 
 
 	#region IPointerExitHandler implementation
 
-	public void OnMouseExit(){
-		Debug.Log ("out");
-		hover = false;
-	}
-
 	public void OnPointerExit (PointerEventData eventData)
 	{
-		Debug.Log ("out i");
 		hover = false;
 	}
 
 	#endregion
 
 	#region INSTANTIATE
-	protected static MCEditor_DialogBox instantiate ( MCEditor_DialogBox prefab, Vector3 position, Transform parent = null ){
-		MCEditor_DialogBox result = Instantiate<MCEditor_DialogBox>(prefab);
+	protected static MCEditor_DialogBox instantiate ( MCEditor_DialogBox prefab, Vector3 position, Transform parent ){
+		MCEditor_DialogBox result = Instantiate<MCEditor_DialogBox>(prefab, parent);
 		result.transform.position = position;
-
-		if (parent != null) {
-			result.transform.parent = parent;
-		}
-		return result.GetComponentInChildren<MCEditor_DialogBox>();
+		return result;
 	}
 	#endregion
 }

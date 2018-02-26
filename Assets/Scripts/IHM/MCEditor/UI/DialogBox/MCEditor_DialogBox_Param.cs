@@ -52,7 +52,7 @@ public class MCEditor_DialogBox_Param : MCEditor_DialogBox {
 	#endregion
 
 	#region INSTANTIATE
-	public static MCEditor_DialogBox_Param instantiate ( ProxyABParam param, MCEditor_DialogBox_Param prefab, Vector3 position, Transform parent = null ){
+	public static MCEditor_DialogBox_Param instantiate ( ProxyABParam param, MCEditor_DialogBox_Param prefab, Vector3 position, Transform parent ){
 		MCEditor_DialogBox_Param result = (MCEditor_DialogBox_Param)MCEditor_DialogBox.instantiate (prefab, position, parent);
 		result.Param = param;
 		result.Title = param.Name;
