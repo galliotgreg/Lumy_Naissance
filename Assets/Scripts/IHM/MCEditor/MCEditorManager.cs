@@ -41,7 +41,7 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABParam> proxyParams;
 
     [SerializeField]
-    private string MC_OrigFilePath = "Assets/Inputs/Test/GREG_TRANS_STATE_STATE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*GREG_TRANS_STATE_STATE_TEST.csv /*siu_scoot_behavior_LOAD_TEST.csv";*/
+    private string MC_OrigFilePath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_LOAD_SAVE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*GREG_TRANS_STATE_STATE_TEST.csv /*siu_scoot_behavior_LOAD_TEST.csv";*/
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
@@ -198,8 +198,138 @@ public class MCEditorManager : MonoBehaviour {
         abModel = LoadMC();
         LoadProxyStates();
         LoadProxyTransitions();
+        LoadMC_Position();
     }
     
+    void setProxyPositionOnLoad(string nameProxy, bool isStateBlock, bool isActionBlock, bool isOperatorBlock, bool isParameterBlock, float x, float y, float z)
+    {
+        if (isStateBlock)
+        {
+            foreach(ProxyABState proxy in proxyStates)
+            {
+                if(proxy.AbState.Name == nameProxy)
+                {
+                    proxy.transform.position = new Vector3(x, y, z);
+                }
+            }
+        }
+        else if (isActionBlock)
+        {
+            foreach(ProxyABAction proxy in proxyActions)
+            {
+                if (proxy.AbState.Name == nameProxy)
+                {
+                    proxy.transform.position = new Vector3(x, y, z);
+                }
+            }
+        }
+        else if (isOperatorBlock)
+        {
+            foreach (ProxyABOperator proxy in proxyOperators)
+            {
+                if (operatorDictionary[((IABOperator)proxy.AbOperator).GetType().ToString()] == nameProxy)
+                {
+                    proxy.transform.position = new Vector3(x, y, z);
+                }
+            }
+        }
+        else if (isParameterBlock)
+        {
+            foreach (ProxyABParam proxy in proxyParams)
+            {
+
+                string value = GetParamValue((ABNode)proxy.AbParam);
+                string type = paramDictionary[GetParamType((ABNode)proxy.AbParam)];
+                if (nameProxy.Contains("const"))
+                {
+                    if ((((IABParam)proxy.AbParam).Identifier + " " + type + "=" + value) == nameProxy)
+                    {
+                        if (!proxy.IsPositioned)
+                        {
+                            proxy.transform.position = new Vector3(x, y, z);
+                            proxy.IsPositioned = true;
+                            return;
+                        }                            
+                    }
+                }
+                else
+                {
+                    if ((type + ":" + ((IABParam)proxy.AbParam).Identifier) == nameProxy)
+                    {
+                        if (!proxy.IsPositioned)
+                        {
+                            proxy.transform.position = new Vector3(x, y, z);
+                            proxy.IsPositioned = true;
+                            return;
+                        }                            
+                    }
+                }
+            }
+        }
+    }
+
+    void LoadMC_Position()
+    {
+        string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";
+        StreamReader reader = new StreamReader(path);        
+
+        List<string> lines = new List<string>();
+
+        bool isStateBlock = false;
+        bool isActionBlock = false;
+        bool isOperatorBlock = false;
+        bool isParameterBlock = false;
+
+        while (reader.Peek() >= 0)
+        {
+            lines.Add(reader.ReadLine());
+        }        
+        foreach(string line in lines)
+        {
+            if (line != ",,")
+            {
+                String[] tokens = line.Split(',');
+                if (tokens[0] == "States")
+                {
+                    isStateBlock = true;
+                    continue;
+                }
+                else if (tokens[0] == "Actions")
+                {
+                    isStateBlock = false;
+                    isActionBlock = true;
+                    continue;
+                }
+                else if (tokens[0] == "Operators")
+                {
+                    isStateBlock = false;
+                    isActionBlock = false;
+                    isOperatorBlock = true;
+                    continue;
+                }
+                else if (tokens[0] == "Parameters")
+                {
+                    isStateBlock = false;
+                    isActionBlock = false;
+                    isOperatorBlock = false;
+                    isParameterBlock = true;
+                    continue;
+                }
+
+                string name = tokens[0];
+
+                string x_string = tokens[1];
+                string y_string = tokens[2];
+
+                float x = float.Parse(x_string);
+                float y = float.Parse(y_string);
+                float z = 0;
+
+                setProxyPositionOnLoad(name, isStateBlock, isActionBlock, isOperatorBlock, isParameterBlock, x, y, z);                
+            }            
+        }
+    }
+
     ABModel LoadMC()
     {
         ABModel model = new ABModel();
@@ -421,10 +551,66 @@ public class MCEditorManager : MonoBehaviour {
             }
         }              
     }
+    void Save_MC_Position()
+    {
+        //TODO : Generalise la construction  du path;
+        string csvpath = MC_OrigFilePath.Split('.')[0]+"_POSITION.csv";
+        StringBuilder csvcontent = new StringBuilder();
+        List<StringBuilder> syntTrees = new List<StringBuilder>();
+        csvcontent.AppendLine("States,Position");
+        foreach (ProxyABState state in proxyStates)
+        {
+            csvcontent.AppendLine(state.AbState.Name + ", " + state.transform.position.x.ToString() + ", "
+                                                            + state.transform.position.y.ToString() + ", "
+                                                            + state.transform.position.z.ToString());
+        }
+        csvcontent.AppendLine(",,");
+        csvcontent.AppendLine("Actions,Position");
+        foreach (ProxyABAction action in proxyActions)
+        {
+            csvcontent.AppendLine(action.AbState.Name + ", " + action.transform.position.x.ToString() + ", "
+                                                            + action.transform.position.y.ToString() + ", "
+                                                            + action.transform.position.z.ToString());
+        }
+        csvcontent.AppendLine(",,");
+        csvcontent.AppendLine("Operators,Position");
+        foreach (ProxyABOperator ope in proxyOperators)
+        {
+            string type = operatorDictionary[((IABOperator)ope.AbOperator).GetType().ToString()];
+
+            csvcontent.AppendLine(type + ", " + ope.transform.position.x.ToString() + ", "
+                                                            + ope.transform.position.y.ToString() + ", "
+                                                            + ope.transform.position.z.ToString());
+        }
+        csvcontent.AppendLine(",,");
+        csvcontent.AppendLine("Parameters,Position");
+        foreach (ProxyABParam param in proxyParams)
+        {
+            string value = GetParamValue((ABNode)param.AbParam);
+            string type = paramDictionary[GetParamType((ABNode)param.AbParam)];
+            if (((IABParam)param.AbParam).Identifier != "const")
+            {
+                csvcontent.AppendLine(type + ":" + ((IABParam)param.AbParam).Identifier + "," + param.transform.position.x.ToString() + ", "
+                                                                                        + param.transform.position.y.ToString() + ", "
+                                                                                         + param.transform.position.z.ToString());
+            }
+            else
+            {
+                csvcontent.AppendLine(((IABParam)param.AbParam).Identifier + " " + type + "=" + value + "," + param.transform.position.x.ToString() + ", "
+                                                                                                    + param.transform.position.y.ToString() + ", "
+                                                                                                    + param.transform.position.z.ToString());
+            }
+
+            //TODO : Syntax tree nodes position
+            File.Delete(csvpath);
+            File.AppendAllText(csvpath, csvcontent.ToString());
+            Debug.Log("Save MC Position");
+        }
+    }
 
     void Save_MC()
     {
-        string csvpath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_LOAD_SAVE_TEST.csv";
+        string csvpath = MC_OrigFilePath;
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
 
@@ -492,8 +678,9 @@ public class MCEditorManager : MonoBehaviour {
         foreach (StringBuilder content in syntTrees)
         {
             File.AppendAllText(csvpath, content.ToString());
-        }
+        }        
         Debug.Log("Save MC");
+        Save_MC_Position();
     }
 
 	string GetParamType(ABNode node)

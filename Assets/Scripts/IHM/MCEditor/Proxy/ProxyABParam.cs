@@ -8,8 +8,9 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
     private IABParam abParam;
     [SerializeField]
     private string name;
-    private string type = "const scal=5";
+    private string type;
     private bool isLoaded = false;
+    private bool isPositioned = false;
 
     public string Identifier {
         get {
@@ -21,6 +22,10 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
         get {
             throw new System.NotImplementedException();
         }
+		set {
+			type = value;
+			this.setProxyName (value);
+		}
     }
 
     public Pin Outcome
@@ -70,6 +75,19 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
         }
     }
 
+    public bool IsPositioned
+    {
+        get
+        {
+            return isPositioned;
+        }
+
+        set
+        {
+            isPositioned = value;
+        }
+    }
+
     // Use this for initialization
     void Start () {
         if (IsLoaded)// when the Operator is created by loading behavior file
@@ -87,6 +105,11 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		
 	}
 
+	public void setProxyName( string name ){
+		Text paramName = this.GetComponentInChildren<Text> ();
+		paramName.text = name;
+	}
+
 	#region INSTANTIATE
 	public static ProxyABParam instantiate( IABParam paramObj, bool isLoaded ){
 		return instantiate ( paramObj, isLoaded, calculateParamPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
@@ -100,11 +123,10 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		result.AbParam = paramObj;
 
 		// Set text
-		Text paramName = result.GetComponentInChildren<Text> ();
 		if (isLoaded) {
-			paramName.text = MCEditorManager.GetParamValue ((ABNode)paramObj);
+			result.setProxyName( MCEditorManager.GetParamValue ((ABNode)paramObj) );
 		} else {
-			paramName.text = paramObj.Identifier + " : " + MCEditorManager.GetParamValue ((ABNode)paramObj);
+			result.setProxyName( paramObj.Identifier + " : " + MCEditorManager.GetParamValue ((ABNode)paramObj) );
 		}
 
 		// Outcome pin
@@ -116,5 +138,15 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 	public static Vector3 calculateParamPosition( Transform parent ){
 		return new Vector3(UnityEngine.Random.Range(-5, 5),UnityEngine.Random.Range(-5, 5), parent.position.z);
 	}
+	#endregion
+
+	#region implemented abstract members of MCEditor_Proxy
+
+	public override void click ()
+	{
+		Vector2 pos = new Vector2 (transform.position.x + 1, transform.position.y + 1);
+		MCEditor_DialogBox_Param dlg = MCEditor_DialogBoxManager.instance.instantiateValue (this, pos);
+	}
+
 	#endregion
 }
