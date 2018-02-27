@@ -110,6 +110,13 @@ public class Pin : DragSelectableProxyGameObject {
 		result.Pin_Type = pinType;
 		result.transform.position = position;
 
+        if(result.pin_Type==Pin.PinType.Condition || result.pin_Type == Pin.PinType.ActionParam)
+        {
+            Renderer rend = result.GetComponent<Renderer>();
+            rend.material.shader = Shader.Find("Specular");
+            rend.material.SetColor("_SpecColor", Color.red);
+        }
+
 		return result;
 	}
 

@@ -21,18 +21,23 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 
 	protected override void confirmParam ()
 	{
-		//this.param.setProxyName ( value.text );
-		((ABTextParam)this.param.AbParam).Value.Value = value.text;
+		((ABTextParam)this.paramProxy.AbParam).Value.Value = value.text;
 	}
 
 	protected override void configParam ()
 	{
-		Title = "Text";
-		value.text = ((ABTextParam)this.param.AbParam).Value.Value;
+		value.text = ((ABTextParam)this.paramProxy.AbParam).Value.Value;
 	}
 
-	protected override void cancelParam ()
+	protected override void deactivateParam ()
 	{
+		// Nothing
 	}
+
+	protected override string dialogTitle ()
+	{
+		return "Text";
+	}
+
 	#endregion
 }
