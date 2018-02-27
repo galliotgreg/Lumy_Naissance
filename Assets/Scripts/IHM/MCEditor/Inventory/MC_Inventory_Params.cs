@@ -23,7 +23,9 @@ public class MC_Inventory_Params : MC_Inventory {
 		// Constants
 		// TODO table?
 		// Scalar
-		parameters.Add ( new ABScalParam ("scal", null));
+		ABScalar s = new ABScalar();
+		s.Value = 0;
+		parameters.Add ( new ABScalParam ("scal", s));
 		// Text
 		ABText t = new ABText();
 		t.Value = "text";
@@ -43,7 +45,10 @@ public class MC_Inventory_Params : MC_Inventory {
 		ABColor abColor_Blue = new ABColor (); abColor_Blue.Value = ABColor.Color.Blue;
 		parameters.Add ( new ABColorParam ("blue", abColor_Blue));
 		// Vector
-		parameters.Add ( new ABVecParam ("vec", null));
+		ABVec v = new ABVec();
+		v.X = 0;
+		v.Y = 0;
+		parameters.Add ( new ABVecParam ("vec", v));
 
 		setItems ( parameters );
 	}
@@ -64,7 +69,8 @@ public class MC_Inventory_Params : MC_Inventory {
 	{
 		ProxyABParam result = MCEditor_Proxy_Factory.instantiateParam( (IABParam)item.Item, false );
 		UnityEngine.UI.Text paramName = result.GetComponentInChildren<UnityEngine.UI.Text>();
-		paramName.text = ((IABParam)item.Item).Identifier;
+		//paramName.text = ((IABParam)item.Item).Identifier;
+		paramName.text = MCEditorManager.GetParamValue(((ABNode)item.Item));
 		return result.gameObject;
 	}
 

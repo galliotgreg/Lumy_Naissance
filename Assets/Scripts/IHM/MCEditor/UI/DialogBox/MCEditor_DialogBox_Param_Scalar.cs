@@ -23,7 +23,7 @@ public class MCEditor_DialogBox_Param_Scalar : MCEditor_DialogBox_Param {
 	{
 		try{
 			float v = float.Parse (value.text);
-			this.param.setProxyName ( v.ToString() );
+			//this.param.setProxyName ( v.ToString() );
 			((ABScalParam)this.param.AbParam).Value.Value = v;
 		}catch(System.Exception ex){
 			Debug.LogError ("Value is not a SCALAR");

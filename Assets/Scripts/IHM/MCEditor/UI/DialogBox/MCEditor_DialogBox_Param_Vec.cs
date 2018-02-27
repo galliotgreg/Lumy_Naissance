@@ -5,7 +5,9 @@ using UnityEngine;
 public class MCEditor_DialogBox_Param_Vec : MCEditor_DialogBox_Param {
 
 	[SerializeField]
-	UnityEngine.UI.Dropdown value;
+	UnityEngine.UI.InputField valueX;
+	[SerializeField]
+	UnityEngine.UI.InputField valueY;
 
 	// Use this for initialization
 	void Start () {
@@ -21,19 +23,27 @@ public class MCEditor_DialogBox_Param_Vec : MCEditor_DialogBox_Param {
 
 	protected override void confirmParam ()
 	{
-		bool v = value.value == 0;
-		this.param.setProxyName ( value.options[value.value].text );
-		((ABBoolParam)this.param.AbParam).Value.Value = v;
+		try{
+			float vX = float.Parse (valueX.text);
+			float vY = float.Parse (valueY.text);
+			//this.param.setProxyName ( "("+vX.ToString()+","+vY.ToString()+")" );
+			((ABVecParam)this.param.AbParam).Value.X = vX;
+			((ABVecParam)this.param.AbParam).Value.Y = vY;
+		}catch(System.Exception ex){
+			Debug.LogError ("Value is not a SCALAR");
+		}
 	}
 
 	protected override void configParam ()
 	{
-		Title = "Booléen";
-		value.value = (((ABBoolParam)this.param.AbParam).Value.Value ? 0 : 1 );
+		Title = "Vec";
+		valueX.text = ((ABVecParam)this.param.AbParam).Value.X.ToString();
+		valueY.text = ((ABVecParam)this.param.AbParam).Value.Y.ToString();
 	}
 
 	protected override void cancelParam ()
 	{
 	}
+
 	#endregion
 }

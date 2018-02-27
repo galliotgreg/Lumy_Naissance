@@ -22,7 +22,7 @@ public class MCEditor_DialogBox_Param_Bool : MCEditor_DialogBox_Param {
 	protected override void confirmParam ()
 	{
 		bool v = value.value == 0;
-		this.param.setProxyName ( v.ToString() );
+		//this.param.setProxyName ( v.ToString() );
 		//this.param.setProxyName ( value.options[value.value].text );
 		((ABBoolParam)this.param.AbParam).Value.Value = v;
 	}
