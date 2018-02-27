@@ -1,0 +1,167 @@
+States,Name,Type
+0,INIT,Init
+1,water found,Inter
+2,trace water to home,trigger{trace}
+3,goto water,trigger{goto}
+4,nothing interesting,Inter
+5,goto search,trigger{goto}
+6,goto elsewhere,trigger{goto}
+7,enemy found,Inter
+8,goto enemy,trigger{goto}
+9,trace enemy to home,trigger{trace}
+,,
+Transitions,Start State,End State
+0,INIT,water found
+1,water found,trace water to home
+2,water found,goto water
+3,INIT,enemy found
+4,enemy found,trace enemy to home
+5,enemy found,goto enemy
+6,INIT,nothing interesting
+7,nothing interesting,goto search
+8,nothing interesting,goto elsewhere
+,,
+Syntax Tree,output,
+0,0,
+Nodes,Type,output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=0},0->1
+2,operator{SsizeR[]},0->0
+3,operator{R[]where==R[]TC},2->0
+4,param{ref[]:resources},3->0
+5,param{const txt=color},3->1
+6,param{const color=blue},3->2
+,,
+Syntax Tree,output,
+0,3,
+Nodes,Type,output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=0},0->1
+2,operator{SsizeR[]},0->0
+3,param{ref[]:enemies},2->0
+,,
+Syntax Tree,output,
+1,1,
+Nodes,Type,output (Node -> Input)
+0,operator{B<SS},
+1,param{const scal=1},0->1
+2,operator{SminValS[]},0->0
+3,operator{S[]distV[]V},2->0
+4,operator{V[]getR[]T},3->1
+5,operator{R[]where==R[]TC},4->1
+6,param{const txt=pos},4->0
+7,operator{VgetRT},3->1
+8,param{ref:self},7->0
+9,param{const txt=curPos},7->1
+10,param{ref[]:resources},5->0
+11,param{const txt=color},5->1
+12,param{const color=blue},5->2
+,,
+Syntax Tree,output,
+1,4,
+Nodes,Type,output (Node -> Input)
+0,operator{B<SS},
+1,param{const scal=2},0->1
+2,operator{SminValS[]},0->0
+3,operator{S[]distV[]V},2->0
+4,operator{V[]getR[]T},3->1
+5,param{ref[]:enemies},4->1
+6,param{const txt=pos},4->0
+7,operator{VgetRT},3->1
+8,param{ref:self},7->0
+9,param{const txt=curPos},7->1
+,,
+Syntax Tree,output,
+2,7,
+Nodes,Type,output (Node -> Input)
+0,operator{B!=VV},
+1,operator{VgetRT},0->0
+2,param{ref:self},1->0
+3,param{const txt=curPos},1->1
+4,operator{VgetRT},0->1
+5,param{ref:self},4->0
+6,param{const txt=trgPos},4->1
+,,
+Syntax Tree,output,
+3,trace water to home->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:home},1->0
+3,param{const txt=pos},1->1
+,,
+Syntax Tree,output,
+3,trace enemy to home->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:home},1->0
+3,param{const txt=pos},1->1
+,,
+Syntax Tree,output,
+4,trace water to home->1,
+Nodes,Type,output (Node -> Input)
+0,param{const color=blue},
+,,
+Syntax Tree,output,
+4,trace enemy to home->1,
+Nodes,Type,output (Node -> Input)
+0,param{const color=red},
+,,
+Syntax Tree,output,
+5,goto water->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,operator{RgetR[]S},1->0
+3,param{const txt=pos},1->1
+4,operator{R[]where==R[]TC},2->0
+5,operator{SminIdS[]},2->1
+6,operator{S[]distV[]V},5->0
+7,operator{V[]getR[]T},6->0
+8,param{ref[]:bRes},7->0
+9,param{const txt=pos},7->1
+10,operator{VgetRT},6->0
+11,param{ref:self},10->0
+12,param{const txt=curPos},10->1
+13,param{ref[]:resources},4->0
+14,param{const txt=color},4->1
+15,param{const color=blue},4->2
+,,
+Syntax Tree,output,
+5,goto enemy->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,operator{RgetR[]S},1->0
+3,param{const txt=pos},1->1
+4,param{ref[]:enemies},2->0
+5,operator{SminIdS[]},2->1
+6,operator{S[]distV[]V},5->0
+7,operator{V[]getR[]T},6->0
+8,operator{R[]where==R[]TC},7->0
+9,param{const txt=pos},7->1
+10,operator{VgetRT},6->0
+11,param{ref:self},10->0
+12,param{const txt=curPos},10->1
+13,param{ref[]:resources},8->0
+14,param{const txt=color},8->1
+15,param{const color=blue},8->0
+,,
+Syntax Tree,output,
+6,goto search->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:self},1->0
+3,param{const txt=trgPos},1->1
+,,
+Syntax Tree,output,
+7,goto elsewhere->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VrandCircleVS},0->0
+2,operator{VgetRT},1->0
+3,param{ref:self},2->0
+4,param{const txt=curPos},2->1
+5,param{const scal=5},1->1

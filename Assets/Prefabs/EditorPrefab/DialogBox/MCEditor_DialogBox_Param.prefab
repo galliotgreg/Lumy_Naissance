@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 224910403966745386}
   - component: {fileID: 222644803563269242}
   - component: {fileID: 114439240722787108}
-  - component: {fileID: 114495980525116938}
+  - component: {fileID: 114246416958022962}
   m_Layer: 0
   m_Name: MCEditor_DialogBox_Param
   m_TagString: Untagged
@@ -210,6 +210,19 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: OK
+--- !u!114 &114246416958022962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862700774129188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfd52f36dcc025349ad346ce70b8879b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: {fileID: 114256272621088088}
+  value: {fileID: 114793195118987026}
 --- !u!114 &114256272621088088
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -303,19 +316,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114495980525116938
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862700774129188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 244e42d00975e2649a791219fa9dfc98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  valueText: {fileID: 114645454687540926}
-  title: {fileID: 114256272621088088}
 --- !u!114 &114645454687540926
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -388,7 +388,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114495980525116938}
+      - m_Target: {fileID: 114246416958022962}
         m_MethodName: confirm
         m_Mode: 1
         m_Arguments:

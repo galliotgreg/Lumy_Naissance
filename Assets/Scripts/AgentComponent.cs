@@ -50,6 +50,8 @@ public class AgentComponent : MonoBehaviour {
 	private bool enablePickDrop;
     [SerializeField]
 	private bool enableLay;
+    [SerializeField]
+    private bool enableTraceSpread;
 
     //Sensors
     [SerializeField]
@@ -260,7 +262,16 @@ public class AgentComponent : MonoBehaviour {
 		}
 	}
 
-	public bool IsAction{
+    public bool EnableTraceSpread {
+        get {
+            return enableTraceSpread;
+        }
+        set {
+            enableTraceSpread = value;
+        }
+    }
+
+    public bool IsAction{
 		get{
 			return EnableGotoHold || EnableLay || EnablePickDrop || EnableStrike;
 		}

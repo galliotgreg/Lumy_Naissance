@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameParamsScript : MonoBehaviour {
-    [BindParam(Identifier = "seamSize")]
+    [AttrName(Identifier = "seamSize")]
     [SerializeField]
     private int seamSize;
 
-    [BindParam(Identifier = "caveMultiplier ")]
+    [AttrName(Identifier = "caveMultiplier")]
     [SerializeField]
     private float caveMultiplier;
 
-    [BindParam(Identifier = "totalTime ")]
+    [AttrName(Identifier = "totalTime")]
     [SerializeField]
     private float totalTime;
 
-    [BindParam(Identifier = "time ")]
+    [AttrName(Identifier = "time")]
     [SerializeField]
     private float time;
 
-    [BindParam(Identifier = "maxPop ")]
+    [AttrName(Identifier = "maxPop")]
     [SerializeField]
     private int maxPop;
 

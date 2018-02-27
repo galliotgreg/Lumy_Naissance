@@ -49,6 +49,8 @@ public class ComponentInfo {
     private bool enablePickDrop;
     [SerializeField]
     private bool enableLay;
+    [SerializeField]
+    private bool enableTraceSpread;
 
     //Sensors
     [SerializeField]
@@ -321,6 +323,16 @@ public class ComponentInfo {
             enableLay = value;
         }
     }
+
+    public bool EnableTraceSpread {
+        get {
+            return enableTraceSpread;
+        }
+        set {
+            enableTraceSpread = value;
+        }
+    }
+
     #endregion
 
     #region Sensors

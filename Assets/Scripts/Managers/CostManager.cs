@@ -264,7 +264,7 @@ public class CostManager : MonoBehaviour
 
     private float ComputeTreeCost(ABNode node)
     {
-        Debug.Log(compteur_general);
+        //Debug.Log(compteur_general);
         compteur_general++;
         //Compute current
         if (node is IABParam)
