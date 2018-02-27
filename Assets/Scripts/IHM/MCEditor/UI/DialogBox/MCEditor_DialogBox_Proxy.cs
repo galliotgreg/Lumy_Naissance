@@ -52,7 +52,7 @@ public abstract class MCEditor_DialogBox_Proxy : MCEditor_DialogBox {
 	#endregion
 
 	#region INSTANTIATE
-	public static MCEditor_DialogBox_Proxy instantiate ( MCEditor_Proxy proxy, MCEditor_DialogBox_Proxy prefab, Vector3 position, Transform parent ){
+	protected static MCEditor_DialogBox_Proxy instantiate ( MCEditor_Proxy proxy, MCEditor_DialogBox_Proxy prefab, Vector3 position, Transform parent ){
 		MCEditor_DialogBox_Proxy result = (MCEditor_DialogBox_Proxy)MCEditor_DialogBox.instantiate (prefab, position, parent);
 		result.config ( proxy );
 		return result;

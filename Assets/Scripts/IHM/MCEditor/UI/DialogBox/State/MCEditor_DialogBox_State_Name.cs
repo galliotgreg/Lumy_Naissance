@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MCEditor_DialogBox_State_Name : MCEditor_DialogBox_State {
 
+	[SerializeField]
+	UnityEngine.UI.InputField value;
+
 	// Use this for initialization
 	void Start () {
 		base.Start ();
@@ -18,7 +21,7 @@ public class MCEditor_DialogBox_State_Name : MCEditor_DialogBox_State {
 
 	protected override string dialogTitle ()
 	{
-		throw new System.NotImplementedException ();
+		return "Nom de l'état";
 	}
 
 	#endregion
@@ -27,17 +30,17 @@ public class MCEditor_DialogBox_State_Name : MCEditor_DialogBox_State {
 
 	protected override void confirmState ()
 	{
-		throw new System.NotImplementedException ();
+		this.stateProxy.AbState.Name = value.text;
 	}
 
 	protected override void deactivateState ()
 	{
-		throw new System.NotImplementedException ();
+		// Nothing
 	}
 
 	protected override void configState ()
 	{
-		throw new System.NotImplementedException ();
+		value.text = this.stateProxy.AbState.Name;
 	}
 
 	#endregion
