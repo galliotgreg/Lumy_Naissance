@@ -176,6 +176,9 @@ public class InGameUIController : MonoBehaviour
     private void UpdateUI()
     {
         //Get Resources values in game Manager
+        if (gameManager == null)
+            return; 
+
         float[] res = gameManager.GetResources(PlayerAuthority.Player1);  
 
         if (CheckRes(res))
@@ -328,7 +331,9 @@ public class InGameUIController : MonoBehaviour
     }
 
     private void ExitGame()
+    
     {
+        OperatorHelper.Instance.transform.parent = GameManager.instance.transform; 
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene"); 
     }
     private void GoToCasteMenu()

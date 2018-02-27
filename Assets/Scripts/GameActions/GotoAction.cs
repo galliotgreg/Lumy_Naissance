@@ -92,25 +92,29 @@ public class GotoAction : GameAction {
 		// Use Unity A* to move
 		if( navMeshAgent != null ){
 
-            float dist = navMeshAgent.remainingDistance;
-            if (dist == Mathf.Infinity)
+            if (agentAttr.Cast == "lurker")
             {
-                Debug.Log("*************** DISTANCE IS INFINITY **************** ");    
+                float dist = navMeshAgent.remainingDistance;
+                if (dist == Mathf.Infinity)
+                {
+                    Debug.Log("*************** DISTANCE IS INFINITY **************** ");
+                }
+                if (navMeshAgent.remainingDistance == 0)
+                {
+                    Debug.Log("************** REMAINING DISTANCE IS 0 *****************");
+                }
+                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathPartial)
+                {
+                    Debug.Log("*********** WARNING PATH PARTIAL *****");
+                }
+                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathInvalid)
+                {
+                    Debug.Log("*********** WARNING PATH INVALID ********");
+                }
+                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathComplete)
+                    Debug.Log("******* PATH IS CORRECT FOR UNITY ***********");
             }
-            if (navMeshAgent.remainingDistance == 0)
-            {
-                Debug.Log("************** REMAINING DISTANCE IS 0 *****************"); 
-            }
-            if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathPartial)
-            {
-                Debug.Log("*********** WARNING PATH PARTIAL *****"); 
-            }
-            if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathInvalid)
-            {
-                Debug.Log("*********** WARNING PATH INVALID ********"); 
-            }
-            if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathComplete) 
-                Debug.Log("******* PATH IS CORRECT FOR UNITY ***********"); 
+           
 
 			Vector3 destination = vec2ToWorld (agentAttr.TrgPos);
 			destination.y = agentAttr.transform.position.y;
