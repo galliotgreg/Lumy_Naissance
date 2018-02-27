@@ -91,6 +91,31 @@ public class GotoAction : GameAction {
 	public static Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
 		// Use Unity A* to move
 		if( navMeshAgent != null ){
+
+            if (agentAttr.Cast == "lurker")
+            {
+                float dist = navMeshAgent.remainingDistance;
+                if (dist == Mathf.Infinity)
+                {
+                    Debug.Log("*************** DISTANCE IS INFINITY **************** ");
+                }
+                if (navMeshAgent.remainingDistance == 0)
+                {
+                    Debug.Log("************** REMAINING DISTANCE IS 0 *****************");
+                }
+                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathPartial)
+                {
+                    Debug.Log("*********** WARNING PATH PARTIAL *****");
+                }
+                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathInvalid)
+                {
+                    Debug.Log("*********** WARNING PATH INVALID ********");
+                }
+                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathComplete)
+                    Debug.Log("******* PATH IS CORRECT FOR UNITY ***********");
+            }
+           
+
 			Vector3 destination = vec2ToWorld (agentAttr.TrgPos);
 			destination.y = agentAttr.transform.position.y;
 
@@ -100,7 +125,8 @@ public class GotoAction : GameAction {
 			navMeshAgent.destination = destination;
 			navMeshAgent.stoppingDistance = closeFactor;
 
-			/*//navMeshAgent.updatePosition = false;
+
+            /*//navMeshAgent.updatePosition = false;
 			UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
 			navMeshAgent.CalculatePath( destination, auxpath );
 
@@ -112,8 +138,8 @@ public class GotoAction : GameAction {
 				Debug.Log (agentAttr.transform.position);
 				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (auxpath.corners [1] - agentAttr.transform.position).normalized;
 			}*/
-		}
-		return agentAttr.transform.position;
+        }
+        return agentAttr.transform.position;
 	}
 
 	private int indexClosest( Vector2 pos, Vector3[] _path ){
@@ -126,7 +152,9 @@ public class GotoAction : GameAction {
 		for (int i = 1; i < _path.Length; i++) {
 			auxpath.ClearCorners ();
 			movingAgent.CalculatePath( _path [i], auxpath );
-			float auxDistance = pathLength( auxpath );
+
+           
+            float auxDistance = pathLength( auxpath );
 
 			if ( auxDistance < resultDistance ) {
 				resultIndex = i;

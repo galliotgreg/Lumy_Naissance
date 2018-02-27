@@ -155,7 +155,7 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 
 	public override void click ()
 	{
-		throw new System.NotImplementedException ();
+		// Nothing to do
 	}
 
 	#endregion

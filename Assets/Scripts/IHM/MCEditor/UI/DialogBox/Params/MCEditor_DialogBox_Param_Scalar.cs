@@ -24,7 +24,7 @@ public class MCEditor_DialogBox_Param_Scalar : MCEditor_DialogBox_Param {
 		try{
 			float v = float.Parse (value.text);
 			//this.param.setProxyName ( v.ToString() );
-			((ABScalParam)this.param.AbParam).Value.Value = v;
+			((ABScalParam)this.paramProxy.AbParam).Value.Value = v;
 		}catch(System.Exception ex){
 			Debug.LogError ("Value is not a SCALAR");
 		}
@@ -32,12 +32,17 @@ public class MCEditor_DialogBox_Param_Scalar : MCEditor_DialogBox_Param {
 
 	protected override void configParam ()
 	{
-		Title = "Scalar";
-		value.text = ((ABScalParam)this.param.AbParam).Value.Value.ToString();
+		value.text = ((ABScalParam)this.paramProxy.AbParam).Value.Value.ToString();
 	}
 
-	protected override void cancelParam ()
+	protected override void deactivateParam ()
 	{
+		// Nothing
+	}
+
+	protected override string dialogTitle ()
+	{
+		return "Scalar";
 	}
 
 	#endregion

@@ -102,8 +102,8 @@ public class ABOperatorFactory {
         TypeStringToString.Add("AB_Vec_Get_Ref_Txt_Operator", "VgetRT");
         TypeStringToString.Add("AB_VecTab_Get_Ref_Txt_Operator", "V[]getRT");
         TypeStringToString.Add("AB_VecTab_Get_RefTab_Txt_Operator", "V[]getR[]T");
-        TypeStringToString.Add("AB_VecTab_Reverse_VecTab_Operator", "VgetV[]S");
-        TypeStringToString.Add("AB_Vec_Get_VecTab_Scal_Operator", "V[]ReverseV[]");
+        TypeStringToString.Add("AB_VecTab_Reverse_VecTab_Operator", "V[]reverseV[]");
+        TypeStringToString.Add("AB_Vec_Get_VecTab_Scal_Operator", "VgetV[]S");
         TypeStringToString.Add("AB_Bool_IsSet_Vec_Operator", "BisSetV");
         TypeStringToString.Add("AB_Bool_NotEquals_Vec_Vec_Operator", "B!=VV");
         TypeStringToString.Add("AB_Vec_Prod_Vec_Scal_Operator", "V*VS");
@@ -354,7 +354,7 @@ public class ABOperatorFactory {
             case "V[]getR[]T":
                 type = OperatorType.VecTab_Get_RefTab_Txt;
                 break;
-            case "V[]ReverseV[]":
+            case "V[]reverseV[]":
                 type = OperatorType.VecTab_Reverse_VecTab;
                 break;
             case "VgetV[]S":

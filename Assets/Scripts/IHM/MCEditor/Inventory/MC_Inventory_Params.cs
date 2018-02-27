@@ -12,13 +12,13 @@ public class MC_Inventory_Params : MC_Inventory {
 		List<System.Object> parameters = new List<System.Object> ();
 
 		// References
-		parameters.Add ( new ABRefParam ("game", null));
-		parameters.Add ( new ABRefParam ("home", null));
-		parameters.Add ( new ABRefParam ("self", null));
-		parameters.Add ( new ABRefParam ("allies", null));
-		parameters.Add ( new ABRefParam ("enemies", null));
-		parameters.Add ( new ABRefParam ("resources", null));
-		parameters.Add ( new ABRefParam ("traces", null));
+		parameters.Add ( new ABRefParam ("game", TypeFactory.CreateEmptyRef() ));
+		parameters.Add ( new ABRefParam ("home", TypeFactory.CreateEmptyRef() ));
+		parameters.Add ( new ABRefParam ("self", TypeFactory.CreateEmptyRef() ));
+		parameters.Add ( new ABRefParam ("allies", TypeFactory.CreateEmptyRef() ));
+		parameters.Add ( new ABRefParam ("enemies", TypeFactory.CreateEmptyRef() ));
+		parameters.Add ( new ABRefParam ("resources", TypeFactory.CreateEmptyRef() ));
+		parameters.Add ( new ABRefParam ("traces", TypeFactory.CreateEmptyRef() ));
 
 		// Constants
 		// TODO table?
@@ -68,9 +68,6 @@ public class MC_Inventory_Params : MC_Inventory {
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
 		ProxyABParam result = MCEditor_Proxy_Factory.instantiateParam( (IABParam)item.Item, false );
-		UnityEngine.UI.Text paramName = result.GetComponentInChildren<UnityEngine.UI.Text>();
-		//paramName.text = ((IABParam)item.Item).Identifier;
-		paramName.text = MCEditorManager.GetParamValue(((ABNode)item.Item));
 		return result.gameObject;
 	}
 
