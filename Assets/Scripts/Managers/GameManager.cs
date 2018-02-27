@@ -283,7 +283,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		foreach (GameObject template in unitTemplates) {
-			template.GetComponent<AgentEntity> ().Context.setModelValues (authority);
+            template.GetComponent<AgentEntity> ().Context.setModelValues (authority);
 		}
 
 		return unitTemplates;
@@ -452,7 +452,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (authority == PlayerAuthority.Player2)
         {
-            HomeScript p2_hiveScript = p1_home.GetComponent<HomeScript>();
+            HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
             p2_hiveScript.Authority = PlayerAuthority.Player2;
             resourcesAmount[0] = p2_hiveScript.RedResAmout;
             resourcesAmount[1] = p2_hiveScript.GreenResAmout;
@@ -475,11 +475,12 @@ public class GameManager : MonoBehaviour {
         p1_hiveScript.GreenResAmout = nbResources;
         p1_hiveScript.BlueResAmout = nbResources;
 
-        p1_hiveScript = p2_home.GetComponent<HomeScript>();
-        p1_hiveScript.Authority = PlayerAuthority.Player2;
-        p1_hiveScript.RedResAmout = nbResources;
-        p1_hiveScript.GreenResAmout = nbResources;
-        p1_hiveScript.BlueResAmout = nbResources;
+        HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
+        p2_hiveScript = p2_home.GetComponent<HomeScript>();
+        p2_hiveScript.Authority = PlayerAuthority.Player2;
+        p2_hiveScript.RedResAmout = nbResources;
+        p2_hiveScript.GreenResAmout = nbResources;
+        p2_hiveScript.BlueResAmout = nbResources;
 
     }
 
@@ -497,7 +498,7 @@ public class GameManager : MonoBehaviour {
         else if (authority == PlayerAuthority.Player2)
         {
             HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
-            p2_hiveScript.Authority = PlayerAuthority.Player1;
+            p2_hiveScript.Authority = PlayerAuthority.Player2;
             resSum += p2_hiveScript.RedResAmout;
             resSum += p2_hiveScript.GreenResAmout;
             resSum += p2_hiveScript.BlueResAmout;
