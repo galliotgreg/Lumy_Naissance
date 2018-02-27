@@ -47,6 +47,7 @@ public abstract class MCEditor_DialogBox_Param : MCEditor_DialogBox {
 	}
 
 	protected abstract void confirmParam ();
+	protected abstract void cancelParam ();
 	#endregion
 
 	#region INSTANTIATE

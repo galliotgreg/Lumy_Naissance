@@ -33,6 +33,10 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 	[SerializeField]
 	MCEditor_DialogBox_Param_Scalar paramScalar_Prefab;
 	[SerializeField]
+	MCEditor_DialogBox_Param_Bool paramBool_Prefab;
+	[SerializeField]
+	MCEditor_DialogBox_Param_Color paramColor_Prefab;
+	[SerializeField]
 	MCEditor_DialogBox_Param_Vec paramVec_Prefab;
 
 	// Use this for initialization
@@ -51,6 +55,15 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 		}
 		else if (param.AbParam is ABScalParam) {
 			return MCEditor_DialogBox_Param_Scalar.instantiate( param, paramScalar_Prefab, pos3D, container);
+		}
+		else if (param.AbParam is ABBoolParam) {
+			return MCEditor_DialogBox_Param_Bool.instantiate( param, paramBool_Prefab, pos3D, container);
+		}
+		else if (param.AbParam is ABColorParam) {
+			return MCEditor_DialogBox_Param_Color.instantiate( param, paramColor_Prefab, pos3D, container);
+		}
+		else if (param.AbParam is ABVecParam) {
+			return MCEditor_DialogBox_Param_Vec.instantiate( param, paramVec_Prefab, pos3D, container);
 		}
 		return null;
 	}

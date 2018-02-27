@@ -31,5 +31,8 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 		value.text = ((ABTextParam)this.param.AbParam).Value.Value;
 	}
 
+	protected override void cancelParam ()
+	{
+	}
 	#endregion
 }

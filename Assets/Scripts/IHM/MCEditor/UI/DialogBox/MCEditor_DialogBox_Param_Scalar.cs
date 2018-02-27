@@ -36,5 +36,9 @@ public class MCEditor_DialogBox_Param_Scalar : MCEditor_DialogBox_Param {
 		value.text = ((ABScalParam)this.param.AbParam).Value.Value.ToString();
 	}
 
+	protected override void cancelParam ()
+	{
+	}
+
 	#endregion
 }

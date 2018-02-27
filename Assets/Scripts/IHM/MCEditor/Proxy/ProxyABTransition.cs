@@ -61,14 +61,8 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 
         if(StartPosition != null && EndPosition != null ) {
 
-            if(startPosition.Pin_Type != Pin.PinType.Condition && endPosition.Pin_Type != Pin.PinType.Condition)
-            {
-                adjustPinPosition();
-            } else
-            {
-                //TODO : Gérer ce cas particulier                
-            }            
-
+            adjustPinPosition();
+          
             Vector3 posDepart = StartPosition.transform.position;
             Vector3 posArrivee = EndPosition.transform.position;
             GetComponent<LineRenderer>().SetPosition(0, posDepart);
@@ -183,36 +177,43 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		proxyABTransition.Condition = conditionPin;
 	}
 
+    private void computePinPositionWithParentRadius(GameObject parent, Pin pin, Vector3 direction)
+    {
+        float radius = parent.transform.localScale.y / 2;
+
+        pin.transform.position = new Vector3(
+            parent.transform.position.x + (radius * direction.x),
+            parent.transform.position.y + (radius * direction.y),
+            parent.transform.position.z
+            );
+    }
+
     //Minimise distance between two pin
     private void adjustPinPosition()
     {
         GameObject startParent = GetParent(startPosition);
         GameObject endParent = GetParent(endPosition);
         Vector3 direction = new Vector3();
-        if (!(startPosition.Pin_Type == Pin.PinType.Condition) || !(endPosition.Pin_Type == Pin.PinType.Condition))
+        direction = computeDirection(startParent.transform.position, endParent.transform.position);
+
+        if (!(startPosition.Pin_Type == Pin.PinType.Condition))
         {
-            direction = computeDirection(startParent.transform.position, endParent.transform.position);
-        }            
-
-        float radiusStart = startParent.transform.localScale.y / 2;
-        float radiusEnd = endParent.transform.localScale.y / 2;
-
-        startPosition.transform.position = new Vector3(
-            startParent.transform.position.x + (radiusStart * direction.x),
-            startParent.transform.position.y + (radiusStart * direction.y),
-            startParent.transform.position.z
-            );
-
-        endPosition.transform.position = new Vector3(
-            endParent.transform.position.x + (-radiusEnd * direction.x),
-            endParent.transform.position.y + (-radiusEnd * direction.y),
-            endParent.transform.position.z
-            );
+            computePinPositionWithParentRadius(startParent, startPosition, direction);            
+        }
+        if (!(endPosition.Pin_Type == Pin.PinType.Condition))
+        {
+            computePinPositionWithParentRadius(endParent, endPosition, -direction);
+        }       
     }
     private GameObject GetParent(Pin pin)
     {
         GameObject parent = null;
-        if (pin.Pin_Type == Pin.PinType.OperatorIn || pin.Pin_Type == Pin.PinType.OperatorOut)
+
+        if(pin.Pin_Type == Pin.PinType.Condition)
+        {
+            parent = pin.GetComponentInParent<ProxyABTransition>().gameObject;
+        }
+        else if (pin.Pin_Type == Pin.PinType.OperatorIn || pin.Pin_Type == Pin.PinType.OperatorOut)
         {
             parent = pin.GetComponentInParent<ProxyABOperator>().gameObject;
         }
