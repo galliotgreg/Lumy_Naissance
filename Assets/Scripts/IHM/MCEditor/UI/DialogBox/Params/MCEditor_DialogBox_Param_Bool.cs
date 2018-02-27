@@ -22,20 +22,22 @@ public class MCEditor_DialogBox_Param_Bool : MCEditor_DialogBox_Param {
 	protected override void confirmParam ()
 	{
 		bool v = value.value == 0;
-		//this.param.setProxyName ( v.ToString() );
-		//this.param.setProxyName ( value.options[value.value].text );
-		((ABBoolParam)this.param.AbParam).Value.Value = v;
+		((ABBoolParam)this.paramProxy.AbParam).Value.Value = v;
 	}
 
 	protected override void configParam ()
 	{
-		Title = "Booléen";
-		value.value = (((ABBoolParam)this.param.AbParam).Value.Value ? 0 : 1 );
+		value.value = (((ABBoolParam)this.paramProxy.AbParam).Value.Value ? 0 : 1 );
 	}
 
-	protected override void cancelParam ()
+	protected override void deactivateParam ()
 	{
-		Destroy (value.gameObject);
+		// Nothing
+	}
+
+	protected override string dialogTitle ()
+	{
+		return "Booléen";
 	}
 
 	#endregion

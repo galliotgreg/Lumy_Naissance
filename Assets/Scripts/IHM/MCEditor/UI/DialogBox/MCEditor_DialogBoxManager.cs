@@ -28,6 +28,10 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 	[SerializeField]
 	RectTransform container;
 
+	// States
+	[SerializeField]
+	MCEditor_DialogBox_State_Name stateName_Prefab;
+	// Params
 	[SerializeField]
 	MCEditor_DialogBox_Param_String paramText_Prefab;
 	[SerializeField]
@@ -66,5 +70,10 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 			return MCEditor_DialogBox_Param_Vec.instantiate( param, paramVec_Prefab, pos3D, container);
 		}
 		return null;
+	}
+
+	public MCEditor_DialogBox_State_Name instantiateStateName( ProxyABState state, Vector2 position ){
+		Vector3 pos3D = new Vector3 ( position.x + 1, position.y + 1, container.position.z );
+		return (MCEditor_DialogBox_State_Name)MCEditor_DialogBox_State.instantiate( state, stateName_Prefab, pos3D, container );
 	}
 }
