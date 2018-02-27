@@ -104,11 +104,20 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		result.AbOperator = operatorObj;
 		result.SetNodeName( (ABNode)operatorObj );
 
-		// Create Pins
-		foreach(ABNode inputNode in operatorObj.Inputs)
-		{
-			Pin start = Pin.instantiate (Pin.PinType.OperatorIn, Pin.calculatePinPosition (result), result.transform);
-		}
+        // Create Pins
+        if (operatorObj.Inputs.Length <= 2)
+        {
+            foreach (ABNode inputNode in operatorObj.Inputs)
+            {
+                Pin start = Pin.instantiate(Pin.PinType.OperatorIn, Pin.calculatePinPosition(result), result.transform);
+            }
+        }
+        // Do not show 32 pins on an operator
+        else
+        {
+            Pin start = Pin.instantiate(Pin.PinType.OperatorIn, Pin.calculatePinPosition(result), result.transform);
+        }
+		
 
 		// Outcome pin
 		Pin.instantiate( Pin.PinType.OperatorOut, Pin.calculatePinPosition (result), result.transform );
