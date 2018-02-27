@@ -5,7 +5,7 @@ using UnityEngine;
 public class MCEditor_DialogBox_Param_Color : MCEditor_DialogBox_Param {
 
 	[SerializeField]
-	UnityEngine.UI.Dropdown value;
+	BlockerDropdown value;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +22,7 @@ public class MCEditor_DialogBox_Param_Color : MCEditor_DialogBox_Param {
 	protected override void confirmParam ()
 	{
 		ABColor.Color v = (ABColor.Color)System.Enum.GetValues( typeof( ABColor.Color ) ).GetValue( value.value );
-		this.param.setProxyName ( v.ToString() );
+		//this.param.setProxyName ( v.ToString() );
 		((ABColorParam)this.param.AbParam).Value.Value = v;
 	}
 

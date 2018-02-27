@@ -329,7 +329,7 @@ public class InGameUIController : MonoBehaviour
 
     private void ExitGame()
     {
-        NavigationManager.instance.SwapScenes("PartiePersoScene", new Vector3(0, 0, 0)); 
+        NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene"); 
     }
     private void GoToCasteMenu()
     {

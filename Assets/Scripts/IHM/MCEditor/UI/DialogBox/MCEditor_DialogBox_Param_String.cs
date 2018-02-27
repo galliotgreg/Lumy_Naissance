@@ -21,7 +21,7 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 
 	protected override void confirmParam ()
 	{
-		this.param.setProxyName ( value.text );
+		//this.param.setProxyName ( value.text );
 		((ABTextParam)this.param.AbParam).Value.Value = value.text;
 	}
 
