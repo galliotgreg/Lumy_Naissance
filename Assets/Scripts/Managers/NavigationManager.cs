@@ -45,6 +45,7 @@ public class NavigationManager : MonoBehaviour {
     private bool layerLoaded = true;
     private bool addToPreviousList = true;
     private bool sceneLoaded = false;
+    private bool zoomOnCanvas = true;
 
     // Use this for initialization
     void Start () {
@@ -84,6 +85,12 @@ public class NavigationManager : MonoBehaviour {
         StartCoroutine(SwapScenesCo(nextScene, sightPoint));
     }
 
+    public void SwapScenesWithoutZoom(string nextScene)
+    {
+        zoomOnCanvas = false;
+        StartCoroutine(SwapScenesCo(nextScene, new Vector3(0,0,0)));
+    }
+
     public void SwapScenesWithPanel(string nextScene, string panelToActivate, Vector3 sightPoint)
     {
         sceneLoaded = false;
@@ -117,17 +124,20 @@ public class NavigationManager : MonoBehaviour {
         // Zoomer sur le bouton
         GameObject canvas = GameObject.Find(currentScene + "Canvas");
         canvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
-        Vector3 dir = (root.transform.position - camera.transform.position).normalized;
-        while (Vector3.Dot(dir, root.transform.position - camera.transform.position) > zoomEndDistance)
+
+        if (zoomOnCanvas)
         {
-            //Debug.Log(Vector3.Dot(dir, root.transform.position - camera.transform.position));
-            Vector3 towards = Vector3.MoveTowards(
-                root.transform.position,
-                camera.transform.position + root.transform.position - sightPoint,
-                zoomStep);
-            root.transform.position = towards;
-            canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
-            yield return true;
+            Vector3 dir = (canvas.transform.position - camera.transform.position).normalized;
+            while (Vector3.Dot(dir, canvas.transform.position - camera.transform.position) > zoomEndDistance)
+            {
+                Vector3 towards = Vector3.MoveTowards(
+                    canvas.transform.position,
+                    camera.transform.position + canvas.transform.position - sightPoint,
+                    zoomStep);
+                canvas.transform.position = towards;
+                canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
+                yield return true;
+            }
         }
 
         // Attendre la fin du déchargement de la scène initiale
@@ -197,6 +207,7 @@ public class NavigationManager : MonoBehaviour {
         addToPreviousList = true;
         lastPanelLoaded = null;
         sceneLoaded = true;
+        zoomOnCanvas = true;
 
         // Arrêter la coroutine de transition
         StopCoroutine(SwapScenesCo(nextScene, sightPoint));

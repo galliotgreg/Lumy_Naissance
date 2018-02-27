@@ -10,7 +10,7 @@ public class MergeLumy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        this.gameObject.GetComponent<Button>().onClick.AddListener(UIMerge);
+        gameObject.GetComponent<Button>().onClick.AddListener(UIMerge);
     }
 
     // Update is called once per frame

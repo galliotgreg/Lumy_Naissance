@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CallSwapScene : MonoBehaviour {
 
     public bool isReturnButton;
+    public bool disableZoom;
     public string target;
     public string panel;
 
@@ -24,7 +25,14 @@ public class CallSwapScene : MonoBehaviour {
     {
         if (!isReturnButton && (panel == null || panel == ""))
         {
-            NavigationManager.instance.SwapScenes(target, this.gameObject.transform.position);
+            if (!disableZoom)
+            {
+                NavigationManager.instance.SwapScenes(target, this.gameObject.transform.position);
+            } else
+            {
+                NavigationManager.instance.SwapScenesWithoutZoom(target);
+            }
+
         } else if (isReturnButton)
         {
             NavigationManager.instance.GoBack(this.gameObject.transform.position);

@@ -43,10 +43,12 @@ public abstract class MCEditor_DialogBox_Param : MCEditor_DialogBox {
 	public override void confirm ()
 	{
 		confirmParam ();
+		this.param.setProxyName ( MCEditorManager.GetParamValue( (ABNode) param.AbParam ) );
 		close ();
 	}
 
 	protected abstract void confirmParam ();
+	protected abstract void cancelParam ();
 	#endregion
 
 	#region INSTANTIATE

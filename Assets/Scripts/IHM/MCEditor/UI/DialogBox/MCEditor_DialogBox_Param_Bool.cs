@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
+public class MCEditor_DialogBox_Param_Bool : MCEditor_DialogBox_Param {
 
 	[SerializeField]
-	UnityEngine.UI.InputField value;
+	BlockerDropdown value;
 
 	// Use this for initialization
 	void Start () {
@@ -21,18 +21,22 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 
 	protected override void confirmParam ()
 	{
-		//this.param.setProxyName ( value.text );
-		((ABTextParam)this.param.AbParam).Value.Value = value.text;
+		bool v = value.value == 0;
+		//this.param.setProxyName ( v.ToString() );
+		//this.param.setProxyName ( value.options[value.value].text );
+		((ABBoolParam)this.param.AbParam).Value.Value = v;
 	}
 
 	protected override void configParam ()
 	{
-		Title = "Text";
-		value.text = ((ABTextParam)this.param.AbParam).Value.Value;
+		Title = "Booléen";
+		value.value = (((ABBoolParam)this.param.AbParam).Value.Value ? 0 : 1 );
 	}
 
 	protected override void cancelParam ()
 	{
+		Destroy (value.gameObject);
 	}
+
 	#endregion
 }

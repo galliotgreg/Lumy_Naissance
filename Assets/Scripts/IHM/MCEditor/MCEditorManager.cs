@@ -391,9 +391,17 @@ public class MCEditorManager : MonoBehaviour {
 		    
 			// Creating params trees
 			List<Pin> pins = ope.getPins( Pin.PinType.OperatorIn );
-			for(int i=0; i<((IABOperator)node).Inputs.Length; i++){
+            Pin start;
+            for (int i=0; i<((IABOperator)node).Inputs.Length; i++){
 				ABNode inputNode = ((IABOperator)node).Inputs [i];
-				Pin start = pins[i];
+                if(((IABOperator)node).Inputs.Length <=2)
+                {
+                    start = pins[i];
+                }
+                else
+                {
+                    start = pins[0];
+                }		
 
                 if(inputNode == null)
                 {
@@ -1290,11 +1298,14 @@ public class MCEditorManager : MonoBehaviour {
             ABNode node = proxyOpeStart.AbOperator.Inputs[i];
             if(node != null)
             {
-                if (((IABParam)(node)).Identifier == idRemoveObject)
+                if(node is IABParam)
                 {
-                    node.Output = null;
-                    proxyOpeStart.AbOperator.Inputs[i] = null;
-                }
+                    if (((IABParam)(node)).Identifier == idRemoveObject)
+                    {
+                        node.Output = null;
+                        proxyOpeStart.AbOperator.Inputs[i] = null;
+                    }
+                }                    
             }            
         }
     }

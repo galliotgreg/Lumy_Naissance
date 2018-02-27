@@ -6,9 +6,21 @@ using UnityEngine.UI;
 
 public class ConfirmMerge : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    GameObject canvas;
+    GameObject panel;
+    Transform origine;
+
+    // Use this for initialization
+    void Start () {
         this.gameObject.GetComponent<Button>().onClick.AddListener(OpenPanel);
+
+        origine = transform.parent;
+        while (origine.name != "SceneRoot")
+        {
+            origine = origine.parent;
+        }
+        panel = origine.Find("CanvasConfirmMerge").Find("PanelMerge").gameObject;
+        canvas = origine.Find("CastesSceneCanvas").gameObject;
     }
 	
 	// Update is called once per frame
@@ -18,8 +30,7 @@ public class ConfirmMerge : MonoBehaviour {
 
     void OpenPanel()
     {
-        Transform panel = transform.Find("PanelMerge");
-        panel.position = Vector3.zero;
-        panel.gameObject.SetActive(true);
+        canvas.SetActive(false);
+        panel.SetActive(true);
     }
 }
