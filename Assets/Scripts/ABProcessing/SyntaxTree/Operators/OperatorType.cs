@@ -82,6 +82,7 @@ public enum OperatorType
     Vec_Get_Ref_Txt,
 	VecTab_Get_Ref_Txt,
     VecTab_Get_RefTab_Txt,
+    VecTab_Reverse_VecTab,
     Vec_Get_VecTab_Scal,
     Bool_IsSet_Vec,
     Bool_NotEquals_Vec_Vec,
