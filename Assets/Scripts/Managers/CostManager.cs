@@ -237,9 +237,7 @@ public class CostManager : MonoBehaviour
         {
             if (state.Action != null)
             {
-                Debug.Log("state.Action :" + state.Action);
                 if (state.Action.ToString() == "ABDropAction")
-                    Debug.Log("Maintenant !!");
                 if(state.Action.Parameters != null)
                 {
                      foreach (ABNode param in state.Action.Parameters)
@@ -263,7 +261,7 @@ public class CostManager : MonoBehaviour
             IABGateOperator abOperator = (IABGateOperator)node;
             if (abOperator.Inputs[0] == null)
             {
-                Debug.Log("abOperator.Inputs[0] == null");
+                Debug.LogWarning("abOperator.Inputs[0] == null");
             }
             mc_cost += ComputeTreeCost(abOperator.Inputs[0]);
         }
@@ -291,7 +289,6 @@ public class CostManager : MonoBehaviour
                     cost += ComputeTreeCost(child);
                 }
             }
-           // Debug.Log(cost);
             return cost;
         }
 
