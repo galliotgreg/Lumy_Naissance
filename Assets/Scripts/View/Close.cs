@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class Close : MonoBehaviour {
 
+    GameObject canvas;
     // Use this for initialization
     void Start() {
 
         this.gameObject.GetComponent<Button>().onClick.AddListener(ClosePanel);
+        canvas = transform.parent.parent.parent.Find("CastesSceneCanvas").gameObject;
     }
 
     // Update is called once per frame
@@ -20,5 +22,6 @@ public class Close : MonoBehaviour {
     void ClosePanel()
     {
         transform.parent.gameObject.SetActive(!transform.parent.gameObject.activeSelf);
+        canvas.SetActive(true);
     }
 }

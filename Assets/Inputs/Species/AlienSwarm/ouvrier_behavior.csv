@@ -166,28 +166,34 @@ Nodes,Type,Output (Node -> Input)
 Syntax Tree,Output,
 0,go to green trace->0,
 Nodes,Type,Output (Node -> Input)
-0,operator{RgetR[]S},
-1,param{ref[]:traces},0->0
-2,operator{SminIdS[]},0->1
-3,operator{S[]getR[]T},2->0
-4,param{const txt=age},3->1
-5,operator{R[]where==R[]TC},3->0
-6,param{const color=green},5->2
-7,param{ref[]:traces},5->0
-8,param{const txt=color},5->1
+0,operator{V[]aggV*},
+1,operator{V[]getRT},0->0
+2,param{const txt=points},1->1
+3,operator{RgetR[]S},1->0
+4,param{ref[]:traces},3->0
+5,operator{SminIdS[]},3->1
+6,operator{S[]getR[]T},5->0
+7,param{const txt=age},6->1
+8,operator{R[]where==R[]TC},6->0
+9,param{const color=green},8->2
+10,param{ref[]:traces},8->0
+11,param{const txt=color},8->1
 ,,
 Syntax Tree,Output,
 0,go to red trace->0,
 Nodes,Type,Output (Node -> Input)
-0,operator{RgetR[]S},
-1,param{ref[]:traces},0->0
-2,operator{SminIdS[]},0->1
-3,operator{S[]getR[]T},2->0
-4,param{const txt=age},3->1
-5,operator{R[]where==R[]TC},3->0
-6,param{const color=red},5->2
-7,param{ref[]:traces},5->0
-8,param{const txt=color},5->1
+0,operator{V[]aggV*},
+1,operator{V[]getRT},0->0
+2,param{const txt=points},1->1
+3,operator{RgetR[]S},1->0
+4,param{ref[]:traces},3->0
+5,operator{SminIdS[]},3->1
+6,operator{S[]getR[]T},5->0
+7,param{const txt=age},6->1
+8,operator{R[]where==R[]TC},6->0
+9,param{const color=red},8->2
+10,param{ref[]:traces},8->0
+11,param{const txt=color},8->1
 ,,
 Syntax Tree,Output,
 0,go to home->0,

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
+public class MCEditor_DialogBox_Param_Scalar : MCEditor_DialogBox_Param {
 
 	[SerializeField]
 	UnityEngine.UI.InputField value;
@@ -21,18 +21,24 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 
 	protected override void confirmParam ()
 	{
-		//this.param.setProxyName ( value.text );
-		((ABTextParam)this.param.AbParam).Value.Value = value.text;
+		try{
+			float v = float.Parse (value.text);
+			//this.param.setProxyName ( v.ToString() );
+			((ABScalParam)this.param.AbParam).Value.Value = v;
+		}catch(System.Exception ex){
+			Debug.LogError ("Value is not a SCALAR");
+		}
 	}
 
 	protected override void configParam ()
 	{
-		Title = "Text";
-		value.text = ((ABTextParam)this.param.AbParam).Value.Value;
+		Title = "Scalar";
+		value.text = ((ABScalParam)this.param.AbParam).Value.Value.ToString();
 	}
 
 	protected override void cancelParam ()
 	{
 	}
+
 	#endregion
 }

@@ -196,8 +196,8 @@ public class AgentContext : MonoBehaviour
                 + playerFolder
                 + entity.BehaviorModelIdentifier
                 + ".csv";
+        Debug.Log(path);
         ABModel behaviorModel = ABManager.instance.LoadABModelFromFile(path);
-
         AgentScript.ResourceCost cost = getCost( agentComponents, behaviorModel);
 		this.model.ProdCost = cost.Resources;
 		// layTimeCost
