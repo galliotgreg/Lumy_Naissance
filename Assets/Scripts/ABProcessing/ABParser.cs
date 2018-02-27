@@ -134,6 +134,7 @@ public class ABParser
             int nodeId = int.Parse(nodeIdStr);
             int pinId = int.Parse(pinIdStr);
             IABOperator outputNode = (IABOperator)curNodes[nodeId];
+
             outputNode.Inputs[pinId] = node;
             if (node == null || outputNode == null)
             {

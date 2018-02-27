@@ -4,10 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CostManager : MonoBehaviour
 {
-    static int compteur_param = 0;
-    static int compteur_operateur = 0;
-    static int compteur_general = 0;
-
     /// <summary>
     /// The static instance of the Singleton for external access
     /// </summary>
@@ -39,6 +35,8 @@ public class CostManager : MonoBehaviour
     [SerializeField]
     private float mc_param_fixed_cost = 10f;
     [SerializeField]
+    private float mc_init_fixed_cost = 0f;
+    [SerializeField]
     private float mc_inter_fixed_cost = 10f;
     [SerializeField]
     private float mc_final_fixed_cost = 10f;
@@ -48,6 +46,8 @@ public class CostManager : MonoBehaviour
     private float mc_node_fixed_cost = 10f;
     [SerializeField]
     private float mc_param_coef = 1f;
+    [SerializeField]
+    private float mc_init_coef = 0f;
     [SerializeField]
     private float mc_inter_coef = 0f;
     [SerializeField]
@@ -213,32 +213,39 @@ public class CostManager : MonoBehaviour
         float mc_cost = 0f;
         foreach (ABState state in behaviorModel.States)
         {
-            if (state.Id == 0) 
+            if (state.Id == 0)  // Initial State
             {
-                mc_cost += mc_param_coef * mc_param_fixed_cost;
+                mc_cost += mc_init_coef * mc_init_fixed_cost;
             }
-            if (state.Action != null) // Etat Final
+            if (state.Action != null) // Final State
             {
-                mc_cost += mc_param_coef * mc_param_fixed_cost; //price;
+                mc_cost += mc_final_coef * mc_final_fixed_cost; //price;
             }
-            else if (state.Action == null) //Etat Intermediaire
+            else if (state.Action == null) //Inter State
             {
                 mc_cost += mc_inter_coef * mc_inter_fixed_cost;//price;
 
             }
-        }
 
+        }
+        
+
+        
         //Retreive root nodes
         IList<ABNode> rootNodes = new List<ABNode>();
         foreach (ABState state in behaviorModel.States)
         {
             if (state.Action != null)
             {
-                foreach (ABNode param in state.Action.Parameters)
+                if (state.Action.ToString() == "ABDropAction")
+                if(state.Action.Parameters != null)
                 {
-                    rootNodes.Add(param);
-
+                     foreach (ABNode param in state.Action.Parameters)
+                     {
+                                        rootNodes.Add(param);
+                     }
                 }
+               
             }
         }
         foreach (ABTransition trans in behaviorModel.Transitions)
@@ -254,7 +261,7 @@ public class CostManager : MonoBehaviour
             IABGateOperator abOperator = (IABGateOperator)node;
             if (abOperator.Inputs[0] == null)
             {
-                Debug.Log("abOperator.Inputs[0] == null");
+                Debug.LogWarning("abOperator.Inputs[0] == null");
             }
             mc_cost += ComputeTreeCost(abOperator.Inputs[0]);
         }
@@ -264,8 +271,7 @@ public class CostManager : MonoBehaviour
 
     private float ComputeTreeCost(ABNode node)
     {
-        //Debug.Log(compteur_general);
-        compteur_general++;
+
         //Compute current
         if (node is IABParam)
         {
@@ -274,18 +280,15 @@ public class CostManager : MonoBehaviour
         {
             float cost = 0f;
             cost += mc_operator_coef * mc_operator_fixed_cost;
-            compteur_operateur++;
 
             IABOperator abOperator = (IABOperator) node;
             foreach (ABNode child in abOperator.Inputs)
             {
                 if (child != null)
                 {
-                    compteur_operateur++;
                     cost += ComputeTreeCost(child);
                 }
             }
-           // Debug.Log(cost);
             return cost;
         }
 

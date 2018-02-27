@@ -64,6 +64,7 @@ public class ForkLumy : MonoBehaviour {
             clone.transform.localScale = Vector3.one;
             clone.transform.GetChild(0).Find("btn_Lumy").GetComponent<Button>().interactable = true;
             clone.transform.Find("PanelLumy").Find("PanelAction").gameObject.SetActive(false);
+            clone.transform.Find("PanelLumy").Find("btn_Merge").gameObject.SetActive(false);
             clone.transform.localPosition = new Vector3(2f - 4 * i, -2f, 0);
             //if (clone.transform.childCount > 1) Destroy(clone.transform.GetChild(1).gameObject);
         }

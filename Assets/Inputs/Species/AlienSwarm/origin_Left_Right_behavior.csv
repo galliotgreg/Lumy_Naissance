@@ -1,0 +1,177 @@
+States,Name,Type
+0,INIT,Init
+1,green ressource found,Inter
+2,red ressource found,Inter
+3,goto elsewhere,trigger{goto}
+4,goto search,trigger{goto}
+5,trace green,trigger{trace}
+6,goto green,trigger{goto}
+7,trace red,trigger{trace}
+8,goto red,trigger{goto}
+,,
+Transitions,Start State,End State
+0,INIT,green ressource found
+1,INIT,red ressource found
+2,INIT,goto elsewhere
+3,INIT,goto search
+4,green ressource found,trace green
+5,green ressource found,goto green
+6,red ressource found,trace red
+7,red ressource found,goto red
+,,
+Syntax Tree,output,
+0,0,
+Nodes,Type,output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=0},0->1
+2,operator{SsizeS[]},0->0
+3,operator{R[]where==R[]TC},2->0
+4,param{const txt=color},3->1
+5,param{const color=green},3->2
+6,param{ref[]:res},3->0
+,,
+Syntax Tree,output,
+1,1,
+Nodes,Type,output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=0},0->1
+2,operator{SsizeS[]},0->0
+3,operator{R[]where==R[]TC},2->0
+4,param{const txt=color},3->1
+5,param{const color=red},3->2
+6,param{ref[]:res},3->0
+,,
+Syntax Tree,output,
+1,3,
+Nodes,Type,output (Node -> Input)
+0,operator{B!=VV},
+1,param{vec:trgPos},0->1
+2,param{vec:curPos},0->0
+,,
+Syntax Tree,output,
+1,4,
+Nodes,Type,output (Node -> Input)
+0,operator{B&&BB},
+1,operator{B<SS},0->0
+2,operator{B==SS},0->1
+3,param{const scal=1},1->1
+4,operator{SminValS[]},1->0
+5,operator{S[]distV[]V},4->0
+6,param{vec:curPos},5->1
+7,operator{VgetRT},5->0
+8,param{const txt=population},7->1
+9,operator{R[]where==R[]TC},7->0
+10,param{const txt=color},9->1
+11,param{const color=green},9->2
+12,param{ref[]:res},9->1
+13,param{const scal=0},2->0
+14,operator{SsizeS[]},2->1
+15,operator{R[]where==R[]TC},14->0
+16,param{const txt=color},15->1
+17,param{const color=green},15->2
+18,param{ref[]:traces},15->0
+,,
+Syntax Tree,output,
+1,6,
+Nodes,Type,output (Node -> Input)
+0,operator{B&&BB},
+1,operator{B<SS},0->0
+2,operator{B==SS},0->1
+3,param{const scal=1},1->1
+4,operator{SminValS[]},1->0
+5,operator{S[]distV[]V},4->0
+6,param{vec:curPos},5->1
+7,operator{VgetRT},5->0
+8,param{const txt=population},7->1
+9,operator{R[]where==R[]TC},7->0
+10,param{const txt=color},9->1
+11,param{const color=red},9->2
+12,param{ref[]:res},9->0
+13,param{const scal=0},2->0
+14,operator{SsizeS[]},2->1
+15,operator{R[]where==R[]TC},14->0
+16,param{const txt=color},15->1
+17,param{const color=red},15->2
+18,param{ref[]:traces},15->0
+,,
+Syntax Tree,output,
+1,goto elsewhere->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VrandCircleVS},0->0
+2,param{const scal=20},1->1
+3,param{vec:curPos},1->0
+,,
+Syntax Tree,output,
+1,goto search->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,param{vec:trgPos},0->0
+,,
+Syntax Tree,output,
+1,trace green->0,
+Nodes,Type,output (Node -> Input)
+0,param{const color=green},
+,,
+Syntax Tree,output,
+1,trace green->1,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:home},1->0
+3,param{const txt=position},1->1
+,,
+Syntax Tree,output,
+1,trace red->0,
+Nodes,Type,output (Node -> Input)
+0,param{const color=red},
+,,
+Syntax Tree,output,
+1,trace red->1,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:home},1->0
+3,param{const txt=position},1->1
+,,
+Syntax Tree,output,
+1,goto green->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{const txt=position},1->1
+3,operator{RgetR[]S},1->0
+4,operator{R[]where==R[]TC},3->1
+5,param{const txt=color},4->1
+6,param{const color=green},4->2
+7,param{ref[]:res},4->0
+8,operator{SminIdS[]},3->0
+9,operator{S[]distV[]V},8->0
+10,param{vec:curPos},9->1
+11,operator{V[]getR[]T},9->0
+12,param{const txt=position},11->1
+13,operator{R[]where==R[]TC},11->0
+14,param{const txt=color},13->1
+15,param{const color=green},13->2
+16,param{ref[]:res},13->0
+,,
+Syntax Tree,output,
+1,goto red->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{const txt=position},1->1
+3,operator{RgetR[]S},1->0
+4,operator{R[]where==R[]TC},3->1
+5,param{const txt=color},4->1
+6,param{const color=red},4->2
+7,param{ref[]:res},4->0
+8,operator{SminIdS[]},3->0
+9,operator{S[]distV[]V},8->0
+10,param{vec:curPos},9->1
+11,operator{V[]getR[]T},9->0
+12,param{const txt=position},11->1
+13,operator{R[]where==R[]TC},11->0
+14,param{const txt=color},13->1
+15,param{const color=red},13->2
+16,param{ref[]:res},13->0
