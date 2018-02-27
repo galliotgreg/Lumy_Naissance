@@ -818,6 +818,95 @@ public class MCEditorManager : MonoBehaviour {
 	}
 	#endregion
 
+    private void LinkGateOperator_Operator(Pin start, Pin end)
+    {
+        ProxyABTransition startTransitionParent;
+        ProxyABOperator endOpeParent;
+
+        startTransitionParent = start.GetComponentInParent<ProxyABTransition>();
+        endOpeParent = end.GetComponentInParent<ProxyABOperator>();
+        startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endOpeParent.AbOperator;
+    }
+
+    private void LinkGateOperator_Param(Pin start, Pin end)
+    {
+        ProxyABTransition startTransitionParent;
+        ProxyABParam endParamParent;
+
+        startTransitionParent = start.GetComponentInParent<ProxyABTransition>();
+        endParamParent = end.GetComponentInParent<ProxyABParam>();
+        startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endParamParent.AbParam;
+    }
+
+    private void LinkAction_Operator(Pin start, Pin end)
+    {
+        ProxyABAction startActionParent;
+        ProxyABOperator endOpeParent;
+
+        startActionParent = start.GetComponentInParent<ProxyABAction>();
+        endOpeParent = end.GetComponentInParent<ProxyABOperator>();
+        startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endOpeParent.AbOperator;
+    }
+
+    private void LinkAction_Param(Pin start, Pin end)
+    {
+        ProxyABAction startActionParent;
+        ProxyABParam endParamParent;
+
+        startActionParent = start.GetComponentInParent<ProxyABAction>();
+        endParamParent = end.GetComponentInParent<ProxyABParam>();
+        //TODO : Gestion du pin courant 
+        startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endParamParent.AbParam;
+    }
+
+    private void LinkOperator_Operator(Pin income , Pin outcome)
+    {
+        ProxyABOperator incomeOpeParent;
+        ProxyABOperator outcomeOpeParent;
+
+        incomeOpeParent = income.GetComponentInParent<ProxyABOperator>();
+        outcomeOpeParent = outcome.GetComponentInParent<ProxyABOperator>();
+        //TODO : Gestion du pin courant
+        incomeOpeParent.Inputs[incomeOpeParent.Inputs.Length - 1] = (ABNode)outcomeOpeParent.AbOperator;
+        ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
+    }
+
+    private void LinkOperator_Param(Pin ope, Pin param)
+    {
+        ProxyABOperator opeParent;
+        ProxyABParam paramParent;
+
+        opeParent = ope.GetComponentInParent<ProxyABOperator>();
+        paramParent = param.GetComponentInParent<ProxyABParam>();
+
+        opeParent.Inputs[opeParent.Inputs.Length - 1] = (ABNode)paramParent.AbParam;
+        ((ABNode)paramParent.AbParam).Output = (ABNode)opeParent.AbOperator;
+    }
+
+    private ABTransition LinkState_State(Pin stateIn, Pin stateOut)
+    {
+        ProxyABState inParent;
+        ProxyABState outParent;
+
+        inParent = stateIn.GetComponentInParent<ProxyABState>();
+        outParent = stateOut.GetComponentInParent<ProxyABState>();
+
+        int transitionId = AbModel.LinkStates(inParent.AbState.Name, outParent.AbState.Name);
+        return AbModel.getTransition(transitionId);
+    }
+
+    private ABTransition LinkState_Action(Pin state, Pin action)
+    {
+        ProxyABState stateParent;
+        ProxyABAction actionParent;
+
+        stateParent = state.GetComponentInParent<ProxyABState>();
+        actionParent = action.GetComponentInParent<ProxyABAction>();
+
+        int transitionId = AbModel.LinkStates(stateParent.AbState.Name, actionParent.AbState.Name);
+        return AbModel.getTransition(transitionId);
+    }
+
     #region EDITOR FUNCTIONS
     void CreateTransition(Pin start, Pin end)
 	{
@@ -827,14 +916,6 @@ public class MCEditorManager : MonoBehaviour {
 		ProxyABState startStateParent;
 		ProxyABAction endActionParent;
 		ProxyABState endStateParent;
-
-		ProxyABOperator startOpeParent;
-		ProxyABParam startParamParent;
-		ProxyABParam endParamParent;
-		ProxyABOperator endOpeParent;
-
-        ProxyABTransition startTransitionParent;
-        ProxyABTransition endTransitionParent;
 
         // Action; State; Param; Operator; Transition
 
@@ -854,165 +935,156 @@ public class MCEditorManager : MonoBehaviour {
 
         int transitionId = -1;
 
-        if(start.Pin_Type == Pin.PinType.Condition)
+        if (start.Pin_Type == Pin.PinType.Condition)
         {
-            startTransitionParent = start.GetComponentInParent<ProxyABTransition>();
-            //TODO : Gerer pin in et out
-            if(end.Pin_Type == Pin.PinType.OperatorOut || end.Pin_Type == Pin.PinType.OperatorIn)
+            if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
-                endOpeParent = end.GetComponentInParent<ProxyABOperator>();
-                startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endOpeParent.AbOperator;
+                LinkGateOperator_Operator(start, end);
             }
-            else if (end.Pin_Type== Pin.PinType.Param)
+            else if (end.Pin_Type == Pin.PinType.Param)
             {
-                endParamParent = end.GetComponentInParent<ProxyABParam>();
-                startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endParamParent.AbParam;
+                LinkGateOperator_Param(start, end);
+            }
+            else
+            {
+                Debug.LogError("Un Pin Bool Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
             }
         }
         else if (start.Pin_Type == Pin.PinType.ActionParam)
         {
-            startActionParent = start.GetComponentInParent<ProxyABAction>();
-
-			if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
+            if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
-                endOpeParent = end.GetComponentInParent<ProxyABOperator>();
-				//start.IsGateOperator = true;
-				start.Pin_Type = Pin.PinType.OperatorIn;
-                startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endOpeParent.AbOperator;               
-			}
+                LinkAction_Operator(start, end);
+            }
             else if (end.Pin_Type == Pin.PinType.Param)
             {
-                endParamParent = end.GetComponentInParent<ProxyABParam>();
-                //start.IsGateOperator = true;
-				start.Pin_Type = Pin.PinType.OperatorIn;
-                startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endParamParent.AbParam;
+                LinkAction_Param(start, end);
             }
-			else if (end.Pin_Type == Pin.PinType.ActionParam)
+            else
             {
-                endActionParent = end.GetComponentInParent<ProxyABAction>();                               
-				ProxyABTransition.addConditionPin ( trans );
-				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
-                trans.Transition = AbModel.getTransition(transitionId);
+                Debug.LogError("Un Pin Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
             }
-            else //State case
-            {
-                endStateParent = end.GetComponentInParent<ProxyABState>();                
-				ProxyABTransition.addConditionPin ( trans );
-				transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
-                trans.Transition = AbModel.getTransition(transitionId);
-            }
-			// TODO why this pin is created?
-			Pin newPin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.ActionParam, Pin.calculatePinPosition( Pin.PinType.ActionParam, startActionParent ), startActionParent.transform);
+            // TODO why this pin is created?
+            //Pin newPin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.ActionParam, Pin.calculatePinPosition( Pin.PinType.ActionParam, startActionParent ), startActionParent.transform);
         }
-		else if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
+        else if (start.Pin_Type == Pin.PinType.OperatorIn)
         {
-            startOpeParent = start.GetComponentInParent<ProxyABOperator>();
-			if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
+            if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
-                endOpeParent = end.GetComponentInParent<ProxyABOperator>();
-                //start.IsGateOperator = true;
-				start.Pin_Type = Pin.PinType.OperatorIn;
-                startOpeParent.Inputs[startOpeParent.Inputs.Length-1] = (ABNode)endOpeParent.AbOperator;
-                ((ABNode)endOpeParent.AbOperator).Output = (ABNode)startOpeParent.AbOperator;
+                LinkOperator_Operator(start, end);
             }
-			else if (end.Pin_Type == Pin.PinType.Param)
+            else if (end.Pin_Type == Pin.PinType.Param)
             {
-                endParamParent = end.GetComponentInParent<ProxyABParam>();
-                //start.IsGateOperator = true;
-				start.Pin_Type = Pin.PinType.OperatorIn;
-                startOpeParent.Inputs[startOpeParent.Inputs.Length-1] = (ABNode)endParamParent.AbParam;
+                LinkOperator_Param(start, end);
             }
-			else if (end.Pin_Type == Pin.PinType.ActionParam)
+            else
             {
-                endActionParent = end.GetComponentInParent<ProxyABAction>();
-                //end.IsGateOperator = true;
-				end.Pin_Type = Pin.PinType.OperatorIn;
-                endActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)startOpeParent.AbOperator;
+                Debug.LogError("Un Pin OperatorIn ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
+            }
+        }
+        else if (start.Pin_Type == Pin.PinType.OperatorOut)
+        {
+            if (end.Pin_Type == Pin.PinType.OperatorIn)
+            {
+                LinkOperator_Operator(end, start);
             }
             else if (end.Pin_Type == Pin.PinType.Condition)
             {
-                endTransitionParent = end.GetComponentInParent<ProxyABTransition>();
-                endTransitionParent.Transition.Condition.Inputs[0] = (ABNode)startOpeParent.AbOperator;
+                LinkGateOperator_Operator(end, start);
+            }
+            else if (end.Pin_Type == Pin.PinType.ActionParam)
+            {
+                LinkAction_Operator(end, start);
+            }
+            else
+            {
+                Debug.LogError("Un Pin OperatorOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
             }
         }
-		else if (start.Pin_Type == Pin.PinType.Param)
-        {
-            startParamParent = start.GetComponentInParent<ProxyABParam>();
-			if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
+        else if (start.Pin_Type == Pin.PinType.Param)
+        {            
+            if (end.Pin_Type == Pin.PinType.OperatorIn)
             {
-                endOpeParent = end.GetComponentInParent<ProxyABOperator>();
-                //start.IsGateOperator = true;
-				start.Pin_Type = Pin.PinType.OperatorIn;
-                endOpeParent.Inputs[endOpeParent.Inputs.Length-1] = (ABNode)startParamParent.AbParam;
-                ((ABNode)startParamParent.AbParam).Output = (ABNode)endOpeParent.AbOperator;//TODO ma geule
-            }
-			else if (end.Pin_Type == Pin.PinType.ActionParam)
-            {
-                endActionParent = end.GetComponentInParent<ProxyABAction>();
-                //end.IsGateOperator = true;
-				end.Pin_Type = Pin.PinType.OperatorIn;                
-                endActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)startParamParent.AbParam;
+                LinkOperator_Param(end, start);
             }
             else if (end.Pin_Type == Pin.PinType.Condition)
             {
-                endTransitionParent = end.GetComponentInParent<ProxyABTransition>();
-                endTransitionParent.Transition.Condition.Inputs[0] = (ABNode)startParamParent.AbParam;
+                LinkGateOperator_Param(end, start);
+            }
+            else if (end.Pin_Type == Pin.PinType.ActionParam)
+            {
+                LinkAction_Param(end, start);
+            }
+            else
+            {
+                Debug.LogError("Un Pin Param ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
             }
         }
-        else
+        else if (start.Pin_Type == Pin.PinType.TransitionIn)
         {
-            startStateParent = start.GetComponentInParent<ProxyABState>();
-            if (!startStateParent)
+            if (end.Pin_Type == Pin.PinType.TransitionOut)
             {
-                startActionParent = start.GetComponentInParent<ProxyABAction>();
-                if (end.Pin_Type == Pin.PinType.ActionParam)
+                startStateParent = start.GetComponentInParent<ProxyABState>();
+                // ACTION -> 
+                if (!startStateParent)
                 {
-                    endActionParent = end.GetComponentInParent<ProxyABAction>();
-                    ProxyABTransition.addConditionPin(trans);
-                    transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
-                    trans.Transition = AbModel.getTransition(transitionId);
+                    startActionParent = start.GetComponentInParent<ProxyABAction>();
+                    endStateParent = end.GetComponentInParent<ProxyABState>();
+                    // ACTION -> ACTION : IMPOSSIBLE
+                    if (!endStateParent)
+                    {
+                        Debug.LogError("Action -> Action n'existe pas");
+                    }
+                    // ACTION -> STATE
+                    else
+                    {
+                        trans.Transition = LinkState_Action(end, start);
+                        ProxyABTransition.addConditionPin(trans);
+                    }
                 }
+                // STATE -> 
                 else
                 {
-                    ProxyABTransition.addConditionPin(trans);
                     endStateParent = end.GetComponentInParent<ProxyABState>();
+                    // STATE -> ACTION
                     if (!endStateParent)
                     {
                         endActionParent = end.GetComponentInParent<ProxyABAction>();
-                        transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endActionParent.AbState.Name);
+                        trans.Transition = LinkState_Action(start, end);
+                        ProxyABTransition.addConditionPin(trans);
                     }
+                    // STATE -> STATE
                     else
                     {
-                        transitionId = AbModel.LinkStates(startActionParent.AbState.Name, endStateParent.AbState.Name);
+                        trans.Transition = LinkState_State(start, end);
+                        ProxyABTransition.addConditionPin(trans);
                     }
-                    trans.Transition = AbModel.getTransition(transitionId);
                 }
-
-            } else
+            }
+        }
+        // STATE ->
+        else if (start.Pin_Type == Pin.PinType.TransitionOut)
+        {
+            if(end.Pin_Type == Pin.PinType.TransitionIn)
             {
-                if (end.Pin_Type == Pin.PinType.ActionParam)
+                endStateParent = end.GetComponentInParent<ProxyABState>();
+                // STATE -> STATE
+                if (endStateParent)
                 {
-                    endActionParent = end.GetComponentInParent<ProxyABAction>();
+                    trans.Transition = LinkState_State(end, start);
                     ProxyABTransition.addConditionPin(trans);
-                    transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
-                    trans.Transition = AbModel.getTransition(transitionId);
                 }
+                // STATE -> ACTION
                 else
                 {
+                    trans.Transition = LinkState_Action(end, start);
                     ProxyABTransition.addConditionPin(trans);
-                    endStateParent = end.GetComponentInParent<ProxyABState>();
-                    if (!endStateParent)
-                    {
-                        endActionParent = end.GetComponentInParent<ProxyABAction>();
-                        transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endActionParent.AbState.Name);
-                    }
-                    else
-                    {
-                        transitionId = AbModel.LinkStates(startStateParent.AbState.Name, endStateParent.AbState.Name);
-                    }
-                    trans.Transition = AbModel.getTransition(transitionId);
-                }
-            }			
+                }                
+            }
+            else
+            {
+                Debug.LogError("Un Pin TransitionOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
+            }        			
         }                                                               
     }
 
