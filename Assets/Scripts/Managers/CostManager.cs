@@ -39,6 +39,8 @@ public class CostManager : MonoBehaviour
     [SerializeField]
     private float mc_param_fixed_cost = 10f;
     [SerializeField]
+    private float mc_init_fixed_cost = 0f;
+    [SerializeField]
     private float mc_inter_fixed_cost = 10f;
     [SerializeField]
     private float mc_final_fixed_cost = 10f;
@@ -48,6 +50,8 @@ public class CostManager : MonoBehaviour
     private float mc_node_fixed_cost = 10f;
     [SerializeField]
     private float mc_param_coef = 1f;
+    [SerializeField]
+    private float mc_init_coef = 0f;
     [SerializeField]
     private float mc_inter_coef = 0f;
     [SerializeField]
@@ -213,32 +217,41 @@ public class CostManager : MonoBehaviour
         float mc_cost = 0f;
         foreach (ABState state in behaviorModel.States)
         {
-            if (state.Id == 0) 
+            if (state.Id == 0)  // Initial State
             {
-                mc_cost += mc_param_coef * mc_param_fixed_cost;
+                mc_cost += mc_init_coef * mc_init_fixed_cost;
             }
-            if (state.Action != null) // Etat Final
+            if (state.Action != null) // Final State
             {
-                mc_cost += mc_param_coef * mc_param_fixed_cost; //price;
+                mc_cost += mc_final_coef * mc_final_fixed_cost; //price;
             }
-            else if (state.Action == null) //Etat Intermediaire
+            else if (state.Action == null) //Inter State
             {
                 mc_cost += mc_inter_coef * mc_inter_fixed_cost;//price;
 
             }
-        }
 
+        }
+        
+
+        
         //Retreive root nodes
         IList<ABNode> rootNodes = new List<ABNode>();
         foreach (ABState state in behaviorModel.States)
         {
             if (state.Action != null)
             {
-                foreach (ABNode param in state.Action.Parameters)
+                Debug.Log("state.Action :" + state.Action);
+                if (state.Action.ToString() == "ABDropAction")
+                    Debug.Log("Maintenant !!");
+                if(state.Action.Parameters != null)
                 {
-                    rootNodes.Add(param);
-
+                     foreach (ABNode param in state.Action.Parameters)
+                     {
+                                        rootNodes.Add(param);
+                     }
                 }
+               
             }
         }
         foreach (ABTransition trans in behaviorModel.Transitions)
@@ -264,8 +277,6 @@ public class CostManager : MonoBehaviour
 
     private float ComputeTreeCost(ABNode node)
     {
-        Debug.Log(compteur_general);
-        compteur_general++;
         //Compute current
         if (node is IABParam)
         {
