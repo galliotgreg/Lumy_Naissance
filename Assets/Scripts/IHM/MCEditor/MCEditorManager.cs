@@ -1298,11 +1298,14 @@ public class MCEditorManager : MonoBehaviour {
             ABNode node = proxyOpeStart.AbOperator.Inputs[i];
             if(node != null)
             {
-                if (((IABParam)(node)).Identifier == idRemoveObject)
+                if(node is IABParam)
                 {
-                    node.Output = null;
-                    proxyOpeStart.AbOperator.Inputs[i] = null;
-                }
+                    if (((IABParam)(node)).Identifier == idRemoveObject)
+                    {
+                        node.Output = null;
+                        proxyOpeStart.AbOperator.Inputs[i] = null;
+                    }
+                }                    
             }            
         }
     }

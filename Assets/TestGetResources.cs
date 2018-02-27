@@ -11,9 +11,9 @@ public class TestGetResources : MonoBehaviour {
         GameManager gameManager = GameManager.instance; 
 	}
 	
-	// Update is called once per frame
-	void Update () {
-        Debug.Log("Player 1" + gameManager.GetResources(PlayerAuthority.Player1));
-        Debug.Log("Player 2" + gameManager.GetResources(PlayerAuthority.Player2));
-	}
+	//// Update is called once per frame
+	//void Update () {
+ //       Debug.Log("Player 1" + gameManager.GetResources(PlayerAuthority.Player1));
+ //       Debug.Log("Player 2" + gameManager.GetResources(PlayerAuthority.Player2));
+	//}
 }
