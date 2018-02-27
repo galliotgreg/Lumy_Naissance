@@ -47,7 +47,7 @@ Nodes,Type,Output (Node -> Input)
 4,param{vec:curPos},3->1
 5,operator{V[]getR[]T},3->0
 6,param{ref[]:enemies},5->0
-7,param{const txt=position},5->1
+7,param{const txt=pos},5->1
 ,,
 Syntax Tree,Output,
 0,go to search->0,
@@ -72,14 +72,14 @@ Syntax Tree,Output,
 Nodes,Type,Output (Node -> Input)
 0,operator{V[]aggV*},
 1,operator{VgetRT},0->0
-2,param{const txt=position},1->1
+2,param{const txt=pos},1->1
 3,operator{RgetR[]S},1->0
 4,param{ref[]:enemies},3->0
 5,operator{SminIdS[]},3->1
 6,operator{S[]distV[]V},5->0
 7,param{vec:curPos},6->1
 8,operator{V[]getR[]T},6->0
-9,param{const txt=position},8->1
+9,param{const txt=pos},8->1
 10,param{ref[]:enemies},8->0
 ,,
 Syntax Tree,Output,
@@ -93,4 +93,4 @@ Nodes,Type,Output (Node -> Input)
 0,operator{V[]aggV*},
 1,operator{VgetRT},0->0
 2,param{ref:home},1->0
-3,param{const txt=position},1->1
+3,param{const txt=pos},1->1

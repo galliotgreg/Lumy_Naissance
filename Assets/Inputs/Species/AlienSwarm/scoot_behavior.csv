@@ -54,7 +54,7 @@ Nodes,Type,output (Node -> Input)
 11,param{const color=green},9->2
 12,param{ref[]:resources},9->0
 13,param{const scal=0},2->0
-14,operator{SsizeS[]},2->1
+14,operator{SsizeR[]},2->1
 15,operator{R[]where==R[]TC},14->0
 16,param{const txt=color},15->1
 17,param{const color=green},15->2
@@ -120,11 +120,11 @@ Nodes,Type,output (Node -> Input)
 1,operator{VgetRT},0->0
 2,param{const txt=pos},1->1
 3,operator{RgetR[]S},1->0
-4,operator{R[]where==R[]TC},3->1
+4,operator{R[]where==R[]TC},3->0
 5,param{const txt=color},4->1
 6,param{const color=green},4->2
 7,param{ref[]:resources},4->0
-8,operator{SminIdS[]},3->0
+8,operator{SminIdS[]},3->1
 9,operator{S[]distV[]V},8->0
 10,operator{VgetRT},9->1
 11,operator{V[]getR[]T},9->0
