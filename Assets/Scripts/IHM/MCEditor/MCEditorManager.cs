@@ -391,9 +391,17 @@ public class MCEditorManager : MonoBehaviour {
 		    
 			// Creating params trees
 			List<Pin> pins = ope.getPins( Pin.PinType.OperatorIn );
-			for(int i=0; i<((IABOperator)node).Inputs.Length; i++){
+            Pin start;
+            for (int i=0; i<((IABOperator)node).Inputs.Length; i++){
 				ABNode inputNode = ((IABOperator)node).Inputs [i];
-				Pin start = pins[i];
+                if(((IABOperator)node).Inputs.Length <=2)
+                {
+                    start = pins[i];
+                }
+                else
+                {
+                    start = pins[0];
+                }		
 
                 if(inputNode == null)
                 {
@@ -825,25 +833,43 @@ public class MCEditorManager : MonoBehaviour {
 		ProxyABParam endParamParent;
 		ProxyABOperator endOpeParent;
 
-		// Action; State; Param; Operator; Transition
+        ProxyABTransition startTransitionParent;
+        ProxyABTransition endTransitionParent;
 
-		// IN
-		// action 	<- state | operator | param(gate)
-		// state 	<- state
-		// operator	<- param | operator
-		// param 	<- 
-		// transition <- operator | param(gate)
+        // Action; State; Param; Operator; Transition
 
-		// OUT
-		// action 	->
-		// state 	-> action | state
-		// operator	-> action | operator | transition
-		// param	-> operator | action(gate) | transition(gate)
-		// transition -> 
+        // IN
+        // action 	<- state | operator | param(gate)
+        // state 	<- state
+        // operator	<- param | operator
+        // param 	<- 
+        // transition <- operator | param(gate)
 
-		int transitionId = -1;
+        // OUT
+        // action 	->
+        // state 	-> action | state
+        // operator	-> action | operator | transition
+        // param	-> operator | action(gate) | transition(gate)
+        // transition -> 
 
-		if (start.Pin_Type == Pin.PinType.ActionParam)
+        int transitionId = -1;
+
+        if(start.Pin_Type == Pin.PinType.Condition)
+        {
+            startTransitionParent = start.GetComponentInParent<ProxyABTransition>();
+            //TODO : Gerer pin in et out
+            if(end.Pin_Type == Pin.PinType.OperatorOut || end.Pin_Type == Pin.PinType.OperatorIn)
+            {
+                endOpeParent = end.GetComponentInParent<ProxyABOperator>();
+                startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endOpeParent.AbOperator;
+            }
+            else if (end.Pin_Type== Pin.PinType.Param)
+            {
+                endParamParent = end.GetComponentInParent<ProxyABParam>();
+                startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endParamParent.AbParam;
+            }
+        }
+        else if (start.Pin_Type == Pin.PinType.ActionParam)
         {
             startActionParent = start.GetComponentInParent<ProxyABAction>();
 
@@ -853,7 +879,8 @@ public class MCEditorManager : MonoBehaviour {
 				//start.IsGateOperator = true;
 				start.Pin_Type = Pin.PinType.OperatorIn;
                 startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endOpeParent.AbOperator;               
-			} else if (end.Pin_Type == Pin.PinType.Param)
+			}
+            else if (end.Pin_Type == Pin.PinType.Param)
             {
                 endParamParent = end.GetComponentInParent<ProxyABParam>();
                 //start.IsGateOperator = true;
@@ -902,6 +929,11 @@ public class MCEditorManager : MonoBehaviour {
 				end.Pin_Type = Pin.PinType.OperatorIn;
                 endActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)startOpeParent.AbOperator;
             }
+            else if (end.Pin_Type == Pin.PinType.Condition)
+            {
+                endTransitionParent = end.GetComponentInParent<ProxyABTransition>();
+                endTransitionParent.Transition.Condition.Inputs[0] = (ABNode)startOpeParent.AbOperator;
+            }
         }
 		else if (start.Pin_Type == Pin.PinType.Param)
         {
@@ -920,6 +952,11 @@ public class MCEditorManager : MonoBehaviour {
                 //end.IsGateOperator = true;
 				end.Pin_Type = Pin.PinType.OperatorIn;                
                 endActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)startParamParent.AbParam;
+            }
+            else if (end.Pin_Type == Pin.PinType.Condition)
+            {
+                endTransitionParent = end.GetComponentInParent<ProxyABTransition>();
+                endTransitionParent.Transition.Condition.Inputs[0] = (ABNode)startParamParent.AbParam;
             }
         }
         else
@@ -1066,9 +1103,28 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABOperator proxyOpeEnd = null;
         ProxyABParam proxyParam = null;
         ProxyABAction proxyAction = null;
+        ProxyABTransition proxyTransition = null;
 
+        /* START TRANSITION CASES */
+        if (start.Pin_Type == Pin.PinType.Condition)
+        {
+            proxyTransition = start.GetComponentInParent<ProxyABTransition>();
+
+            /* TRANSITION -> OPERATOR */
+            if (end.Pin_Type == Pin.PinType.OperatorOut)
+            {
+                proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
+                UnlinkTransition_Operator(proxyTransition, proxyOpeEnd);
+            }
+            /* TRANSITION -> PARAM */
+            else if (end.Pin_Type == Pin.PinType.Param)
+            {
+                proxyParam = end.GetComponentInParent<ProxyABParam>();
+                UnlinkTransition_Param(proxyTransition, proxyParam);
+            }
+        }
         /*START ACTION CASES*/
-        if(start.Pin_Type == Pin.PinType.ActionParam)
+        else if(start.Pin_Type == Pin.PinType.ActionParam)
         {
             proxyAction = start.GetComponentInParent<ProxyABAction>();
             /*ACTION -> PARAM */
@@ -1106,20 +1162,42 @@ public class MCEditorManager : MonoBehaviour {
                 proxyAction = end.GetComponentInParent<ProxyABAction>();
                 UnlinkAction_Operator(proxyAction, proxyOpeStart);
             }
-        }
+            /* OPERATOR -> TRANSITION */
+            else if (end.Pin_Type == Pin.PinType.Condition)
+            {
+                proxyTransition = end.GetComponentInParent<ProxyABTransition>();
+                UnlinkTransition_Operator(proxyTransition, proxyOpeStart);
+            }
+        }  
+        /* START PARAM CASES */
+        else if (start.Pin_Type == Pin.PinType.Param)
+        {
+            proxyParam = start.GetComponentInParent<ProxyABParam>();
+            /* PARAM -> OPERATOR */
+            if (end.Pin_Type == Pin.PinType.OperatorIn)
+            {
+                proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
+                UnlinkOperator_Param(proxyOpeEnd, proxyParam);
 
-        /* END OPERATOR CASES */
-		else if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
+            }
+            /* PARAM -> TRANSITION */ 
+            else if (end.Pin_Type == Pin.PinType.Condition)
+            {
+                proxyTransition = end.GetComponentInParent<ProxyABTransition>();
+                UnlinkTransition_Param(proxyTransition, proxyParam);
+            }
+        }         /* END OPERATOR CASES */
+        else if (end.Pin_Type == Pin.PinType.OperatorIn || end.Pin_Type == Pin.PinType.OperatorOut)
         {
             proxyOpeEnd = end.GetComponentInParent<ProxyABOperator>();
             /* PARAM -> OPERATOR */
-			if (start.Pin_Type == Pin.PinType.Param)
+            if (start.Pin_Type == Pin.PinType.Param)
             {
                 proxyParam = start.GetComponentInParent<ProxyABParam>();
                 UnlinkOperator_Param(proxyOpeEnd, proxyParam);
             }
             /* OPERATOR -> OPERATOR */
-			else if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
+            else if (start.Pin_Type == Pin.PinType.OperatorIn || start.Pin_Type == Pin.PinType.OperatorOut)
             {
                 proxyOpeEnd = start.GetComponentInParent<ProxyABOperator>();
                 UnlinkOperator_Operator(proxyOpeStart, proxyOpeEnd);
@@ -1130,7 +1208,29 @@ public class MCEditorManager : MonoBehaviour {
                 proxyAction = end.GetComponentInParent<ProxyABAction>();
                 UnlinkAction_Operator(proxyAction, proxyOpeEnd);
             }
-        }        
+        }
+    }
+
+    private  void UnlinkTransition_Operator(ProxyABTransition proxyTransition, ProxyABOperator proxyOpe)
+    {
+        for (int i = 0; i < proxyTransition.Transition.Condition.Inputs.Length; i++)
+        {
+            if (proxyTransition.Transition.Condition.Inputs[i] == (ABNode)proxyOpe.AbOperator)
+            {
+                proxyTransition.Transition.Condition.Inputs[i] = null;
+            }
+        }
+    }
+
+    private void UnlinkTransition_Param(ProxyABTransition proxyTransition, ProxyABParam proxyParam)
+    {
+        for (int i = 0; i < proxyTransition.Transition.Condition.Inputs.Length; i++)
+        {
+            if (proxyTransition.Transition.Condition.Inputs[i] == (ABNode)proxyParam.AbParam)
+            {
+                proxyTransition.Transition.Condition.Inputs[i] = null;
+            }
+        }
     }
 
     private void UnlinkAction_Param(ProxyABAction proxyAction, ProxyABParam proxyParam)

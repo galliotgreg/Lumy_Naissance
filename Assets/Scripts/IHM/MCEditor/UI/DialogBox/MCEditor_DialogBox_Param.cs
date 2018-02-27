@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MCEditor_DialogBox_Param : MCEditor_DialogBox {
+public abstract class MCEditor_DialogBox_Param : MCEditor_DialogBox {
 
-	ProxyABParam param;
-
-	[SerializeField]
-	UnityEngine.UI.Text valueText;
+	protected ProxyABParam param;
 
 	[SerializeField]
 	UnityEngine.UI.Text title;
@@ -17,12 +14,12 @@ public class MCEditor_DialogBox_Param : MCEditor_DialogBox {
 		get {
 			return param;
 		}
-		set {
+		protected set {
 			param = value;
 		}
 	}
 
-	public string Title{
+	protected string Title{
 		set{
 			title.text = value;
 		}
@@ -45,18 +42,32 @@ public class MCEditor_DialogBox_Param : MCEditor_DialogBox {
 
 	public override void confirm ()
 	{
-		param.Value = valueText.text;
+		confirmParam ();
 		close ();
 	}
 
+	protected abstract void confirmParam ();
+	protected abstract void cancelParam ();
 	#endregion
 
 	#region INSTANTIATE
-	public static MCEditor_DialogBox_Param instantiate ( ProxyABParam param, MCEditor_DialogBox_Param prefab, Vector3 position, Transform parent = null ){
+	public static MCEditor_DialogBox_Param instantiate ( ProxyABParam param, MCEditor_DialogBox_Param prefab, Vector3 position, Transform parent ){
 		MCEditor_DialogBox_Param result = (MCEditor_DialogBox_Param)MCEditor_DialogBox.instantiate (prefab, position, parent);
-		result.Param = param;
-		result.Title = param.Name;
+		result.config ( param );
+
 		return result;
 	}
+
+	public void config( ProxyABParam param ){
+		this.Param = param;
+		this.Title = param.Name;
+
+		configParam ();
+	}
+
+	/// <summary>
+	/// Based on this.param, fill the initial values of the dialogBox
+	/// </summary>
+	protected abstract void configParam ();
 	#endregion
 }
