@@ -391,9 +391,17 @@ public class MCEditorManager : MonoBehaviour {
 		    
 			// Creating params trees
 			List<Pin> pins = ope.getPins( Pin.PinType.OperatorIn );
-			for(int i=0; i<((IABOperator)node).Inputs.Length; i++){
+            Pin start;
+            for (int i=0; i<((IABOperator)node).Inputs.Length; i++){
 				ABNode inputNode = ((IABOperator)node).Inputs [i];
-				Pin start = pins[i];
+                if(((IABOperator)node).Inputs.Length <=2)
+                {
+                    start = pins[i];
+                }
+                else
+                {
+                    start = pins[0];
+                }		
 
                 if(inputNode == null)
                 {
