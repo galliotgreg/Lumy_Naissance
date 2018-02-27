@@ -26,9 +26,8 @@ public class MCEditor_DialogBox_Param_Vec : MCEditor_DialogBox_Param {
 		try{
 			float vX = float.Parse (valueX.text);
 			float vY = float.Parse (valueY.text);
-			//this.param.setProxyName ( "("+vX.ToString()+","+vY.ToString()+")" );
-			((ABVecParam)this.param.AbParam).Value.X = vX;
-			((ABVecParam)this.param.AbParam).Value.Y = vY;
+			((ABVecParam)this.paramProxy.AbParam).Value.X = vX;
+			((ABVecParam)this.paramProxy.AbParam).Value.Y = vY;
 		}catch(System.Exception ex){
 			Debug.LogError ("Value is not a SCALAR");
 		}
@@ -36,13 +35,18 @@ public class MCEditor_DialogBox_Param_Vec : MCEditor_DialogBox_Param {
 
 	protected override void configParam ()
 	{
-		Title = "Vec";
-		valueX.text = ((ABVecParam)this.param.AbParam).Value.X.ToString();
-		valueY.text = ((ABVecParam)this.param.AbParam).Value.Y.ToString();
+		valueX.text = ((ABVecParam)this.paramProxy.AbParam).Value.X.ToString();
+		valueY.text = ((ABVecParam)this.paramProxy.AbParam).Value.Y.ToString();
 	}
 
-	protected override void cancelParam ()
+	protected override void deactivateParam ()
 	{
+		// Nothing
+	}
+
+	protected override string dialogTitle ()
+	{
+		return "Vec";
 	}
 
 	#endregion

@@ -32,6 +32,30 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 		operatorName.text = getNodeName( node );
 	}
 
+	public void SetProxyName(string name)
+	{
+		UnityEngine.UI.Text text = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
+		text.text = name;
+	}
+
+	public string GetProxyName()
+	{
+		if (this is ProxyABState) {
+			return ((ProxyABState)this).AbState.Name;
+		}
+		else if (this is ProxyABAction) {
+			//return ((ProxyABAction)this).AbState.Action.Type.ToString();
+			return ((ProxyABAction)this).AbState.Name;
+		}
+		else if (this is ProxyABOperator) {
+			return getNodeName( (ABNode)((ProxyABOperator)this).AbOperator );
+		}
+		else if (this is ProxyABParam) {
+			return MCEditorManager.GetParamValue ((ABNode)((ProxyABParam)this).AbParam);
+		}
+		return "NODE";
+	}
+
 	public static string getNodeName( ABNode node ){
 		string opeName = node.ToString();
 		char splitter = '_';

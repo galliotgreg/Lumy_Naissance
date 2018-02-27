@@ -131,7 +131,7 @@ public static Vector3 calculateActionPosition( Transform parent ){
 
 	public override void click ()
 	{
-		throw new System.NotImplementedException ();
+		// Nothing to do
 	}
 
 	#endregion
