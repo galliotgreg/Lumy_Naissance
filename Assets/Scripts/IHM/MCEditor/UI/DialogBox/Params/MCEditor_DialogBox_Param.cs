@@ -23,8 +23,6 @@ public abstract class MCEditor_DialogBox_Param : MCEditor_DialogBox_Proxy {
 	{
 		confirmParam();
 		paramProxy.SetProxyName ( paramProxy.GetProxyName() );
-		confirmParam ();
-		paramProxy.setProxyName ( MCEditorManager.GetParamValue( (ABNode) paramProxy.AbParam ) );
 	}
 
 	protected override void deactivateProxy ()
