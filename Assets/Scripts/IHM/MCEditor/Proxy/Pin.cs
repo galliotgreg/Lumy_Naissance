@@ -99,7 +99,14 @@ public class Pin : DragSelectableProxyGameObject {
 
 	#region INSTANTIATE
 	public static Pin instantiate( Pin.PinType pinType, Vector3 position, Transform parent ){
-		Pin result = Instantiate<Pin> (MCEditor_Proxy_Factory.instance.PinPrefab, parent);
+        Pin result;
+        if (pinType==PinType.OperatorOut || pinType == PinType.TransitionOut || pinType == PinType.Param)
+        {
+            result = Instantiate<Pin>(MCEditor_Proxy_Factory.instance.PinOutPrefab, parent);
+        } else
+        {
+            result = Instantiate<Pin>(MCEditor_Proxy_Factory.instance.PinPrefab, parent);
+        }                    
 		result.Pin_Type = pinType;
 		result.transform.position = position;
 

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
 
     //Timer 
     [SerializeField]
-    private float timerLeft = 10 ;
+    private float timerLeft;  
     private bool gameNotOver = true; 
 
     //Queen Ref
@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour {
 
     public enum Winner { Player1,Player2,Equality, None };
     private Winner winnerPlayer; 
-
 
 
     /// <summary>
@@ -196,6 +195,7 @@ public class GameManager : MonoBehaviour {
 
     private void SetupMatch()
     {
+       
         SetupGameParams();
         ParseSpecies();
         CreateUnitTemplates();
@@ -206,6 +206,7 @@ public class GameManager : MonoBehaviour {
 
     private void SetupGameParams()
     {
+        timerLeft = SwapManager.instance.GetPlayerTimer();
         gameParam = Instantiate(gameParamsPrefab);
         gameParam.transform.parent = this.transform;
     }
@@ -375,7 +376,8 @@ public class GameManager : MonoBehaviour {
         p1_hiveScript.addUnit( p1_queen.GetComponent<AgentEntity>() );
 		p2_hiveScript.addUnit( p2_queen.GetComponent<AgentEntity>() );
 
-        InitResources(); 
+        InitResources();
+        SetResources(); 
     }
 
     private void InitResources() {
@@ -386,6 +388,7 @@ public class GameManager : MonoBehaviour {
             return;
         }
         for (int i=0;i<list.Length;i++) {
+            list[i].Stock = SwapManager.instance.GetPlayerStock(); 
             listResources.Add(list[i]); 
         }
 
@@ -454,6 +457,27 @@ public class GameManager : MonoBehaviour {
             return resourcesAmount;  
         }
         return null; 
+    }
+
+    /// <summary>
+    /// Called from the GameParams in the PartiePersoScene
+    /// Init all the resources of the players same amount for each resources 
+    /// </summary>
+    public void SetResources()
+    {
+        int nbResources = SwapManager.instance.GetPlayerResources(); 
+        HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
+        p1_hiveScript.Authority = PlayerAuthority.Player1;
+        p1_hiveScript.RedResAmout = nbResources;
+        p1_hiveScript.GreenResAmout = nbResources;
+        p1_hiveScript.BlueResAmout = nbResources;
+
+        p1_hiveScript = p2_home.GetComponent<HomeScript>();
+        p1_hiveScript.Authority = PlayerAuthority.Player2;
+        p1_hiveScript.RedResAmout = nbResources;
+        p1_hiveScript.GreenResAmout = nbResources;
+        p1_hiveScript.BlueResAmout = nbResources;
+
     }
 
     public float sumResources(PlayerAuthority authority)

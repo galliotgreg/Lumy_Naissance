@@ -14,8 +14,8 @@ States,Name,Type
 12,lay knight,trigger{lay}
 ,,
 Transitions,Start State,End State
-0,INIT,spawn scoot
-1,INIT,time older 30
+0,INIT,time older 30
+1,INIT,spawn scoot
 2,spawn scoot,lay scoot
 3,spawn scoot,spawn ouvrier
 4,time older 30,lay soldier
@@ -28,10 +28,10 @@ Transitions,Start State,End State
 11,warrior finich,lay knight
 ,,
 Syntax Tree,Output,
-0,1,
+0,0,
 Nodes,Type,Output (Node -> Input)
 0,operator{B>SS},
-1,param{const scal=30},0->1
+1,param{const scal=10},0->1
 2,operator{SgetRT},0->0
 3,param{const txt=time},2->1
 4,param{ref:game},2->0

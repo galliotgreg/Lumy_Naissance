@@ -162,7 +162,8 @@ public class ComponentParser {
 			case "pick/drop": component.EnablePickDrop = true; return;
 			case "goto/hold": component.EnableGotoHold = true; return;
 			case "lay": component.EnableLay = true; return;
-			default: component.NotHandledTokens.Add( action ); return;
+            case "trace/spread": component.EnableTraceSpread = true; return;
+            default: component.NotHandledTokens.Add( action ); return;
 			}
 		}
 	}

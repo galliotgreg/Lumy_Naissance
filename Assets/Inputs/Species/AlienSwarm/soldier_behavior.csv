@@ -27,7 +27,7 @@ Nodes,Type,Output (Node -> Input)
 0,operator{B!=VV},
 1,operator{VgetRT},0->0
 2,param{ref:self},1->0
-3,param{vec:targetpos},1->1
+3,param{const txt=trgPos},1->1
 4,operator{VgetRT},0->1
 5,param{ref:self},4->0
 6,param{const txt=curPos},4->1
@@ -39,14 +39,14 @@ Nodes,Type,Output (Node -> Input)
 0,operator{V[]aggV*},
 1,operator{VgetRT},0->0
 2,param{ref:self},1->0
-3,param{vec:trgPos},1->1
+3,param{const txt=trgPos},1->1
 ,,
 Syntax Tree,Output,
 0,go to elsewhere->0,
 Nodes,Type,Output (Node -> Input)
 0,operator{V[]aggV*},
 1,operator{VrandCircleVS},0->0
-2,param{const scal=5},1->1
+2,param{const scal=20},1->1
 3,operator{VgetRT},1->0
 4,param{ref:self},3->0
 5,param{const txt=curPos},3->1

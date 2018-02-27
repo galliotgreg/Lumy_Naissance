@@ -42,6 +42,9 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 
 	public MCEditor_DialogBox_Param instantiateValue( ProxyABParam param, Vector2 position ){
 		Vector3 pos3D = new Vector3 ( position.x + 1, position.y + 1, container.position.z );
-		return MCEditor_DialogBox_Param.instantiate( param, valuePrefab, pos3D, container);
+		if (param.AbParam is ABTextParam) {
+			return MCEditor_DialogBox_Param_String.instantiate( param, valuePrefab, pos3D, container);
+		}
+		return null;
 	}
 }
