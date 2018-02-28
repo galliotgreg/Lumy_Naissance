@@ -18,8 +18,8 @@ Transitions,Start State,End State
 1,INIT,spawn scoot
 2,spawn scoot,lay scoot
 3,spawn scoot,spawn ouvrier
-4,time older 30,lay soldier
-5,time older 30,soldier older 10
+4,time older 30,soldier older 10
+5,time older 30,lay soldier
 6,spawn ouvrier,lay lurker
 7,spawn ouvrier,lay ouvrier
 8,soldier older 10,time older 60
@@ -31,7 +31,7 @@ Syntax Tree,Output,
 0,0,
 Nodes,Type,Output (Node -> Input)
 0,operator{B>SS},
-1,param{const scal=20},0->1
+1,param{const scal=30},0->1
 2,operator{SgetRT},0->0
 3,param{const txt=time},2->1
 4,param{ref:game},2->0
@@ -48,7 +48,7 @@ Nodes,Type,Output (Node -> Input)
 6,param{ref:home},4->0
 ,,
 Syntax Tree,Output,
-0,5,
+0,4,
 Nodes,Type,Output (Node -> Input)
 0,operator{B>SS},
 1,param{const scal=10},0->1
