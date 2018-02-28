@@ -514,8 +514,13 @@ public class MCEditorManager : MonoBehaviour {
                 {
                     type = paramDictionary[GetParamType(node)];
                 }
-
-                syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "},");
+                if (((IABParam)node).Identifier != "const")
+                {
+                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + type + ":" + ((IABParam)node).Identifier + "}" + ",");
+                } else
+                {
+                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "},");
+                }                
                 idNodeSyntTree++;
             }
         }
@@ -844,6 +849,7 @@ public class MCEditorManager : MonoBehaviour {
 
         startTransitionParent = start.GetComponentInParent<ProxyABTransition>();
         endParamParent = end.GetComponentInParent<ProxyABParam>();
+        startTransitionParent.Transition.Condition = new AB_BoolGate_Operator();
         startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endParamParent.AbParam;
     }
 
@@ -888,7 +894,13 @@ public class MCEditorManager : MonoBehaviour {
         opeParent = ope.GetComponentInParent<ProxyABOperator>();
         paramParent = param.GetComponentInParent<ProxyABParam>();
 
-        opeParent.Inputs[opeParent.Inputs.Length - 1] = (ABNode)paramParent.AbParam;
+        for(int i = 0; i < opeParent.Inputs.Length; i++)
+        {
+            if (opeParent.Inputs[i]==null)
+            {
+                opeParent.Inputs[i] = (ABNode)paramParent.AbParam;
+            }
+        }        
         ((ABNode)paramParent.AbParam).Output = (ABNode)opeParent.AbOperator;
     }
 
@@ -900,7 +912,7 @@ public class MCEditorManager : MonoBehaviour {
         inParent = stateIn.GetComponentInParent<ProxyABState>();
         outParent = stateOut.GetComponentInParent<ProxyABState>();
 
-        int transitionId = AbModel.LinkStates(inParent.AbState.Name, outParent.AbState.Name);
+        int transitionId = AbModel.LinkStates(outParent.AbState.Name, inParent.AbState.Name);
         return AbModel.getTransition(transitionId);
     }
 
