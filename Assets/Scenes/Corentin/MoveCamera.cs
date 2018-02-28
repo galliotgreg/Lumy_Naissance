@@ -15,7 +15,7 @@ public class MoveCamera : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             isMovable = !isMovable;
         }

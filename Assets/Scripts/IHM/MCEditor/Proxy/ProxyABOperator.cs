@@ -9,6 +9,7 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
     private string type;
     private IABOperator abOperator;
     bool isLoaded = false;
+    bool isPositioned = false;
 
 	#region PROPERTIES
     public ABNode[] Inputs {
@@ -75,7 +76,20 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
             abOperator = value;
         }
     }
-	#endregion
+
+    public bool IsPositioned
+    {
+        get
+        {
+            return isPositioned;
+        }
+
+        set
+        {
+            isPositioned = value;
+        }
+    }
+    #endregion
 
     // Use this for initialization
     void Start () {
