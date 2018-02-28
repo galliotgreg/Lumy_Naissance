@@ -111,7 +111,8 @@ public class ProxyABState : MCEditor_Proxy {
 
         // Outcome Pin 
         int outPin = 1;
-		foreach(ABTransition transition in state.Outcomes) 
+        Pin pinInit = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(state, result.gameObject, true, outPin), result.transform);
+        foreach (ABTransition transition in state.Outcomes) 
 		{ 
 			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(state, result.gameObject, true, outPin), result.transform);
             outPin++;
@@ -159,10 +160,10 @@ public class ProxyABState : MCEditor_Proxy {
 	public override void click ()
 	{
 		// Not init
-		if( this.AbState.Id != 0 ){
+		/*if( this.AbState.Id != 0 ){
 			Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
 			MCEditor_DialogBoxManager.instance.instantiateStateName (this, pos);
-		}
+		}*/
 	}
 
 	#endregion
