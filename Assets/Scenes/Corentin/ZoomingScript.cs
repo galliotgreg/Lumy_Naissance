@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZoomingScript : MonoBehaviour {
+public class ZoomingScript : MonoBehaviour
+{
 
-    private float minFov = 15f;
-    private float maxFov = 90f;
+    public float minSize = 1f;
+    public float maxSize = 40f;
     private float sensitivity = 10f;
     private bool isZoomable = false;
 
@@ -18,10 +19,10 @@ public class ZoomingScript : MonoBehaviour {
 
         if (isZoomable)
         {*/
-            float fov = Camera.main.fieldOfView;
-            fov += Input.GetAxis("Mouse ScrollWheel") * sensitivity;
-            fov = Mathf.Clamp(fov, minFov, maxFov);
-            Camera.main.fieldOfView = fov;
+        float size = GameObject.Find("Camera").GetComponent<Camera>().orthographicSize;
+        size += Input.GetAxis("Mouse ScrollWheel") * sensitivity;
+        size = Mathf.Clamp(size, minSize, maxSize);
+        GameObject.Find("Camera").GetComponent<Camera>().orthographicSize = size;
         //}
     }
 }

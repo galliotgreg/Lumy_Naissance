@@ -41,7 +41,7 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABParam> proxyParams;
 
     [SerializeField]
-    private string MC_OrigFilePath = "Assets/Inputs/Test/siu_scoot_behavior_SAVE_LOAD_SAVE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*GREG_TRANS_STATE_STATE_TEST.csv /*siu_scoot_behavior_LOAD_TEST.csv";*/
+    private string MC_OrigFilePath = "Assets/Resources/Test/siu_scoot_behavior_SAVE_LOAD_SAVE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*GREG_TRANS_STATE_STATE_TEST.csv /*siu_scoot_behavior_LOAD_TEST.csv";*/
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
@@ -229,7 +229,12 @@ public class MCEditorManager : MonoBehaviour {
             {
                 if (operatorDictionary[((IABOperator)proxy.AbOperator).GetType().ToString()] == nameProxy)
                 {
-                    proxy.transform.position = new Vector3(x, y, z);
+                    if (!proxy.IsPositioned)
+                    {
+                        proxy.transform.position = new Vector3(x, y, z);
+                        proxy.IsPositioned = true;
+                        return;
+                    }
                 }
             }
         }
@@ -458,8 +463,11 @@ public class MCEditorManager : MonoBehaviour {
         if (statesDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
             ProxyABState endState = statesDictionnary[AbModel.Transitions[curTransition].End];
 
-			// Recovery income Pin
-			pinList.Add( endState.getPins ( Pin.PinType.TransitionIn )[0] );
+            // Recovery income Pin
+            if (endState.getPins(Pin.PinType.TransitionIn).Count > 0)
+            {
+                pinList.Add(endState.getPins(Pin.PinType.TransitionIn)[0]);
+            }			
         }
         else if (actionsDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
 
@@ -506,8 +514,13 @@ public class MCEditorManager : MonoBehaviour {
                 {
                     type = paramDictionary[GetParamType(node)];
                 }
-
-                syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "},");
+                if (((IABParam)node).Identifier != "const")
+                {
+                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + type + ":" + ((IABParam)node).Identifier + "}" + ",");
+                } else
+                {
+                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "},");
+                }                
                 idNodeSyntTree++;
             }
         }
@@ -825,6 +838,7 @@ public class MCEditorManager : MonoBehaviour {
 
         startTransitionParent = start.GetComponentInParent<ProxyABTransition>();
         endOpeParent = end.GetComponentInParent<ProxyABOperator>();
+        startTransitionParent.Transition.Condition = new AB_BoolGate_Operator();
         startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endOpeParent.AbOperator;
     }
 
@@ -835,6 +849,7 @@ public class MCEditorManager : MonoBehaviour {
 
         startTransitionParent = start.GetComponentInParent<ProxyABTransition>();
         endParamParent = end.GetComponentInParent<ProxyABParam>();
+        startTransitionParent.Transition.Condition = new AB_BoolGate_Operator();
         startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endParamParent.AbParam;
     }
 
@@ -879,7 +894,13 @@ public class MCEditorManager : MonoBehaviour {
         opeParent = ope.GetComponentInParent<ProxyABOperator>();
         paramParent = param.GetComponentInParent<ProxyABParam>();
 
-        opeParent.Inputs[opeParent.Inputs.Length - 1] = (ABNode)paramParent.AbParam;
+        for(int i = 0; i < opeParent.Inputs.Length; i++)
+        {
+            if (opeParent.Inputs[i]==null)
+            {
+                opeParent.Inputs[i] = (ABNode)paramParent.AbParam;
+            }
+        }        
         ((ABNode)paramParent.AbParam).Output = (ABNode)opeParent.AbOperator;
     }
 
@@ -891,7 +912,7 @@ public class MCEditorManager : MonoBehaviour {
         inParent = stateIn.GetComponentInParent<ProxyABState>();
         outParent = stateOut.GetComponentInParent<ProxyABState>();
 
-        int transitionId = AbModel.LinkStates(inParent.AbState.Name, outParent.AbState.Name);
+        int transitionId = AbModel.LinkStates(outParent.AbState.Name, inParent.AbState.Name);
         return AbModel.getTransition(transitionId);
     }
 
@@ -1077,7 +1098,7 @@ public class MCEditorManager : MonoBehaviour {
                 // STATE -> ACTION
                 else
                 {
-                    trans.Transition = LinkState_Action(end, start);
+                    trans.Transition = LinkState_Action(start, end);
                     ProxyABTransition.addConditionPin(trans);
                 }                
             }

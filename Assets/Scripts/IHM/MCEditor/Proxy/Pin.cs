@@ -112,15 +112,59 @@ public class Pin : DragSelectableProxyGameObject {
 		result.Pin_Type = pinType;
 		result.transform.position = position;
 
-        if(result.pin_Type==Pin.PinType.Condition || result.pin_Type == Pin.PinType.ActionParam)
-        {
-            Renderer rend = result.GetComponent<Renderer>();
-            rend.material.shader = Shader.Find("Specular");
-            rend.material.SetColor("_SpecColor", Color.red);
-        }
+        result.SetPinColor();        
 
 		return result;
 	}
+
+    private void SetPinColor()
+    {
+        Color color = new Color();        
+
+        if (this.Pin_Type == Pin.PinType.OperatorIn || this.Pin_Type == Pin.PinType.OperatorOut)
+        {
+            ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
+            //Debug.Log(parent.AbOperator.GetType());
+        }
+        else if(this.Pin_Type == Pin.PinType.Param)
+        {
+            ProxyABParam parent = this.GetComponentInParent<ProxyABParam>();
+            string type = parent.AbParam.GetType().ToString();
+            if (type.Contains("Bool"))
+            {
+                color = Color.blue;
+            }
+            else if (type.Contains("Scal"))
+            {
+                // Silver
+                color = new Color(0.75f , 0.75f, 0.75f);
+            }
+            else if(type.Contains("Text"))
+            {
+                // Turquoise
+                color = new Color(0.25f, 0.875f, 0.813f);
+            }
+            else if (type.Contains("Color"))
+            {
+                // Chocolat
+                color = new Color(0.785f, 0.410f, 0.117f);
+            }
+            else if (type.Contains("Ref"))
+            {
+                color = Color.red;
+            }
+            else if (type.Contains("Vec"))
+            {
+                // Violet
+                color = new Color(0.930f, 0.508f, 0.930f);
+            }
+            this.regularColor = color;            
+        }
+        else if (this.pin_Type == Pin.PinType.Condition || this.pin_Type == Pin.PinType.ActionParam)
+        {
+            this.regularColor = Color.white;
+        }
+    }
 
 	// Pin : Action : fixed number of pins
 	public static Vector3 calculatePinPosition( Pin.PinType pinType, ProxyABAction parent ){

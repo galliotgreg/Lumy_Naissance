@@ -1,0 +1,129 @@
+States,Name,Type
+0,INIT,Init
+1,prey in sight,Inter
+2,go to prey,trigger{goto}
+3,strike,trigger{strike}
+4,go to search,trigger{goto}
+5,go to elsewhere,trigger{goto}
+6,go to blue trace,trigger{goto}
+,,
+Transitions,Start State,End State
+0,INIT,prey in sight
+1,INIT,go to blue trace
+2,INIT,go to search
+3,INIT,go to elsewhere
+4,prey in sight,strike
+5,prey in sight,go to prey
+,,
+Syntax Tree,Output,
+0,0,
+Nodes,Type,Output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=0},0->1
+2,operator{SsizeR[]},0->0
+3,param{ref[]:enemies},2->0
+,,
+Syntax Tree,Output,
+0,2,
+Nodes,Type,Output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=1},0->1
+2,operator{SdistVV},0->0
+3,operator{VgetRT},2->0
+4,param{ref:self},3->0
+5,param{const txt=trgPos},3->1
+6,operator{VgetRT},2->1
+7,param{ref:self},6->0
+8,param{const txt=curPos},6->1
+,,
+Syntax Tree,Output,
+0,4,
+Nodes,Type,Output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=1},0->1
+2,operator{SdistVV},0->0
+3,operator{VgetRT},2->0
+4,param{const txt=curPos},3->1
+5,operator{RgetR[]S},3->0
+6,param{ref[]:enemies},5->0
+7,operator{SminIdS[]},5->1
+8,operator{S[]distV[]V},7->0
+9,operator{VgetRT},8->1
+10,param{ref:self},9->0
+11,param{const txt=curPos},9->1
+12,operator{V[]getR[]T},8->0
+13,param{const txt=curPos},12->1
+14,param{ref[]:enemies},12->0
+15,operator{VgetRT},2->1
+16,param{ref:self},15->0
+17,param{const txt=curPos},15->1
+,,
+Syntax Tree,Output,
+0,go to search->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:self},1->0
+3,param{const txt=trgPos},1->1
+,,
+Syntax Tree,Output,
+0,go to elsewhere->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VrandCircleVS},0->0
+2,param{const scal=20},1->1
+3,operator{VgetRT},1->0
+4,param{ref:self},3->0
+5,param{const txt=curPos},3->1
+,,
+Syntax Tree,Output,
+0,go to prey->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{const txt=curPos},1->1
+3,operator{RgetR[]S},1->0
+4,param{ref[]:enemies},3->0
+5,operator{SminIdS[]},3->1
+6,operator{S[]distV[]V},5->0
+7,operator{V[]getR[]T},6->0
+8,param{ref[]:enemies},7->0
+9,param{const txt=curPos},7->1
+10,operator{VgetRT},6->1
+11,param{ref:self},10->0
+12,param{const txt=curPos},10->1
+,,
+Syntax Tree,Output,
+0,strike-> 0,
+Nodes,Type,Output (Node -> Input)
+0,operator{RgetR[]S},
+1,param{const scal=0},0->1
+2,param{ref[]:enemies},0->0
+,,
+Syntax Tree,Output,
+0,go to blue trace->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{V[]reverseV[]},0->0
+2,operator{V[]getRT},1->0
+3,param{const txt=points},2->1
+4,operator{RgetR[]S},2->0
+5,param{ref[]:traces},4->0
+6,operator{SminIdS[]},4->1
+7,operator{S[]getR[]T},6->0
+8,param{const txt=age},7->1
+9,operator{R[]where==R[]TC},7->0
+10,param{const color=blue},9->2
+11,param{ref[]:traces},9->0
+12,param{const txt=color},9->1
+,,
+Syntax Tree,Output,
+0,1,
+Nodes,Type,Output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=0},0->1
+2,operator{SsizeR[]},0->0
+3,operator{R[]where==R[]TC},2->0
+4,param{const txt=color},3->1
+5,param{const color=blue},3->2
+6,param{ref[]:traces},3->0

@@ -2,7 +2,7 @@
 
 public class AB_Bool_NotEquals_Vec_Vec_Operator : ABOperator<ABBool>
 {
-    private const float EPS = 0.001f;
+    private const float EPS = 0.3f;
 
     public AB_Bool_NotEquals_Vec_Vec_Operator()
     {
