@@ -36,7 +36,7 @@ public abstract class MCEditor_DialogBox_State : MCEditor_DialogBox_Proxy {
 	#endregion
 
 	#region INSTANTIATE
-	public static MCEditor_DialogBox_State instantiate ( ProxyABState state, MCEditor_DialogBox_Param prefab, Vector3 position, Transform parent ){
+	public static MCEditor_DialogBox_State instantiate ( ProxyABState state, MCEditor_DialogBox_State prefab, Vector3 position, Transform parent ){
 		MCEditor_DialogBox_State result = (MCEditor_DialogBox_State)MCEditor_DialogBox_Proxy.instantiate (state, prefab, position, parent);
 		result.config ( state );
 

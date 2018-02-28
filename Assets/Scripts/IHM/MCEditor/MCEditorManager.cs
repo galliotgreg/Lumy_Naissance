@@ -229,7 +229,12 @@ public class MCEditorManager : MonoBehaviour {
             {
                 if (operatorDictionary[((IABOperator)proxy.AbOperator).GetType().ToString()] == nameProxy)
                 {
-                    proxy.transform.position = new Vector3(x, y, z);
+                    if (!proxy.IsPositioned)
+                    {
+                        proxy.transform.position = new Vector3(x, y, z);
+                        proxy.IsPositioned = true;
+                        return;
+                    }
                 }
             }
         }
@@ -458,8 +463,11 @@ public class MCEditorManager : MonoBehaviour {
         if (statesDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
             ProxyABState endState = statesDictionnary[AbModel.Transitions[curTransition].End];
 
-			// Recovery income Pin
-			pinList.Add( endState.getPins ( Pin.PinType.TransitionIn )[0] );
+            // Recovery income Pin
+            if (endState.getPins(Pin.PinType.TransitionIn).Count > 0)
+            {
+                pinList.Add(endState.getPins(Pin.PinType.TransitionIn)[0]);
+            }			
         }
         else if (actionsDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
 
@@ -825,6 +833,7 @@ public class MCEditorManager : MonoBehaviour {
 
         startTransitionParent = start.GetComponentInParent<ProxyABTransition>();
         endOpeParent = end.GetComponentInParent<ProxyABOperator>();
+        startTransitionParent.Transition.Condition = new AB_BoolGate_Operator();
         startTransitionParent.Transition.Condition.Inputs[0] = (ABNode)endOpeParent.AbOperator;
     }
 
@@ -1077,7 +1086,7 @@ public class MCEditorManager : MonoBehaviour {
                 // STATE -> ACTION
                 else
                 {
-                    trans.Transition = LinkState_Action(end, start);
+                    trans.Transition = LinkState_Action(start, end);
                     ProxyABTransition.addConditionPin(trans);
                 }                
             }

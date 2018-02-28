@@ -10,6 +10,14 @@ Transitions,Start State,End State
 2,fight,goto water
 ,,
 Syntax Tree,output,
+1,goto water->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:home},1->0
+2,param{const txt=pos},1->1
+,,
+Syntax Tree,output,
 1,0,
 Nodes,Type,output (Node -> Input)
 0,operator{V[]aggV*},

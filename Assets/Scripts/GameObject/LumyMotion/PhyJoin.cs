@@ -64,6 +64,12 @@ public class PhyJoin : MonoBehaviour {
         meshRenderer = GetComponent<MeshRenderer>();
         pointLight = GetComponent<Light>();
         rand = new System.Random(seed);
+        AgentEntity agent = transform.parent.parent.GetComponent<AgentEntity>();
+        if (agent.Authority == PlayerAuthority.Player2)
+        {
+            color = Color.white;
+        }
+        
     }
 	
 	// Update is called once per frame

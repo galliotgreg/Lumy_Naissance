@@ -333,7 +333,10 @@ public class InGameUIController : MonoBehaviour
     private void ExitGame()
     
     {
-        OperatorHelper.Instance.transform.parent = GameManager.instance.transform; 
+        if(OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene"); 
     }
     private void GoToCasteMenu()
