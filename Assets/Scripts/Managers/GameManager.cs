@@ -283,7 +283,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		foreach (GameObject template in unitTemplates) {
-			template.GetComponent<AgentEntity> ().Context.setModelValues (authority);
+            template.GetComponent<AgentEntity> ().Context.setModelValues (authority);
 		}
 
 		return unitTemplates;
@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour {
     private GameObject createPrysmeTemplate()
     {
         GameObject template = Instantiate(emptyAgentPrefab);
-        template.transform.parent = this.transform;
+        template.transform.parent = gameObject.transform;
 
         //Disable physic
         template.GetComponentInChildren<PhySkeleton>().enabled = false; ;
@@ -337,7 +337,8 @@ public class GameManager : MonoBehaviour {
             p1_home = Instantiate(homePrefab, new Vector3(-30f, -0.45f, 0f), Quaternion.identity);
             p2_home = Instantiate(homePrefab, new Vector3(30f, -0.45f, 0f), Quaternion.identity);
         }
-      
+        p1_home.transform.parent = gameObject.transform;
+        p2_home.transform.parent = gameObject.transform; 
         p1_home.name = "p1_hive";
         p2_home.name = "p2_hive";
         HomeScript p1_hiveScript = p1_home.GetComponent<HomeScript>();
@@ -363,8 +364,10 @@ public class GameManager : MonoBehaviour {
         //Queens
         p1_queen = Instantiate(p1_unitTemplates[0], p1_home.transform.position, Quaternion.identity);
         p1_queen.name = "p1_queen";
+        p1_queen.transform.parent = gameObject.transform; 
         p2_queen = Instantiate(p2_unitTemplates[0], p2_home.transform.position, Quaternion.identity);
         p2_queen.name = "p2_queen";
+        p2_queen.transform.parent = gameObject.transform;
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);
         p1_queen.GetComponent<AgentEntity>().GameParams =
@@ -449,7 +452,7 @@ public class GameManager : MonoBehaviour {
         }
         else if (authority == PlayerAuthority.Player2)
         {
-            HomeScript p2_hiveScript = p1_home.GetComponent<HomeScript>();
+            HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
             p2_hiveScript.Authority = PlayerAuthority.Player2;
             resourcesAmount[0] = p2_hiveScript.RedResAmout;
             resourcesAmount[1] = p2_hiveScript.GreenResAmout;
@@ -472,11 +475,12 @@ public class GameManager : MonoBehaviour {
         p1_hiveScript.GreenResAmout = nbResources;
         p1_hiveScript.BlueResAmout = nbResources;
 
-        p1_hiveScript = p2_home.GetComponent<HomeScript>();
-        p1_hiveScript.Authority = PlayerAuthority.Player2;
-        p1_hiveScript.RedResAmout = nbResources;
-        p1_hiveScript.GreenResAmout = nbResources;
-        p1_hiveScript.BlueResAmout = nbResources;
+        HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
+        p2_hiveScript = p2_home.GetComponent<HomeScript>();
+        p2_hiveScript.Authority = PlayerAuthority.Player2;
+        p2_hiveScript.RedResAmout = nbResources;
+        p2_hiveScript.GreenResAmout = nbResources;
+        p2_hiveScript.BlueResAmout = nbResources;
 
     }
 
@@ -494,7 +498,7 @@ public class GameManager : MonoBehaviour {
         else if (authority == PlayerAuthority.Player2)
         {
             HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
-            p2_hiveScript.Authority = PlayerAuthority.Player1;
+            p2_hiveScript.Authority = PlayerAuthority.Player2;
             resSum += p2_hiveScript.RedResAmout;
             resSum += p2_hiveScript.GreenResAmout;
             resSum += p2_hiveScript.BlueResAmout;

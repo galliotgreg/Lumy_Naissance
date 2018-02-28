@@ -22,14 +22,12 @@ public class MCEditor_DialogBox_Param_Color : MCEditor_DialogBox_Param {
 	protected override void confirmParam ()
 	{
 		ABColor.Color v = (ABColor.Color)System.Enum.GetValues( typeof( ABColor.Color ) ).GetValue( value.value );
-		//this.param.setProxyName ( v.ToString() );
-		((ABColorParam)this.param.AbParam).Value.Value = v;
+		((ABColorParam)this.paramProxy.AbParam).Value.Value = v;
 	}
 
 	protected override void configParam ()
 	{
-		Title = "Couleur";
-		ABColor.Color v = ((ABColorParam)this.param.AbParam).Value.Value;
+		ABColor.Color v = ((ABColorParam)this.paramProxy.AbParam).Value.Value;
 		System.Array colors = System.Enum.GetValues (typeof(ABColor.Color));
 		int index = 0;
 		for (int i=0; i<colors.Length; i++){
@@ -40,8 +38,14 @@ public class MCEditor_DialogBox_Param_Color : MCEditor_DialogBox_Param {
 		value.value = index;
 	}
 
-	protected override void cancelParam ()
+	protected override void deactivateParam ()
 	{
+		// Nothing
+	}
+
+	protected override string dialogTitle ()
+	{
+		return "Couleur";
 	}
 
 	#endregion

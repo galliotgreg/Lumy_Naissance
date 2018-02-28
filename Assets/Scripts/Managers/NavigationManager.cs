@@ -308,7 +308,6 @@ public class NavigationManager : MonoBehaviour {
             }
             else
             {
-                camera.GetComponent<AudioListener>().enabled = false;
                 camera = c;
                 camera.GetComponent<AudioListener>().enabled = true;
             }

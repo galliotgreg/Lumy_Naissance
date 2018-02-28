@@ -24,7 +24,7 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
         }
 		set {
 			type = value;
-			this.setProxyName (value);
+			this.SetProxyName (value);
 		}
     }
 
@@ -105,9 +105,17 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		
 	}
 
-	public void setProxyName( string name ){
-		Text paramName = this.GetComponentInChildren<Text> ();
-		paramName.text = name;
+	public string GetViewValue()
+	{
+		string text = "";
+		if (this.AbParam is ABParam<ABRef>) {
+			if (((ABParam<ABRef>)this.AbParam).Value != null) {
+				text += ((ABParam<ABRef>)this.AbParam).Identifier.ToString ();
+			}
+		} else {
+			text += MCEditorManager.GetParamValue ((ABNode)this.AbParam);
+		}
+		return text;
 	}
 
 	#region INSTANTIATE
@@ -123,11 +131,7 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		result.AbParam = paramObj;
 
 		// Set text
-		if (isLoaded) {
-			result.setProxyName( MCEditorManager.GetParamValue ((ABNode)paramObj) );
-		} else {
-			result.setProxyName( paramObj.Identifier + " : " + MCEditorManager.GetParamValue ((ABNode)paramObj) );
-		}
+		result.SetProxyName( result.GetViewValue() );
 
 		// Outcome pin
 		Pin.instantiate( Pin.PinType.Param, Pin.calculatePinPosition (result), result.transform );
