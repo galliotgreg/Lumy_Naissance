@@ -1,5 +1,9 @@
-﻿public class AB_Bool_Equals_Vec_Vec_Operator : ABOperator<ABBool>
+﻿using System;
+
+public class AB_Bool_Equals_Vec_Vec_Operator : ABOperator<ABBool>
 {
+    private const float EPS = 0.3f;
+
     public AB_Bool_Equals_Vec_Vec_Operator()
     {
         this.Inputs = new ABNode[2];
@@ -20,15 +24,11 @@
         //Return
 
         ABBool result = TypeFactory.CreateEmptyBool();
-        if (s1.X == s2.X && s1.Y == s2.Y)
-        {
-            result.Value = true;
-        }
-        else
-        {
-            result.Value = false;
-        }
-        //result.Value = s1.Value + s2.Value;
+        float x = s2.X - s1.X;
+        float y = s2.Y - s1.Y;
+        float dist = (float)Math.Sqrt(x * x + y * y);
+        result.Value = !(dist > EPS);
+
         return result;
     }
 }

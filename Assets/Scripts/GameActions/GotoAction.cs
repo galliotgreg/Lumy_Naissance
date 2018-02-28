@@ -20,7 +20,6 @@ public class GotoAction : GameAction {
 			path = value;
         }
     }
-
 	UnityEngine.AI.NavMeshAgent movingAgent;
 
 	[SerializeField]
@@ -46,8 +45,8 @@ public class GotoAction : GameAction {
 		agentAttr.TrgPos = worldToVec2 (path [currentPathIndex]);
 
 		// Use Unity A* to move
-		agentAttr.transform.position = moveTo (agentAttr, movingAgent);
-	}
+		moveTo (agentAttr, movingAgent);
+    }
 
 	protected override void activateAction ()
 	{
@@ -88,24 +87,56 @@ public class GotoAction : GameAction {
 	}
 
 	#endregion
-	const float closeFactor = 1f;
-	public static Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
-		// Use Unity A* to move
+	const float closeFactor = 0.1f;
+	public Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
+        // Use Unity A* to move
 
-
+        NavMeshPath navMeshpath = new NavMeshPath(); 
 		if( navMeshAgent != null ){
 
-
-            Vector3 destination = vec2ToWorld(agentAttr.TrgPos);
+            NavMeshHit hit;
+            
+                Vector3 destination = vec2ToWorld(agentAttr.TrgPos);
             destination.y = agentAttr.transform.position.y;
 
-          
+            NavMeshPath path = new NavMeshPath();
+            bool hasFoundPath = navMeshAgent.CalculatePath(destination, path);
+
+            Vector3 position = vec2ToWorld(agentAttr.CurPos);
+            position.y = agentAttr.transform.position.y;
+
+            Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
+            dest.y = agentAttr.transform.position.y;
+            Debug.DrawLine(position, dest, Color.blue);
+            if (path.status == NavMeshPathStatus.PathComplete)
+            {
+                print("The agent can reach the destionation");
+            }
+            else if (path.status == NavMeshPathStatus.PathPartial)
+            {
+                agentAttr.TrgPos = agentAttr.CurPos;
+                destination = vec2ToWorld(agentAttr.TrgPos); 
+                print("The agent can only get close to the destination");
+            }
+            else if (path.status == NavMeshPathStatus.PathInvalid)
+            {
+                agentAttr.TrgPos = agentAttr.CurPos;
+                destination = vec2ToWorld(agentAttr.TrgPos);
+                print("The agent cannot reach the destination");
+                print("hasFoundPath will be false");
+            }
+            position = vec2ToWorld(agentAttr.CurPos);
+            position.y = agentAttr.transform.position.y;
+
+            dest = vec2ToWorld(agentAttr.TrgPos);
+            dest.y = agentAttr.transform.position.y;
+            //Debug.DrawLine(position, dest,Color.red);
 
             navMeshAgent.acceleration = 1000;
 			navMeshAgent.speed = agentAttr.MoveSpd;
 			navMeshAgent.autoBraking = true;
 			navMeshAgent.destination = destination;
-			navMeshAgent.stoppingDistance = closeFactor;
+			navMeshAgent.stoppingDistance = 0.1f;
 
 
             /*//navMeshAgent.updatePosition = false;
