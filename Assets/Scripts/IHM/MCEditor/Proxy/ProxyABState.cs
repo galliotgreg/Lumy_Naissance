@@ -158,7 +158,11 @@ public class ProxyABState : MCEditor_Proxy {
 
 	public override void click ()
 	{
-		//throw new System.NotImplementedException ();
+		// Not init
+		if( this.AbState.Id != 0 ){
+			Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
+			MCEditor_DialogBoxManager.instance.instantiateStateName (this, pos);
+		}
 	}
 
 	#endregion
