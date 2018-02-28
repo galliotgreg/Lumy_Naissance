@@ -40,12 +40,12 @@ public class Pin : DragSelectableProxyGameObject {
 	#endregion
 
     // Use this for initialization
-    void Start () {
+    protected void Start () {
 		trackingCamera = ( MCEditor_BringToFront_Camera.CanvasCamera != null ? MCEditor_BringToFront_Camera.CanvasCamera : Camera.main );
 	}
 
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
 		base.Update ();
 
 		handleSelectedState ();
@@ -100,7 +100,9 @@ public class Pin : DragSelectableProxyGameObject {
 	#region INSTANTIATE
 	public static Pin instantiate( Pin.PinType pinType, Vector3 position, Transform parent ){
         Pin result;
-        if (pinType==PinType.OperatorOut || pinType == PinType.TransitionOut || pinType == PinType.Param)
+		if (pinType == PinType.TransitionOut) {
+			result = Instantiate<Pin>(MCEditor_Proxy_Factory.instance.PinTransitionOutPrefab, parent);
+		} else if (pinType==PinType.OperatorOut || pinType == PinType.Param)
         {
             result = Instantiate<Pin>(MCEditor_Proxy_Factory.instance.PinOutPrefab, parent);
         } else
