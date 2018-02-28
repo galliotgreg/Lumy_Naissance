@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GotoAction : GameAction {
 	
@@ -90,36 +91,17 @@ public class GotoAction : GameAction {
 	const float closeFactor = 1f;
 	public static Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
 		// Use Unity A* to move
+
+
 		if( navMeshAgent != null ){
 
-            if (agentAttr.Cast == "lurker")
-            {
-                float dist = navMeshAgent.remainingDistance;
-                if (dist == Mathf.Infinity)
-                {
-                    Debug.Log("*************** DISTANCE IS INFINITY **************** ");
-                }
-                if (navMeshAgent.remainingDistance == 0)
-                {
-                    Debug.Log("************** REMAINING DISTANCE IS 0 *****************");
-                }
-                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathPartial)
-                {
-                    Debug.Log("*********** WARNING PATH PARTIAL *****");
-                }
-                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathInvalid)
-                {
-                    Debug.Log("*********** WARNING PATH INVALID ********");
-                }
-                if (navMeshAgent.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathComplete)
-                    Debug.Log("******* PATH IS CORRECT FOR UNITY ***********");
-            }
-           
 
-			Vector3 destination = vec2ToWorld (agentAttr.TrgPos);
-			destination.y = agentAttr.transform.position.y;
+            Vector3 destination = vec2ToWorld(agentAttr.TrgPos);
+            destination.y = agentAttr.transform.position.y;
 
-			navMeshAgent.acceleration = 1000;
+          
+
+            navMeshAgent.acceleration = 1000;
 			navMeshAgent.speed = agentAttr.MoveSpd;
 			navMeshAgent.autoBraking = true;
 			navMeshAgent.destination = destination;
@@ -142,7 +124,21 @@ public class GotoAction : GameAction {
         return agentAttr.transform.position;
 	}
 
-	private int indexClosest( Vector2 pos, Vector3[] _path ){
+    private bool CanGo(Vector3 destination, Vector3 position )
+    {
+        NavMeshHit hit;
+        bool blocked = false;
+
+        blocked = NavMesh.Raycast(position, destination, out hit, NavMesh.AllAreas);
+
+        Debug.DrawLine(position, destination, blocked ? Color.red : Color.green);
+        if (blocked)
+            return false;
+        return true; 
+
+    }
+
+    private int indexClosest( Vector2 pos, Vector3[] _path ){
 		int resultIndex = 0;
 		UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
 		movingAgent.CalculatePath( _path [resultIndex], auxpath );
