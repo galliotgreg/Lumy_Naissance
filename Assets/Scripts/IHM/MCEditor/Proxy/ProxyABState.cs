@@ -9,6 +9,8 @@ public class ProxyABState : MCEditor_Proxy {
     private ABState abState;
     private bool isLoaded = false;
 
+	private Pin extraPin;
+
 	#region PROPERTIES
     public string Name
     {
@@ -62,6 +64,16 @@ public class ProxyABState : MCEditor_Proxy {
             isLoaded = value;
         }
     }
+
+	public Pin ExtraPin {
+		get {
+			return extraPin;
+		}
+		protected set {
+			extraPin = value;
+			extraPin.Pin_order.OrderPosition = this.AbState.Outcomes.Count + 1;
+		}
+	}
 	#endregion
 
     private void Awake(){}
@@ -86,8 +98,63 @@ public class ProxyABState : MCEditor_Proxy {
 
     // Update is called once per frame
     void Update () {
-        //calculatePinPosition();
+        
     }
+
+	/// <summary>
+	/// Create Pin for transitions (if necessary) and set pin orderPosition
+	/// </summary>
+	public void checkPins(){
+		
+		List<Pin> pins = this.getPins(Pin.PinType.TransitionOut);
+
+		// Check if transition has pin : create if necessary
+		/*Debug.Log(this.AbState.Outcomes.Count);
+		for (int j = 0; j < this.AbState.Outcomes.Count; j++) {
+			// Search for the pin that contains the transition
+			bool transitionFound = false;
+			for ( int i = 0; i < pins.Count; i++ ){
+				bool pinFound = pins[i].AssociatedTransitions.Count > 0 && this.AbState.Outcomes.Contains( pins[i].AssociatedTransitions[0] );
+
+				if (pinFound) {
+					transitionFound = true;
+				}
+			}
+
+			if (!transitionFound) {
+				// Create pin
+				Pin_TransitionOut pin = Pin_TransitionOut.instantiate( -1, Pin.calculatePinPosition( this.AbState, this.gameObject, true, pins.Count+1 ), this.transform );
+				pins.Add (pin);
+				pin.AssociatedTransitions.Add ( this.AbState.Outcomes[j] );
+			}
+		}*/
+
+		// Check if pin has transition : set orderPosition
+		bool extraPinFound = false;
+		for ( int i = 0; i < pins.Count; i++ ){
+			bool transitionFound = pins[i].AssociatedTransitions.Count > 0 && this.AbState.Outcomes.Contains( pins[i].AssociatedTransitions[0].Transition );
+
+			if (transitionFound) {
+				pins[i].Pin_order.OrderPosition = this.AbState.Outcomes.IndexOf( pins[i].AssociatedTransitions[0].Transition )+1;
+			}else{
+				//pins [i].AssociatedTransitions.Clear ();
+				if (extraPinFound) {
+					// There is another extra pin : destroy this one
+					Destroy( pins[i].gameObject );
+				} else {
+					// This is the extra Pin
+					ExtraPin = pins [i];
+
+					extraPinFound = true;
+				}
+			}
+		}
+
+		if (!extraPinFound) {
+			// No extra pin was found : create it
+			ExtraPin = MCEditor_Proxy_Factory.instantiatePin( Pin.PinType.TransitionOut, Pin.calculatePinPosition( this.AbState, this.gameObject, true, this.AbState.Outcomes.Count+1 ), this.transform );
+		}
+	}
 
 	#region INSTANTIATE
 	public static ProxyABState instantiate( ABState state, bool init ){
@@ -109,14 +176,11 @@ public class ProxyABState : MCEditor_Proxy {
 			Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result), result.transform);
 		}
 
-        // Outcome Pin 
-        int outPin = 1;
-        Pin pinInit = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(state, result.gameObject, true, outPin), result.transform);
-        foreach (ABTransition transition in state.Outcomes) 
-		{ 
-			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(state, result.gameObject, true, outPin), result.transform);
-            outPin++;
-		}
+		// Extra Outcome Pin : other outcomes will be created with transitions
+		Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(state, result.gameObject, true, 1), result.transform);
+		result.ExtraPin = pin;
+
+		result.checkPins ();
 
 		return result;
 	}
@@ -157,13 +221,13 @@ public class ProxyABState : MCEditor_Proxy {
 
 	#region implemented abstract members of MCEditor_Proxy
 
-	public override void click ()
+	public override void doubleClick ()
 	{
 		// Not init
-		/*if( this.AbState.Id != 0 ){
+		if( this.AbState.Id != MCEditorManager.instance.AbModel.InitStateId ){
 			Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
 			MCEditor_DialogBoxManager.instance.instantiateStateName (this, pos);
-		}*/
+		}
 	}
 
 	#endregion

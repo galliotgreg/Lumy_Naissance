@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour {
     //Paths
     public string SPECIE_FILE_SUFFIX = "specie.csv";
 
-    public string INPUTS_FOLDER_PATH = "Assets/Inputs/";
+    private string intputsFolderPath = "Inputs/";
     public string PLAYER1_SPECIE_FOLDER = "Player1/";
     public string PLAYER2_SPECIE_FOLDER = "Player2/";
 
@@ -145,6 +145,19 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public string IntputsFolderPath
+    {
+        get
+        {
+            return Application.dataPath + "/" + intputsFolderPath;
+        }
+
+        set
+        {
+            intputsFolderPath = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -215,7 +228,7 @@ public class GameManager : MonoBehaviour {
     {
         //Init p1_specie
         //Get file name
-        string[] filenames = Directory.GetFiles(INPUTS_FOLDER_PATH + PLAYER1_SPECIE_FOLDER);
+        string[] filenames = Directory.GetFiles(IntputsFolderPath + PLAYER1_SPECIE_FOLDER);
         string p1_filename = null;
         foreach (string filename in filenames)
         {
@@ -238,7 +251,7 @@ public class GameManager : MonoBehaviour {
 
         //Init p2_specie
         //Get file name
-        filenames = Directory.GetFiles(INPUTS_FOLDER_PATH + PLAYER2_SPECIE_FOLDER);
+        filenames = Directory.GetFiles(IntputsFolderPath + PLAYER2_SPECIE_FOLDER);
         string p2_filename = null;
         foreach (string filename in filenames)
         {
