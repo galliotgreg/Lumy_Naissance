@@ -121,44 +121,28 @@ public class Pin : DragSelectableProxyGameObject {
     {
         Color color = new Color();        
 
-        if (this.Pin_Type == Pin.PinType.OperatorIn || this.Pin_Type == Pin.PinType.OperatorOut)
+        if (this.Pin_Type == Pin.PinType.OperatorOut)
         {
             ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
-            //Debug.Log(parent.AbOperator.GetType());
+            string opeParentType = parent.AbOperator.GetType().ToString();
+            string typePinOut = opeParentType.Split('_')[1];
+            this.regularColor = PinColor.GetColorPinFromType(typePinOut);                       
+        }
+        else if (this.Pin_Type == Pin.PinType.OperatorIn)
+        {
+            ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
+            int curPinIn = parent.CurPinIn;
+            parent.CurPinIn++;
+            string opeParentType = parent.AbOperator.GetType().ToString();
+            string typePinIn = opeParentType.Split('_')[3 + curPinIn];
+            this.regularColor = PinColor.GetColorPinFromType(typePinIn);
+            Debug.Log(typePinIn + " " + curPinIn);                        
         }
         else if(this.Pin_Type == Pin.PinType.Param)
         {
             ProxyABParam parent = this.GetComponentInParent<ProxyABParam>();
             string type = parent.AbParam.GetType().ToString();
-            if (type.Contains("Bool"))
-            {
-                color = Color.blue;
-            }
-            else if (type.Contains("Scal"))
-            {
-                // Silver
-                color = new Color(0.75f , 0.75f, 0.75f);
-            }
-            else if(type.Contains("Text"))
-            {
-                // Turquoise
-                color = new Color(0.25f, 0.875f, 0.813f);
-            }
-            else if (type.Contains("Color"))
-            {
-                // Chocolat
-                color = new Color(0.785f, 0.410f, 0.117f);
-            }
-            else if (type.Contains("Ref"))
-            {
-                color = Color.red;
-            }
-            else if (type.Contains("Vec"))
-            {
-                // Violet
-                color = new Color(0.930f, 0.508f, 0.930f);
-            }
-            this.regularColor = color;            
+            this.regularColor = PinColor.GetColorPinFromType(type);            
         }
         else if (this.pin_Type == Pin.PinType.Condition || this.pin_Type == Pin.PinType.ActionParam)
         {

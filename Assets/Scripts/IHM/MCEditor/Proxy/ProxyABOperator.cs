@@ -8,6 +8,7 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
     private string name;
     private string type;
     private IABOperator abOperator;
+    int curPinIn = 0;
     bool isLoaded = false;
     bool isPositioned = false;
 
@@ -89,6 +90,19 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
             isPositioned = value;
         }
     }
+
+    public int CurPinIn
+    {
+        get
+        {
+            return curPinIn;
+        }
+
+        set
+        {
+            curPinIn = value;
+        }
+    }
     #endregion
 
     // Use this for initialization
@@ -112,21 +126,21 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		return instantiate ( operatorObj, isLoaded, calculateOperatorPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
 	}
 	public static ProxyABOperator instantiate( IABOperator operatorObj, bool isLoaded, Vector3 position, Transform parent ){
-		ProxyABOperator result = Instantiate<ProxyABOperator> (MCEditor_Proxy_Factory.instance.OperatorPrefab, parent);
+		ProxyABOperator result = Instantiate<ProxyABOperator> (MCEditor_Proxy_Factory.instance.OperatorPrefab, parent);        
 		result.IsLoaded = isLoaded;
 		result.transform.position = position;
 		result.AbOperator = operatorObj;
 		result.SetNodeName( (ABNode)operatorObj );
 
         // Create Pins
-        if (operatorObj.Inputs.Length <= 2)
+        if (operatorObj.Inputs.Length <= 3)
         {
             foreach (ABNode inputNode in operatorObj.Inputs)
-            {
+            {                
                 Pin start = Pin.instantiate(Pin.PinType.OperatorIn, Pin.calculatePinPosition(result), result.transform);
             }
         }
-        // Do not show 32 pins on an operator
+        // Do not show 32 pins on an operator, TODO : aggregator cases
         else
         {
             Pin start = Pin.instantiate(Pin.PinType.OperatorIn, Pin.calculatePinPosition(result), result.transform);
