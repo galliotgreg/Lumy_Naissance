@@ -9,7 +9,7 @@ public class ProxyABState : MCEditor_Proxy {
     private ABState abState;
     private bool isLoaded = false;
 
-	private Pin_TransitionOut extraPin;
+	private Pin extraPin;
 
 	#region PROPERTIES
     public string Name
@@ -65,12 +65,13 @@ public class ProxyABState : MCEditor_Proxy {
         }
     }
 
-	public Pin_TransitionOut ExtraPin {
+	public Pin ExtraPin {
 		get {
 			return extraPin;
 		}
 		protected set {
 			extraPin = value;
+			extraPin.Pin_order.OrderPosition = this.AbState.Outcomes.Count + 1;
 		}
 	}
 	#endregion
@@ -134,7 +135,7 @@ public class ProxyABState : MCEditor_Proxy {
 			bool transitionFound = pins[i].AssociatedTransitions.Count > 0 && this.AbState.Outcomes.Contains( pins[i].AssociatedTransitions[0].Transition );
 
 			if (transitionFound) {
-				((Pin_TransitionOut)pins[i]).OrderPosition = this.AbState.Outcomes.IndexOf( pins[i].AssociatedTransitions[0].Transition )+1;
+				pins[i].Pin_order.OrderPosition = this.AbState.Outcomes.IndexOf( pins[i].AssociatedTransitions[0].Transition )+1;
 			}else{
 				//pins [i].AssociatedTransitions.Clear ();
 				if (extraPinFound) {
@@ -142,8 +143,7 @@ public class ProxyABState : MCEditor_Proxy {
 					Destroy( pins[i].gameObject );
 				} else {
 					// This is the extra Pin
-					((Pin_TransitionOut)pins [i]).OrderPosition = this.AbState.Outcomes.Count + 1;
-					ExtraPin = (Pin_TransitionOut)pins [i];
+					ExtraPin = pins [i];
 
 					extraPinFound = true;
 				}
@@ -152,7 +152,7 @@ public class ProxyABState : MCEditor_Proxy {
 
 		if (!extraPinFound) {
 			// No extra pin was found : create it
-			ExtraPin = Pin_TransitionOut.instantiate( this.AbState.Outcomes.Count+1, Pin.calculatePinPosition( this.AbState, this.gameObject, true, this.AbState.Outcomes.Count+1 ), this.transform );
+			ExtraPin = MCEditor_Proxy_Factory.instantiatePin( Pin.PinType.TransitionOut, Pin.calculatePinPosition( this.AbState, this.gameObject, true, this.AbState.Outcomes.Count+1 ), this.transform );
 		}
 	}
 
@@ -178,7 +178,7 @@ public class ProxyABState : MCEditor_Proxy {
 
 		// Extra Outcome Pin : other outcomes will be created with transitions
 		Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(state, result.gameObject, true, 1), result.transform);
-		result.ExtraPin = (Pin_TransitionOut)pin;
+		result.ExtraPin = pin;
 
 		result.checkPins ();
 

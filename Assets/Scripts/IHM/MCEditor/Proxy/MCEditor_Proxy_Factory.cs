@@ -41,8 +41,6 @@ public class MCEditor_Proxy_Factory : MonoBehaviour {
 	private Pin pinPrefab;
 	[SerializeField]
 	private Pin pinOutPrefab;
-    [SerializeField]
-	private Pin pinTransitionOutPrefab;
 
 	void Start(){}
 	void Update(){}
@@ -99,12 +97,6 @@ public class MCEditor_Proxy_Factory : MonoBehaviour {
             pinOutPrefab = value;
         }
     }
-
-	public Pin PinTransitionOutPrefab {
-		get {
-			return pinTransitionOutPrefab;
-		}
-	}
 
     #endregion
 

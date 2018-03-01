@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pin_TransitionOut : Pin {
+public class Pin_Order : MonoBehaviour {
 
 	[SerializeField]
 	int orderPosition;
@@ -24,13 +24,24 @@ public class Pin_TransitionOut : Pin {
 			return orderPositionText.text;
 		}
 		set {
+			// Deactivate the gameObject if the value <= 0
+			if (orderPosition <= 0) {
+				if (this.gameObject.activeSelf) {
+					this.gameObject.SetActive (false);
+				}
+			} else {
+				if (!this.gameObject.activeSelf) {
+					this.gameObject.SetActive (true);
+				}
+			}
 			orderPositionText.text = value;
 		}
 	}
 
-	public static Pin_TransitionOut instantiate( int orderPosition, Vector3 position, Transform parent ){
-		Pin_TransitionOut result = (Pin_TransitionOut) Pin.instantiate (PinType.TransitionOut, position, parent);
-		result.OrderPosition = orderPosition;
-		return result;
+	void Start(){
+		
+	}
+	void Update(){
+		
 	}
 }

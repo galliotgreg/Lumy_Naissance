@@ -20,17 +20,20 @@ public class Pin : DragSelectableProxyGameObject {
 	[SerializeField]
 	PinType pin_Type;
 
+	MCEditor_Proxy proxyParent;
+	[SerializeField]
+	List<ProxyABTransition> associatedTransitions;
+
 	[SerializeField]
 	/// <summary>
 	/// Prefab that implements a Transition
 	/// </summary>
 	GameObject transitionPrefab;
 
-	Camera trackingCamera;
-
-	MCEditor_Proxy proxyParent;
 	[SerializeField]
-	List<ProxyABTransition> associatedTransitions;
+	Pin_Order pin_order;
+
+	Camera trackingCamera;
 
 	#region PROPERTIES
 	public PinType Pin_Type {
@@ -54,6 +57,12 @@ public class Pin : DragSelectableProxyGameObject {
 		}
 		protected set {
 			proxyParent = value;
+		}
+	}
+
+	public Pin_Order Pin_order {
+		get {
+			return pin_order;
 		}
 	}
 	#endregion
@@ -137,9 +146,7 @@ public class Pin : DragSelectableProxyGameObject {
 	#region INSTANTIATE
 	public static Pin instantiate( Pin.PinType pinType, Vector3 position, Transform parent ){
         Pin result;
-		if (pinType == PinType.TransitionOut) {
-			result = Instantiate<Pin>(MCEditor_Proxy_Factory.instance.PinTransitionOutPrefab, parent);
-		} else if (pinType==PinType.OperatorOut || pinType == PinType.Param)
+		if (pinType == PinType.TransitionOut || pinType==PinType.OperatorOut || pinType == PinType.Param)
         {
             result = Instantiate<Pin>(MCEditor_Proxy_Factory.instance.PinOutPrefab, parent);
         } else
