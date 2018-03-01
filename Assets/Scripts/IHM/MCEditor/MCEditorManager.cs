@@ -443,11 +443,6 @@ public class MCEditorManager : MonoBehaviour {
 			proxyABTransition = MCEditor_Proxy_Factory.instantiateTransition ( pinList[0], pinList[1], true );
 			proxyABTransition.Transition = AbModel.Transitions [i];
 
-			// Associating transition to the Pins
-			foreach( Pin p in pinList ){
-				p.associateTransition(proxyABTransition.Transition);
-			}
-
 			// Check pin for the transition states
 			if( proxyABTransition.EndPosition.ProxyParent is ProxyABState ){
 				((ProxyABState)proxyABTransition.EndPosition.ProxyParent).checkPins ();
@@ -971,7 +966,6 @@ public class MCEditorManager : MonoBehaviour {
         stateParent = state.GetComponentInParent<ProxyABState>();
         actionParent = action.GetComponentInParent<ProxyABAction>();
 
-		Debug.LogError ( stateParent.AbState.Name );
         int transitionId = AbModel.LinkStates(stateParent.AbState.Name, actionParent.AbState.Name);
         return AbModel.getTransition(transitionId);
     }
@@ -1035,8 +1029,6 @@ public class MCEditorManager : MonoBehaviour {
                 Debug.LogError("Un Pin Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
 				return;
             }
-            // TODO why this pin is created?
-            //Pin newPin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.ActionParam, Pin.calculatePinPosition( Pin.PinType.ActionParam, startActionParent ), startActionParent.transform);
         }
         else if (start.Pin_Type == Pin.PinType.OperatorIn)
         {
@@ -1136,10 +1128,6 @@ public class MCEditorManager : MonoBehaviour {
                         ProxyABTransition.addConditionPin(trans);
                     }
                 }
-				// Including transition in the Pins
-				start.associateTransition ( trans.Transition );
-				end.associateTransition ( trans.Transition );
-				endStateParent.checkPins ();
             }
         }
         // STATE ->
@@ -1161,10 +1149,6 @@ public class MCEditorManager : MonoBehaviour {
 					trans.Transition = LinkState_Action(start, end);
                     ProxyABTransition.addConditionPin(trans);
                 }
-				// Including transition in the Pins
-				start.associateTransition ( trans.Transition );
-				end.associateTransition ( trans.Transition );
-				startStateParent.checkPins ();
             }
             else
             {
@@ -1172,6 +1156,13 @@ public class MCEditorManager : MonoBehaviour {
 				return;
             }        			
         }
+		// Checking pins in states
+		if( start.ProxyParent is ProxyABState ){
+			((ProxyABState)start.ProxyParent).checkPins ();
+		}
+		if( end.ProxyParent is ProxyABState ){
+			((ProxyABState)end.ProxyParent).checkPins ();
+		}
     }
 
 	ProxyABAction CreateAction( ABAction action, int nodeID, string nodeName )
@@ -1212,6 +1203,19 @@ public class MCEditorManager : MonoBehaviour {
 					|| !(transition.EndPosition.Pin_Type == Pin.PinType.Param)))
                 {
                     AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
+					// Update Pins
+					if( transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut ){
+						((ProxyABState)transition.StartPosition.ProxyParent).checkPins ();
+					}
+					if( transition.EndPosition.ProxyParent is ProxyABState && transition.EndPosition.Pin_Type == Pin.PinType.TransitionOut ){
+						((ProxyABState)transition.EndPosition.ProxyParent).checkPins ();
+					}
+					// Delete Condition transition
+					if( transition.Condition.AssociatedTransitions.Count > 0 ){
+						foreach (ProxyABTransition trans in transition.Condition.AssociatedTransitions) {
+							DeleteTransition (trans);
+						}
+					}
                 }
             } else
             {

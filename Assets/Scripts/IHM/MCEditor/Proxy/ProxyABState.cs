@@ -131,10 +131,10 @@ public class ProxyABState : MCEditor_Proxy {
 		// Check if pin has transition : set orderPosition
 		bool extraPinFound = false;
 		for ( int i = 0; i < pins.Count; i++ ){
-			bool transitionFound = pins[i].AssociatedTransitions.Count > 0 && this.AbState.Outcomes.Contains( pins[i].AssociatedTransitions[0] );
+			bool transitionFound = pins[i].AssociatedTransitions.Count > 0 && this.AbState.Outcomes.Contains( pins[i].AssociatedTransitions[0].Transition );
 
 			if (transitionFound) {
-				((Pin_TransitionOut)pins[i]).OrderPosition = this.AbState.Outcomes.IndexOf( pins[i].AssociatedTransitions[0] )+1;
+				((Pin_TransitionOut)pins[i]).OrderPosition = this.AbState.Outcomes.IndexOf( pins[i].AssociatedTransitions[0].Transition )+1;
 			}else{
 				//pins [i].AssociatedTransitions.Clear ();
 				if (extraPinFound) {

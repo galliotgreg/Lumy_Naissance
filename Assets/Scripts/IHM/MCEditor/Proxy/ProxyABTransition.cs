@@ -80,6 +80,15 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		return Pin.calculatePinPosition ( this );
     }
 
+	void OnDestroy(){
+		if (StartPosition != null) {
+			StartPosition.desassociateTransition (this);
+		}
+		if (EndPosition != null) {
+			EndPosition.desassociateTransition (this);
+		}
+	}
+
 	#region implemented abstract members of SelectableProxyGameObject
 
 	protected override void select ()
@@ -164,6 +173,9 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 
 		proxyABTransition.StartPosition = start;
 		proxyABTransition.EndPosition = end;
+
+		start.associateTransition (proxyABTransition);
+		end.associateTransition (proxyABTransition);
 
 		if (createCondition) {
 			addConditionPin ( proxyABTransition );

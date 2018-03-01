@@ -29,7 +29,8 @@ public class Pin : DragSelectableProxyGameObject {
 	Camera trackingCamera;
 
 	MCEditor_Proxy proxyParent;
-	List<ABTransition> associatedTransitions;
+	[SerializeField]
+	List<ProxyABTransition> associatedTransitions;
 
 	#region PROPERTIES
 	public PinType Pin_Type {
@@ -41,7 +42,7 @@ public class Pin : DragSelectableProxyGameObject {
 		}
 	}
 
-	public List<ABTransition> AssociatedTransitions {
+	public List<ProxyABTransition> AssociatedTransitions {
 		get {
 			return associatedTransitions;
 		}
@@ -58,7 +59,7 @@ public class Pin : DragSelectableProxyGameObject {
 	#endregion
 
 	protected void Awake(){
-		associatedTransitions = new List<ABTransition> ();
+		associatedTransitions = new List<ProxyABTransition> ();
 	}
 
     // Use this for initialization
@@ -73,14 +74,14 @@ public class Pin : DragSelectableProxyGameObject {
 		handleSelectedState ();
 	}
 
-	public bool associateTransition( ABTransition transition ){
+	public bool associateTransition( ProxyABTransition transition ){
 		if (!AssociatedTransitions.Contains (transition)) {
 			AssociatedTransitions.Add (transition);
 			return true;
 		}
 		return false;
 	}
-	public bool desassociateTransition( ABTransition transition ){
+	public bool desassociateTransition( ProxyABTransition transition ){
 		if (AssociatedTransitions.Contains (transition)) {
 			return AssociatedTransitions.Remove (transition);
 		}
