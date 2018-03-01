@@ -12,8 +12,8 @@ States,Name,Type
 Transitions,Start State,End State
 0,INIT,green ressource found
 1,INIT,red ressource found
-2,INIT,goto elsewhere
-3,INIT,goto search
+2,INIT,goto search
+3,INIT,goto elsewhere
 4,green ressource found,trace green
 5,green ressource found,goto green
 6,red ressource found,trace red
@@ -42,7 +42,7 @@ Nodes,Type,output (Node -> Input)
 6,param{ref[]:resources},3->0
 ,,
 Syntax Tree,output,
-1,3,
+1,2,
 Nodes,Type,output (Node -> Input)
 0,operator{B!=VV},
 1,operator{VgetRT},0->0
