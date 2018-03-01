@@ -20,11 +20,18 @@ public class Pin : DragSelectableProxyGameObject {
 	[SerializeField]
 	PinType pin_Type;
 
+	MCEditor_Proxy proxyParent;
+	[SerializeField]
+	List<ProxyABTransition> associatedTransitions;
+
 	[SerializeField]
 	/// <summary>
 	/// Prefab that implements a Transition
 	/// </summary>
 	GameObject transitionPrefab;
+
+	[SerializeField]
+	Pin_Order pin_order;
 
 	Camera trackingCamera;
 
@@ -37,7 +44,32 @@ public class Pin : DragSelectableProxyGameObject {
 			pin_Type = value;
 		}
 	}
+
+	public List<ProxyABTransition> AssociatedTransitions {
+		get {
+			return associatedTransitions;
+		}
+	}
+		
+	public MCEditor_Proxy ProxyParent {
+		get {
+			return proxyParent;
+		}
+		protected set {
+			proxyParent = value;
+		}
+	}
+
+	public Pin_Order Pin_order {
+		get {
+			return pin_order;
+		}
+	}
 	#endregion
+
+	protected void Awake(){
+		associatedTransitions = new List<ProxyABTransition> ();
+	}
 
     // Use this for initialization
     protected void Start () {
@@ -49,6 +81,20 @@ public class Pin : DragSelectableProxyGameObject {
 		base.Update ();
 
 		handleSelectedState ();
+	}
+
+	public bool associateTransition( ProxyABTransition transition ){
+		if (!AssociatedTransitions.Contains (transition)) {
+			AssociatedTransitions.Add (transition);
+			return true;
+		}
+		return false;
+	}
+	public bool desassociateTransition( ProxyABTransition transition ){
+		if (AssociatedTransitions.Contains (transition)) {
+			return AssociatedTransitions.Remove (transition);
+		}
+		return false;
 	}
 
 	#region implemented abstract members of SelectableProxyGameObject
@@ -100,9 +146,7 @@ public class Pin : DragSelectableProxyGameObject {
 	#region INSTANTIATE
 	public static Pin instantiate( Pin.PinType pinType, Vector3 position, Transform parent ){
         Pin result;
-		if (pinType == PinType.TransitionOut) {
-			result = Instantiate<Pin>(MCEditor_Proxy_Factory.instance.PinTransitionOutPrefab, parent);
-		} else if (pinType==PinType.OperatorOut || pinType == PinType.Param)
+		if (pinType == PinType.TransitionOut || pinType==PinType.OperatorOut || pinType == PinType.Param)
         {
             result = Instantiate<Pin>(MCEditor_Proxy_Factory.instance.PinOutPrefab, parent);
         } else
@@ -111,6 +155,7 @@ public class Pin : DragSelectableProxyGameObject {
         }                    
 		result.Pin_Type = pinType;
 		result.transform.position = position;
+		result.ProxyParent = parent.gameObject.GetComponent<MCEditor_Proxy> ();
 
         result.SetPinColor();        
 
@@ -121,44 +166,28 @@ public class Pin : DragSelectableProxyGameObject {
     {
         Color color = new Color();        
 
-        if (this.Pin_Type == Pin.PinType.OperatorIn || this.Pin_Type == Pin.PinType.OperatorOut)
+        if (this.Pin_Type == Pin.PinType.OperatorOut)
         {
             ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
-            //Debug.Log(parent.AbOperator.GetType());
+            string opeParentType = parent.AbOperator.GetType().ToString();
+            string typePinOut = opeParentType.Split('_')[1];
+            this.regularColor = PinColor.GetColorPinFromType(typePinOut);                       
+        }
+        else if (this.Pin_Type == Pin.PinType.OperatorIn)
+        {
+            ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
+            int curPinIn = parent.CurPinIn;
+            parent.CurPinIn++;
+            string opeParentType = parent.AbOperator.GetType().ToString();
+            string typePinIn = opeParentType.Split('_')[3 + curPinIn];
+            this.regularColor = PinColor.GetColorPinFromType(typePinIn);
+            Debug.Log(typePinIn + " " + curPinIn);                        
         }
         else if(this.Pin_Type == Pin.PinType.Param)
         {
             ProxyABParam parent = this.GetComponentInParent<ProxyABParam>();
             string type = parent.AbParam.GetType().ToString();
-            if (type.Contains("Bool"))
-            {
-                color = Color.blue;
-            }
-            else if (type.Contains("Scal"))
-            {
-                // Silver
-                color = new Color(0.75f , 0.75f, 0.75f);
-            }
-            else if(type.Contains("Text"))
-            {
-                // Turquoise
-                color = new Color(0.25f, 0.875f, 0.813f);
-            }
-            else if (type.Contains("Color"))
-            {
-                // Chocolat
-                color = new Color(0.785f, 0.410f, 0.117f);
-            }
-            else if (type.Contains("Ref"))
-            {
-                color = Color.red;
-            }
-            else if (type.Contains("Vec"))
-            {
-                // Violet
-                color = new Color(0.930f, 0.508f, 0.930f);
-            }
-            this.regularColor = color;            
+            this.regularColor = PinColor.GetColorPinFromType(type);            
         }
         else if (this.pin_Type == Pin.PinType.Condition || this.pin_Type == Pin.PinType.ActionParam)
         {
@@ -167,7 +196,7 @@ public class Pin : DragSelectableProxyGameObject {
     }
 
 	// Pin : Action : fixed number of pins
-	public static Vector3 calculatePinPosition( Pin.PinType pinType, ProxyABAction parent ){
+	public static Vector3 calculatePinPosition( ProxyABAction action, Pin.PinType pinType, ProxyABAction parent ){
 		float radius = parent.transform.localScale.y / 2;
 		if (pinType == Pin.PinType.TransitionIn) {
 			// Income

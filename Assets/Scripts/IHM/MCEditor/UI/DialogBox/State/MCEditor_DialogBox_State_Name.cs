@@ -30,7 +30,9 @@ public class MCEditor_DialogBox_State_Name : MCEditor_DialogBox_State {
 
 	protected override void confirmState ()
 	{
-		this.stateProxy.AbState.Name = value.text;
+		if (MCEditorManager.instance.changeModelStateName (this.stateProxy, value.text)) {
+			this.stateProxy.AbState.Name = value.text;
+		}
 	}
 
 	protected override void deactivateState ()
