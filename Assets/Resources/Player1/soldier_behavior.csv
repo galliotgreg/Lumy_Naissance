@@ -10,8 +10,8 @@ States,Name,Type
 Transitions,Start State,End State
 0,INIT,prey in sight
 1,INIT,go to blue trace
-2,INIT,go to search
-3,INIT,go to elsewhere
+2,INIT,go to elsewhere
+3,INIT,go to search
 4,prey in sight,strike
 5,prey in sight,go to prey
 ,,
@@ -24,7 +24,7 @@ Nodes,Type,Output (Node -> Input)
 3,param{ref[]:enemies},2->0
 ,,
 Syntax Tree,Output,
-0,2,
+0,3,
 Nodes,Type,Output (Node -> Input)
 0,operator{B>SS},
 1,param{const scal=1},0->1

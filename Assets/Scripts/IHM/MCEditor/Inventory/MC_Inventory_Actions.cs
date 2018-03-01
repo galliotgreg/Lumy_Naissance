@@ -40,12 +40,17 @@ public class MC_Inventory_Actions : MC_Inventory {
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		return MCEditor_Proxy_Factory.instantiateAction ( (ABState)item.Item ).gameObject;
+		ABState itemState = (ABState)item.Item;
+		ABState newState = new ABState (itemState.Id, itemState.Name);
+		newState.Action = itemState.Action;
+		ProxyABAction result = MCEditor_Proxy_Factory.instantiateAction( newState );
+		return result.gameObject;
 	}
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)
 	{
-		Debug.Log ("Drop Action");
+		ProxyABAction actionProxy = proxy.GetComponent<ProxyABAction> ();
+		MCEditorManager.instance.registerAction( actionProxy.AbState, actionProxy );
 	}
 
 	#endregion

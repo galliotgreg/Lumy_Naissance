@@ -112,12 +112,12 @@ public static ProxyABAction instantiate( ABState state, Vector3 position, Transf
 	// Create Pins
 	if (state.Action.Parameters != null) {
 		foreach (IABGateOperator param in state.Action.Parameters) {
-			Pin start = Pin.instantiate (Pin.PinType.ActionParam, Pin.calculatePinPosition (Pin.PinType.ActionParam,result), result.transform);
+				Pin start = Pin.instantiate (Pin.PinType.ActionParam, Pin.calculatePinPosition (result,Pin.PinType.ActionParam,result), result.transform);
 		}
 	}
 
 	// Income
-	Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (Pin.PinType.TransitionIn,result), result.transform);
+	Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result,Pin.PinType.TransitionIn,result), result.transform);
 
 	return result;
 }
@@ -129,7 +129,7 @@ public static Vector3 calculateActionPosition( Transform parent ){
 
 	#region implemented abstract members of MCEditor_Proxy
 
-	public override void click ()
+	public override void doubleClick ()
 	{
 		// Nothing to do
 	}

@@ -28,6 +28,10 @@ public class Pin : DragSelectableProxyGameObject {
 
 	Camera trackingCamera;
 
+	MCEditor_Proxy proxyParent;
+	[SerializeField]
+	List<ProxyABTransition> associatedTransitions;
+
 	#region PROPERTIES
 	public PinType Pin_Type {
 		get {
@@ -37,7 +41,26 @@ public class Pin : DragSelectableProxyGameObject {
 			pin_Type = value;
 		}
 	}
+
+	public List<ProxyABTransition> AssociatedTransitions {
+		get {
+			return associatedTransitions;
+		}
+	}
+		
+	public MCEditor_Proxy ProxyParent {
+		get {
+			return proxyParent;
+		}
+		protected set {
+			proxyParent = value;
+		}
+	}
 	#endregion
+
+	protected void Awake(){
+		associatedTransitions = new List<ProxyABTransition> ();
+	}
 
     // Use this for initialization
     protected void Start () {
@@ -49,6 +72,20 @@ public class Pin : DragSelectableProxyGameObject {
 		base.Update ();
 
 		handleSelectedState ();
+	}
+
+	public bool associateTransition( ProxyABTransition transition ){
+		if (!AssociatedTransitions.Contains (transition)) {
+			AssociatedTransitions.Add (transition);
+			return true;
+		}
+		return false;
+	}
+	public bool desassociateTransition( ProxyABTransition transition ){
+		if (AssociatedTransitions.Contains (transition)) {
+			return AssociatedTransitions.Remove (transition);
+		}
+		return false;
 	}
 
 	#region implemented abstract members of SelectableProxyGameObject
@@ -111,6 +148,7 @@ public class Pin : DragSelectableProxyGameObject {
         }                    
 		result.Pin_Type = pinType;
 		result.transform.position = position;
+		result.ProxyParent = parent.gameObject.GetComponent<MCEditor_Proxy> ();
 
         result.SetPinColor();        
 
@@ -151,7 +189,7 @@ public class Pin : DragSelectableProxyGameObject {
     }
 
 	// Pin : Action : fixed number of pins
-	public static Vector3 calculatePinPosition( Pin.PinType pinType, ProxyABAction parent ){
+	public static Vector3 calculatePinPosition( ProxyABAction action, Pin.PinType pinType, ProxyABAction parent ){
 		float radius = parent.transform.localScale.y / 2;
 		if (pinType == Pin.PinType.TransitionIn) {
 			// Income

@@ -30,7 +30,7 @@ public class Pin_TransitionOut : Pin {
 
 	public static Pin_TransitionOut instantiate( int orderPosition, Vector3 position, Transform parent ){
 		Pin_TransitionOut result = (Pin_TransitionOut) Pin.instantiate (PinType.TransitionOut, position, parent);
-		result.orderPosition = orderPosition;
+		result.OrderPosition = orderPosition;
 		return result;
 	}
 }

@@ -8,9 +8,9 @@ States,Name,Type
 ,,
 Transitions,Start State,End State
 0,INIT,enemy found
-1,INIT,go to search
+1,INIT,go to elsewhere
 2,enemy found,trace enemy
-3,INIT,go to elsewhere
+3,INIT,go to search
 4,enemy found,go to enemy
 ,,
 Syntax Tree,Output,
@@ -27,7 +27,7 @@ Nodes,Type,Output (Node -> Input)
 8,param{ref[]:traces},7->0
 ,,
 Syntax Tree,Output,
-0,1,
+0,3,
 Nodes,Type,Output (Node -> Input)
 0,operator{B!=VV},
 1,operator{VgetRT},0->0

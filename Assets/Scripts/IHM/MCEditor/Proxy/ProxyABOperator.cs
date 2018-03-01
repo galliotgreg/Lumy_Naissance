@@ -181,7 +181,7 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 
 	#region implemented abstract members of MCEditor_Proxy
 
-	public override void click ()
+	public override void doubleClick ()
 	{
 		// Nothing to do
 	}

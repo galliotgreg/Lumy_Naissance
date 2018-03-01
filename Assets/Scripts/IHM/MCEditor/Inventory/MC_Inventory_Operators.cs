@@ -43,7 +43,7 @@ public class MC_Inventory_Operators : MC_Inventory {
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)
 	{
-		Debug.Log ("Drop");
+		MCEditorManager.instance.registerOperator( proxy.GetComponent<ProxyABOperator>() );
 	}
 
 	#endregion
