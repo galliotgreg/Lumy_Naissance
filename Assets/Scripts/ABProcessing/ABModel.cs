@@ -91,8 +91,6 @@ public class ABModel {
         transitions.Add(transition);
 
         start.Outcomes.Add(transition);
-		Debug.Log (startName);
-		Debug.Log (start.Outcomes.Count);
 
         return id;
     }

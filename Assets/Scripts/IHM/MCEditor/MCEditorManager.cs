@@ -1136,10 +1136,7 @@ public class MCEditorManager : MonoBehaviour {
                         ProxyABTransition.addConditionPin(trans);
                     }
                 }
-				Debug.LogError ("aaaaa");
-				Debug.LogError ( endStateParent.AbState.Outcomes.Count );
 				// Including transition in the Pins
-				//endStateParent.AbState.Outcomes.Add( trans.Transition );
 				start.associateTransition ( trans.Transition );
 				end.associateTransition ( trans.Transition );
 				endStateParent.checkPins ();
@@ -1161,14 +1158,10 @@ public class MCEditorManager : MonoBehaviour {
                 // STATE -> ACTION
                 else
                 {
-					Debug.LogError ("iiii");
 					trans.Transition = LinkState_Action(start, end);
                     ProxyABTransition.addConditionPin(trans);
                 }
-				Debug.LogError ("eee");
-				Debug.LogError ( startStateParent.AbState.Outcomes.Count );
 				// Including transition in the Pins
-				//startStateParent.AbState.Outcomes.Add( trans.Transition );
 				start.associateTransition ( trans.Transition );
 				end.associateTransition ( trans.Transition );
 				startStateParent.checkPins ();

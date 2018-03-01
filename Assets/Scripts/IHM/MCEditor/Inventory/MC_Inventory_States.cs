@@ -40,8 +40,9 @@ public class MC_Inventory_States : MC_Inventory {
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)
 	{
 		ProxyABState stateProxy = proxy.GetComponent<ProxyABState> ();
-		if (!MCEditorManager.instance.registerState (stateProxy.AbState, stateProxy)) {
+		if (MCEditorManager.instance.registerState (stateProxy.AbState, stateProxy)) {
 			stateProxy.AbState = MCEditorManager.instance.AbModel.getState (stateProxy.AbState.Id);
+		} else {
 			Destroy (proxy);
 		}
 	}

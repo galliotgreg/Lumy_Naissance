@@ -131,16 +131,9 @@ public class ProxyABState : MCEditor_Proxy {
 		// Check if pin has transition : set orderPosition
 		bool extraPinFound = false;
 		for ( int i = 0; i < pins.Count; i++ ){
-			Debug.Log (pins [i].AssociatedTransitions.Count);
-			Debug.Log (this.AbState.Name);
-			if (pins [i].AssociatedTransitions.Count > 0) {
-				Debug.Log (this.AbState.Outcomes.Count);
-				Debug.Log (this.AbState.Outcomes.Contains (pins [i].AssociatedTransitions [0]));
-			}
 			bool transitionFound = pins[i].AssociatedTransitions.Count > 0 && this.AbState.Outcomes.Contains( pins[i].AssociatedTransitions[0] );
 
 			if (transitionFound) {
-				Debug.Log (pins [i].AssociatedTransitions.Count);
 				((Pin_TransitionOut)pins[i]).OrderPosition = this.AbState.Outcomes.IndexOf( pins[i].AssociatedTransitions[0] )+1;
 			}else{
 				//pins [i].AssociatedTransitions.Clear ();
