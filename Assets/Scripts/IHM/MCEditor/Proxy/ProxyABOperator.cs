@@ -135,15 +135,17 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
         // Create Pins
         if (operatorObj.Inputs.Length <= 3)
         {
-            foreach (ABNode inputNode in operatorObj.Inputs)
-            {                
+			for(int i=0; i<operatorObj.Inputs.Length; i++){
+				ABNode inputNode = operatorObj.Inputs [i];
                 Pin start = Pin.instantiate(Pin.PinType.OperatorIn, Pin.calculatePinPosition(result), result.transform);
+				start.Pin_order.OrderPosition = i + 1;
             }
         }
         // Do not show 32 pins on an operator, TODO : aggregator cases
         else
         {
             Pin start = Pin.instantiate(Pin.PinType.OperatorIn, Pin.calculatePinPosition(result), result.transform);
+			start.Pin_order.OrderPosition = 1;
         }
 		
 
