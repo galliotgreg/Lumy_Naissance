@@ -441,8 +441,20 @@ public class MCEditorManager : MonoBehaviour {
         for (int i = 0; i < AbModel.Transitions.Count; i++) {
 			List<Pin> pinList = LoadPinsStates(i);
 			proxyABTransition = MCEditor_Proxy_Factory.instantiateTransition ( pinList[0], pinList[1], true );
-			// todo ATTENTION
 			proxyABTransition.Transition = AbModel.Transitions [i];
+
+			// Associating transition to the Pins
+			foreach( Pin p in pinList ){
+				p.associateTransition(proxyABTransition.Transition);
+			}
+
+			// Check pin for the transition states
+			if( proxyABTransition.EndPosition.ProxyParent is ProxyABState ){
+				((ProxyABState)proxyABTransition.EndPosition.ProxyParent).checkPins ();
+			}
+			if( proxyABTransition.StartPosition.ProxyParent is ProxyABState ){
+				((ProxyABState)proxyABTransition.StartPosition.ProxyParent).checkPins ();
+			}
 
             if (AbModel.Transitions[i].Condition != null) {                
                 Pin end = RecNodeSynthTree(AbModel.Transitions[i].Condition.Inputs[0]);
@@ -458,7 +470,8 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABState startState = statesDictionnary[AbModel.Transitions[curTransition].Start];        
 
 		// Instantiate OutCome Pin in the state
-		pinList.Add( MCEditor_Proxy_Factory.instantiatePin ( Pin.PinType.TransitionOut, Pin.calculatePinPosition( startState.AbState, startState.gameObject, true, curTransition ), startState.transform ) );
+		//pinList.Add( MCEditor_Proxy_Factory.instantiatePin ( Pin.PinType.TransitionOut, Pin.calculatePinPosition( startState.AbState, startState.gameObject, true, curTransition ), startState.transform ) );
+		pinList.Add( startState.ExtraPin );
 
         if (statesDictionnary.ContainsKey(AbModel.Transitions[curTransition].End)) {
             ProxyABState endState = statesDictionnary[AbModel.Transitions[curTransition].End];
@@ -805,14 +818,48 @@ public class MCEditorManager : MonoBehaviour {
 	#region REGISTER PROXY
 	// Action
 	public void registerAction( ABState state, ProxyABAction action ){
+		if (AbModel.getState (state.Id) == null) {
+			state.Id = AbModel.AddState ( state.Name, state.Action );
+		}
 		proxyActions.Add(action);
 		actionsDictionnary.Add(state, action);
 	}
 
 	// State
-	public void registerState( ABState state, ProxyABState proxyState ){
-		proxyStates.Add( proxyState );
-		statesDictionnary.Add(state, proxyState);
+	public bool registerState( ABState state, ProxyABState proxyState ){
+		// check disponibility
+		bool available = stateAvailable( state.Name );
+
+		if (available) {
+			if (AbModel.getState (state.Id) == null) {
+				state.Id = AbModel.AddState (state.Name, state.Action);
+			}
+			proxyStates.Add (proxyState);
+			statesDictionnary.Add (state, proxyState);
+		}
+		return available;
+	}
+	public bool changeModelStateName( ProxyABState proxyState, string newValue ){
+		// check disponibility
+		bool available = stateAvailable(newValue);
+
+		if (available) {
+			// Change value in the model
+			if (AbModel.getState (proxyState.AbState.Id) != null) {
+				AbModel.getState (proxyState.AbState.Id).Name = proxyState.AbState.Name;
+			}
+		}
+		return available;
+	}
+	public bool stateAvailable( string name ){
+		// check disponibility
+		bool available = true;
+		foreach( ABState s in statesDictionnary.Keys ){
+			if (s.Name == name) {
+				available = false;
+			}
+		}
+		return available;
 	}
 
 	// Operator
@@ -924,6 +971,7 @@ public class MCEditorManager : MonoBehaviour {
         stateParent = state.GetComponentInParent<ProxyABState>();
         actionParent = action.GetComponentInParent<ProxyABAction>();
 
+		Debug.LogError ( stateParent.AbState.Name );
         int transitionId = AbModel.LinkStates(stateParent.AbState.Name, actionParent.AbState.Name);
         return AbModel.getTransition(transitionId);
     }
@@ -969,6 +1017,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin Bool Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
+				return;
             }
         }
         else if (start.Pin_Type == Pin.PinType.ActionParam)
@@ -984,6 +1033,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
+				return;
             }
             // TODO why this pin is created?
             //Pin newPin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.ActionParam, Pin.calculatePinPosition( Pin.PinType.ActionParam, startActionParent ), startActionParent.transform);
@@ -1001,6 +1051,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin OperatorIn ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
+				return;
             }
         }
         else if (start.Pin_Type == Pin.PinType.OperatorOut)
@@ -1020,6 +1071,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin OperatorOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
+				return;
             }
         }
         else if (start.Pin_Type == Pin.PinType.Param)
@@ -1039,6 +1091,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin Param ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
+				return;
             }
         }
         else if (start.Pin_Type == Pin.PinType.TransitionIn)
@@ -1055,6 +1108,7 @@ public class MCEditorManager : MonoBehaviour {
                     if (!endStateParent)
                     {
                         Debug.LogError("Action -> Action n'existe pas");
+						return;
                     }
                     // ACTION -> STATE
                     else
@@ -1070,6 +1124,7 @@ public class MCEditorManager : MonoBehaviour {
                     // STATE -> ACTION
                     if (!endStateParent)
                     {
+						Debug.LogError("State -> Action n'existe pas");
                         endActionParent = end.GetComponentInParent<ProxyABAction>();
                         trans.Transition = LinkState_Action(start, end);
                         ProxyABTransition.addConditionPin(trans);
@@ -1081,6 +1136,13 @@ public class MCEditorManager : MonoBehaviour {
                         ProxyABTransition.addConditionPin(trans);
                     }
                 }
+				Debug.LogError ("aaaaa");
+				Debug.LogError ( endStateParent.AbState.Outcomes.Count );
+				// Including transition in the Pins
+				//endStateParent.AbState.Outcomes.Add( trans.Transition );
+				start.associateTransition ( trans.Transition );
+				end.associateTransition ( trans.Transition );
+				endStateParent.checkPins ();
             }
         }
         // STATE ->
@@ -1088,6 +1150,7 @@ public class MCEditorManager : MonoBehaviour {
         {
             if(end.Pin_Type == Pin.PinType.TransitionIn)
             {
+				startStateParent = start.GetComponentInParent<ProxyABState>();
                 endStateParent = end.GetComponentInParent<ProxyABState>();
                 // STATE -> STATE
                 if (endStateParent)
@@ -1098,15 +1161,24 @@ public class MCEditorManager : MonoBehaviour {
                 // STATE -> ACTION
                 else
                 {
-                    trans.Transition = LinkState_Action(start, end);
+					Debug.LogError ("iiii");
+					trans.Transition = LinkState_Action(start, end);
                     ProxyABTransition.addConditionPin(trans);
-                }                
+                }
+				Debug.LogError ("eee");
+				Debug.LogError ( startStateParent.AbState.Outcomes.Count );
+				// Including transition in the Pins
+				//startStateParent.AbState.Outcomes.Add( trans.Transition );
+				start.associateTransition ( trans.Transition );
+				end.associateTransition ( trans.Transition );
+				startStateParent.checkPins ();
             }
             else
             {
                 Debug.LogError("Un Pin TransitionOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
+				return;
             }        			
-        }                                                               
+        }
     }
 
 	ProxyABAction CreateAction( ABAction action, int nodeID, string nodeName )

@@ -12,7 +12,7 @@ public class MC_Inventory_States : MC_Inventory {
 		List<System.Object> states = new List<System.Object> ();
 
 		// References
-		states.Add ( new ABState(0, "Init") );
+		//states.Add ( new ABState(0, "Init") );
 		states.Add ( new ABState(-1, "State") );
 
 		setItems ( states );
@@ -32,13 +32,18 @@ public class MC_Inventory_States : MC_Inventory {
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		ProxyABState result = MCEditor_Proxy_Factory.instantiateState( (ABState)item.Item, ((ABState)item.Item).Id == 0 );
+		ABState itemState = (ABState)item.Item;
+		ProxyABState result = MCEditor_Proxy_Factory.instantiateState( new ABState( itemState.Id, itemState.Name) , ((ABState)item.Item).Id == 0 );
 		return result.gameObject;
 	}
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)
 	{
-		Debug.Log ("Drop State");
+		ProxyABState stateProxy = proxy.GetComponent<ProxyABState> ();
+		if (!MCEditorManager.instance.registerState (stateProxy.AbState, stateProxy)) {
+			stateProxy.AbState = MCEditorManager.instance.AbModel.getState (stateProxy.AbState.Id);
+			Destroy (proxy);
+		}
 	}
 
 	#endregion
