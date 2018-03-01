@@ -25,18 +25,9 @@ public class OpenVoletVertical : MonoBehaviour {
 	RectTransform rtActionsHeader;
 	RectTransform rtParamsHeader;
 	RectTransform rtOpe;
-	//booléen etat des onglets
-	bool[] voletsIsOpen = new bool[5];
+	bool isOpen;
 	// Use this for initialization
 	void Start () {
-
-		//initialisation de l'état des volet au démarage
-		// ---> Au moins 1 ouvert
-		voletsIsOpen [0] = true;
-		voletsIsOpen [1] = false;
-		voletsIsOpen [2] = false;
-		voletsIsOpen [3] = false;
-
 		//Recuperation du panel node et de son header
 		panelNode = GameObject.Find("PanelNode");
 		panelNodeHeaderClick = GameObject.Find("PanelHeaderNode");
@@ -61,35 +52,35 @@ public class OpenVoletVertical : MonoBehaviour {
 		rtActionsHeader = (RectTransform)panelActionHeaderClick.transform;
 		rtParamsHeader = (RectTransform)panelParamsHeaderClick.transform;
 		rtOpeHeader = (RectTransform)panelOpeHeaderClick.transform;
+		isOpen = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		Debug.Log ("5:" +  isOpen);
 	}
 	public void OpenFirstPanel(){
+		Debug.Log ("0:" +  isOpen);
 		GameObject btnCreer;
-		GameObject chkSynta;
-		GameObject chkAction;
 		float heightPanel = rtActions.rect.height;
 		float heightHeaderPanel = rtActionsHeader.rect.height;
-		bool isOpen = voletsIsOpen [1];
 		float recenterPos;
+
 		//Fermeture
 		heightPanel = headerHeight;
 		rtNode.sizeDelta = new Vector2 (rtNode.rect.width, heightPanel);
 		btnCreer = GameObject.Find("btn_Creer");
-		chkSynta = GameObject.Find ("chck_Syntaxique");
-		chkAction = GameObject.Find ("chck_Actions");
-		/*if (btnCreer.activeSelf == true) {
-			btnCreer.SetActive (true);
-			chkSynta.SetActive (true);
-			chkAction.SetActive (true);
-		} else {
-			btnCreer.SetActive (false);
-			chkSynta.SetActive (false);
-			chkAction.SetActive (false);
-		}*/
+
+		//Button et filtre de Node
+		Button creer = btnCreer.GetComponent<Button>();
+		GameObject panelFilter = GameObject.Find ("PanelFilter");
+		creer.enabled = false;
+		if (isOpen == false) {
+			Debug.Log ("1:" + panelFilter.activeSelf);
+			panelFilter.SetActive (true);
+			Debug.Log ("2:" + panelFilter.activeSelf);
+			isOpen = true;
+		}
 
 		//Deplacement du volet du dessus en haut de l'écran
 		float anchorPosition = ((3*headerHeight)+(panelHeight-headerHeight)+(headerHeight/2))-windowHeight;
@@ -125,28 +116,23 @@ public class OpenVoletVertical : MonoBehaviour {
 	}
 	public void OpenSecondPanel(){
 		GameObject btnCreer;
-		GameObject chkSynta;
-		GameObject chkAction;
 		float heightPanel = rtActions.rect.height;
 		float heightHeaderPanel = rtActionsHeader.rect.height;
-		bool isOpen = voletsIsOpen [1];
 		float recenterPos;
 		//Fermeture
 		heightPanel = 30;//rtNode.rect.height / 36;
 		rtNode.sizeDelta = new Vector2 (rtNode.rect.width, heightPanel);
 		btnCreer = GameObject.Find("btn_Creer");
-		chkSynta = GameObject.Find ("chck_Syntaxique");
-		chkAction = GameObject.Find ("chck_Actions");
 
-		/*if (btnCreer.activeSelf == true) {
-			btnCreer.SetActive (false);
-			chkSynta.SetActive (false);
-			chkAction.SetActive (false);
-		}else {
-			btnCreer.SetActive (false);
-			chkSynta.SetActive (false);
-			chkAction.SetActive (false);
-		}*/
+		//Button et filtre de Node
+		Button creer = btnCreer.GetComponent<Button>();
+		GameObject panelFilter = GameObject.Find ("PanelFilter");
+		creer.enabled = false;
+		if (isOpen == true) {
+			panelFilter.SetActive (false);
+			isOpen = false;
+			//Debug.Log ("4:" +  isOpen);
+		}
 
 		//Deplacement du volet du dessus en haut de l'écran
 		recenterPos = rtNode.rect.position.y;
@@ -181,28 +167,22 @@ public class OpenVoletVertical : MonoBehaviour {
 	}
 	public void OpenThirdPanel(){
 		GameObject btnCreer;
-		GameObject chkSynta;
-		GameObject chkAction;
 		float heightPanel = rtActions.rect.height;
 		float heightHeaderPanel = rtActionsHeader.rect.height;
-		bool isOpen = voletsIsOpen [1];
 		float recenterPos;
 		//Fermeture
 		heightPanel = 30;//rtNode.rect.height / 36;
 		rtNode.sizeDelta = new Vector2 (rtNode.rect.width, heightPanel);
 		btnCreer = GameObject.Find("btn_Creer");
-		chkSynta = GameObject.Find ("chck_Syntaxique");
-		chkAction = GameObject.Find ("chck_Actions");
 
-		/*if (btnCreer.activeSelf == true) {
-			btnCreer.SetActive (false);
-			chkSynta.SetActive (false);
-			chkAction.SetActive (false);
-		}else {
-			btnCreer.SetActive (false);
-			chkSynta.SetActive (false);
-			chkAction.SetActive (false);
-		}*/
+		//Button et filtre de Node
+		Button creer = btnCreer.GetComponent<Button>();
+		GameObject panelFilter = GameObject.Find ("PanelFilter");
+		creer.enabled = false;
+		if (isOpen == true) {
+			panelFilter.SetActive (false);
+			isOpen = false;
+		}
 
 		//Deplacement des volet du dessus en haut de l'écran
 		recenterPos = rtNode.rect.position.y;
@@ -238,28 +218,23 @@ public class OpenVoletVertical : MonoBehaviour {
 	}
 	public void OpenFourthPanel(){
 		GameObject btnCreer;
-		GameObject chkSynta;
-		GameObject chkAction;
 		float heightPanel = rtActions.rect.height;
 		float heightHeaderPanel = rtActionsHeader.rect.height;
-		bool isOpen = voletsIsOpen [1];
+
 		float recenterPos;
 		//Fermeture
 		heightPanel = 30;//rtNode.rect.height / 36;
 		rtNode.sizeDelta = new Vector2 (rtNode.rect.width, heightPanel);
 		btnCreer = GameObject.Find("btn_Creer");
-		chkSynta = GameObject.Find ("chck_Syntaxique");
-		chkAction = GameObject.Find ("chck_Actions");
 
-		/*if (btnCreer.activeSelf == true) {
-			btnCreer.SetActive (false);
-			chkSynta.SetActive (false);
-			chkAction.SetActive (false);
-		}else {
-			btnCreer.SetActive (false);
-			chkSynta.SetActive (false);
-			chkAction.SetActive (false);
-		}*/
+		//Button et filtre de Node
+		Button creer = btnCreer.GetComponent<Button>();
+		GameObject panelFilter = GameObject.Find ("PanelFilter");
+		creer.enabled = false;
+		if (isOpen == true) {
+			panelFilter.SetActive (false);
+			isOpen = false;
+		}
 
 		//Deplacement des volet du dessus en haut de l'écran
 		recenterPos = rtNode.rect.position.y;
@@ -293,5 +268,6 @@ public class OpenVoletVertical : MonoBehaviour {
 		rtOpe.anchoredPosition = new Vector2 (rtParams.anchoredPosition.x, anchorPosition);
 		rtOpe.sizeDelta =new Vector2(rtParams.rect.width, panelHeight);
 	}
+		
 
 }
