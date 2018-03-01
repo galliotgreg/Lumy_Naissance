@@ -48,25 +48,25 @@ public class AppContextManager : MonoBehaviour
     /// Path to the folder hosting all available species
     /// </summary>
     [SerializeField]
-    private string PLAYER1_FOLDER_PATH = "Assets/Inputs/Player1/";
+    private string player1FolderPath = "Inputs/Player1/";
 
     /// <summary>
     /// Path to the folder hosting all available species
     /// </summary>
     [SerializeField]
-    private string PLAYER2_FOLDER_PATH = "Assets/Inputs/Player2/";
+    private string playre2FolderPath = "Inputs/Player2/";
 
     /// <summary>
     /// Path to the folder hosting all available species
     /// </summary>
     [SerializeField]
-    private string SPECIES_FOLDER_PATH = "Assets/Inputs/Species/";
+    private string speciesFolderPath = "Inputs/Species/";
 
     /// <summary>
     /// Path to the folder hosting the specie template
     /// </summary>
     [SerializeField]
-    private string TEMPLATE_FOLDER_PATH = "Assets/Inputs/SpecieTemplate/";
+    private string templateFolderPath = "Inputs/SpecieTemplate/";
 
     /// <summary>
     /// Path to the folder hosting the specie template
@@ -128,7 +128,7 @@ public class AppContextManager : MonoBehaviour
     {
         get
         {
-            return activeSpecieFolderPath;
+            return  activeSpecieFolderPath;
         }
 
         set
@@ -163,6 +163,58 @@ public class AppContextManager : MonoBehaviour
         }
     }
 
+    public string Player1FolderPath
+    {
+        get
+        {
+            return Application.dataPath + "/" + player1FolderPath;
+        }
+
+        set
+        {
+            player1FolderPath = value;
+        }
+    }
+
+    public string Playre2FolderPath
+    {
+        get
+        {
+            return Application.dataPath + "/" + playre2FolderPath;
+        }
+
+        set
+        {
+            playre2FolderPath = value;
+        }
+    }
+
+    public string SpeciesFolderPath
+    {
+        get
+        {
+            return Application.dataPath + "/" + speciesFolderPath;
+        }
+
+        set
+        {
+            speciesFolderPath = value;
+        }
+    }
+
+    public string TemplateFolderPath
+    {
+        get
+        {
+            return Application.dataPath + "/" + templateFolderPath;
+        }
+
+        set
+        {
+            templateFolderPath = value;
+        }
+    }
+
     public void SwitchActiveCast(string castName)
     {
         if (!activeSpecie.Casts.ContainsKey(castName))
@@ -179,41 +231,41 @@ public class AppContextManager : MonoBehaviour
     public void LoadPlayerSpecies(string player1SpecieName, string player2SpecieName)
     {
         //Create Dirs in needed
-        if (!Directory.Exists(PLAYER1_FOLDER_PATH))
+        if (!Directory.Exists(Player1FolderPath))
         {
-            Directory.CreateDirectory(PLAYER1_FOLDER_PATH);
+            Directory.CreateDirectory(Player1FolderPath);
         }
-        if (!Directory.Exists(PLAYER2_FOLDER_PATH))
+        if (!Directory.Exists(Playre2FolderPath))
         {
-            Directory.CreateDirectory(PLAYER2_FOLDER_PATH);
+            Directory.CreateDirectory(Playre2FolderPath);
         }
 
         //Free Folders
-        DirectoryInfo di = new DirectoryInfo(PLAYER1_FOLDER_PATH);
+        DirectoryInfo di = new DirectoryInfo(Player1FolderPath);
         foreach (FileInfo file in di.GetFiles())
         {
             file.Delete();
         }
-         di = new DirectoryInfo(PLAYER2_FOLDER_PATH);
+         di = new DirectoryInfo(Playre2FolderPath);
         foreach (FileInfo file in di.GetFiles())
         {
             file.Delete();
         }
 
         //Copy files
-        di = new DirectoryInfo(SPECIES_FOLDER_PATH + player1SpecieName + "/");
+        di = new DirectoryInfo(SpeciesFolderPath + player1SpecieName + "/");
         foreach (FileInfo file in di.GetFiles())
         {
             File.Copy(
             file.FullName,
-            PLAYER1_FOLDER_PATH + file.Name);
+            Player1FolderPath + file.Name);
         }
-        di = new DirectoryInfo(SPECIES_FOLDER_PATH + player2SpecieName + "/");
+        di = new DirectoryInfo(SpeciesFolderPath + player2SpecieName + "/");
         foreach (FileInfo file in di.GetFiles())
         {
             File.Copy(
             file.FullName,
-            PLAYER2_FOLDER_PATH + file.Name);
+            Playre2FolderPath + file.Name);
         }
     }
 
@@ -383,7 +435,7 @@ public class AppContextManager : MonoBehaviour
         UpdateSpeciesFoldersNames();
 
         //Create Files 
-        DirectoryInfo di = new DirectoryInfo(TEMPLATE_FOLDER_PATH);
+        DirectoryInfo di = new DirectoryInfo(TemplateFolderPath);
         foreach (FileInfo file in di.GetFiles())
         {
             File.Copy(
@@ -476,7 +528,7 @@ public class AppContextManager : MonoBehaviour
         List<string> keyList = new List<string>(this.activeSpecie.Casts.Keys);
         string castName = keyList[0];
         activeCast = activeSpecie.Casts[castName];
-        activeBehaviorPath = SPECIES_FOLDER_PATH + activeSpecie.Name + "/" +
+        activeBehaviorPath = SpeciesFolderPath + activeSpecie.Name + "/" +
             activeCast.BehaviorModelIdentifier + CSV_EXT;
     }
 
@@ -492,19 +544,19 @@ public class AppContextManager : MonoBehaviour
 
     private string GetPathFromCastName(string name)
     {
-        return SPECIES_FOLDER_PATH + activeSpecie.Name + "/" 
+        return SpeciesFolderPath + activeSpecie.Name + "/" 
             + activeSpecie.Casts[name].BehaviorModelIdentifier + CSV_EXT;
     }
 
     private string GetFilePathFromSpecieName(string name)
     {
         string filename = Char.ToLowerInvariant(name[0]) + name.Substring(1) + SPECIE_FILES_SUFFIX + CSV_EXT;
-        return SPECIES_FOLDER_PATH + name + "/" + filename;
+        return SpeciesFolderPath + name + "/" + filename;
     }
 
     private string GetFolderPathFromSpecieName(string name)
     {
-        return SPECIES_FOLDER_PATH + name + "/";
+        return SpeciesFolderPath + name + "/";
     }
 
     private void UpdateCastsFilesNames()
@@ -557,7 +609,7 @@ public class AppContextManager : MonoBehaviour
 
     private void UpdateSpeciesFoldersNames()
     {
-        DirectoryInfo info = new DirectoryInfo(SPECIES_FOLDER_PATH);
+        DirectoryInfo info = new DirectoryInfo(SpeciesFolderPath);
         DirectoryInfo[] dirsInfo = info.GetDirectories();
         speciesFolderNames = new string[dirsInfo.Length];
         for (int i = 0; i < dirsInfo.Length; i++)

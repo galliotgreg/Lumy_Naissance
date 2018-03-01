@@ -27,7 +27,7 @@ public class ComponentFactory : MonoBehaviour {
     }
 
     [SerializeField]
-    private string COMPO_DATA_PATH = "Assets/Inputs/Components/components.csv";
+    private string compoDataPath = "Inputs/Components/components.csv";
 
     protected static Dictionary<int, ComponentInfo> loadedComponents = null;
 
@@ -39,9 +39,22 @@ public class ComponentFactory : MonoBehaviour {
 		}
 	}
 
-	private void CreateFactory(){
+    public string CompoDataPath
+    {
+        get
+        {
+            return Application.dataPath + "/" + compoDataPath;
+        }
+
+        set
+        {
+            compoDataPath = value;
+        }
+    }
+
+    private void CreateFactory(){
 		try{
-			loadedComponents = ComponentParser.parse(readFile(COMPO_DATA_PATH));
+			loadedComponents = ComponentParser.parse(readFile(CompoDataPath));
 		}
 		catch( Exception ex ){
 			UnityEngine.Debug.Log( ex.ToString() );
