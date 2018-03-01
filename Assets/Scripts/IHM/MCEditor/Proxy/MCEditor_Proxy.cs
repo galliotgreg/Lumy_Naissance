@@ -71,13 +71,20 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 	}
 	#endregion
 
-	public abstract void click ();
+	//public abstract void click ();
+	public abstract void doubleClick ();
 
 	#region IPointerClickHandler implementation
 
+	float doubleClickIntervalMseconds = 200;
+
+	float lastClick = -1;
 	public void OnMouseDown ()
 	{
-		click ();
+		if (lastClick > 0 && Time.time - lastClick < doubleClickIntervalMseconds/1000f) {
+			doubleClick ();
+		}
+		lastClick = Time.time;
 	}
 
 	#endregion

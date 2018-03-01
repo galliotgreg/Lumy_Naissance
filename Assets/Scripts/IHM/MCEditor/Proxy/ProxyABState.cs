@@ -221,13 +221,13 @@ public class ProxyABState : MCEditor_Proxy {
 
 	#region implemented abstract members of MCEditor_Proxy
 
-	public override void click ()
+	public override void doubleClick ()
 	{
 		// Not init
-		/*if( this.AbState.Id != 0 ){
+		if( this.AbState.Id != MCEditorManager.instance.AbModel.InitStateId ){
 			Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
 			MCEditor_DialogBoxManager.instance.instantiateStateName (this, pos);
-		}*/
+		}
 	}
 
 	#endregion
