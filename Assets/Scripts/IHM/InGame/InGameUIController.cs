@@ -32,6 +32,14 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text J2_Blue_Resources;
 
+    [Header("Main Menu")]
+    [SerializeField]
+    private Button Menu_MainMenu;
+    [SerializeField]
+    private Button Menu_PersonnalizedMap;
+    [SerializeField]
+    private Button Menu_Caste; 
+
     [Header("Victory Screen")]
     [SerializeField]
     private GameObject victoryMenu; 
@@ -110,7 +118,10 @@ public class InGameUIController : MonoBehaviour
         quit_ExitMenu.onClick.AddListener(ExitGame);
         //Victory Menu 
         Caste_Menu.onClick.AddListener(GoToCasteMenu);
-        quitVictory.onClick.AddListener(ExitGame); 
+        quitVictory.onClick.AddListener(ExitGame);
+        Menu_MainMenu.onClick.AddListener(GoToMainMenu);
+        Menu_PersonnalizedMap.onClick.AddListener(GoToPersonnalizedMap);
+        Menu_Caste.onClick.AddListener(GoToCasteMenu); 
 
     }
 
@@ -322,6 +333,21 @@ public class InGameUIController : MonoBehaviour
             Debug.LogError("Ingame UI Error : Menu Victory quit buttton not set");
             return false; 
         }
+
+        if(Menu_Caste == null)
+        {
+            Debug.LogError("InGame UI Error : Menu/Caste Menu button not set"); 
+        }
+        if (Menu_MainMenu == null)
+        {
+            Debug.LogError("InGame UI Error : Menu/Principal Menu button not set");
+        }
+        if (Menu_PersonnalizedMap == null)
+        {
+            Debug.LogError("InGame UI Error : Menu/Personnalized Menu button not set");
+        }
+
+
         return true; 
     }
 
@@ -341,7 +367,31 @@ public class InGameUIController : MonoBehaviour
     }
     private void GoToCasteMenu()
     {
-        NavigationManager.instance.SwapScenes("CastesScene", new Vector3(0, 0, 0)); 
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        NavigationManager.instance.SwapScenesWithoutZoom("CastesScene");
+    }
+
+    private void GoToMainMenu()
+    {
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
+      
+    }
+
+    private void GoToPersonnalizedMap()
+    {
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
+
     }
 }
 

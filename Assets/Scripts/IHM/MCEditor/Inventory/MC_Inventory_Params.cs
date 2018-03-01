@@ -73,7 +73,7 @@ public class MC_Inventory_Params : MC_Inventory {
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)
 	{
-		Debug.Log ("Drop Param");
+		MCEditorManager.instance.registerParam( proxy.GetComponent<ProxyABParam>() );
 	}
 
 	#endregion

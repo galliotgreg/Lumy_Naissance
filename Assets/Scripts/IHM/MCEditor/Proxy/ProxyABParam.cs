@@ -146,7 +146,7 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 
 	#region implemented abstract members of MCEditor_Proxy
 
-	public override void click ()
+	public override void doubleClick ()
 	{
 		Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
 		MCEditor_DialogBoxManager.instance.instantiateValue (this, pos);

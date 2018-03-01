@@ -97,7 +97,7 @@ public class SelectionSquare : MonoBehaviour
             {
                 //The corner position of the square
                 squareStartPos = hit.point;
-                Debug.Log("squarestartpos = " + squareStartPos);
+                //Debug.Log("squarestartpos = " + squareStartPos);
             }
         }
         //Release the mouse button
@@ -111,7 +111,7 @@ public class SelectionSquare : MonoBehaviour
             //Select all units within the square if we have created a square
             if (hasCreatedSquare)
             {
-                Debug.Log("square created");
+                //Debug.Log("square created");
                 hasCreatedSquare = false;
 
                 //Deactivate the square selection image
@@ -128,7 +128,7 @@ public class SelectionSquare : MonoBehaviour
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
-                        Debug.Log("is within polygon");
+	                    //Debug.Log("is within polygon");
                         currentUnit.GetComponent<MeshRenderer>().material = selectedMaterial;
 
                         selectedUnits.Add(currentUnit);
@@ -181,7 +181,7 @@ public class SelectionSquare : MonoBehaviour
         //Drag the mouse to select all units within the square
         if (isHoldingDown)
         {
-            Debug.Log("is holding down = " + isHoldingDown);
+            //Debug.Log("is holding down = " + isHoldingDown);
             //Activate the square selection image
             if (!selectionSquareImage.gameObject.activeInHierarchy)
             {
@@ -204,7 +204,7 @@ public class SelectionSquare : MonoBehaviour
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
-                        Debug.Log("on change en vert");
+                        //Debug.Log("on change en vert");
                         currentUnit.GetComponent<MeshRenderer>().material = highlightMaterial;
                     }
                     //Otherwise desactivate
@@ -235,7 +235,7 @@ public class SelectionSquare : MonoBehaviour
             return true;
         }
 
-        Debug.Log("iswithinPolygon = " + isWithinPolygon);
+        //Debug.Log("iswithinPolygon = " + isWithinPolygon);
         return isWithinPolygon;
     }
 
@@ -274,7 +274,7 @@ public class SelectionSquare : MonoBehaviour
         squareStartScreen.z = 0.0f;
         
         //squareStartScreen.z = GameObject.Find("Camera").GetComponent<Camera>().transform.position.z;
-        Debug.Log("squareStartScreen : " + squareStartScreen);
+        //Debug.Log("squareStartScreen : " + squareStartScreen);
 
         /*Vector3 squareEndScreen = GameObject.Find("Camera").GetComponent<Camera>().WorldToScreenPoint(squareEndPos);
         squareEndScreen.x = ((squareEndScreen.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
@@ -287,11 +287,11 @@ public class SelectionSquare : MonoBehaviour
         squareEndPos.y = ((squareEndPos.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f));
         squareEndPos.z = 0.0f;
         //squareEndPos = GameObject.Find("Camera").GetComponent<Camera>().WorldToScreenPoint(squareEndPos);
-        Debug.Log("squareEndPos : " + squareEndPos);
+        //Debug.Log("squareEndPos : " + squareEndPos);
         
         //Get the middle position of the square
         Vector3 middle = (squareStartScreen + squareEndPos) / 2.0f;
-        Debug.Log("middle : " + middle);
+        //Debug.Log("middle : " + middle);
         //Set the middle position of the GUI square
         //selectionSquareImage.position = middle;
         //middle = GameObject.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(middle);
@@ -359,7 +359,7 @@ public class SelectionSquare : MonoBehaviour
             //sphere4.position = BR;
 
             hasCreatedSquare = true;
-            Debug.Log("has created square = " + hasCreatedSquare);
+            //Debug.Log("has created square = " + hasCreatedSquare);
         }
     }
 }
