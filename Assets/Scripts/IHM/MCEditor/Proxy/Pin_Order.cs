@@ -38,6 +38,9 @@ public class Pin_Order : MonoBehaviour {
 		}
 	}
 
+	void Awake(){
+		OrderPosition = 0;
+	}
 	void Start(){
 		
 	}
