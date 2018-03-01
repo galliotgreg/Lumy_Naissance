@@ -924,7 +924,7 @@ public class MCEditorManager : MonoBehaviour {
         incomeOpeParent = income.GetComponentInParent<ProxyABOperator>();
         outcomeOpeParent = outcome.GetComponentInParent<ProxyABOperator>();
         //TODO : Gestion du pin courant
-        incomeOpeParent.Inputs[incomeOpeParent.Inputs.Length - 1] = (ABNode)outcomeOpeParent.AbOperator;
+        incomeOpeParent.Inputs[incomeOpeParent.CurPinIn] = (ABNode)outcomeOpeParent.AbOperator;
         ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
     }
 
