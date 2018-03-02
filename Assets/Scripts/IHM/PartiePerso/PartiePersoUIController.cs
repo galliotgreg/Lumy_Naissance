@@ -108,8 +108,12 @@ public class PartiePersoUIController : MonoBehaviour {
     {
         string[] speciesNames = AppContextManager.instance.GetSpeciesFolderNames();
 
+        // Set ScrollRect sizes
         RectTransform rec = player1SwarmSelectionPanel.transform.GetComponent<RectTransform>();
-        rec.sizeDelta = new Vector2(rec.sizeDelta.x, (speciesNames.Length - 1) * (swarmSelectionBtnPrefab.GetComponent<RectTransform>().sizeDelta.y));
+        rec.sizeDelta = new Vector2(rec.sizeDelta.x, speciesNames.Length * (swarmSelectionBtnPrefab.GetComponent<RectTransform>().sizeDelta.y + 20f) +20f);
+        rec = player2SwarmSelectionPanel.transform.GetComponent<RectTransform>();
+        rec.sizeDelta = new Vector2(rec.sizeDelta.x, speciesNames.Length * (swarmSelectionBtnPrefab.GetComponent<RectTransform>().sizeDelta.y + 20f) + 20f);
+
         for (int i = 0; i < speciesNames.Length; i++)
         {
             GameObject swarmSelectionButton = Instantiate(swarmSelectionBtnPrefab);
@@ -118,17 +122,16 @@ public class PartiePersoUIController : MonoBehaviour {
             RectTransform rectTransform = swarmSelectionButton.GetComponent<RectTransform>();
             if (playerId == 0)
             {
-                swarmSelectionButton.transform.parent = player1SwarmSelectionPanel.transform;
+                swarmSelectionButton.transform.SetParent(player1SwarmSelectionPanel.transform);
             } else
             {
-                swarmSelectionButton.transform.parent = player2SwarmSelectionPanel.transform;
+                swarmSelectionButton.transform.SetParent(player2SwarmSelectionPanel.transform);
             }
 
             //Set Text
             text.text = speciesNames[i];
 
             //Set Position
-            rec.sizeDelta = new Vector2(rec.sizeDelta.x, rec.sizeDelta.y + rectTransform.rect.height);
             rectTransform.localPosition = new Vector3(
                 0,
                 -i * (rectTransform.rect.height + 20f) -20f,
