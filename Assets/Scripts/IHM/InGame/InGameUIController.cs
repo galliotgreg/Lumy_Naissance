@@ -26,11 +26,15 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text J1_Blue_Resources;
     [SerializeField]
+    private Text J1_Pop;
+    [SerializeField]
     private Text J2_Red_Resources;
     [SerializeField]
     private Text J2_Green_Resources;
     [SerializeField]
     private Text J2_Blue_Resources;
+    [SerializeField]
+    private Text J2_Pop; 
 
     [Header("Main Menu")]
     [SerializeField]
@@ -210,15 +214,20 @@ public class InGameUIController : MonoBehaviour
         if (gameManager.TimerLeft != null)
         {
             TimeSpan t = TimeSpan.FromSeconds(gameManager.TimerLeft); 
-            timer.text = "TIMER : " + t.Minutes + " : " + t.Seconds;
-            if(gameManager.TimerLeft <=30)
+            timer.text = "TIMER - " + t.Minutes + " : " + t.Seconds;
+            if (t.Seconds <10)
+            {
+                timer.text = "TIMER - " + t.Minutes + " : 0" + t.Seconds;  
+            }
+            if (gameManager.TimerLeft <=30)
             {
                 timer.color = new Color(255, 0, 0,255);
                 timer.fontStyle = FontStyle.Bold; 
             }
         }
-      
-
+        
+        J1_Pop.text = "" +gameManager.GetHome(PlayerAuthority.Player1).getPopulation().Count;    
+        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;  
     }
 
     /// <summary>
