@@ -81,6 +81,8 @@ public class Pin : DragSelectableProxyGameObject {
 		base.Update ();
 
 		handleSelectedState ();
+
+		setOrderPanelPosition ();
 	}
 
 	public bool associateTransition( ProxyABTransition transition ){
@@ -95,6 +97,14 @@ public class Pin : DragSelectableProxyGameObject {
 			return AssociatedTransitions.Remove (transition);
 		}
 		return false;
+	}
+
+	void setOrderPanelPosition(){
+		// Adjust Pin Order Panel position
+		if( this.proxyParent != null ){
+			Vector3 direction = -(this.proxyParent.transform.position - this.transform.position).normalized;
+			this.Pin_order.TransitionDirection = direction;
+		}
 	}
 
 	#region implemented abstract members of SelectableProxyGameObject

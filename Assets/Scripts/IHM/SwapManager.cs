@@ -28,6 +28,8 @@ public class SwapManager : MonoBehaviour {
         }
     }
 
+
+
     /// <summary>
     /// Set the amount of resources that each player will start
     /// </summary>
