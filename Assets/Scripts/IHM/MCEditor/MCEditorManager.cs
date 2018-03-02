@@ -115,7 +115,7 @@ public class MCEditorManager : MonoBehaviour {
     private void Update()
     {
         /**START TEST SAVE**/
-        if (Input.GetKeyDown(KeyCode.S))
+        /*if (Input.GetKeyDown(KeyCode.S))
         {
             Save_MC();
         } else if (Input.GetKeyDown(KeyCode.O))
@@ -185,11 +185,11 @@ public class MCEditorManager : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.N))
         {
             CreateTransition(aBOperator.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
-        }
+        }*/
         /**END TEST SAVE**/
 
 		/**Delete Transition**/
-		else if (Input.GetKeyDown(KeyCode.D))
+		if (Input.GetKeyDown(KeyCode.D))
 		{
 			this.deleteSelectedTransition ();
 		}
@@ -639,7 +639,7 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
-    void Save_MC()
+    public void Save_MC()
     {
         string csvpath = MC_OrigFilePath;
         StringBuilder csvcontent = new StringBuilder();
