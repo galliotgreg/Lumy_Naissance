@@ -214,10 +214,10 @@ public class InGameUIController : MonoBehaviour
         if (gameManager.TimerLeft != null)
         {
             TimeSpan t = TimeSpan.FromSeconds(gameManager.TimerLeft); 
-            timer.text = "TIMER - " + t.Minutes + " : " + t.Seconds;
+            timer.text = t.Minutes + " : " + t.Seconds;
             if (t.Seconds <10)
             {
-                timer.text = "TIMER - " + t.Minutes + " : 0" + t.Seconds;  
+                timer.text = t.Minutes + " : 0" + t.Seconds;  
             }
             if (gameManager.TimerLeft <=30)
             {
