@@ -40,8 +40,8 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABOperator> proxyOperators;
     private List<ProxyABParam> proxyParams;
 
-    [SerializeField]
-    private string MC_OrigFilePath = "Assets/Resources/Test/siu_scoot_behavior_SAVE_LOAD_SAVE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*GREG_TRANS_STATE_STATE_TEST.csv /*siu_scoot_behavior_LOAD_TEST.csv";*/
+    //[SerializeField]
+    private string MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
@@ -340,7 +340,7 @@ public class MCEditorManager : MonoBehaviour {
         ABModel model = new ABModel();
 
         /**** START TODO ****/
-        //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path
+        //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path        
 		model = ABManager.instance.LoadABModelFromFile(MC_OrigFilePath);
         /**** END TODO ****/
 
