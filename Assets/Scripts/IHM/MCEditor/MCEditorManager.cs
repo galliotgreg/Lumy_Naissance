@@ -1008,7 +1008,8 @@ public class MCEditorManager : MonoBehaviour {
             {
 				// Check type
 				// Condition accepts only bool values
-				if ( !activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator is ABOperator<ABBool>) {
+				System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
+				if ( !activateTypeValidation || opType == typeof(ABBool)) {
 					LinkGateOperator_Operator (start, end);
 					validTransition = true;
 				}
@@ -1017,7 +1018,8 @@ public class MCEditorManager : MonoBehaviour {
             {
 				// Check type
 				// Condition accepts only bool values
-				if (!activateTypeValidation || ((ProxyABParam)end.ProxyParent).AbParam is ABBoolParam) {
+				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || paramType == typeof(ABBool)) {
 					LinkGateOperator_Param (start, end);
 					validTransition = true;
 				}
@@ -1029,19 +1031,25 @@ public class MCEditorManager : MonoBehaviour {
         }
         else if (start.Pin_Type == Pin.PinType.ActionParam)
         {
+			System.Type actionParamType = ((ProxyABAction)start.ProxyParent).getParamOperator( start.Pin_order.OrderPosition-1 ).getOutcomeType ();
             if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
 				// Check type
-				//Type t = ((ProxyABAction)end.ProxyParent).AbState.Action.Parameters[ 
-				//if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator is ABOperator< t >) {
+				System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || actionParamType == opType) {
 					LinkAction_Operator (start, end);
 					validTransition = true;
-				//}
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Param)
             {
-                LinkAction_Param(start, end);
-				validTransition = true;
+				// Check type
+				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
+				Debug.Log (paramType.ToString ());
+				if (!activateTypeValidation || actionParamType == paramType) {
+					LinkAction_Param (start, end);
+					validTransition = true;
+				}
             }
             else
             {

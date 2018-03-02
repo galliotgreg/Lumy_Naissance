@@ -119,6 +119,11 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		return text;
 	}
 
+	public System.Type getOutcomeType ()
+	{
+		return this.AbParam.getOutcomeType ();
+	}
+
 	#region INSTANTIATE
 	public static ProxyABParam instantiate( IABParam paramObj, bool isLoaded ){
 		return instantiate ( paramObj, isLoaded, calculateParamPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );

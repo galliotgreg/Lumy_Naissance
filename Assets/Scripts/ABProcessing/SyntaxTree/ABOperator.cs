@@ -20,4 +20,10 @@ public abstract class ABOperator<T> : ABNode, IABOperator
     }
 
     public abstract T Evaluate(ABContext context);
+
+	public System.Type getOutcomeType ()
+	{
+		return typeof(T);
+		//return ((ABOperator<T>)this).GetType().GetGenericArguments () [0];
+	}
 }

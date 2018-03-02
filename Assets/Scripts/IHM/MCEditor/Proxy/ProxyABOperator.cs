@@ -189,4 +189,9 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 	}
 
 	#endregion
+
+	public System.Type getOutcomeType ()
+	{
+		return this.AbOperator.getOutcomeType ();
+	}
 }
