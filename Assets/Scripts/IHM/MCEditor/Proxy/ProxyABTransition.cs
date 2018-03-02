@@ -59,22 +59,26 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 	void Update () {
 		base.Update ();
 
-        if(StartPosition != null && EndPosition != null ) {
+		adjustTransitionPosition ();
+    }
 
-            adjustPinPosition();
-          
-            Vector3 posDepart = StartPosition.transform.position;
-            Vector3 posArrivee = EndPosition.transform.position;
-            GetComponent<LineRenderer>().SetPosition(0, posDepart);
-            GetComponent<LineRenderer>().SetPosition(1, posArrivee);
+	public void adjustTransitionPosition(){
+		if(StartPosition != null && EndPosition != null ) {
+
+			adjustPinPosition();
+
+			Vector3 posDepart = StartPosition.transform.position;
+			Vector3 posArrivee = EndPosition.transform.position;
+			GetComponent<LineRenderer>().SetPosition(0, posDepart);
+			GetComponent<LineRenderer>().SetPosition(1, posArrivee);
 
 			adjustCollider ();
 
-            if(condition != null) {
-                Condition.transform.position = CalculABBGOPinPosition(posDepart, posArrivee);
-            }            
-        }
-    }
+			if(condition != null) {
+				Condition.transform.position = CalculABBGOPinPosition(posDepart, posArrivee);
+			}            
+		}
+	}
 
     Vector3 CalculABBGOPinPosition(Vector3 vec1, Vector3 vec2) {
 		return Pin.calculatePinPosition ( this );
@@ -181,6 +185,7 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 			addConditionPin ( proxyABTransition );
 		}
 
+		proxyABTransition.adjustTransitionPosition ();
 		// TODO register?
 		return proxyABTransition;
 	}
