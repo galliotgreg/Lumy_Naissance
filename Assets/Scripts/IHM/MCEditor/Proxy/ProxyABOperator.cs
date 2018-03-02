@@ -12,7 +12,7 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
     bool isLoaded = false;
     bool isPositioned = false;
 
-	#region PROPERTIES
+    #region PROPERTIES
     public ABNode[] Inputs {
         get {
             return abOperator.Inputs;

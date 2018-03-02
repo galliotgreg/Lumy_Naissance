@@ -145,12 +145,10 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 			tang*=-1;
 		}
 		float angle = Mathf.Rad2Deg * Mathf.Atan (tang);
-		try{
-			//collider.transform.rotation = Quaternion.Euler( new Vector3 (0, 0, 90+angle) );
-			collider.transform.localEulerAngles = new Vector3 (0, 0, 90+angle);
-		}
-		catch(System.Exception ex){
-			Debug.LogWarning (ex.Message);
+
+		//collider.transform.rotation = Quaternion.Euler( new Vector3 (0, 0, 90+angle) );
+		if (!float.IsNaN (angle)) {
+			collider.transform.localEulerAngles = new Vector3 (0, 0, 90 + angle);
 		}
 	}
 	#endregion
@@ -209,8 +207,8 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
     //Minimise distance between two pin
     private void adjustPinPosition()
     {
-        GameObject startParent = GetParent(startPosition);
-        GameObject endParent = GetParent(endPosition);
+		GameObject startParent = GetParent(startPosition);
+		GameObject endParent = GetParent(endPosition);
         Vector3 direction = new Vector3();
         direction = computeDirection(startParent.transform.position, endParent.transform.position);
 
@@ -221,17 +219,18 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
         if (!(endPosition.Pin_Type == Pin.PinType.Condition))
         {
             computePinPositionWithParentRadius(endParent, endPosition, -direction);
-        }       
+        }
     }
     private GameObject GetParent(Pin pin)
     {
         GameObject parent = null;
 
-        if(pin.Pin_Type == Pin.PinType.Condition)
-        {
-            parent = pin.GetComponentInParent<ProxyABTransition>().gameObject;
-        }
-        else if (pin.Pin_Type == Pin.PinType.OperatorIn || pin.Pin_Type == Pin.PinType.OperatorOut)
+		if (pin.Pin_Type == Pin.PinType.Condition) {
+			parent = pin.GetComponentInParent<ProxyABTransition> ().gameObject;
+		} else {
+			parent = pin.ProxyParent.gameObject;
+		}
+        /*else if (pin.Pin_Type == Pin.PinType.OperatorIn || pin.Pin_Type == Pin.PinType.OperatorOut)
         {
             parent = pin.GetComponentInParent<ProxyABOperator>().gameObject;
         }
@@ -253,7 +252,7 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
             {
                 parent = parentTemp.gameObject;
             }
-        }                        
+        } */                       
         return parent;
     }
 

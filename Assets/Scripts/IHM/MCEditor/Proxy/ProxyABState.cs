@@ -12,6 +12,7 @@ public class ProxyABState : MCEditor_Proxy {
 	private Pin extraPin;
 
 	#region PROPERTIES
+
     public string Name
     {
         get
@@ -188,35 +189,6 @@ public class ProxyABState : MCEditor_Proxy {
 	public static Vector3 calculateStatePosition( Transform parent ){
 		return new Vector3(UnityEngine.Random.Range(-5, 5),UnityEngine.Random.Range(-5, 5), parent.position.z);
 	}
-
-    private void calculatePinPosition()
-    {
-        float radius = this.transform.localScale.y / 2;
-        int outPin = 1;
-
-        if (abState.Name.ToLower() == "init")
-        {
-            foreach (Pin pin in Outcomes)
-            {
-                pin.transform.position = new Vector3(
-                    this.transform.position.x + (radius * Mathf.Cos(outPin * (2 * Mathf.PI) / Mathf.Max(1, Outcomes.Count))),
-                    this.transform.position.y + (radius * Mathf.Sin(outPin * (2 * Mathf.PI) / Mathf.Max(1, Outcomes.Count))),
-                    this.transform.position.z
-                );
-                outPin++;
-            }
-        } else {
-            foreach (Pin pin in Outcomes)
-            {
-                pin.transform.position = new Vector3(
-                    this.transform.position.x + (radius * Mathf.Cos(outPin * (2 * Mathf.PI) / Mathf.Max(1, Outcomes.Count)/-2)),
-                    this.transform.position.y + (radius * Mathf.Sin(outPin * (2 * Mathf.PI) / Mathf.Max(1, Outcomes.Count)/-2)),
-                    this.transform.position.z
-                );
-                outPin++;
-            }
-        }
-    }
 	#endregion
 
 	#region implemented abstract members of MCEditor_Proxy

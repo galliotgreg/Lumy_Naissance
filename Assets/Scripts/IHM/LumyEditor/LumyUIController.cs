@@ -34,6 +34,8 @@ public class LumyUIController : MonoBehaviour {
     private GameObject voletGauche;
     [SerializeField]
     private GameObject infobulle;
+    [SerializeField]
+    private GameObject stats;
     [Range(0, 3)]
     public float infobulleX;
     [Range(0, 6)]
@@ -66,7 +68,31 @@ public class LumyUIController : MonoBehaviour {
     private Text vibrationRangeText;
     private Text heatRangeText;
     private Text smellRangeText;
-
+    
+    private Text txt_Cost_Red;
+    private Text txt_Cost_Green;
+    private Text txt_Cost_Blue;
+    private Text moveSpeedBuffStatText;
+    private Text actionSpeedBuffStatText;
+    private Text strengthBuffStatText;
+    private Text vitalityBuffStatText;
+    private Text staminaBuffStatText;
+    private Text visionRangeBuffStatText;
+    private Text vibrationRangeBuffStatText;
+    private Text heatRangeBuffStatText;
+    private Text smellRangeBuffStatText;
+    private Text visionIndetectableStatText;
+    private Text vibrationIndetectableStatText;
+    private Text heatIndetectableStatText;
+    private Text smellIndetectableStatText;
+    private Text enableGoToHoldStatText;
+    private Text enableStrikeStatText;
+    private Text enablePickDropStatText;
+    private Text enableLayStatText;
+    private Text visionRangeStatText;
+    private Text vibrationRangeStatText;
+    private Text heatRangeStatText;
+    private Text smellRangeStatText;
 
 
     // Use this for initialization
@@ -106,7 +132,133 @@ public class LumyUIController : MonoBehaviour {
     void Update () {
 
         DrawInfobulle();
-     
+        SetStats();
+
+    }
+
+    void SetStats() {
+        int redCost=0;
+        int greenCost = 0;
+        int blueCost = 0;
+        float moveSpeedBuff =0;
+        float actionSpeedBuff=0;
+        float strengthBuff=0;
+        float vitalityBuff=0;
+        float staminaBuff=0;
+        float visionRangeBuff=0;
+        float vibrationRangeBuff=0;
+        float heatRangeBuff=0;
+        float smellRangeBuff=0;
+        bool visionIndetectable=false;
+        bool vibrationIndetectable = false;
+        bool heatIndetectable = false;
+        bool smellIndetectable = false;
+        bool enableGoToHold = false;
+        bool enableStrike = false;
+        bool enablePickDrop = false;
+        bool enableLay = false;
+        float visionRange=0;
+        float vibrationRange=0;
+        float heatRange=0;
+        float smellRange=0;
+
+        redCost = CostManager.instance.ComputeRedCost(LumyEditorManager.instance.EditedLumy);
+        greenCost = CostManager.instance.ComputeGreenCost(LumyEditorManager.instance.EditedLumy);
+        blueCost = CostManager.instance.ComputeBlueCost(LumyEditorManager.instance.EditedLumy);
+        foreach (AgentComponent compo in LumyEditorManager.instance.EditedLumy.GetComponentsInChildren<AgentComponent>()) {
+
+            //cost += compo.ProdCost;
+            moveSpeedBuff += compo.MoveSpeedBuff;
+            actionSpeedBuff += compo.ActionSpeedBuff;
+            strengthBuff += compo.StrengthBuff;
+            vitalityBuff += compo.VitalityBuff;
+            staminaBuff += compo.StaminaBuff;
+            visionRangeBuff += compo.VisionRangeBuff;
+            vibrationRangeBuff += compo.VibrationRangeBuff;
+            heatRangeBuff += compo.HeatRangeBuff;
+            smellRangeBuff += compo.SmellRangeBuff;
+
+            if(compo.VisionIndetectable == true) {
+                visionIndetectable = compo.VisionIndetectable;
+            }
+            if (compo.VibrationIndetectable == true) {
+                vibrationIndetectable = compo.VibrationIndetectable;
+            }
+            if (compo.HeatIndetectable == true) {
+                heatIndetectable = compo.HeatIndetectable;
+            }
+            if (compo.SmellIndetectable == true) {
+                smellIndetectable = compo.SmellIndetectable;
+            }
+            if (compo.EnableGotoHold == true) {
+                enableGoToHold = compo.EnableGotoHold;
+            }
+            if (compo.EnableStrike == true) {
+                enableStrike = compo.EnableStrike;
+            }
+            if (compo.EnablePickDrop == true) {
+                enablePickDrop = compo.EnablePickDrop;
+            }
+            if (compo.EnableLay == true) {
+                enableLay = compo.EnableLay;
+            }
+            
+            visionRange += compo.VisionRange;
+            vibrationRange += compo.VibrationRange;
+            heatRange += compo.HeatRange;
+            smellRange += compo.HeatRange;
+
+        }
+        txt_Cost_Red = stats.transform.Find("txt_Cost_Red").gameObject.GetComponent<Text>();
+        txt_Cost_Red.text = "Red Cost : " + redCost.ToString();
+        txt_Cost_Green = stats.transform.Find("txt_Cost_Green").gameObject.GetComponent<Text>();
+        txt_Cost_Green.text = "Green Cost : " + greenCost.ToString();
+        txt_Cost_Blue = stats.transform.Find("txt_Cost_Blue").gameObject.GetComponent<Text>();
+        txt_Cost_Blue.text = "Blue Cost : " + blueCost.ToString();
+        moveSpeedBuffStatText = stats.transform.Find("moveSpeedBuffStatText").gameObject.GetComponent<Text>();
+        moveSpeedBuffStatText.text = "Move Speed : " + moveSpeedBuff.ToString();
+        actionSpeedBuffStatText = stats.transform.Find("actionSpeedBuffStatText").gameObject.GetComponent<Text>();
+        actionSpeedBuffStatText.text = "Action Speed : " + actionSpeedBuff.ToString();
+        strengthBuffStatText = stats.transform.Find("strengthBuffStatText").gameObject.GetComponent<Text>();
+        strengthBuffStatText.text = "Strenght : " + strengthBuff.ToString();
+        vitalityBuffStatText = stats.transform.Find("vitalityBuffStatText").gameObject.GetComponent<Text>();
+        vitalityBuffStatText.text = "Vitality : " + vitalityBuff.ToString();
+        staminaBuffStatText = stats.transform.Find("staminaBuffStatText").gameObject.GetComponent<Text>();
+        staminaBuffStatText.text = "Stamina : " + staminaBuff.ToString();
+        visionRangeBuffStatText = stats.transform.Find("visionRangeBuffStatText").gameObject.GetComponent<Text>();
+        visionRangeBuffStatText.text = "Vision Range Buff : " + visionRangeBuff.ToString();
+        vibrationRangeBuffStatText = stats.transform.Find("vibrationRangeBuffStatText").gameObject.GetComponent<Text>();
+        vibrationRangeBuffStatText.text = "Vibration Range Buff : " + vibrationRangeBuff.ToString();
+        heatRangeBuffStatText = stats.transform.Find("heatRangeBuffStatText").gameObject.GetComponent<Text>();
+        heatRangeBuffStatText.text = "Heat Range Buff : " + heatRangeBuff.ToString();
+        smellRangeBuffStatText = stats.transform.Find("smellRangeBuffStatText").gameObject.GetComponent<Text>();
+        smellRangeBuffStatText.text = "Smell Range Buff : " + smellRangeBuff.ToString();
+        visionIndetectableStatText = stats.transform.Find("visionIndetectableStatText").gameObject.GetComponent<Text>();
+
+        visionIndetectableStatText.text = "Vision Indetectacle : " + visionIndetectable.ToString();
+        vibrationIndetectableStatText = stats.transform.Find("vibrationIndetectableStatText").gameObject.GetComponent<Text>();
+        vibrationIndetectableStatText.text = "Vibration Indetectable : " + vibrationIndetectable.ToString();
+        heatIndetectableStatText = stats.transform.Find("heatIndetectableStatText").gameObject.GetComponent<Text>();
+        heatIndetectableStatText.text = "Heat Indetectable : " + heatIndetectable.ToString();
+        smellIndetectableStatText = stats.transform.Find("smellIndetectableStatText").gameObject.GetComponent<Text>();
+        smellIndetectableStatText.text = "Smell Indetectable : " + smellIndetectable.ToString();
+        enableGoToHoldStatText = stats.transform.Find("enableGoToHoldStatText").gameObject.GetComponent<Text>();
+        enableGoToHoldStatText.text = "Goto : " + enableGoToHold.ToString();
+        enableStrikeStatText = stats.transform.Find("enableStrikeStatText").gameObject.GetComponent<Text>();
+        enableStrikeStatText.text = "Strike : " + enableStrike.ToString();
+        enablePickDropStatText = stats.transform.Find("enablePickDropStatText").gameObject.GetComponent<Text>();
+        enablePickDropStatText.text = "Pick and Drop : " + enablePickDrop.ToString();
+        enableLayStatText = stats.transform.Find("enableLayStatText").gameObject.GetComponent<Text>();
+        enableLayStatText.text = "Lay : " + enableLay.ToString();
+
+        visionRangeStatText = stats.transform.Find("visionRangeStatText").gameObject.GetComponent<Text>();
+        visionRangeStatText.text = "Vision Range : " + visionRange.ToString();
+        vibrationRangeStatText = stats.transform.Find("vibrationRangeStatText").gameObject.GetComponent<Text>();
+        vibrationRangeStatText.text = "Vibration Range : " + vibrationRange.ToString();
+        heatRangeStatText = stats.transform.Find("heatRangeStatText").gameObject.GetComponent<Text>();
+        heatRangeStatText.text = "Heat Range : " + heatRange.ToString();
+        smellRangeStatText = stats.transform.Find("smellRangeStatText").gameObject.GetComponent<Text>();
+        smellRangeStatText.text = "Smell Range : " + smellRange.ToString();
     }
 
     void DrawInfobulle()

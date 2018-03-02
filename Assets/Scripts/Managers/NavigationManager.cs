@@ -118,7 +118,6 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
     {
-
         GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
 
         // Zoomer sur le bouton
@@ -156,7 +155,9 @@ public class NavigationManager : MonoBehaviour {
         SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(false);
 
         // Vérifier la conservation de la strate-mère
-        string newLayer = SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].GetComponent<SceneData>().parentLayer;
+        Scene scene = SceneManager.GetSceneByName(nextScene);
+        GameObject rootNode = scene.GetRootGameObjects()[0];
+        string newLayer = rootNode.GetComponent<SceneData>().parentLayer;
         if (newLayer != currentLayer)
         {
             layerLoaded = false;

@@ -40,8 +40,8 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABOperator> proxyOperators;
     private List<ProxyABParam> proxyParams;
 
-    [SerializeField]
-    private string MC_OrigFilePath = "Assets/Resources/Test/siu_scoot_behavior_SAVE_LOAD_SAVE_TEST.csv";/* siu_scoot_behavior_LOAD_SAVE_TEST.csv"; /*ref_table_Test.txt"; /*GREG_TRANS_STATE_STATE_TEST.csv /*siu_scoot_behavior_LOAD_TEST.csv";*/
+    //[SerializeField]
+    private string MC_OrigFilePath; 
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
@@ -97,6 +97,8 @@ public class MCEditorManager : MonoBehaviour {
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
         
+        MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;
+
         //usefull for save function
         opeFactory.CreateDictionnary();
         paramFactory.CreateDictionnary();
@@ -113,7 +115,7 @@ public class MCEditorManager : MonoBehaviour {
     private void Update()
     {
         /**START TEST SAVE**/
-        if (Input.GetKeyDown(KeyCode.S))
+        /*if (Input.GetKeyDown(KeyCode.S))
         {
             Save_MC();
         } else if (Input.GetKeyDown(KeyCode.O))
@@ -183,11 +185,11 @@ public class MCEditorManager : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.N))
         {
             CreateTransition(aBOperator.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
-        }
+        }*/
         /**END TEST SAVE**/
 
 		/**Delete Transition**/
-		else if (Input.GetKeyDown(KeyCode.D))
+		if (Input.GetKeyDown(KeyCode.D))
 		{
 			this.deleteSelectedTransition ();
 		}
@@ -340,7 +342,7 @@ public class MCEditorManager : MonoBehaviour {
         ABModel model = new ABModel();
 
         /**** START TODO ****/
-        //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path
+        //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path        
 		model = ABManager.instance.LoadABModelFromFile(MC_OrigFilePath);
         /**** END TODO ****/
 
@@ -637,7 +639,7 @@ public class MCEditorManager : MonoBehaviour {
         }
     }
 
-    void Save_MC()
+    public void Save_MC()
     {
         string csvpath = MC_OrigFilePath;
         StringBuilder csvcontent = new StringBuilder();
@@ -924,7 +926,7 @@ public class MCEditorManager : MonoBehaviour {
         incomeOpeParent = income.GetComponentInParent<ProxyABOperator>();
         outcomeOpeParent = outcome.GetComponentInParent<ProxyABOperator>();
         //TODO : Gestion du pin courant
-        incomeOpeParent.Inputs[incomeOpeParent.Inputs.Length - 1] = (ABNode)outcomeOpeParent.AbOperator;
+        incomeOpeParent.Inputs[incomeOpeParent.CurPinIn] = (ABNode)outcomeOpeParent.AbOperator;
         ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
     }
 
