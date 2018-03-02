@@ -219,8 +219,10 @@ public class AgentContext : MonoBehaviour
 
 			this.model.VisionRange += comp.VisionRange;
 		}
+        this.model.PickRange = 2;
+        this.model.AtkRange = 2;
 
-		this.model.Vitality = this.model.VitalityMax;
+        this.model.Vitality = this.model.VitalityMax;
 
 		// TODO test : remove
 		/*if (this.model.LayTimeCost<= 0) {
