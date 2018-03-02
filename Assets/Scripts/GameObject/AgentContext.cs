@@ -218,9 +218,9 @@ public class AgentContext : MonoBehaviour
 
 			this.model.VisionRange += comp.VisionRange;
 		}
-        this.model.AtkRange = this.model.AtkRange / 2;
-        this.model.PickRange = this.model.PickRange / 2;
-        this.model.NbItemMax += (int)this.model.Stamina;
+        this.model.PickRange = 2;
+        this.model.AtkRange = 2;
+
         this.model.Vitality = this.model.VitalityMax;
 
 		// TODO test : remove
