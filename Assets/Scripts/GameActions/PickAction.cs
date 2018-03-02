@@ -39,7 +39,7 @@ public class PickAction : GameAction {
             return; 
         }
         // Check if the player close to the resource
-        if (!((this.agentAttr.CurPos - resource.Location).magnitude <= this.agentAttr.PickRange))
+        if ((this.agentAttr.CurPos - resource.Location).magnitude > this.agentAttr.PickRange)
         {
             return;
         }
