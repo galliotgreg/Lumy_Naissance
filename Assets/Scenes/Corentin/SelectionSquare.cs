@@ -93,14 +93,9 @@ public class SelectionSquare : MonoBehaviour
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
-<<<<<<< HEAD
                         Debug.Log("is within polygon");
                         if (currentUnit.GetComponent<MeshRenderer>() != null)
                             currentUnit.GetComponent<MeshRenderer>().material.color /= 0.95f;
-=======
-	                    //Debug.Log("is within polygon");
-                        currentUnit.GetComponent<MeshRenderer>().material = selectedMaterial;
->>>>>>> 7ca10a3467a6efd7e15199efff24877b219b8f34
 
                         selectedUnits.Add(currentUnit);
                     }
@@ -177,13 +172,9 @@ public class SelectionSquare : MonoBehaviour
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
-<<<<<<< HEAD
                         if (currentUnit.GetComponent<MeshRenderer>() != null) 
                             currentUnit.GetComponent<MeshRenderer>().material.color *= 0.95f;
-=======
-                        //Debug.Log("on change en vert");
-                        currentUnit.GetComponent<MeshRenderer>().material = highlightMaterial;
->>>>>>> 7ca10a3467a6efd7e15199efff24877b219b8f34
+
                     }
                     //Otherwise desactivate
                     /*else
@@ -215,12 +206,6 @@ public class SelectionSquare : MonoBehaviour
         {
             return true;
         }
-
-<<<<<<< HEAD
-        
-=======
-        //Debug.Log("iswithinPolygon = " + isWithinPolygon);
->>>>>>> 7ca10a3467a6efd7e15199efff24877b219b8f34
         return isWithinPolygon;
     }
 

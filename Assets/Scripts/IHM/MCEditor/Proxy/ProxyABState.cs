@@ -9,10 +9,6 @@ public class ProxyABState : MCEditor_Proxy {
     private ABState abState;
     private bool isLoaded = false;
 
-
-
-    #region PROPERTIES
-
 	private Pin extraPin;
 
 	#region PROPERTIES
