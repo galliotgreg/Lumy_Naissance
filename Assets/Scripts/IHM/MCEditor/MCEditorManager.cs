@@ -997,6 +997,7 @@ public class MCEditorManager : MonoBehaviour {
         // transition -> 
 
         int transitionId = -1;
+		bool validTransition = true;
 
         if (start.Pin_Type == Pin.PinType.Condition)
         {
@@ -1011,7 +1012,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin Bool Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				return;
+				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.ActionParam)
@@ -1027,7 +1028,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				return;
+				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.OperatorIn)
@@ -1043,7 +1044,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin OperatorIn ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				return;
+				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.OperatorOut)
@@ -1063,7 +1064,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin OperatorOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				return;
+				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.Param)
@@ -1083,7 +1084,7 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin Param ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				return;
+				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.TransitionIn)
@@ -1100,7 +1101,7 @@ public class MCEditorManager : MonoBehaviour {
                     if (!endStateParent)
                     {
                         Debug.LogError("Action -> Action n'existe pas");
-						return;
+						validTransition = false;
                     }
                     // ACTION -> STATE
                     else
@@ -1117,9 +1118,10 @@ public class MCEditorManager : MonoBehaviour {
                     if (!endStateParent)
                     {
 						Debug.LogError("State -> Action n'existe pas");
-                        endActionParent = end.GetComponentInParent<ProxyABAction>();
+						validTransition = false;
+                        /*endActionParent = end.GetComponentInParent<ProxyABAction>();
                         trans.Transition = LinkState_Action(start, end);
-                        ProxyABTransition.addConditionPin(trans);
+                        ProxyABTransition.addConditionPin(trans);*/
                     }
                     // STATE -> STATE
                     else
@@ -1153,15 +1155,20 @@ public class MCEditorManager : MonoBehaviour {
             else
             {
                 Debug.LogError("Un Pin TransitionOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				return;
+				validTransition = false;
             }        			
         }
-		// Checking pins in states
-		if( start.ProxyParent is ProxyABState ){
-			((ProxyABState)start.ProxyParent).checkPins ();
-		}
-		if( end.ProxyParent is ProxyABState ){
-			((ProxyABState)end.ProxyParent).checkPins ();
+
+		if (validTransition) {
+			// Checking pins in states
+			if (start.ProxyParent is ProxyABState) {
+				((ProxyABState)start.ProxyParent).checkPins ();
+			}
+			if (end.ProxyParent is ProxyABState) {
+				((ProxyABState)end.ProxyParent).checkPins ();
+			}
+		} else {
+			Destroy ( trans.gameObject );
 		}
     }
 

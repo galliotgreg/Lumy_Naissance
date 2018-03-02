@@ -192,7 +192,7 @@ public class AgentContext : MonoBehaviour
         {
             playerFolder = GameManager.instance.PLAYER2_SPECIE_FOLDER;
         }
-        string path = GameManager.instance.INPUTS_FOLDER_PATH
+        string path = GameManager.instance.IntputsFolderPath
                 + playerFolder
                 + entity.BehaviorModelIdentifier
                 + ".csv";
