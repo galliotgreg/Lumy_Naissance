@@ -832,7 +832,7 @@ public class MCEditorManager : MonoBehaviour {
 				state.Id = AbModel.AddState (state.Name, state.Action);
 			}
 			proxyStates.Add (proxyState);
-			statesDictionnary.Add (state, proxyState);
+			statesDictionnary.Add (AbModel.getState (state.Id), proxyState);
 		}
 		return available;
 	}
@@ -843,7 +843,7 @@ public class MCEditorManager : MonoBehaviour {
 		if (available) {
 			// Change value in the model
 			if (AbModel.getState (proxyState.AbState.Id) != null) {
-				AbModel.getState (proxyState.AbState.Id).Name = proxyState.AbState.Name;
+				AbModel.getState (proxyState.AbState.Id).Name = newValue;
 			}
 		}
 		return available;
