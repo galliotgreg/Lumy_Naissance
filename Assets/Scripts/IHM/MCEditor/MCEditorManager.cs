@@ -41,7 +41,7 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABParam> proxyParams;
 
     //[SerializeField]
-    private string MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;
+    private string MC_OrigFilePath; 
 
     /** START TEST SAVE**/
     ProxyABAction abAction = null;
@@ -97,6 +97,8 @@ public class MCEditorManager : MonoBehaviour {
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
         
+        MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;
+
         //usefull for save function
         opeFactory.CreateDictionnary();
         paramFactory.CreateDictionnary();
