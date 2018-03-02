@@ -57,18 +57,20 @@ Syntax Tree,Output,
 0,5,
 Nodes,Type,Output (Node -> Input)
 0,operator{B<SS},
-1,param{const scal=1},0->1
-2,operator{SminIdS[]},0->0
-3,operator{S[]distV[]V},2->0
-4,operator{VgetRT},3->1
-5,param{const txt=curPos},4->1
-6,param{ref:self},4->0
-7,operator{V[]getR[]T},3->0
-8,param{const txt=pos},7->1
-9,operator{R[]where==R[]TC},7->0
-10,param{ref[]:resources},9->0
-11,param{const color=green},9->2
-12,param{const txt=color},9->1
+1,operator{SgetRT},0->1
+2,param{const txt=pickRange},1->1
+3,param{ref:self},1->0
+4,operator{SminIdS[]},0->0
+5,operator{S[]distV[]V},4->0
+6,operator{VgetRT},5->1
+7,param{const txt=curPos},6->1
+8,param{ref:self},6->0
+9,operator{V[]getR[]T},5->0
+10,param{const txt=pos},9->1
+11,operator{R[]where==R[]TC},9->0
+12,param{ref[]:resources},11->0
+13,param{const color=green},11->2
+14,param{const txt=color},11->1
 ,,
 Syntax Tree,Output,
 0,2,
@@ -107,18 +109,20 @@ Syntax Tree,Output,
 0,10,
 Nodes,Type,Output (Node -> Input)
 0,operator{B<SS},
-1,param{const scal=1},0->1
-2,operator{SminIdS[]},0->0
-3,operator{S[]distV[]V},2->0
-4,operator{VgetRT},3->1
-5,param{const txt=curPos},4->1
-6,param{ref:self},4->0
-7,operator{V[]getR[]T},3->0
-8,param{const txt=pos},7->1
-9,operator{R[]where==R[]TC},7->0
-10,param{ref[]:resources},9->0
-11,param{const color=red},9->2
-12,param{const txt=color},9->1
+1,operator{SgetRT},0->1
+2,param{const txt=pickRange},1->1
+3,param{ref:self},1->0
+4,operator{SminIdS[]},0->0
+5,operator{S[]distV[]V},4->0
+6,operator{VgetRT},5->1
+7,param{const txt=curPos},6->1
+8,param{ref:self},6->0
+9,operator{V[]getR[]T},5->0
+10,param{const txt=pos},9->1
+11,operator{R[]where==R[]TC},9->0
+12,param{ref[]:resources},11->0
+13,param{const color=red},11->2
+14,param{const txt=color},11->1
 ,,
 Syntax Tree,Output,
 0,12,

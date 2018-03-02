@@ -40,23 +40,25 @@ Syntax Tree,Output,
 0,4,
 Nodes,Type,Output (Node -> Input)
 0,operator{B>SS},
-1,param{const scal=1},0->1
-2,operator{SdistVV},0->0
-3,operator{VgetRT},2->0
-4,param{const txt=curPos},3->1
-5,operator{RgetR[]S},3->0
-6,param{ref[]:enemies},5->0
-7,operator{SminIdS[]},5->1
-8,operator{S[]distV[]V},7->0
-9,operator{VgetRT},8->1
-10,param{ref:self},9->0
-11,param{const txt=curPos},9->1
-12,operator{V[]getR[]T},8->0
-13,param{const txt=curPos},12->1
-14,param{ref[]:enemies},12->0
-15,operator{VgetRT},2->1
-16,param{ref:self},15->0
-17,param{const txt=curPos},15->1
+1,operator{SgetRT},0->1
+2,param{ref:self},9->0
+3,param{const txt=atkRange},9->1
+4,operator{SdistVV},0->0
+5,operator{VgetRT},4->0
+6,param{const txt=curPos},5->1
+7,operator{RgetR[]S},5->0
+8,param{ref[]:enemies},7->0
+9,operator{SminIdS[]},7->1
+10,operator{S[]distV[]V},9->0
+11,operator{VgetRT},10->1
+12,param{ref:self},11->0
+13,param{const txt=curPos},11->1
+14,operator{V[]getR[]T},10->0
+15,param{const txt=curPos},14->1
+16,param{ref[]:enemies},14->0
+17,operator{VgetRT},4->1
+18,param{ref:self},17->0
+19,param{const txt=curPos},17->1
 ,,
 Syntax Tree,Output,
 0,go to search->0,
