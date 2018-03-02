@@ -232,8 +232,4 @@ public class ProxyABState : MCEditor_Proxy {
 	}
 
 	#endregion
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master
