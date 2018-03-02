@@ -107,6 +107,9 @@ public class PartiePersoUIController : MonoBehaviour {
     private void CreateSwarmSelectionButons(int playerId)
     {
         string[] speciesNames = AppContextManager.instance.GetSpeciesFolderNames();
+
+        RectTransform rec = player1SwarmSelectionPanel.transform.GetComponent<RectTransform>();
+        rec.sizeDelta = new Vector2(rec.sizeDelta.x, (speciesNames.Length - 1) * (swarmSelectionBtnPrefab.GetComponent<RectTransform>().sizeDelta.y));
         for (int i = 0; i < speciesNames.Length; i++)
         {
             GameObject swarmSelectionButton = Instantiate(swarmSelectionBtnPrefab);
@@ -125,9 +128,10 @@ public class PartiePersoUIController : MonoBehaviour {
             text.text = speciesNames[i];
 
             //Set Position
+            rec.sizeDelta = new Vector2(rec.sizeDelta.x, rec.sizeDelta.y + rectTransform.rect.height);
             rectTransform.localPosition = new Vector3(
-                -275 + i * (rectTransform.rect.width + 20f),
                 0,
+                -i * (rectTransform.rect.height + 20f) -20f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
