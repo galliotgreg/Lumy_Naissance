@@ -9,7 +9,8 @@ public class ProxyABState : MCEditor_Proxy {
     private ABState abState;
     private bool isLoaded = false;
 
-	#region PROPERTIES
+
+    #region PROPERTIES
     public string Name
     {
         get

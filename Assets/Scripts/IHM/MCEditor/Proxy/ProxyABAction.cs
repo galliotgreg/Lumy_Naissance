@@ -11,8 +11,9 @@ public class ProxyABAction : MCEditor_Proxy {
 	private ABState abState;
 	private bool isLoaded = false;
 
-	#region PROPERTIES
-	public bool IsLoaded
+
+    #region PROPERTIES
+    public bool IsLoaded
 	{
 		get
 {

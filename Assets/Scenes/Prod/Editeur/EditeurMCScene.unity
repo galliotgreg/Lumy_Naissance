@@ -231,16 +231,17 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 61961869}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b7a9f67701f40747bba2340998573e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   allUnits: []
   selectionSquareImage: {fileID: 1168182439}
-  normalMaterial: {fileID: 0}
-  highlightMaterial: {fileID: 0}
-  selectedMaterial: {fileID: 0}
+  clickDelay: 0.5
+  normalMaterial: {fileID: 2100000, guid: 541b6679557df1c4fa2cd83ec652f8ba, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: 4c9f6d210ebd2934787381a84320f5cf, type: 2}
+  selectedMaterial: {fileID: 2100000, guid: 037709d1112e2f04aabcd338d094ca18, type: 2}
 --- !u!1 &109427633 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1818676485325258, guid: 713e4519e5e69d443b015d0effa31f9b,
@@ -1434,7 +1435,29 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 349757746}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 61961877}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1763877654}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &349757746
@@ -5793,7 +5816,7 @@ MonoBehaviour:
   m_Sprite: {fileID: 21300000, guid: 393682c34c653404ba3c1cf46de1f64f, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
-  m_FillCenter: 1
+  m_FillCenter: 0
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
@@ -8097,7 +8120,7 @@ Transform:
   m_GameObject: {fileID: 1763877654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.69, y: 0.49, z: 7.4}
-  m_LocalScale: {x: 15, y: 18, z: 1}
+  m_LocalScale: {x: 30, y: 30, z: 1}
   m_Children: []
   m_Father: {fileID: 1072515484}
   m_RootOrder: 1
