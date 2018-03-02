@@ -24,7 +24,7 @@ public class DragDropScript : MonoBehaviour
         {
             RaycastHit hitInfo;
             getTarget = ReturnClickedObject(out hitInfo);
-            if (getTarget != null && getTarget.name != "pin(Clone)")
+            if (getTarget != null && getTarget.name != "pin(Clone)" && getTarget.name != "pinOut(Clone)")
             {
                 isMouseDragging = true;
                 Debug.Log(getTarget);
@@ -43,7 +43,7 @@ public class DragDropScript : MonoBehaviour
         //Mouse moving
         if (isMouseDragging)
         {
-            Debug.Log("isMouseDragging = " + isMouseDragging);
+            //Debug.Log("isMouseDragging = " + isMouseDragging);
             //tracking mouse pos
             Vector3 currentScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -GameObject.Find("Camera").GetComponent<Camera>().transform.position.z);
 
@@ -52,7 +52,7 @@ public class DragDropScript : MonoBehaviour
 
             //update target current postion.
             getTarget.transform.position = currentPosition;
-            Debug.Log(getTarget.transform.position);
+            Debug.Log("nouvelle pos du node :" + getTarget.transform.position);
         }
     }
 
