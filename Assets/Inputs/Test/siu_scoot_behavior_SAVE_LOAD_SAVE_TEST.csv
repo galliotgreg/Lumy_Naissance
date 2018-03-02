@@ -13,17 +13,23 @@ Syntax Tree,output,
 1,goto water->0,
 Nodes,Type,output (Node -> Input)
 0,operator{V[]aggV*},
-1,operator{VgetRT},0->0
-2,param{ref:home},1->0
-2,param{const txt=pos},1->1
+1,operator{VrandCircleVS},0->0
+2,operator{VgetRT},1->0
+3,param{const txt=curPos},2->1
+4,param{const scal=5},1->1
 ,,
 Syntax Tree,output,
 1,0,
 Nodes,Type,output (Node -> Input)
 0,operator{V[]aggV*},
-1,operator{VgetRT},0->0
-2,operator{RgetR[]S},1->0
+1,operator{VrandCircleVS},0->0
+2,operator{VgetRT},1->0
 3,param{ref:self},2->0
-3,param{const txt=trgPos},2->1
-4,param{ref:self},1->1
+3,param{const txt=curPos},2->1
+4,param{const scal=5},1->1
+,,
+Syntax Tree,output,
+1,2,
+Nodes,Type,output (Node -> Input)
+0,param{ref:self},
 ,,

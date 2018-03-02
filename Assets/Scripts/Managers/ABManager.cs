@@ -5,7 +5,8 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 
-public class ABManager : MonoBehaviour {
+public class ABManager : MonoBehaviour
+{
     /// <summary>
     /// The static instance of the Singleton for external access
     /// </summary>
@@ -33,7 +34,7 @@ public class ABManager : MonoBehaviour {
     private float fps = 1f;
     private float cooldown = -1f;
     [SerializeField]
-    private string INPUTS_FOLDER_PATH = "Assets/Inputs/";
+    private string inputsFolderPath = "Inputs/";
     private int lastId = 0;
 
     private ABProcessor processor = new ABProcessor();
@@ -41,32 +42,48 @@ public class ABManager : MonoBehaviour {
 
     private List<AgentEntity> agents = new List<AgentEntity>();
     private List<ABModel> models = new List<ABModel>();
-    private List<ABInstance> instances = new List<ABInstance>(); 
+    private List<ABInstance> instances = new List<ABInstance>();
 
-	/// <summary>
-	/// If true, the agents's models will be evaluated.
-	/// </summary>
-	bool executeFrame = false;
+    /// <summary>
+    /// If true, the agents's models will be evaluated.
+    /// </summary>
+    bool executeFrame = false;
+
+    public string InputsFolderPath
+    {
+        get
+        {
+            return Application.dataPath + "/" + inputsFolderPath;
+        }
+
+        set
+        {
+            inputsFolderPath = value;
+        }
+    }
 
     // Use this for initialization
-    void Start () {
-        
+    void Start()
+    {
+
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         if (cooldown < 0)
         {
-			if (executeFrame) {
-				Frame ();
-			}
+            if (executeFrame)
+            {
+                Frame();
+            }
             cooldown = 1f / fps;
-        } else
+        }
+        else
         {
             cooldown -= Time.deltaTime;
         }
-      
+
     }
 
     private void Frame()
@@ -79,49 +96,59 @@ public class ABManager : MonoBehaviour {
             ABAction action = processor.ProcessABInstance(instance, context);
 
             //Compute Action Parameters
-			List<IABType> actionParams = new List<IABType> ();
+            List<IABType> actionParams = new List<IABType>();
 
-			if (action != null && action.Parameters != null) {
-				for (int i = 0; i < action.Parameters.Length; i++) {
-					if (action.Parameters [i] is AB_TxtGate_Operator) {
-						IABType param =
-							((AB_TxtGate_Operator)action.Parameters [i]).Evaluate (context);
-						actionParams.Add (param);
-					} else if (action.Parameters [i] is AB_VecGate_Operator) {
-						IABType param =
-							((AB_VecGate_Operator)action.Parameters [i]).Evaluate (context);
-						actionParams.Add (param);
-					} else if (action.Parameters [i] is AB_ColorGate_Operator) {
-						IABType param =
-							((AB_ColorGate_Operator)action.Parameters [i]).Evaluate (context);
-						actionParams.Add (param);
-					} else if (action.Parameters [i] is AB_RefGate_Operator) {
-						IABType param =
-							((AB_RefGate_Operator)action.Parameters [i]).Evaluate (context);
-						actionParams.Add (param);
-					}
-					// TODO add type for each new param type
-				}
-			}
+            if (action != null && action.Parameters != null)
+            {
+                for (int i = 0; i < action.Parameters.Length; i++)
+                {
+                    if (action.Parameters[i] is AB_TxtGate_Operator)
+                    {
+                        IABType param =
+                            ((AB_TxtGate_Operator)action.Parameters[i]).Evaluate(context);
+                        actionParams.Add(param);
+                    }
+                    else if (action.Parameters[i] is AB_VecGate_Operator)
+                    {
+                        IABType param =
+                            ((AB_VecGate_Operator)action.Parameters[i]).Evaluate(context);
+                        actionParams.Add(param);
+                    }
+                    else if (action.Parameters[i] is AB_ColorGate_Operator)
+                    {
+                        IABType param =
+                            ((AB_ColorGate_Operator)action.Parameters[i]).Evaluate(context);
+                        actionParams.Add(param);
+                    }
+                    else if (action.Parameters[i] is AB_RefGate_Operator)
+                    {
+                        IABType param =
+                            ((AB_RefGate_Operator)action.Parameters[i]).Evaluate(context);
+                        actionParams.Add(param);
+                    }
+                    // TODO add type for each new param type
+                }
+            }
 
-			agent.setAction (action, actionParams.ToArray ());
+            agent.setAction(action, actionParams.ToArray());
         }
     }
 
-	/// <summary>
-	/// Reset the ABManager.
-	/// </summary>
-	/// <param name="executeFrame">If set to <c>true</c>, enable frame function.</param>
-	public void Reset( bool executeFrame ){
-		this.executeFrame = executeFrame;
+    /// <summary>
+    /// Reset the ABManager.
+    /// </summary>
+    /// <param name="executeFrame">If set to <c>true</c>, enable frame function.</param>
+    public void Reset(bool executeFrame)
+    {
+        this.executeFrame = executeFrame;
 
-		// agents
-		this.agents = new List<AgentEntity>();
-		// models
-		this.models = new List<ABModel>();
-		// instances
-		this.instances = new List<ABInstance>();
-	}
+        // agents
+        this.agents = new List<AgentEntity>();
+        // models
+        this.models = new List<ABModel>();
+        // instances
+        this.instances = new List<ABInstance>();
+    }
 
     public ABInstance FindABInstance(int agentId)
     {
@@ -158,7 +185,7 @@ public class ABManager : MonoBehaviour {
         ABModel model = FindABModel(agent.BehaviorModelIdentifier);
         if (model == null)
         {
-            model = LoadABModelFromFile(GameManager.instance.INPUTS_FOLDER_PATH
+            model = LoadABModelFromFile(GameManager.instance.IntputsFolderPath
                 + GetInputSubFolder(agent)
                 + agent.BehaviorModelIdentifier
                 + ".csv");
@@ -169,20 +196,22 @@ public class ABManager : MonoBehaviour {
         instances.Add(instance);
     }
 
-	/// <summary>
-	/// Remove the given agent from the system
-	/// </summary>
-	/// <param name="agent"></param>
-	public void UnregisterAgent(AgentEntity agent)
-	{
-		foreach (ABInstance instance in instances) {
-			if (instance.AgentId == agent.Id) {
-				instances.Remove (instance);
-				break;
-			}
-		}
-		agents.Remove (agent);
-	}
+    /// <summary>
+    /// Remove the given agent from the system
+    /// </summary>
+    /// <param name="agent"></param>
+    public void UnregisterAgent(AgentEntity agent)
+    {
+        foreach (ABInstance instance in instances)
+        {
+            if (instance.AgentId == agent.Id)
+            {
+                instances.Remove(instance);
+                break;
+            }
+        }
+        agents.Remove(agent);
+    }
 
     private static string GetInputSubFolder(AgentEntity agent)
     {
@@ -203,7 +232,7 @@ public class ABManager : MonoBehaviour {
         {
             lines.Add(reader.ReadLine());
         }
-        
+
         return parser.Parse(lines);
     }
 
@@ -224,7 +253,7 @@ public class ABManager : MonoBehaviour {
             object[] customAttrs = field.GetCustomAttributes(typeof(BindParam), false);
             if (customAttrs.Length > 0)
             {
-                BindParam bindParamAttr = (BindParam) customAttrs[0];
+                BindParam bindParamAttr = (BindParam)customAttrs[0];
                 IABParam param = CreateABParam(bindParamAttr.Identifier, field, agentContext);
                 context.SetParam(param);
             }
@@ -357,7 +386,7 @@ public class ABManager : MonoBehaviour {
             float[] castedValues = new float[values.Length];
             for (int i = 0; i < values.Length; i++)
             {
-                castedValues[i] = (float) values[i];
+                castedValues[i] = (float)values[i];
             }
             param = ABParamFactory.CreateScalarTableParam(identifier, castedValues);
         }
@@ -398,9 +427,10 @@ public class ABManager : MonoBehaviour {
             MonoBehaviour[][] scripts = new MonoBehaviour[values.Length][];
             for (int i = 0; i < values.Length; i++)
             {
-				if (values [i] != null) {
-					scripts [i] = values [i].GetComponents<MonoBehaviour> ();
-				}
+                if (values[i] != null)
+                {
+                    scripts[i] = values[i].GetComponents<MonoBehaviour>();
+                }
             }
             param = ABParamFactory.CreateRefTableParam(identifier, scripts);
         }

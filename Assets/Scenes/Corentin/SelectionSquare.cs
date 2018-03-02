@@ -61,7 +61,7 @@ public class SelectionSquare : MonoBehaviour
             {
                 //The corner position of the square
                 squareStartPos = hit.point;
-                Debug.Log("squarestartpos = " + squareStartPos);
+                //Debug.Log("squarestartpos = " + squareStartPos);
             }
         }
         //Release the mouse button
@@ -76,7 +76,7 @@ public class SelectionSquare : MonoBehaviour
             //Select all units within the square if we have created a square
             if (hasCreatedSquare)
             {
-                Debug.Log("square created");
+                //Debug.Log("square created");
                 hasCreatedSquare = false;
 
                 //Deactivate the square selection image
@@ -93,9 +93,14 @@ public class SelectionSquare : MonoBehaviour
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
+<<<<<<< HEAD
                         Debug.Log("is within polygon");
                         if (currentUnit.GetComponent<MeshRenderer>() != null)
                             currentUnit.GetComponent<MeshRenderer>().material.color /= 0.95f;
+=======
+	                    //Debug.Log("is within polygon");
+                        currentUnit.GetComponent<MeshRenderer>().material = selectedMaterial;
+>>>>>>> 7ca10a3467a6efd7e15199efff24877b219b8f34
 
                         selectedUnits.Add(currentUnit);
                     }
@@ -149,7 +154,7 @@ public class SelectionSquare : MonoBehaviour
         //Drag the mouse to select all units within the square
         if (isHoldingDown)
         {
-            Debug.Log("is holding down = " + isHoldingDown);
+            //Debug.Log("is holding down = " + isHoldingDown);
             //Activate the square selection image
             if (!selectionSquareImage.gameObject.activeInHierarchy)
             {
@@ -172,8 +177,13 @@ public class SelectionSquare : MonoBehaviour
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
+<<<<<<< HEAD
                         if (currentUnit.GetComponent<MeshRenderer>() != null) 
                             currentUnit.GetComponent<MeshRenderer>().material.color *= 0.95f;
+=======
+                        //Debug.Log("on change en vert");
+                        currentUnit.GetComponent<MeshRenderer>().material = highlightMaterial;
+>>>>>>> 7ca10a3467a6efd7e15199efff24877b219b8f34
                     }
                     //Otherwise desactivate
                     /*else
@@ -206,7 +216,11 @@ public class SelectionSquare : MonoBehaviour
             return true;
         }
 
+<<<<<<< HEAD
         
+=======
+        //Debug.Log("iswithinPolygon = " + isWithinPolygon);
+>>>>>>> 7ca10a3467a6efd7e15199efff24877b219b8f34
         return isWithinPolygon;
     }
 
@@ -275,7 +289,7 @@ public class SelectionSquare : MonoBehaviour
         squareStartScreen.z = 0.0f;
         
         //squareStartScreen.z = GameObject.Find("Camera").GetComponent<Camera>().transform.position.z;
-        Debug.Log("squareStartScreen : " + squareStartScreen);
+        //Debug.Log("squareStartScreen : " + squareStartScreen);
 
         /*Vector3 squareEndScreen = GameObject.Find("Camera").GetComponent<Camera>().WorldToScreenPoint(squareEndPos);
         squareEndScreen.x = ((squareEndScreen.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
@@ -399,7 +413,7 @@ public class SelectionSquare : MonoBehaviour
             //sphere4.position = BR;
 
             hasCreatedSquare = true;
-            Debug.Log("has created square = " + hasCreatedSquare);
+            //Debug.Log("has created square = " + hasCreatedSquare);
         }
     }
 }

@@ -59,26 +59,39 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 	void Update () {
 		base.Update ();
 
-        if(StartPosition != null && EndPosition != null ) {
+		adjustTransitionPosition ();
+    }
 
-            adjustPinPosition();
-          
-            Vector3 posDepart = StartPosition.transform.position;
-            Vector3 posArrivee = EndPosition.transform.position;
-            GetComponent<LineRenderer>().SetPosition(0, posDepart);
-            GetComponent<LineRenderer>().SetPosition(1, posArrivee);
+	public void adjustTransitionPosition(){
+		if(StartPosition != null && EndPosition != null ) {
+
+			adjustPinPosition();
+
+			Vector3 posDepart = StartPosition.transform.position;
+			Vector3 posArrivee = EndPosition.transform.position;
+			GetComponent<LineRenderer>().SetPosition(0, posDepart);
+			GetComponent<LineRenderer>().SetPosition(1, posArrivee);
 
 			adjustCollider ();
 
-            if(condition != null) {
-                Condition.transform.position = CalculABBGOPinPosition(posDepart, posArrivee);
-            }            
-        }
-    }
+			if(condition != null) {
+				Condition.transform.position = CalculABBGOPinPosition(posDepart, posArrivee);
+			}            
+		}
+	}
 
     Vector3 CalculABBGOPinPosition(Vector3 vec1, Vector3 vec2) {
 		return Pin.calculatePinPosition ( this );
     }
+
+	void OnDestroy(){
+		if (StartPosition != null) {
+			StartPosition.desassociateTransition (this);
+		}
+		if (EndPosition != null) {
+			EndPosition.desassociateTransition (this);
+		}
+	}
 
 	#region implemented abstract members of SelectableProxyGameObject
 
@@ -150,7 +163,7 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(MCEditor_Proxy_Factory.instance.TransitionPrefab, parent);
 		proxyABTransition.transform.position = start.transform.position + (start.transform.position - end.transform.position)/2;
 
-		if(start.Pin_Type == Pin.PinType.TransitionOut) 
+		/*if(start.Pin_Type == Pin.PinType.TransitionOut) 
 		{ 
 			ProxyABState stateParent = start.GetComponentInParent<ProxyABState>(); 
 			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(stateParent), stateParent.transform); 
@@ -160,15 +173,19 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		{ 
 			ProxyABState stateParent = end.GetComponentInParent<ProxyABState>(); 
 			Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(stateParent), stateParent.transform); 
-		} 
+		}*/
 
 		proxyABTransition.StartPosition = start;
 		proxyABTransition.EndPosition = end;
+
+		start.associateTransition (proxyABTransition);
+		end.associateTransition (proxyABTransition);
 
 		if (createCondition) {
 			addConditionPin ( proxyABTransition );
 		}
 
+		proxyABTransition.adjustTransitionPosition ();
 		// TODO register?
 		return proxyABTransition;
 	}

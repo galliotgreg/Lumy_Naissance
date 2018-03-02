@@ -147,6 +147,53 @@ public class CostManager : MonoBehaviour
         }
     }
 
+    public int ComputeRedCost(GameObject editedLumy) {
+        List<AgentComponent> agentComponentsList = new List<AgentComponent>();
+        foreach(AgentComponent compo in editedLumy.GetComponentsInChildren<AgentComponent>()) {
+            agentComponentsList.Add(compo);
+        }
+
+        AgentComponent[] agentComponents = new AgentComponent[agentComponentsList.Count];
+
+        for(int i = 0;i<agentComponentsList.Count;i++) {
+            agentComponents[i] = agentComponentsList[i];
+        }
+        FloatResourceCost cost = ComputeCompoCost(agentComponents);
+
+        return (int)cost.Red;
+    }
+    public int ComputeGreenCost(GameObject editedLumy) {
+        List<AgentComponent> agentComponentsList = new List<AgentComponent>();
+        foreach (AgentComponent compo in editedLumy.GetComponentsInChildren<AgentComponent>()) {
+            agentComponentsList.Add(compo);
+        }
+
+        AgentComponent[] agentComponents = new AgentComponent[agentComponentsList.Count];
+
+        for (int i = 0; i < agentComponentsList.Count; i++) {
+            agentComponents[i] = agentComponentsList[i];
+        }
+        FloatResourceCost cost = ComputeCompoCost(agentComponents);
+
+        return (int)cost.Green;
+    }
+    public int ComputeBlueCost(GameObject editedLumy) {
+        List<AgentComponent> agentComponentsList = new List<AgentComponent>();
+        foreach (AgentComponent compo in editedLumy.GetComponentsInChildren<AgentComponent>()) {
+            agentComponentsList.Add(compo);
+        }
+
+        AgentComponent[] agentComponents = new AgentComponent[agentComponentsList.Count];
+
+        for (int i = 0; i < agentComponentsList.Count; i++) {
+            agentComponents[i] = agentComponentsList[i];
+        }
+        FloatResourceCost cost = ComputeCompoCost(agentComponents);
+
+        return (int)cost.Blue;
+    }
+
+
     private FloatResourceCost ComputeCompoCost(AgentComponent[] agentComponents)
     {
         FloatResourceCost compoCost = new FloatResourceCost();
@@ -208,7 +255,7 @@ public class CostManager : MonoBehaviour
         return phy_lambda * Mathf.Pow(phy_rate, (float) rank);
     }
 
-    private float ComputeBehaviorCost(ABModel behaviorModel)
+    public float ComputeBehaviorCost(ABModel behaviorModel)
     {
         float mc_cost = 0f;
         foreach (ABState state in behaviorModel.States)
