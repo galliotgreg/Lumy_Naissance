@@ -191,7 +191,7 @@ public class Pin : DragSelectableProxyGameObject {
             string opeParentType = parent.AbOperator.GetType().ToString();
             string typePinIn = opeParentType.Split('_')[3 + curPinIn];
             this.regularColor = PinColor.GetColorPinFromType(typePinIn);
-            Debug.Log(typePinIn + " " + curPinIn);                        
+            //Debug.Log(typePinIn + " " + curPinIn);                        
         }
         else if(this.Pin_Type == Pin.PinType.Param)
         {

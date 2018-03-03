@@ -1,0 +1,70 @@
+States,Position
+INIT, 3, 2, -0.410553
+green ressource found, -4, -1, -0.410553
+red ressource found, 4, -5, -0.410553
+,,
+Actions,Position
+goto elsewhere, 0, 3, -0.410553
+goto search, 3, 3, -0.410553
+trace green, 2, 3, -0.410553
+goto green, -2, -4, -0.410553
+trace red, 1, 1, -0.410553
+goto red, -5.568345, -0.760066, 0
+,,
+Operators,Position
+V[]aggV*, -2, 3, -0.410553
+VrandCircleVS, -5, -4, -0.410553
+V[]aggV*, -2, -1, -0.410553
+V[]aggV*, 4, 3, -0.410553
+VgetRT, -3, 1, -0.410553
+V[]aggV*, 0, 2, -0.410553
+VgetRT, -4, 4, -0.410553
+RgetR[]S, -1, -5, -0.410553
+SminIdS[], -3, -4, -0.410553
+S[]distV[]V, -3, 0, -0.410553
+V[]getR[]T, 0, 1, -0.410553
+R[]where==R[]TC, 4, -1, -0.410553
+R[]where==R[]TC, -4, -2, -0.410553
+V[]aggV*, -1, -5, -0.410553
+VgetRT, -4, -2, -0.410553
+V[]aggV*, -5, 0, -0.410553
+VgetRT, -2, 2, -0.410553
+RgetR[]S, 3, 2, -0.410553
+SminIdS[], -4, 3, -0.410553
+S[]distV[]V, 1, -2, -0.410553
+V[]getR[]T, -3, 3, -0.410553
+R[]where==R[]TC, -5, 3, -0.410553
+R[]where==R[]TC, -3, 2, -0.410553
+B>SS, 2, -1, -0.410553
+SsizeS[], -2, -3, -0.410553
+R[]where==R[]TC, -1, -2, -0.410553
+B>SS, -4, 1, -0.410553
+SsizeS[], 3, -2, -0.410553
+R[]where==R[]TC, 4, -5, -0.410553
+B!=VV, -4, -2, -0.410553
+B&&BB, -2, -3, -0.410553
+B<SS, -5, 4, -0.410553
+SminValS[], -3, 1, -0.410553
+S[]distV[]V, -1, -4, -0.410553
+VgetRT, 2, -2, -0.410553
+R[]where==R[]TC, -3, -5, -0.410553
+B==SS, 0, 1, -0.410553
+SsizeS[], -1, -2, -0.410553
+R[]where==R[]TC, -4, -4, -0.410553
+B&&BB, -1, -3, -0.410553
+B<SS, -4, 3, -0.410553
+SminValS[], -2, -5, -0.410553
+S[]distV[]V, -2, -1, -0.410553
+VgetRT, 3, -3, -0.410553
+R[]where==R[]TC, 3, 2, -0.410553
+B==SS, -5, 1, -0.410553
+SsizeS[], 4, -5, -0.410553
+R[]where==R[]TC, 4, 1, -0.410553
+,,
+Parameters,Position
+vec:curPos,-1, -1, -0.410553
+const scal=20,2, -2, -0.410553
+vec:trgPos,-5, -3, -0.410553
+const color=Green,-2, -4, -0.410553
+ref:home,0, -3, -0.410553
+const txt=position,-3, 2, -0.410553

@@ -24,14 +24,15 @@ public class ViewActionLumy : MonoBehaviour {
     {
         subMenu.SetActive(!subMenu.activeSelf);
 
-        foreach (Transform child in transform.parent.parent)
+        /*foreach (Transform child in transform.parent.parent)
         {
-            if (child.Find("PanelAction").gameObject.activeSelf && child != transform.parent) child.Find("PanelAction").gameObject.SetActive(!child.Find("PanelAction").gameObject.activeSelf);
+            if (child.Find("PanelAction").gameObject.activeSelf && child != transform.parent)
+                child.Find("PanelAction").gameObject.SetActive(!child.Find("PanelAction").gameObject.activeSelf);
         }
 
         //Set Active cast
         Text txt = transform.Find("Text").gameObject.GetComponent<Text>();
         AppContextManager.instance.SwitchActiveCast(txt.text);
-        CastesUIController.instance.LoadEditedLumy();
+        CastesUIController.instance.LoadEditedLumy();*/
     }
 }
