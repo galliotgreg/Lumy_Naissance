@@ -20,9 +20,9 @@ public class SelectionSquare : MonoBehaviour
     bool hasCreatedSquare;
 
     //The materials
-    public Material normalMaterial;
-    public Material highlightMaterial;
-    public Material selectedMaterial;
+    //public Material normalMaterial;
+    //public Material highlightMaterial;
+    //public Material selectedMaterial;
 
     [System.NonSerialized]
     public List<GameObject> selectedUnits = new List<GameObject>();
@@ -93,7 +93,7 @@ public class SelectionSquare : MonoBehaviour
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
-                        Debug.Log("is within polygon");
+                        //Debug.Log("is within polygon");
                         if (currentUnit.GetComponent<MeshRenderer>() != null)
                             currentUnit.GetComponent<MeshRenderer>().material.color /= 0.95f;
 
@@ -124,7 +124,7 @@ public class SelectionSquare : MonoBehaviour
             //Deselect all units
             for (int i = 0; i < selectedUnits.Count; i++)
             {
-                selectedUnits[i].GetComponent<MeshRenderer>().material = normalMaterial;
+                //selectedUnits[i].GetComponent<MeshRenderer>().material = normalMaterial;
             }
 
             //Clear the list with selected units
@@ -195,7 +195,7 @@ public class SelectionSquare : MonoBehaviour
         //The polygon forms 2 triangles, so we need to check if a point is within any of the triangles
         //Triangle 1: TL - BL - TR
 
-        Debug.Log("unitPOS : " + unitPos);
+        //Debug.Log("unitPOS : " + unitPos);
         if (IsWithinTriangle(unitPos, HG, BG, HD))
         {
             return true;
@@ -333,7 +333,7 @@ public class SelectionSquare : MonoBehaviour
         BG = BG + new Vector3(GameObject.Find("Main Camera").GetComponent<Camera>().pixelWidth, GameObject.Find("Main Camera").GetComponent<Camera>().pixelHeight, 0.0f) / 2f;
         BD = BD + new Vector3(GameObject.Find("Main Camera").GetComponent<Camera>().pixelWidth, GameObject.Find("Main Camera").GetComponent<Camera>().pixelHeight, 0.0f) / 2f;
 
-        Debug.Log("avant HG , HD , BG , BD = " + HG +" "+ HD +" "+ BG +" "+ BD);
+        //Debug.Log("avant HG , HD , BG , BD = " + HG +" "+ HD +" "+ BG +" "+ BD);
         //From screen to world
         RaycastHit hit;
         int i = 0;
@@ -350,39 +350,39 @@ public class SelectionSquare : MonoBehaviour
         Ray rayBD = GameObject.Find("Camera").GetComponent<Camera>().ScreenPointToRay(BD);
         if (Physics.Raycast(rayHG, out hit, Mathf.Infinity))// Mathf.Infinity))// 200f, 1 << 8))
         {
-            Debug.DrawRay(rayHG.origin, rayHG.direction * 10, Color.yellow);
+            //Debug.DrawRay(rayHG.origin, rayHG.direction * 10, Color.yellow);
             HG = hit.point;
             //HG.x = ((HG.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
             //HG.y = ((HG.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f));
             i++;
-            Debug.Log("HG = " + HG);
+            //Debug.Log("HG = " + HG);
         }
         if (Physics.Raycast(rayHD, out hit, Mathf.Infinity))//Mathf.Infinity))// 200f, 1 << 8))
         {
-            Debug.DrawRay(rayHD.origin, rayHD.direction * 10, Color.yellow);
+            //Debug.DrawRay(rayHD.origin, rayHD.direction * 10, Color.yellow);
             HD = hit.point;
             //HD.x = ((HD.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
             //HD.y = ((HD.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f));
             i++;
-            Debug.Log("HD = " + HD);
+            //Debug.Log("HD = " + HD);
         }
         if (Physics.Raycast(rayBG, out hit, Mathf.Infinity))// Mathf.Infinity))// 200f, 1 << 8))
         {
-            Debug.DrawRay(rayBG.origin, rayBG.direction * 10, Color.yellow);
+            //Debug.DrawRay(rayBG.origin, rayBG.direction * 10, Color.yellow);
             BG = hit.point;
             //BG.x = ((BG.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
             //BG.y = ((BG.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f));
             i++;
-            Debug.Log("BG = " + BG);
+            //Debug.Log("BG = " + BG);
         }
         if (Physics.Raycast(rayBD, out hit, Mathf.Infinity))// Mathf.Infinity))// 200f, 1 << 8))
         {
-            Debug.DrawRay(rayBD.origin, rayBD.direction * 10, Color.yellow);
+            //Debug.DrawRay(rayBD.origin, rayBD.direction * 10, Color.yellow);
             BD = hit.point;
            // BD.x = ((BD.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
             //BD.y = ((BD.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f));
             i++;
-            Debug.Log("BD = " + BD);
+            //Debug.Log("BD = " + BD);
         }
 
         //Could we create a square?

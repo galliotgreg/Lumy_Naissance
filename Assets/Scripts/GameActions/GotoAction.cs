@@ -107,23 +107,17 @@ public class GotoAction : GameAction {
 
             Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
             dest.y = agentAttr.transform.position.y;
-            Debug.DrawLine(position, dest, Color.blue);
-            if (path.status == NavMeshPathStatus.PathComplete)
-            {
-                print("The agent can reach the destionation");
-            }
-            else if (path.status == NavMeshPathStatus.PathPartial)
+        //    Debug.DrawLine(position, dest, Color.blue);
+            if (path.status == NavMeshPathStatus.PathPartial)
             {
                 agentAttr.TrgPos = agentAttr.CurPos;
                 destination = vec2ToWorld(agentAttr.TrgPos); 
-                print("The agent can only get close to the destination");
+               
             }
             else if (path.status == NavMeshPathStatus.PathInvalid)
             {
                 agentAttr.TrgPos = agentAttr.CurPos;
                 destination = vec2ToWorld(agentAttr.TrgPos);
-                print("The agent cannot reach the destination");
-                print("hasFoundPath will be false");
             }
             position = vec2ToWorld(agentAttr.CurPos);
             position.y = agentAttr.transform.position.y;
@@ -154,20 +148,6 @@ public class GotoAction : GameAction {
         }
         return agentAttr.transform.position;
 	}
-
-    private bool CanGo(Vector3 destination, Vector3 position )
-    {
-        NavMeshHit hit;
-        bool blocked = false;
-
-        blocked = NavMesh.Raycast(position, destination, out hit, NavMesh.AllAreas);
-
-        Debug.DrawLine(position, destination, blocked ? Color.red : Color.green);
-        if (blocked)
-            return false;
-        return true; 
-
-    }
 
     private int indexClosest( Vector2 pos, Vector3[] _path ){
 		int resultIndex = 0;

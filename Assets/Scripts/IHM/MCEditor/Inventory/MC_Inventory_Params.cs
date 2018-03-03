@@ -15,10 +15,10 @@ public class MC_Inventory_Params : MC_Inventory {
 		parameters.Add ( new ABRefParam ("game", TypeFactory.CreateEmptyRef() ));
 		parameters.Add ( new ABRefParam ("home", TypeFactory.CreateEmptyRef() ));
 		parameters.Add ( new ABRefParam ("self", TypeFactory.CreateEmptyRef() ));
-		parameters.Add ( new ABRefParam ("allies", TypeFactory.CreateEmptyRef() ));
-		parameters.Add ( new ABRefParam ("enemies", TypeFactory.CreateEmptyRef() ));
-		parameters.Add ( new ABRefParam ("resources", TypeFactory.CreateEmptyRef() ));
-		parameters.Add ( new ABRefParam ("traces", TypeFactory.CreateEmptyRef() ));
+		parameters.Add ( new ABTableParam<ABRef> ("allies", TypeFactory.CreateEmptyTable<ABRef>() ));
+		parameters.Add ( new ABTableParam<ABRef> ("enemies", TypeFactory.CreateEmptyTable<ABRef>() ));
+		parameters.Add ( new ABTableParam<ABRef> ("resources", TypeFactory.CreateEmptyTable<ABRef>() ));
+		parameters.Add ( new ABTableParam<ABRef> ("traces", TypeFactory.CreateEmptyTable<ABRef>() ));
 
 		// Constants
 		// TODO table?

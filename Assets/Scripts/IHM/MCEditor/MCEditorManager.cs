@@ -41,17 +41,7 @@ public class MCEditorManager : MonoBehaviour {
     private List<ProxyABParam> proxyParams;
 
     //[SerializeField]
-    private string MC_OrigFilePath; 
-
-    /** START TEST SAVE**/
-    ProxyABAction abAction = null;
-    ProxyABAction abAction2 = null;
-    ProxyABState abState = null;
-    ProxyABState abState2 = null;
-    ProxyABParam abParam = null;
-    ProxyABOperator aBOperator = null;
-    ProxyABOperator aBOperator2 = null;
-    /** END TEST SAVE**/
+    private string MC_OrigFilePath;
 
 	#region PROPERTIES
 	public Transform MCparent {
@@ -96,8 +86,11 @@ public class MCEditorManager : MonoBehaviour {
         proxyActions = new List<ProxyABAction>();
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
-        
-        MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;
+
+        /**START DO NOT COMMIT**/
+        MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;        
+        //MC_OrigFilePath = "Assets/Inputs/Test/GREG_TRANS_STATE_STATE_TEST.csv";
+        /**END DO NOT COMMIT**/
 
         //usefull for save function
         opeFactory.CreateDictionnary();
@@ -115,81 +108,11 @@ public class MCEditorManager : MonoBehaviour {
     private void Update()
     {
         /**START TEST SAVE**/
-        /*if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Save_MC();
-        } else if (Input.GetKeyDown(KeyCode.O))
-        {
-			CreateOperator( new AB_BoolGate_Operator() );
         }
-        else if (Input.GetKeyDown(KeyCode.P))
-        {
-			ABText t = new ABText ();
-			t.Value = "example";
-			ABTextParam par = new ABTextParam ( "const", t );
-
-            CreateParam( par );
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-			abState = MCEditor_Proxy_Factory.instantiateState (new ABState (-1, "State_1"), false);
-			registerState (abState.AbState, abState);
-			abState2 = MCEditor_Proxy_Factory.instantiateState (new ABState (-1, "State_2"), false);
-			registerState (abState2.AbState, abState2);
-        } else if (Input.GetKeyDown(KeyCode.R))
-        {
-            CreateTransition(abState.GetComponentInChildren<Pin>(), abState2.GetComponentInChildren<Pin>());
-        }
-        else if (Input.GetKeyDown(KeyCode.T))
-        {
-			ABState act = new ABState ( -1, "Action_1" );
-			act.Action = new ABDropAction ();
-
-			abState = MCEditor_Proxy_Factory.instantiateState (new ABState (-1, "State_1"), false);
-			abAction = MCEditor_Proxy_Factory.instantiateAction ( act );
-        }
-        else if (Input.GetKeyDown(KeyCode.Y))
-        {
-            CreateTransition(abState.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
-        }
-        else if (Input.GetKeyDown(KeyCode.W))
-        {
-			ABText t = new ABText ();
-			t.Value = "example";
-			ABTextParam par = new ABTextParam ( "const", t );
-
-			abParam = MCEditor_Proxy_Factory.instantiateParam( par, false );
-			aBOperator = MCEditor_Proxy_Factory.instantiateOperator( new AB_BoolGate_Operator(), false );
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            CreateTransition(abParam.GetComponentInChildren<Pin>(), aBOperator.GetComponentInChildren<Pin>());
-        }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-			aBOperator = MCEditor_Proxy_Factory.instantiateOperator( new AB_BoolGate_Operator(), false );
-			aBOperator2 = MCEditor_Proxy_Factory.instantiateOperator( new AB_BoolGate_Operator(), false );
-        }
-        else if (Input.GetKeyDown(KeyCode.V))
-        {
-            CreateTransition(aBOperator.GetComponentInChildren<Pin>(), aBOperator2.GetComponentInChildren<Pin>());
-        }
-        else if (Input.GetKeyDown(KeyCode.B))
-        {
-			ABState act = new ABState ( -1, "Action_1" );
-			act.Action = new ABDropAction ();
-
-			aBOperator = MCEditor_Proxy_Factory.instantiateOperator( new AB_BoolGate_Operator(), false );
-			abAction = MCEditor_Proxy_Factory.instantiateAction( act );
-        }
-        else if (Input.GetKeyDown(KeyCode.N))
-        {
-            CreateTransition(aBOperator.GetComponentInChildren<Pin>(), abAction.GetComponentInChildren<Pin>());
-        }*/
-        /**END TEST SAVE**/
-
-		/**Delete Transition**/
-		if (Input.GetKeyDown(KeyCode.D))
+		else if (Input.GetKeyDown(KeyCode.Delete))
 		{
 			this.deleteSelectedTransition ();
 		}
@@ -278,62 +201,65 @@ public class MCEditorManager : MonoBehaviour {
     void LoadMC_Position()
     {
         string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";
-        StreamReader reader = new StreamReader(path);        
-
-        List<string> lines = new List<string>();
-
-        bool isStateBlock = false;
-        bool isActionBlock = false;
-        bool isOperatorBlock = false;
-        bool isParameterBlock = false;
-
-        while (reader.Peek() >= 0)
+        if (File.Exists(path))
         {
-            lines.Add(reader.ReadLine());
-        }        
-        foreach(string line in lines)
-        {
-            if (line != ",,")
+            StreamReader reader = new StreamReader(path);
+
+            List<string> lines = new List<string>();
+
+            bool isStateBlock = false;
+            bool isActionBlock = false;
+            bool isOperatorBlock = false;
+            bool isParameterBlock = false;
+
+            while (reader.Peek() >= 0)
             {
-                String[] tokens = line.Split(',');
-                if (tokens[0] == "States")
+                lines.Add(reader.ReadLine());
+            }
+            foreach (string line in lines)
+            {
+                if (line != ",,")
                 {
-                    isStateBlock = true;
-                    continue;
-                }
-                else if (tokens[0] == "Actions")
-                {
-                    isStateBlock = false;
-                    isActionBlock = true;
-                    continue;
-                }
-                else if (tokens[0] == "Operators")
-                {
-                    isStateBlock = false;
-                    isActionBlock = false;
-                    isOperatorBlock = true;
-                    continue;
-                }
-                else if (tokens[0] == "Parameters")
-                {
-                    isStateBlock = false;
-                    isActionBlock = false;
-                    isOperatorBlock = false;
-                    isParameterBlock = true;
-                    continue;
-                }
+                    String[] tokens = line.Split(',');
+                    if (tokens[0] == "States")
+                    {
+                        isStateBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Actions")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Operators")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = false;
+                        isOperatorBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Parameters")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = false;
+                        isOperatorBlock = false;
+                        isParameterBlock = true;
+                        continue;
+                    }
 
-                string name = tokens[0];
+                    string name = tokens[0];
 
-                string x_string = tokens[1];
-                string y_string = tokens[2];
+                    string x_string = tokens[1];
+                    string y_string = tokens[2];
 
-                float x = float.Parse(x_string);
-                float y = float.Parse(y_string);
-                float z = 0;
+                    float x = float.Parse(x_string);
+                    float y = float.Parse(y_string);
+                    float z = 0;
 
-                setProxyPositionOnLoad(name, isStateBlock, isActionBlock, isOperatorBlock, isParameterBlock, x, y, z);                
-            }            
+                    setProxyPositionOnLoad(name, isStateBlock, isActionBlock, isOperatorBlock, isParameterBlock, x, y, z);
+                }
+            }
         }
     }
 
@@ -401,7 +327,7 @@ public class MCEditorManager : MonoBehaviour {
             Pin start;
             for (int i=0; i<((IABOperator)node).Inputs.Length; i++){
 				ABNode inputNode = ((IABOperator)node).Inputs [i];
-                if(((IABOperator)node).Inputs.Length <=2)
+                if(((IABOperator)node).Inputs.Length <=3)
                 {
                     start = pins[i];
                 }
@@ -583,8 +509,7 @@ public class MCEditorManager : MonoBehaviour {
         }              
     }
     void Save_MC_Position()
-    {
-        //TODO : Generalise la construction  du path;
+    {        
         string csvpath = MC_OrigFilePath.Split('.')[0]+"_POSITION.csv";
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
@@ -631,16 +556,20 @@ public class MCEditorManager : MonoBehaviour {
                                                                                                     + param.transform.position.y.ToString() + ", "
                                                                                                     + param.transform.position.z.ToString());
             }
-
-            //TODO : Syntax tree nodes position
-            File.Delete(csvpath);
-            File.AppendAllText(csvpath, csvcontent.ToString());
+            if (File.Exists(csvpath))
+            {                
+                File.WriteAllText(csvpath, csvcontent.ToString());
+            } else
+            {
+                File.AppendAllText(csvpath, csvcontent.ToString());
+            }            
             Debug.Log("Save MC Position");
         }
     }
 
     public void Save_MC()
     {
+        /* TODO : TEST remove test*/  
         string csvpath = MC_OrigFilePath;
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
@@ -702,9 +631,8 @@ public class MCEditorManager : MonoBehaviour {
                 }
             }
         }
-        csvcontent.AppendLine(",,");
-        File.Delete(csvpath);
-        File.AppendAllText(csvpath, csvcontent.ToString());
+        csvcontent.AppendLine(",,");        
+        File.WriteAllText(csvpath, csvcontent.ToString());
 
         foreach (StringBuilder content in syntTrees)
         {
@@ -743,27 +671,27 @@ public class MCEditorManager : MonoBehaviour {
 		}
 		else if (node is ABParam<ABTable<ABVec>>)
 		{
-			type = ((ABParam<ABTable<ABVec>>)node).Value.ToString();
+			type = "ABTable<ABVec>";
 		}
 		else if (node is ABParam<ABTable<ABBool>>)
 		{
-			type = ((ABParam<ABTable<ABBool>>)node).Value.ToString();
+			type = "ABTable<ABBool>";
 		}
 		else if (node is ABParam<ABTable<ABScalar>>)
 		{
-			type = ((ABParam<ABTable<ABScalar>>)node).Value.ToString();
+			type = "ABTable<ABScalar>";
 		}
 		else if (node is ABParam<ABTable<ABText>>)
 		{
-			type = ((ABParam<ABTable<ABText>>)node).Value.ToString();
+			type = "ABTable<ABText>";
 		}
 		else if (node is ABParam<ABTable<ABColor>>)
 		{
-			type = ((ABParam<ABTable<ABColor>>)node).Value.ToString();
+			type = "ABTable<ABColor>";
 		}
 		else if (node is ABParam<ABTable<ABRef>>)
 		{
-			type = ((ABParam<ABTable<ABRef>>)node).Value.ToString();
+			type = "ABTable<ABRef>";
 		}
 
 		return type;
@@ -832,7 +760,7 @@ public class MCEditorManager : MonoBehaviour {
 				state.Id = AbModel.AddState (state.Name, state.Action);
 			}
 			proxyStates.Add (proxyState);
-			statesDictionnary.Add (state, proxyState);
+			statesDictionnary.Add (AbModel.getState (state.Id), proxyState);
 		}
 		return available;
 	}
@@ -843,7 +771,7 @@ public class MCEditorManager : MonoBehaviour {
 		if (available) {
 			// Change value in the model
 			if (AbModel.getState (proxyState.AbState.Id) != null) {
-				AbModel.getState (proxyState.AbState.Id).Name = proxyState.AbState.Name;
+				AbModel.getState (proxyState.AbState.Id).Name = newValue;
 			}
 		}
 		return available;
