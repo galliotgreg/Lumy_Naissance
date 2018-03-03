@@ -581,21 +581,25 @@ public class MCEditorManager : MonoBehaviour {
         {
             if(state.Action != null)
             {
-                csvcontent.AppendLine(state.Id + "," + state.Name + "," + "trigger{"+state.Action.Type.ToString().ToLower()+"}");                
-                if (state.Action.Parameters[0].Inputs[0] != null)
-                {
-                    StringBuilder syntTreeContent = new StringBuilder();
-                    syntTreeContent.AppendLine("Syntax Tree,output,");
-                    syntTreeContent.AppendLine("1,"+state.Name +"->0"+",");
-                    syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
+                csvcontent.AppendLine(state.Id + "," + state.Name + "," + "trigger{"+state.Action.Type.ToString().ToLower()+"}");
 
-                    idNodeSyntTree = 0;
-                    foreach(ABNode node in state.Action.Parameters[0].Inputs)
+                for (int i = 0; i < state.Action.Parameters.Length; i++)
+                {
+                    if (state.Action.Parameters[i].Inputs[0] != null)
                     {
-                        Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+                        StringBuilder syntTreeContent = new StringBuilder();
+                        syntTreeContent.AppendLine("Syntax Tree,output,");
+                        syntTreeContent.AppendLine("1," + state.Name + "->"+ i + ",");
+                        syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
+
+                        idNodeSyntTree = 0;
+                        foreach (ABNode node in state.Action.Parameters[i].Inputs)
+                        {
+                            Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+                        }
+                        syntTreeContent.AppendLine(",,");
+                        syntTrees.Add(syntTreeContent);
                     }
-                    syntTreeContent.AppendLine(",,");
-                    syntTrees.Add(syntTreeContent);
                 }
             }
             else
