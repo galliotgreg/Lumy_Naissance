@@ -419,7 +419,7 @@ public class MCEditorManager : MonoBehaviour {
 	#region SAVE FUNCTION
     void Save_Ope_Param(int idNodeInput, int idNodeInputPin, ABNode node, StringBuilder syntTreeContent)
     {
-        int idParentnode = idNodeSyntTree;       
+        int idParentnode = idNodeSyntTree;        
         if (idNodeSyntTree == 0)
         {
             if (node is IABOperator)
@@ -431,9 +431,10 @@ public class MCEditorManager : MonoBehaviour {
                 idNodeInputPin = 0;
                 foreach (ABNode input in ((IABOperator)node).Inputs)
                 {
-                    /**Recursive function**/
+                    /**Recursive function**/                    
                     Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
                     idNodeInputPin++;
+                    
                 }
             }
             else if (node is IABParam)
@@ -451,10 +452,10 @@ public class MCEditorManager : MonoBehaviour {
                     type = paramDictionary[GetParamType(node)];
                 }
                 if (((IABParam)node).Identifier != "const")
-                {
+                {                    
                     syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + type + ":" + ((IABParam)node).Identifier + "}" + ",");
                 } else
-                {
+                {                    
                     syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "},");
                 }                
                 idNodeSyntTree++;
@@ -479,7 +480,7 @@ public class MCEditorManager : MonoBehaviour {
                 {
                     /**Recursive function**/
                     Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
-                    idNodeInputPin++;
+                   idNodeInputPin++;
                 }
             }
             else if (node is IABParam)
@@ -497,14 +498,15 @@ public class MCEditorManager : MonoBehaviour {
                 }
 
                 if (((IABParam)node).Identifier != "const")
-                {
+                {                    
                     syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + type + ":" + ((IABParam)node).Identifier + "}" + "," + idNodeInput + "->" + idNodeInputPin);
                 }
                 else
                 {
-                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "}" + "," + idNodeInput + "->" + idNodeInputPin);
-                    idNodeSyntTree++;
+                    
+                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "}" + "," + idNodeInput + "->" + idNodeInputPin);                    
                 }
+                idNodeSyntTree++;
             }
         }              
     }
@@ -866,13 +868,12 @@ public class MCEditorManager : MonoBehaviour {
         opeParent = ope.GetComponentInParent<ProxyABOperator>();
         paramParent = param.GetComponentInParent<ProxyABParam>();
 
-        for(int i = 0; i < opeParent.Inputs.Length; i++)
+        int availeblePin = opeParent.GetAvailablePinEnter();
+        if(availeblePin !=-1)
         {
-            if (opeParent.Inputs[i]==null)
-            {
-                opeParent.Inputs[i] = (ABNode)paramParent.AbParam;
-            }
-        }        
+            opeParent.Inputs[availeblePin] = (ABNode)paramParent.AbParam;
+        }
+        opeParent.CurPinIn++;
         ((ABNode)paramParent.AbParam).Output = (ABNode)opeParent.AbOperator;
     }
 
@@ -1391,7 +1392,6 @@ public class MCEditorManager : MonoBehaviour {
 
     private void UnlinkOperator_Param(ProxyABOperator proxyOpeStart, ProxyABParam proxyParam)
     {
-        string idRemoveObject = proxyParam.AbParam.Identifier;
         for (int i = 0; i < proxyOpeStart.AbOperator.Inputs.Length; i++)
         {
             ABNode node = proxyOpeStart.AbOperator.Inputs[i];
@@ -1399,7 +1399,7 @@ public class MCEditorManager : MonoBehaviour {
             {
                 if(node is IABParam)
                 {
-                    if (((IABParam)(node)).Identifier == idRemoveObject)
+                    if (((IABParam)(node))== proxyParam.AbParam)
                     {
                         node.Output = null;
                         proxyOpeStart.AbOperator.Inputs[i] = null;

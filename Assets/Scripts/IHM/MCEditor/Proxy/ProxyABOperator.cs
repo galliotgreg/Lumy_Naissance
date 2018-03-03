@@ -155,6 +155,38 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		return result;
 	}
 
+    public int GetAvailablePinEnter()
+    {
+        bool isFind = false;
+        int i = 0;
+        int pinAvailable = -1;
+
+        while (!isFind && i < this.abOperator.Inputs.Length)
+        {
+            if(this.abOperator.Inputs[i] == null)
+            {
+                pinAvailable = i;
+                isFind = true;
+            }
+            i++;
+        }
+
+        if(pinAvailable != -1)
+        {
+            return pinAvailable;
+        }
+        else if(!isFind)
+        {
+            Debug.Log("No more place in input for this operator");
+            return -1;
+        } else
+        {
+            return -1;
+        }
+
+        
+    }
+
 	public static Vector3 calculateOperatorPosition( Transform parent ){
 		return new Vector3(UnityEngine.Random.Range(-5, 5),UnityEngine.Random.Range(-5, 5), parent.position.z);
 	}
