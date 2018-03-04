@@ -753,9 +753,18 @@ public class MCEditorManager : MonoBehaviour {
 	// State
 	public bool registerState( ABState state, ProxyABState proxyState ){
 		// check disponibility
-		bool available = stateAvailable( state.Name );
+        //Alter name if exists
+        int suffixId = 0;
+        string candidateName = state.Name;
+        bool available = stateAvailable(candidateName);
+        while (!available)
+        {
+            candidateName = state.Name + "_" + suffixId++;
+            available = stateAvailable(candidateName);
+        }
+        proxyState.Name = candidateName;
 
-		if (available) {
+        if (available) {
 			if (AbModel.getState (state.Id) == null) {
 				state.Id = AbModel.AddState (state.Name, state.Action);
 			}
