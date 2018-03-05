@@ -1,0 +1,158 @@
+States,Name,Type
+0,INIT,Init
+1,back to home,trigger{goto}
+2,nothing interesting,Inter
+3,red found,Inter
+4,go to red,trigger{goto}
+5,pick red,trigger{pick}
+6,drop to home,trigger{drop}
+7,is full,Inter
+8,goto elsewhere,trigger{goto}
+9,goto search,trigger{goto}
+,,
+Transitions,Start State,End State
+0,INIT,is full
+1,INIT,red found
+2,INIT,nothing interesting
+3,nothing interesting,goto elsewhere
+4,nothing interesting,goto search
+5,red found,pick red
+6,red found,go to red
+7,is full,drop to home
+8,is full,back to home
+,,
+Syntax Tree,Output,
+0,1,
+Nodes,Type,Output (Node -> Input)
+0,operator{B>SS},
+1,param{const scal=0},0->1
+2,operator{SsizeR[]},0->0
+3,operator{R[]where==R[]TC},2->0
+4,param{const txt=color},3->1
+5,param{const color=red},3->2
+6,param{ref[]:resources},3->0
+,,
+Syntax Tree,output,
+0,4,
+Nodes,Type,output (Node -> Input)
+0,operator{B<SS},
+1,param{const scal=1},0->1
+2,operator{SdistVV},0->0
+3,operator{VgetRT},2->0
+4,param{const txt=curPos},3->1
+5,param{ref:self},3->0
+6,operator{VgetRT},2->1
+7,param{ref:self},6->0
+8,param{const txt=trgPos},6->1
+,,
+Syntax Tree,Output,
+0,0,
+Nodes,Type,Output (Node -> Input)
+0,operator{B==SS},
+1,operator{SgetRT},0->0
+2,param{const txt=nbItemMax},1->1
+3,param{ref:self},1->0
+4,operator{SgetRT},0->1
+5,param{const txt=nbItem},4->1
+6,param{ref:self},4->0
+,,
+Syntax Tree,Output,
+0,5,
+Nodes,Type,Output (Node -> Input)
+0,operator{B<SS},
+1,operator{SgetRT},0->1
+2,param{const txt=pickRange},1->1
+3,param{ref:self},1->0
+4,operator{SminValS[]},0->0
+5,operator{S[]distV[]V},4->0
+6,operator{VgetRT},5->1
+7,param{const txt=curPos},6->1
+8,param{ref:self},6->0
+9,operator{V[]getR[]T},5->0
+10,param{const txt=pos},9->1
+11,operator{R[]where==R[]TC},9->0
+12,param{ref[]:resources},11->0
+13,param{const color=red},11->2
+14,param{const txt=color},11->1
+,,
+Syntax Tree,Output,
+0,7,
+Nodes,Type,Output (Node -> Input)
+0,operator{B<SS},
+1,param{const scal=1},0->1
+2,operator{SdistVV},0->0
+3,operator{VgetRT},2->0
+4,param{const txt=curPos},3->1
+5,param{ref:self},3->0
+6,operator{VgetRT},2->1
+7,param{ref:home},6->0
+8,param{const txt=pos},6->1
+,,
+Syntax Tree,Output,
+0,back to home->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:home},1->0
+2,param{const txt=pos},1->1
+,,
+Syntax Tree,Output,
+0,go to red->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{const txt=pos},1->1
+3,operator{RgetR[]S},1->0
+4,operator{R[]where==R[]TC},3->0
+5,param{const txt=color},4->1
+6,param{const color=red},4->2
+7,param{ref[]:resources},4->0
+8,operator{SminIdS[]},3->1
+9,operator{S[]distV[]V},8->0
+10,operator{VgetRT},9->1
+11,param{ref:self},10->0
+12,param{const txt=curPos},10->1
+13,operator{V[]getR[]T},9->0
+14,param{const txt=pos},13->1
+15,operator{R[]where==R[]TC},13->0
+16,param{ref[]:resources},15->0
+17,param{const color=red},15->2
+18,param{const txt=color},15->1
+,,
+Syntax Tree,Output,
+0,pick red->0,
+Nodes,Type,Output (Node -> Input)
+0,operator{RgetR[]S},
+1,operator{R[]where==R[]TC},0->0
+2,param{const txt=color},1->1
+3,param{const color=red},1->2
+4,param{ref[]:resources},1->0
+5,operator{SminIdS[]},0->1
+6,operator{S[]distV[]V},5->0
+7,operator{VgetRT},6->1
+8,param{ref:self},7->0
+9,param{const txt=curPos},7->1
+10,operator{V[]getR[]T},6->0
+11,param{const txt=pos},10->1
+12,operator{R[]where==R[]TC},10->0
+13,param{const txt=color},12->1
+14,param{const color=red},12->2
+15,param{ref[]:resources},12->0
+
+Syntax Tree,output,
+1,goto elsewhere->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VrandCircleVS},0->0
+2,param{const scal=20},1->1
+3,operator{VgetRT},1->0
+4,param{ref:self},3->0
+5,param{const txt=curPos},3->1
+,,
+Syntax Tree,output,
+1,goto search->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VgetRT},0->0
+2,param{ref:self},1->0
+3,param{const txt=trgPos},1->1
