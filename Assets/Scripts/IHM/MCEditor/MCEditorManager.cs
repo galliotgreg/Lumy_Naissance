@@ -1151,17 +1151,6 @@ public class MCEditorManager : MonoBehaviour {
     {
 
     }
-    void ShiftIdTransition(int id_transition_to_remove)
-    {
-        //decrement the ID of the following transitions
-        foreach (ABTransition trans in abModel.Transitions)
-        {
-            if (trans.Id > id_transition_to_remove)
-            {
-                trans.Id--;
-            }
-        }
-    }
 	void DeleteTransition( ProxyABTransition transition )
     {
 		if (transition != null) {
@@ -1193,7 +1182,7 @@ public class MCEditorManager : MonoBehaviour {
 						}
 					}
                 }
-                ShiftIdTransition(id_transition_to_remove);
+                abModel.shiftIDTransition(id_transition_to_remove);
             } else
             {
                 RemoveTransitionSyntTree(transition);
