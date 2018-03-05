@@ -121,13 +121,28 @@ public class ABModel {
 	}
 
 	public ABTransition getTransition(int id){
-		foreach( ABTransition t in transitions ){
+		foreach(ABTransition t in transitions ){
 			if (t.Id == id) {
 				return t;
 			}
 		}
 		return null;
 	}
+
+    public ABTransition shiftIDTransition(int id)
+    {
+        lastTransitionId--;
+        //decrement the ID of the following transitions
+        foreach (ABTransition t in transitions)
+        {
+            if (t.Id > id)
+            {
+                t.Id--;
+            }
+        }
+        return null;
+    }
+
 
     public void SetCondition(int transitionId, AB_BoolGate_Operator condition)
     {
@@ -222,4 +237,19 @@ public class ABModel {
 		}
 		return null;
 	}
+
+	#region DELETE
+	public bool delete( ABState _state ){
+		ABState state = getState ( _state.Id );
+		if( state != null ){
+			return states.Remove ( state );
+		}
+		return false;
+	}
+	public bool delete( ABTransition _transition ){
+		ABState start = getState ( _transition.Start.Id );
+		ABState end = getState ( _transition.End.Id );
+		return UnlinkStates (start.Name, end.Name);
+	}
+	#endregion
 }

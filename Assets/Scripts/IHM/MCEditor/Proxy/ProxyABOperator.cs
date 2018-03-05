@@ -220,5 +220,10 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		// Nothing to do
 	}
 
+	public override void deleteProxy ()
+	{
+		MCEditorManager.instance.deleteProxy ( this );
+	}
+
 	#endregion
 }
