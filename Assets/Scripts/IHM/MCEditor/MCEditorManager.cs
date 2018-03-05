@@ -558,21 +558,21 @@ public class MCEditorManager : MonoBehaviour {
                 csvcontent.AppendLine(((IABParam)param.AbParam).Identifier + " " + type + "=" + value + "," + param.transform.position.x.ToString() + ", "
                                                                                                     + param.transform.position.y.ToString() + ", "
                                                                                                     + param.transform.position.z.ToString());
-            }
-            if (File.Exists(csvpath))
-            {                
-                File.WriteAllText(csvpath, csvcontent.ToString());
-            } else
-            {
-                File.AppendAllText(csvpath, csvcontent.ToString());
             }            
-            Debug.Log("Save MC Position");
         }
+        if (File.Exists(csvpath))
+        {
+            File.WriteAllText(csvpath, csvcontent.ToString());
+        }
+        else
+        {
+            File.AppendAllText(csvpath, csvcontent.ToString());
+        }
+        Debug.Log("Save MC Position");
     }
 
     public void Save_MC()
-    {
-        /* TODO : TEST remove test*/  
+    {        
         string csvpath = MC_OrigFilePath;
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
@@ -616,8 +616,10 @@ public class MCEditorManager : MonoBehaviour {
         }
         csvcontent.AppendLine(",,");
         csvcontent.AppendLine("Transitions,Start State,End State");
-        foreach(ABTransition trans in abModel.Transitions)
+        int last_id = 0;
+        foreach (ABTransition trans in abModel.Transitions)
         {
+            //trans.Id = last_id;
             csvcontent.AppendLine(trans.Id + "," + trans.Start.Name + "," + trans.End.Name);
             if (trans.Condition != null)
             {
@@ -635,8 +637,12 @@ public class MCEditorManager : MonoBehaviour {
                     }
                     syntTreeContent.AppendLine(",,");
                     syntTrees.Add(syntTreeContent);
+                    //last_id++;
                 }
+
             }
+
+
         }
         csvcontent.AppendLine(",,");        
         File.WriteAllText(csvpath, csvcontent.ToString());
@@ -869,9 +875,14 @@ public class MCEditorManager : MonoBehaviour {
 
         incomeOpeParent = income.GetComponentInParent<ProxyABOperator>();
         outcomeOpeParent = outcome.GetComponentInParent<ProxyABOperator>();
-        //TODO : Gestion du pin courant
-        incomeOpeParent.Inputs[incomeOpeParent.CurPinIn] = (ABNode)outcomeOpeParent.AbOperator;
-        ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
+
+        int availeblePin = incomeOpeParent.GetAvailablePinEnter();
+
+        if (availeblePin != -1)
+        {
+            incomeOpeParent.Inputs[availeblePin] = (ABNode)outcomeOpeParent.AbOperator;
+            ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
+        }                
     }
 
     private void LinkOperator_Param(Pin ope, Pin param)
@@ -1141,8 +1152,17 @@ public class MCEditorManager : MonoBehaviour {
     {
 
     }
-
-
+    void ShiftIdTransition(int id_transition_to_remove)
+    {
+        //decrement the ID of the following transitions
+        foreach (ABTransition trans in abModel.Transitions)
+        {
+            if (trans.Id > id_transition_to_remove)
+            {
+                trans.Id--;
+            }
+        }
+    }
 
     void Move()
     {
@@ -1350,11 +1370,15 @@ public class MCEditorManager : MonoBehaviour {
 
     private void UnlinkOperator_Operator(ProxyABOperator proxyOpeStart, ProxyABOperator proxyOpeEnd)
     {
+        bool startIsChanged = false;
+        bool endIsChanged = false;
+
         for (int i = 0; i < proxyOpeStart.Inputs.Length; i++)
         {
             if (proxyOpeStart.Inputs[i] == ((ABNode)(proxyOpeEnd.AbOperator)))
             {
                 proxyOpeStart.Inputs[i] = null;
+                startIsChanged = true;
             }
         }
         for (int i = 0; i < proxyOpeEnd.Inputs.Length; i++)
@@ -1362,6 +1386,21 @@ public class MCEditorManager : MonoBehaviour {
             if (proxyOpeEnd.Inputs[i] == ((ABNode)(proxyOpeStart.AbOperator)))
             {
                 proxyOpeEnd.Inputs[i] = null;
+                endIsChanged = true;
+            }
+        }
+        if (startIsChanged)
+        {
+            if (proxyOpeStart.AbOperator.GetType().ToString().Contains("Agg"))
+            {
+                proxyOpeStart.AbOperator.Inputs = RebuiltInputTableForAggOperator(proxyOpeStart.AbOperator.Inputs);
+            }
+        }
+        if (endIsChanged)
+        {
+            if (proxyOpeEnd.AbOperator.GetType().ToString().Contains("Agg"))
+            {
+                proxyOpeEnd.AbOperator.Inputs = RebuiltInputTableForAggOperator(proxyOpeEnd.AbOperator.Inputs);
             }
         }
     }
@@ -1383,6 +1422,25 @@ public class MCEditorManager : MonoBehaviour {
                 }                    
             }            
         }
+        if (proxyOpeStart.AbOperator.GetType().ToString().Contains("Agg"))
+        {
+            proxyOpeStart.AbOperator.Inputs = RebuiltInputTableForAggOperator(proxyOpeStart.AbOperator.Inputs);
+        }
+    }
+
+    private ABNode[] RebuiltInputTableForAggOperator(ABNode[] inputs)
+    {
+        ABNode[] result = new ABNode[32];
+        int i = 0;
+        foreach(ABNode node in inputs)
+        {
+            if(node != null)
+            {
+                result[i] = node;
+                i++;
+            }
+        }
+        return result;
     }
 
     void DisplayStates()
@@ -1550,12 +1608,14 @@ public class MCEditorManager : MonoBehaviour {
 	public void selectTransition( ProxyABTransition transition ){
 		this.transition_Selected = transition;
 	}
-	void deleteSelectedTransition(){
-		if (this.transition_Selected != null) {
-			this.DeleteTransition (this.transition_Selected);
-			this.transition_Selected = null;
-		}
-	}
+    void deleteSelectedTransition()
+    {
+        if (this.transition_Selected != null)
+        {
+            this.DeleteTransition(this.transition_Selected);
+            this.transition_Selected = null;
+        }
+    }
 	#endregion
 
 	#region Delete UI Proxy
