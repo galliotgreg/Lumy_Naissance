@@ -22,6 +22,9 @@ public class ProxyABState : MCEditor_Proxy {
 
         set
         {
+            UnityEngine.UI.Text stateName = this.GetComponentInChildren<UnityEngine.UI.Text>();
+            stateName.text = value;
+            abState.Name = value;
             name = value;
         }
     }
@@ -166,9 +169,7 @@ public class ProxyABState : MCEditor_Proxy {
 		result.IsLoaded = true;
 		result.transform.position = position;
 		result.AbState = state;
-
-		UnityEngine.UI.Text stateName = result.GetComponentInChildren<UnityEngine.UI.Text>();
-		stateName.text = state.Name;
+        result.Name = state.Name;
 
 		result.GetComponent<ProxyABState>().AbState = state;
 
