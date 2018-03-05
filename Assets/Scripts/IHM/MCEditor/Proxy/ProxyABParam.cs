@@ -157,5 +157,10 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		MCEditor_DialogBoxManager.instance.instantiateValue (this, pos);
 	}
 
+	public override void deleteProxy ()
+	{
+		MCEditorManager.instance.deleteProxy ( this );
+	}
+
 	#endregion
 }

@@ -107,7 +107,7 @@ public class GotoAction : GameAction {
 
             Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
             dest.y = agentAttr.transform.position.y;
-        //    Debug.DrawLine(position, dest, Color.blue);
+            Debug.DrawLine(position, dest, Color.blue);
             if (path.status == NavMeshPathStatus.PathPartial)
             {
                 agentAttr.TrgPos = agentAttr.CurPos;

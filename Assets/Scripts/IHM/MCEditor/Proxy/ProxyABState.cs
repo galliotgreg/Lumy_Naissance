@@ -203,5 +203,10 @@ public class ProxyABState : MCEditor_Proxy {
 		}
 	}
 
+	public override void deleteProxy ()
+	{
+		MCEditorManager.instance.deleteProxy ( this );
+	}
+
 	#endregion
 }

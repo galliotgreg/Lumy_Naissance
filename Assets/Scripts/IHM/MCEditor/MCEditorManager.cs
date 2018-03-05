@@ -115,6 +115,7 @@ public class MCEditorManager : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.Delete))
 		{
 			this.deleteSelectedTransition ();
+			this.deleteSelectedProxies ();
 		}
     }
 
@@ -557,21 +558,21 @@ public class MCEditorManager : MonoBehaviour {
                 csvcontent.AppendLine(((IABParam)param.AbParam).Identifier + " " + type + "=" + value + "," + param.transform.position.x.ToString() + ", "
                                                                                                     + param.transform.position.y.ToString() + ", "
                                                                                                     + param.transform.position.z.ToString());
-            }
-            if (File.Exists(csvpath))
-            {                
-                File.WriteAllText(csvpath, csvcontent.ToString());
-            } else
-            {
-                File.AppendAllText(csvpath, csvcontent.ToString());
             }            
-            Debug.Log("Save MC Position");
         }
+        if (File.Exists(csvpath))
+        {
+            File.WriteAllText(csvpath, csvcontent.ToString());
+        }
+        else
+        {
+            File.AppendAllText(csvpath, csvcontent.ToString());
+        }
+        Debug.Log("Save MC Position");
     }
 
     public void Save_MC()
-    {
-        /* TODO : TEST remove test*/  
+    {        
         string csvpath = MC_OrigFilePath;
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
@@ -615,8 +616,10 @@ public class MCEditorManager : MonoBehaviour {
         }
         csvcontent.AppendLine(",,");
         csvcontent.AppendLine("Transitions,Start State,End State");
-        foreach(ABTransition trans in abModel.Transitions)
+        int last_id = 0;
+        foreach (ABTransition trans in abModel.Transitions)
         {
+            //trans.Id = last_id;
             csvcontent.AppendLine(trans.Id + "," + trans.Start.Name + "," + trans.End.Name);
             if (trans.Condition != null)
             {
@@ -634,8 +637,12 @@ public class MCEditorManager : MonoBehaviour {
                     }
                     syntTreeContent.AppendLine(",,");
                     syntTrees.Add(syntTreeContent);
+                    //last_id++;
                 }
+
             }
+
+
         }
         csvcontent.AppendLine(",,");        
         File.WriteAllText(csvpath, csvcontent.ToString());
@@ -769,6 +776,7 @@ public class MCEditorManager : MonoBehaviour {
             available = stateAvailable(candidateName);
         }
         proxyState.Name = candidateName;
+		state.Name = candidateName;
 
         if (available) {
 			if (AbModel.getState (state.Id) == null) {
@@ -868,9 +876,14 @@ public class MCEditorManager : MonoBehaviour {
 
         incomeOpeParent = income.GetComponentInParent<ProxyABOperator>();
         outcomeOpeParent = outcome.GetComponentInParent<ProxyABOperator>();
-        //TODO : Gestion du pin courant
-        incomeOpeParent.Inputs[incomeOpeParent.CurPinIn] = (ABNode)outcomeOpeParent.AbOperator;
-        ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
+
+        int availeblePin = incomeOpeParent.GetAvailablePinEnter();
+
+        if (availeblePin != -1)
+        {
+            incomeOpeParent.Inputs[availeblePin] = (ABNode)outcomeOpeParent.AbOperator;
+            ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
+        }                
     }
 
     private void LinkOperator_Param(Pin ope, Pin param)
@@ -1140,45 +1153,16 @@ public class MCEditorManager : MonoBehaviour {
     {
 
     }
-
-	void DeleteTransition( ProxyABTransition transition )
+    void ShiftIdTransition(int id_transition_to_remove)
     {
-		if (transition != null) {
-
-            // Transition between Action/State and Action/State
-            if (transition.Condition != null)
+        //decrement the ID of the following transitions
+        foreach (ABTransition trans in abModel.Transitions)
+        {
+            if (trans.Id > id_transition_to_remove)
             {
-				if ( (!(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut)
-					|| !(transition.StartPosition.Pin_Type == Pin.PinType.Param) )
-					&& (!(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut)
-					|| !(transition.EndPosition.Pin_Type == Pin.PinType.Param)))
-                {
-                    AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
-					// Update Pins
-					if( transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut ){
-						((ProxyABState)transition.StartPosition.ProxyParent).checkPins ();
-					}
-					if( transition.EndPosition.ProxyParent is ProxyABState && transition.EndPosition.Pin_Type == Pin.PinType.TransitionOut ){
-						((ProxyABState)transition.EndPosition.ProxyParent).checkPins ();
-					}
-					// Delete Condition transition
-					if( transition.Condition.AssociatedTransitions.Count > 0 ){
-						foreach (ProxyABTransition trans in transition.Condition.AssociatedTransitions) {
-							DeleteTransition (trans);
-						}
-					}
-                }
-            } else
-            {
-                RemoveTransitionSyntTree(transition);
+                trans.Id--;
             }
-            // Unlink            
- 		               
-			// Remove Pin
-			// Destroy( transition.Condition.gameObject );
-			// Destroy Object
-			Destroy (transition.gameObject);
-		}
+        }
     }
 
     void Move()
@@ -1387,11 +1371,15 @@ public class MCEditorManager : MonoBehaviour {
 
     private void UnlinkOperator_Operator(ProxyABOperator proxyOpeStart, ProxyABOperator proxyOpeEnd)
     {
+        bool startIsChanged = false;
+        bool endIsChanged = false;
+
         for (int i = 0; i < proxyOpeStart.Inputs.Length; i++)
         {
             if (proxyOpeStart.Inputs[i] == ((ABNode)(proxyOpeEnd.AbOperator)))
             {
                 proxyOpeStart.Inputs[i] = null;
+                startIsChanged = true;
             }
         }
         for (int i = 0; i < proxyOpeEnd.Inputs.Length; i++)
@@ -1399,6 +1387,21 @@ public class MCEditorManager : MonoBehaviour {
             if (proxyOpeEnd.Inputs[i] == ((ABNode)(proxyOpeStart.AbOperator)))
             {
                 proxyOpeEnd.Inputs[i] = null;
+                endIsChanged = true;
+            }
+        }
+        if (startIsChanged)
+        {
+            if (proxyOpeStart.AbOperator.GetType().ToString().Contains("Agg"))
+            {
+                proxyOpeStart.AbOperator.Inputs = RebuiltInputTableForAggOperator(proxyOpeStart.AbOperator.Inputs);
+            }
+        }
+        if (endIsChanged)
+        {
+            if (proxyOpeEnd.AbOperator.GetType().ToString().Contains("Agg"))
+            {
+                proxyOpeEnd.AbOperator.Inputs = RebuiltInputTableForAggOperator(proxyOpeEnd.AbOperator.Inputs);
             }
         }
     }
@@ -1420,6 +1423,25 @@ public class MCEditorManager : MonoBehaviour {
                 }                    
             }            
         }
+        if (proxyOpeStart.AbOperator.GetType().ToString().Contains("Agg"))
+        {
+            proxyOpeStart.AbOperator.Inputs = RebuiltInputTableForAggOperator(proxyOpeStart.AbOperator.Inputs);
+        }
+    }
+
+    private ABNode[] RebuiltInputTableForAggOperator(ABNode[] inputs)
+    {
+        ABNode[] result = new ABNode[32];
+        int i = 0;
+        foreach(ABNode node in inputs)
+        {
+            if(node != null)
+            {
+                result[i] = node;
+                i++;
+            }
+        }
+        return result;
     }
 
     void DisplayStates()
@@ -1456,7 +1478,109 @@ public class MCEditorManager : MonoBehaviour {
     }
 	#endregion
 
-	#region Transition Create Delete
+	#region Delete Model
+	void DeleteTransition( ProxyABTransition transition )
+	{
+		if (transition != null) {
+
+			// Transition between Action/State and Action/State
+			if (transition.Condition != null)
+			{
+				if ( !(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut	|| transition.StartPosition.Pin_Type == Pin.PinType.Param)
+					&& !(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut || transition.EndPosition.Pin_Type == Pin.PinType.Param) )
+				{
+					AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
+					// Update Pins
+					if( transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut ){
+						((ProxyABState)transition.StartPosition.ProxyParent).checkPins ();
+					}
+					if( transition.EndPosition.ProxyParent is ProxyABState && transition.EndPosition.Pin_Type == Pin.PinType.TransitionOut ){
+						((ProxyABState)transition.EndPosition.ProxyParent).checkPins ();
+					}
+					// Delete Condition transition
+					if( transition.Condition.AssociatedTransitions.Count > 0 ){
+						foreach (ProxyABTransition trans in transition.Condition.AssociatedTransitions) {
+							DeleteTransition (trans);
+						}
+					}
+				}
+			} else
+			{
+				RemoveTransitionSyntTree(transition);
+			}
+			// Unlink            
+
+			// Remove Pin
+			// Destroy( transition.Condition.gameObject );
+			// Destroy Object
+			Destroy (transition.gameObject);
+		}
+	}
+
+	void deleteTransitions( MCEditor_Proxy _proxy ){
+		// remove transitions
+		List<Pin> pins = _proxy.AllPins;
+		foreach( Pin _pin in pins ){
+			foreach( ProxyABTransition _transition in _pin.AssociatedTransitions ){
+				DeleteTransition ( _transition );
+			}
+		}
+	}
+
+	public void deleteProxy( ProxyABState _state ){
+		// check init
+		if (_state.AbState.Id != AbModel.InitStateId) {
+			ABState state = AbModel.getState (_state.AbState.Id);
+
+			// remove transitions
+			deleteTransitions (_state);
+
+			// Remove from model
+			if (state != null) {
+				AbModel.delete (state);
+				proxyStates.Remove (_state);
+				statesDictionnary.Remove (state);
+			}
+
+			Destroy (_state.gameObject);
+		}
+	}
+	public void deleteProxy( ProxyABAction _action ){
+		ABState action = AbModel.getState (_action.AbState.Id);
+
+		// remove transitions
+		deleteTransitions( _action );
+
+		// Remove from model
+		if (action != null) {
+			AbModel.delete( action );
+			proxyActions.Remove (_action);
+			actionsDictionnary.Remove ( action );
+		}
+
+		Destroy ( _action.gameObject );
+	}
+	public void deleteProxy( ProxyABOperator _operator ){
+		// remove transitions
+		deleteTransitions( _operator );
+
+		// Remove from model
+		proxyOperators.Remove (_operator);
+
+		Destroy ( _operator.gameObject );
+	}
+	public void deleteProxy( ProxyABParam _param ){
+		// remove transitions
+		deleteTransitions( _param );
+
+		// Remove from model
+		proxyParams.Remove (_param);
+
+		Destroy ( _param.gameObject );
+	}
+	#endregion
+
+	#region Transition UI Create Delete
 	Pin transition_Pin_Start = null;
 	ProxyABTransition transition_Selected = null;
 
@@ -1485,10 +1609,21 @@ public class MCEditorManager : MonoBehaviour {
 	public void selectTransition( ProxyABTransition transition ){
 		this.transition_Selected = transition;
 	}
-	void deleteSelectedTransition(){
-		if (this.transition_Selected != null) {
-			this.DeleteTransition (this.transition_Selected);
-			this.transition_Selected = null;
+    void deleteSelectedTransition()
+    {
+        if (this.transition_Selected != null)
+        {
+            this.DeleteTransition(this.transition_Selected);
+            this.transition_Selected = null;
+        }
+    }
+	#endregion
+
+	#region Delete UI Proxy
+	void deleteSelectedProxies(){
+		MCEditor_Proxy proxy = MCEditor_Proxy.clicked;
+		if (proxy != null) {
+			proxy.deleteProxy ();
 		}
 	}
 	#endregion

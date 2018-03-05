@@ -63,6 +63,8 @@ public class MC_Inventory_Params : MC_Inventory {
 	protected override void configItem (MC_InventoryItem item)
 	{
 		item.Text.text = ((IABParam)item.Item).Identifier;
+
+		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Param;
 	}
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
