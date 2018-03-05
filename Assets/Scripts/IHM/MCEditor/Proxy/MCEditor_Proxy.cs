@@ -71,7 +71,8 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 	}
 	#endregion
 
-	//public abstract void click ();
+	public static MCEditor_Proxy clicked = null;	// TEST for delete : selected proxy
+	public abstract void deleteProxy ();
 	public abstract void doubleClick ();
 
 	#region IPointerClickHandler implementation
@@ -83,6 +84,7 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 	{
 		if (lastClick > 0 && Time.time - lastClick < doubleClickIntervalMseconds/1000f) {
 			doubleClick ();
+			clicked = this;
 		}
 		lastClick = Time.time;
 	}

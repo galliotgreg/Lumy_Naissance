@@ -222,4 +222,19 @@ public class ABModel {
 		}
 		return null;
 	}
+
+	#region DELETE
+	public bool delete( ABState _state ){
+		ABState state = getState ( _state.Id );
+		if( state != null ){
+			return states.Remove ( state );
+		}
+		return false;
+	}
+	public bool delete( ABTransition _transition ){
+		ABState start = getState ( _transition.Start.Id );
+		ABState end = getState ( _transition.End.Id );
+		return UnlinkStates (start.Name, end.Name);
+	}
+	#endregion
 }
