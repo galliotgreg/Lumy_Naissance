@@ -273,6 +273,7 @@ public class AgentScript : MonoBehaviour {
         res.GetComponent<ResourceScript>().Color = resource.Color;
 
         this.carryingResources.Add(res);
+        this.nbItem = 0; 
         foreach(GameObject go in carryingResources)
         {
             int stock = go.GetComponent<ResourceScript>().Stock;
