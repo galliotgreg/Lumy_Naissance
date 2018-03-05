@@ -121,13 +121,28 @@ public class ABModel {
 	}
 
 	public ABTransition getTransition(int id){
-		foreach( ABTransition t in transitions ){
+		foreach(ABTransition t in transitions ){
 			if (t.Id == id) {
 				return t;
 			}
 		}
 		return null;
 	}
+
+    public ABTransition shiftIDTransition(int id)
+    {
+        lastTransitionId--;
+        //decrement the ID of the following transitions
+        foreach (ABTransition t in transitions)
+        {
+            if (t.Id > id)
+            {
+                t.Id--;
+            }
+        }
+        return null;
+    }
+
 
     public void SetCondition(int transitionId, AB_BoolGate_Operator condition)
     {
