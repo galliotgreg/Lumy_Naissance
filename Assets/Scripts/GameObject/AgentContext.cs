@@ -167,7 +167,7 @@ public class AgentContext : MonoBehaviour
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
 
 		// vitality
-		this.model.VitalityMax = 5;
+		this.model.VitalityMax = 50;
 		// strength
 		this.model.Strength = 5;
 		// stamina
@@ -219,7 +219,7 @@ public class AgentContext : MonoBehaviour
 			this.model.VisionRange += comp.VisionRange;
 		}
         this.model.PickRange = 2;
-        this.model.AtkRange = 2;
+        this.model.AtkRange = 4;
 
         this.model.Vitality = this.model.VitalityMax;
 
