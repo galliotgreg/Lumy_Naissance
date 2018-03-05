@@ -108,7 +108,7 @@ public class MCEditorManager : MonoBehaviour {
     private void Update()
     {
         /**START TEST SAVE**/
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             Save_MC();
         }
@@ -615,8 +615,10 @@ public class MCEditorManager : MonoBehaviour {
         }
         csvcontent.AppendLine(",,");
         csvcontent.AppendLine("Transitions,Start State,End State");
-        foreach(ABTransition trans in abModel.Transitions)
+        int last_id = 0;
+        foreach (ABTransition trans in abModel.Transitions)
         {
+            //trans.Id = last_id;
             csvcontent.AppendLine(trans.Id + "," + trans.Start.Name + "," + trans.End.Name);
             if (trans.Condition != null)
             {
@@ -634,8 +636,12 @@ public class MCEditorManager : MonoBehaviour {
                     }
                     syntTreeContent.AppendLine(",,");
                     syntTrees.Add(syntTreeContent);
+                    //last_id++;
                 }
+
             }
+
+
         }
         csvcontent.AppendLine(",,");        
         File.WriteAllText(csvpath, csvcontent.ToString());
@@ -1140,11 +1146,25 @@ public class MCEditorManager : MonoBehaviour {
     {
 
     }
-
+    void ShiftIdTransition(int id_transition_to_remove)
+    {
+        //decrement the ID of the following transitions
+        foreach (ABTransition trans in abModel.Transitions)
+        {
+            if (trans.Id > id_transition_to_remove)
+            {
+                trans.Id--;
+            }
+        }
+    }
 	void DeleteTransition( ProxyABTransition transition )
     {
 		if (transition != null) {
-
+            int id_transition_to_remove = 0;
+            if (transition.Transition != null)
+            {
+                id_transition_to_remove = transition.Transition.Id;
+            }
             // Transition between Action/State and Action/State
             if (transition.Condition != null)
             {
@@ -1168,6 +1188,7 @@ public class MCEditorManager : MonoBehaviour {
 						}
 					}
                 }
+                ShiftIdTransition(id_transition_to_remove);
             } else
             {
                 RemoveTransitionSyntTree(transition);
@@ -1178,7 +1199,8 @@ public class MCEditorManager : MonoBehaviour {
 			// Destroy( transition.Condition.gameObject );
 			// Destroy Object
 			Destroy (transition.gameObject);
-		}
+
+        }
     }
 
     void Move()
@@ -1485,11 +1507,13 @@ public class MCEditorManager : MonoBehaviour {
 	public void selectTransition( ProxyABTransition transition ){
 		this.transition_Selected = transition;
 	}
-	void deleteSelectedTransition(){
-		if (this.transition_Selected != null) {
-			this.DeleteTransition (this.transition_Selected);
-			this.transition_Selected = null;
-		}
-	}
+    void deleteSelectedTransition()
+    {
+        if (this.transition_Selected != null)
+        {
+            this.DeleteTransition(this.transition_Selected);
+            this.transition_Selected = null;
+        }
+    }
 	#endregion
 }

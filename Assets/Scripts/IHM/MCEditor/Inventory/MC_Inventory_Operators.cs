@@ -34,6 +34,8 @@ public class MC_Inventory_Operators : MC_Inventory {
 	protected override void configItem (MC_InventoryItem item)
 	{
 		item.Text.text = MCEditor_Proxy.getNodeName((ABNode)item.Item);
+
+		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Operator;
 	}
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
