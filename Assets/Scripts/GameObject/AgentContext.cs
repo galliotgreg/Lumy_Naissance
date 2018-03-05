@@ -177,7 +177,7 @@ public class AgentContext : MonoBehaviour
 		// moveSpeed
 		this.model.MoveSpd = 5;
 		// nbItemMax
-		this.model.NbItemMax = 1;
+		this.model.NbItemMax = 10;
 		// atkRange
 		this.model.AtkRange = 0;
 		// pickRange
