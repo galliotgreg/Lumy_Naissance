@@ -177,8 +177,7 @@ public class AgentContext : MonoBehaviour
 		// moveSpeed
 		this.model.MoveSpd = 5;
 		// nbItemMax
-		Debug.LogWarning( "TODO : nbItem always 1" );
-		this.model.NbItemMax = 1;
+		this.model.NbItemMax = 10;
 		// atkRange
 		this.model.AtkRange = 0;
 		// pickRange
@@ -196,7 +195,7 @@ public class AgentContext : MonoBehaviour
                 + playerFolder
                 + entity.BehaviorModelIdentifier
                 + ".csv";
-        Debug.Log(path);
+       // Debug.Log(path);
         ABModel behaviorModel = ABManager.instance.LoadABModelFromFile(path);
         AgentScript.ResourceCost cost = getCost( agentComponents, behaviorModel);
 		this.model.ProdCost = cost.Resources;
@@ -204,8 +203,8 @@ public class AgentContext : MonoBehaviour
 		this.model.LayTimeCost = getCooldown( agentComponents );
 		// visionRange
 		this.model.VisionRange = 0;
-
-		foreach( AgentComponent comp in agentComponents ){
+        
+        foreach ( AgentComponent comp in agentComponents ){
 			this.model.VitalityMax += comp.VitalityBuff;
 			this.model.Strength += comp.StrengthBuff;
 			this.model.Stamina += comp.StaminaBuff;
@@ -213,14 +212,16 @@ public class AgentContext : MonoBehaviour
 			this.model.MoveSpd += comp.MoveSpeedBuff;
 			Debug.LogWarning( "TODO : atkRange = visionRange" );
 			Debug.LogWarning( "TODO : difference between visionRange and visionRangeBuff" );
-			this.model.AtkRange += comp.VisionRange;
+			//this.model.AtkRange += comp.VisionRange;
 			Debug.LogWarning( "TODO : pickRange = visionRange" );
-			this.model.PickRange += comp.VisionRange;
+			//this.model.PickRange += comp.VisionRange;
 
 			this.model.VisionRange += comp.VisionRange;
 		}
+        this.model.PickRange = 2;
+        this.model.AtkRange = 2;
 
-		this.model.Vitality = this.model.VitalityMax;
+        this.model.Vitality = this.model.VitalityMax;
 
 		// TODO test : remove
 		/*if (this.model.LayTimeCost<= 0) {

@@ -52,7 +52,7 @@ public class DragDropScript : MonoBehaviour
 
             //update target current postion.
             getTarget.transform.position = currentPosition;
-            Debug.Log("nouvelle pos du node :" + getTarget.transform.position);
+            //Debug.Log("nouvelle pos du node :" + getTarget.transform.position);
         }
     }
 

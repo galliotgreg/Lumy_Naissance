@@ -152,5 +152,10 @@ public static Vector3 calculateActionPosition( Transform parent ){
 		// Nothing to do
 	}
 
+	public override void deleteProxy ()
+	{
+		MCEditorManager.instance.deleteProxy ( this );
+	}
+
 	#endregion
 }

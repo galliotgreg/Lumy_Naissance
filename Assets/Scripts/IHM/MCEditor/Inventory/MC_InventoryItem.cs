@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 
+	/// <summary>
+	/// The inventory that contains the item
+	/// </summary>
+	protected MC_Inventory inventory;
+	/// <summary>
+	/// The item that is represented by the Inventory Item
+	/// </summary>
+	protected System.Object item;
+
+	[SerializeField]
+	UnityEngine.UI.Text text;
+
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		RectTransform rect = GetComponent<RectTransform>();
 		rect.localScale = new Vector3 (1, 1, 1);
 	}
 
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
 	}
-
-	protected System.Object item;
 
 	public System.Object Item {
 		get {
@@ -25,8 +35,6 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		}
 	}
 
-	MC_Inventory inventory;
-
 	public MC_Inventory Inventory {
 		get {
 			return inventory;
@@ -36,8 +44,6 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		}
 	}
 
-	[SerializeField]
-	UnityEngine.UI.Text text;
 
 	public UnityEngine.UI.Text Text {
 		get {
