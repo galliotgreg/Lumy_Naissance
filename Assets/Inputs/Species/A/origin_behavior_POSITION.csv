@@ -1,0 +1,118 @@
+States,Position
+INIT, 3.712639, 6.715571, 0
+green ressource found, -6.202591, 3.430135, 0
+red ressource found, 8.430444, 8.627791, 0
+,,
+Actions,Position
+goto elsewhere, -7.646203, 5.10871, 0
+goto search, 10.98968, 2.596841, 0
+trace green, -3.691352, -5.800159, 0
+goto green, -7.479972, -0.76464, 0
+trace red, 12.29577, 5.917651, 0
+goto red, 13.79747, 0.9290398, 0
+,,
+Operators,Position
+V[]aggV*, -9.031423, 3.834302, 0
+VrandCircleVS, -9.123773, 0.4912919, 0
+V[]aggV*, -2.073641, -1.19472, 0
+V[]aggV*, -2.719453, -8.681407, 0
+VgetRT, -0.4810914, -10.54361, 0
+V[]aggV*, -8.034062, -3.165698, 0
+VgetRT, -8.237231, -4.495509, 0
+RgetR[]S, -8.616982, -5.666881, 0
+SminIdS[], -9.853593, -4.772159, 0
+S[]distV[]V, -11.75596, -3.497748, 0
+V[]getR[]T, -13.14119, -2.334159, 0
+R[]where==R[]TC, -13.38129, -1.207507, 0
+R[]where==R[]TC, -9.281882, -6.461078, 0
+V[]aggV*, 2.926359, 3.805282, 0
+VgetRT, -1.073641, 2.80528, 0
+V[]aggV*, -4.073642, -0.1947204, 0
+VgetRT, -3.827043, -1.943198, 0
+RgetR[]S, 1.847209, -2.35303, 0
+SminIdS[], 3.926359, -0.1947204, 0
+S[]distV[]V, -1.073641, 0.8052796, 0
+V[]getR[]T, -3.073642, -0.1947204, 0
+R[]where==R[]TC, -8.496041, -11.7467, 0
+R[]where==R[]TC, 10.84165, -3.993251, 0
+B>SS, -0.0736407, -2.19472, 0
+SsizeS[], -0.0736407, 0.8052796, 0
+R[]where==R[]TC, 3.063283, -8.019636, 0
+B>SS, 6.530343, 11.43799, 0
+SsizeS[], 9.414248, 12.20053, 0
+R[]where==R[]TC, 12.79156, 10.8496, 0
+B!=VV, 2.926359, -1.19472, 0
+B&&BB, -0.0736407, 0.8052796, 0
+B<SS, -5.073642, -3.19472, 0
+SminValS[], -0.0736407, 2.80528, 0
+S[]distV[]V, 13.92612, -5.245383, 0
+VgetRT, 3.926359, -2.19472, 0
+R[]where==R[]TC, -1.073641, 1.80528, 0
+B==SS, -4.073642, 2.80528, 0
+SsizeS[], 6.382182, -5.441448, 0
+R[]where==R[]TC, 8.266086, -6.676276, 0
+B&&BB, -1.073641, 1.80528, 0
+B<SS, -0.0736407, -1.19472, 0
+SminValS[], 0.9263593, 2.80528, 0
+S[]distV[]V, 1.926359, -0.1947204, 0
+VgetRT, 12.18997, -2.722955, 0
+R[]where==R[]TC, 1.926359, -3.19472, 0
+B==SS, 10.35356, -8.802111, 0
+SsizeS[], 11.52507, -7.25066, 0
+R[]where==R[]TC, 0.9263593, 1.80528, 0
+,,
+Parameters,Position
+vec:curPos,-9.142241, -0.7276984, 0
+const scal=20,-9.640922, 1.39631, 0
+vec:trgPos,6.192208, -2.465195, 0
+const color=Green,-5.353383, -6.364299, 0
+ref:home,-2.198771, -10.69137, 0
+const txt=position,1.273529, -10.61749, 0
+ref[]:res,-13.28894, -0.1178008, 0
+const txt=color,-12.38393, -0.2655593, 0
+const color=Green,-12.05148, -1.059749, 0
+const txt=position,-12.12536, -1.66925, 0
+vec:curPos,-10.90636, -2.66661, 0
+ref[]:res,-8.321462, -7.273738, 0
+const txt=color,-11.0365, -4.9281, 0
+const color=Green,-10.24231, -7.089049, 0
+const txt=position,-9.142241, -3.775199, 0
+const color=Red,1.926359, -0.1947204, 0
+ref:home,0.9263593, 0.8052796, 0
+const txt=position,-1.931398, 3.609498, 0
+ref[]:res,-11.89446, -11.37731, 0
+const txt=color,-11.82058, -9.6781, 0
+const color=Red,-5.073642, -3.19472, 0
+const txt=position,8.028619, -1.277859, 0
+vec:curPos,1.873789, -0.7724296, 0
+ref[]:res,11.09495, -5.053937, 0
+const txt=color,-3, -4, 0
+const color=Red,-3, -4, 0
+const txt=position,2, -2, 0
+ref[]:res,-1, 4, 0
+const txt=color,2, 4, 0
+const color=Green,-3, 0, 0
+const scal=0,2, -2, 0
+ref[]:res,11.94723, 13.1715, 0
+const txt=color,16.04222, 10.13193, 0
+const color=Red,14.01583, 13.1715, 0
+const scal=0,4.947228, 11.35884, 0
+vec:curPos,-4, 2, 0
+vec:trgPos,4, -3, 0
+const txt=population,0, 1, 0
+vec:curPos,-4, 3, 0
+const scal=1,-2, -5, 0
+const scal=0,-3, 2, 0
+ref[]:traces,-5, 2, 0
+const txt=color,-4, -2, 0
+const color=Green,3, -2, 0
+ref[]:res,-1, 2, 0
+const txt=color,-2, -2, 0
+const color=Red,-1, -2, 0
+const txt=population,-5, 2, 0
+vec:curPos,4, -3, 0
+const scal=1,-4, -2, 0
+const scal=0,4.496042, -8.042217, 0
+ref[]:traces,0, -3, 0
+const txt=color,-3, 3, 0
+const color=Red,-3, 4, 0
