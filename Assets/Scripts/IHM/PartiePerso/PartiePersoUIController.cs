@@ -156,9 +156,10 @@ public class PartiePersoUIController : MonoBehaviour {
         
         //Load Species
         AppContextManager.instance.LoadPlayerSpecies(player1SpecieName, player2SpecieName);
-        
+
         //Launch
-        NavigationManager.instance.SwapScenes("MapPersonnalise", Vector3.zero);
+        //NavigationManager.instance.SwapScenes("MapPersonnalise", Vector3.zero);
+        NavigationManager.instance.SwapScenes("map2", Vector3.zero);
     }
 
     private void SelectP1ActiveSwarm(string swarmName)
