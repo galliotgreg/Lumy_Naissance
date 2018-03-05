@@ -212,9 +212,9 @@ public class AgentContext : MonoBehaviour
 			this.model.MoveSpd += comp.MoveSpeedBuff;
 			Debug.LogWarning( "TODO : atkRange = visionRange" );
 			Debug.LogWarning( "TODO : difference between visionRange and visionRangeBuff" );
-			this.model.AtkRange += comp.VisionRange;
+			//this.model.AtkRange += comp.VisionRange;
 			Debug.LogWarning( "TODO : pickRange = visionRange" );
-			this.model.PickRange += comp.VisionRange;
+			//this.model.PickRange += comp.VisionRange;
 
 			this.model.VisionRange += comp.VisionRange;
 		}
