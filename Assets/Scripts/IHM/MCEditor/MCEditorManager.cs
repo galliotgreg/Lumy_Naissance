@@ -776,6 +776,7 @@ public class MCEditorManager : MonoBehaviour {
             available = stateAvailable(candidateName);
         }
         proxyState.Name = candidateName;
+		state.Name = candidateName;
 
         if (available) {
 			if (AbModel.getState (state.Id) == null) {

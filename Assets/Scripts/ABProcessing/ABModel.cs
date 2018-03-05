@@ -56,10 +56,20 @@ public class ABModel {
     }
 
 	public ABState getState( int stateID ){
+		foreach( ABState state in states ){
+			if (state.Id == stateID) {
+				return state;
+			}
+		}
+		return null;
+		// ATTENTION : does not work due the deletion
+		/*
 		if (stateID < 0 || stateID >= states.Count) {
 			return null;
 		}
+		return 
 		return states [stateID];
+		*/
 	}
 
     //CONSTRUCTION
