@@ -29,6 +29,11 @@ public class CastesUIController : MonoBehaviour {
     }
 
     [SerializeField]
+    private float TREE_H_MARGIN = 4;
+    [SerializeField]
+    private float TREE_V_MARGIN = 2;
+
+    [SerializeField]
     private GameObject swarmSelectionBtnPrefab;
 
     [SerializeField]
@@ -41,7 +46,14 @@ public class CastesUIController : MonoBehaviour {
     private GameObject UICastPrefab;
 
     [SerializeField]
+    private GameObject UICastPlaceHoldePrefab;
+
+    [SerializeField]
     private GameObject rootUICast;
+
+    private IList<Cast> castLeaves;
+
+    private IList<GameObject> UICasts;
 
     // Use this for initialization
     void Start () {
@@ -56,6 +68,8 @@ public class CastesUIController : MonoBehaviour {
         {
             Destroy(rootUICast);
         }
+        castLeaves = new List<Cast>();
+        UICasts = new List<GameObject>();
 
         UICastPrefab.transform.position = new Vector3(0f, 295f, 0);
         UICastPrefab.transform.localScale = new Vector3(100f, 100f, 1f);
@@ -64,11 +78,14 @@ public class CastesUIController : MonoBehaviour {
 
         Cast origin = AppContextManager.instance.ActiveSpecie.Casts["origin"];
         RecCreateTree(origin, rootUICast);
-
+        LayoutTree(rootUICast);
     }
 
     private void RecCreateTree(Cast node, GameObject nodeUICast)
     {
+        //Register node
+        UICasts.Add(nodeUICast);
+
         //Configure Node
         GameObject lumyBtnTxtObj = nodeUICast.transform.Find("PanelLumy/btn_Lumy/Text").gameObject;
         Text lumyBtnTxt = lumyBtnTxtObj.GetComponent<Text>();
@@ -86,7 +103,71 @@ public class CastesUIController : MonoBehaviour {
 
             RecCreateTree(node.Childs[0], leftChild);
             RecCreateTree(node.Childs[1], rightChild);
+        } else
+        {
+            castLeaves.Add(node);
         }
+    }
+
+    private void LayoutTree(GameObject rootUICast)
+    {
+        //Compute tree height
+        int treeHeight = 0;
+        foreach (Cast cast in castLeaves)
+        {
+            int curHeight = ComputeLeaveHeight(cast);
+            if (curHeight > treeHeight)
+            {
+                treeHeight = curHeight;
+            }
+        }
+
+        //Fill tree step tables
+        IList<IList<GameObject>> treeSteps = new List<IList<GameObject>>();
+        for (int i = 0; i < treeHeight; i++)
+        {
+            treeSteps.Add(new List<GameObject>());
+        }
+        foreach (GameObject UICast in UICasts)
+        {
+            string key = GetCastKeyFromUICast(UICast);
+            Cast curCast = AppContextManager.instance.ActiveSpecie.Casts[key];
+            treeSteps[ComputeLeaveHeight(curCast) - 1].Add(UICast);
+        }
+
+        //Layout
+        for (int step = 0; step < treeSteps.Count; step++)
+        {
+            for (int offset = 0; offset < treeSteps[step].Count; offset++)
+            {
+                GameObject UICast = treeSteps[step][offset];
+                float stepLenght = (treeSteps[step].Count - 1) * TREE_H_MARGIN;
+                float leftBound = -stepLenght / 2f;
+                float x = leftBound + offset * TREE_H_MARGIN;
+                float y = 295 - step * TREE_V_MARGIN;
+                UICast.transform.position = new Vector3(x, y, 0f);
+            }
+        }
+        rootUICast.transform.localPosition = new Vector3(0, 295, 0);
+    }
+
+    private static string GetCastKeyFromUICast(GameObject UICast)
+    {
+        GameObject lumyBtnTxtObj = UICast.transform.Find("PanelLumy/btn_Lumy/Text").gameObject;
+        Text lumyBtnTxt = lumyBtnTxtObj.GetComponent<Text>();
+        string key = lumyBtnTxt.text;
+        return key;
+    }
+
+    private int ComputeLeaveHeight(Cast cast)
+    {
+        int height = 1;
+        while (cast.Parent != null)
+        {
+            height++;
+            cast = cast.Parent;
+        }
+        return height;
     }
 
     public void LoadEditedLumy()
