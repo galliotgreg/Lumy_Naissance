@@ -115,6 +115,7 @@ public class MCEditorManager : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.Delete))
 		{
 			this.deleteSelectedTransition ();
+			this.deleteSelectedProxies ();
 		}
     }
 
@@ -775,6 +776,7 @@ public class MCEditorManager : MonoBehaviour {
             available = stateAvailable(candidateName);
         }
         proxyState.Name = candidateName;
+		state.Name = candidateName;
 
         if (available) {
 			if (AbModel.getState (state.Id) == null) {
@@ -952,94 +954,154 @@ public class MCEditorManager : MonoBehaviour {
         // transition -> 
 
         int transitionId = -1;
-		bool validTransition = true;
+		bool validTransition = false;
+		bool activateTypeValidation = false;
 
         if (start.Pin_Type == Pin.PinType.Condition)
         {
             if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
-                LinkGateOperator_Operator(start, end);
+				// Check type
+				// Condition accepts only bool values
+				System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
+				if ( !activateTypeValidation || opType == typeof(ABBool)) {
+					LinkGateOperator_Operator (start, end);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Param)
             {
-                LinkGateOperator_Param(start, end);
+				// Check type
+				// Condition accepts only bool values
+				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || paramType == typeof(ABBool)) {
+					LinkGateOperator_Param (start, end);
+					validTransition = true;
+				}
             }
             else
             {
                 Debug.LogError("Un Pin Bool Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.ActionParam)
         {
+			System.Type actionParamType = ((ProxyABAction)start.ProxyParent).getParamOperator( start.Pin_order.OrderPosition-1 ).getOutcomeType ();
             if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
-                LinkAction_Operator(start, end);
+				// Check type
+				System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || actionParamType == opType) {
+					LinkAction_Operator (start, end);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Param)
             {
-                LinkAction_Param(start, end);
+				// Check type
+				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || actionParamType == paramType) {
+					LinkAction_Param (start, end);
+					validTransition = true;
+				}
             }
             else
             {
                 Debug.LogError("Un Pin Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.OperatorIn)
         {
+			// Check type
+			System.Type opStartType = ((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType( start.Pin_order.OrderPosition-1 );
             if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
-                LinkOperator_Operator(start, end);
+				// Check type
+				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || opStartType == opEndType) {
+					LinkOperator_Operator (start, end);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Param)
             {
-                LinkOperator_Param(start, end);
+				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || opStartType == paramType) {
+					LinkOperator_Param (start, end);
+					validTransition = true;
+				}
             }
             else
             {
                 Debug.LogError("Un Pin OperatorIn ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.OperatorOut)
         {
+			// Check type
+			System.Type opStartType = ((ProxyABOperator)start.ProxyParent).getOutcomeType();
             if (end.Pin_Type == Pin.PinType.OperatorIn)
             {
-                LinkOperator_Operator(end, start);
+				// Check type
+				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType( end.Pin_order.OrderPosition-1 );
+				if (!activateTypeValidation || opStartType == opEndType) {
+					LinkOperator_Operator (end, start);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Condition)
             {
-                LinkGateOperator_Operator(end, start);
+				// Check type
+				// Condition accepts only bool values
+				if (!activateTypeValidation || opStartType == typeof(ABBool)) {
+					LinkGateOperator_Operator (end, start);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.ActionParam)
             {
-                LinkAction_Operator(end, start);
+				System.Type actionParamType = ((ProxyABAction)end.ProxyParent).getParamOperator( end.Pin_order.OrderPosition-1 ).getOutcomeType ();
+				if (!activateTypeValidation || opStartType == actionParamType) {
+					LinkAction_Operator (end, start);
+					validTransition = true;
+				}
             }
             else
             {
                 Debug.LogError("Un Pin OperatorOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.Param)
-        {            
+        {
+			System.Type paramType = ((ProxyABParam)start.ProxyParent).getOutcomeType();
             if (end.Pin_Type == Pin.PinType.OperatorIn)
             {
-                LinkOperator_Param(end, start);
+				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType( end.Pin_order.OrderPosition-1 );
+				if (!activateTypeValidation || paramType == opEndType) {
+					LinkOperator_Param (end, start);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Condition)
             {
-                LinkGateOperator_Param(end, start);
+				// Check type
+				// Condition accepts only bool values
+				if (!activateTypeValidation || paramType == typeof(ABBool)) {
+					LinkGateOperator_Param (end, start);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.ActionParam)
             {
-                LinkAction_Param(end, start);
+				System.Type actionParamType = ((ProxyABAction)end.ProxyParent).getParamOperator( end.Pin_order.OrderPosition-1 ).getOutcomeType ();
+				if (!activateTypeValidation || paramType == actionParamType) {
+					LinkAction_Param (end, start);
+					validTransition = true;
+				}
             }
             else
             {
                 Debug.LogError("Un Pin Param ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				validTransition = false;
             }
         }
         else if (start.Pin_Type == Pin.PinType.TransitionIn)
@@ -1056,13 +1118,13 @@ public class MCEditorManager : MonoBehaviour {
                     if (!endStateParent)
                     {
                         Debug.LogError("Action -> Action n'existe pas");
-						validTransition = false;
                     }
                     // ACTION -> STATE
                     else
                     {
                         trans.Transition = LinkState_Action(end, start);
                         ProxyABTransition.addConditionPin(trans);
+						validTransition = true;
                     }
                 }
                 // STATE -> 
@@ -1073,7 +1135,6 @@ public class MCEditorManager : MonoBehaviour {
                     if (!endStateParent)
                     {
 						Debug.LogError("State -> Action n'existe pas");
-						validTransition = false;
                         /*endActionParent = end.GetComponentInParent<ProxyABAction>();
                         trans.Transition = LinkState_Action(start, end);
                         ProxyABTransition.addConditionPin(trans);*/
@@ -1083,6 +1144,7 @@ public class MCEditorManager : MonoBehaviour {
                     {
                         trans.Transition = LinkState_State(start, end);
                         ProxyABTransition.addConditionPin(trans);
+						validTransition = true;
                     }
                 }
             }
@@ -1099,18 +1161,19 @@ public class MCEditorManager : MonoBehaviour {
                 {
                     trans.Transition = LinkState_State(end, start);
                     ProxyABTransition.addConditionPin(trans);
+					validTransition = true;
                 }
                 // STATE -> ACTION
                 else
                 {
 					trans.Transition = LinkState_Action(start, end);
                     ProxyABTransition.addConditionPin(trans);
+					validTransition = true;
                 }
             }
             else
             {
                 Debug.LogError("Un Pin TransitionOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-				validTransition = false;
             }        			
         }
 
@@ -1160,51 +1223,6 @@ public class MCEditorManager : MonoBehaviour {
             {
                 trans.Id--;
             }
-        }
-    }
-	void DeleteTransition( ProxyABTransition transition )
-    {
-		if (transition != null) {
-            int id_transition_to_remove = 0;
-            if (transition.Transition != null)
-            {
-                id_transition_to_remove = transition.Transition.Id;
-            }
-            // Transition between Action/State and Action/State
-            if (transition.Condition != null)
-            {
-				if ( (!(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut)
-					|| !(transition.StartPosition.Pin_Type == Pin.PinType.Param) )
-					&& (!(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut)
-					|| !(transition.EndPosition.Pin_Type == Pin.PinType.Param)))
-                {
-                    AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
-					// Update Pins
-					if( transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut ){
-						((ProxyABState)transition.StartPosition.ProxyParent).checkPins ();
-					}
-					if( transition.EndPosition.ProxyParent is ProxyABState && transition.EndPosition.Pin_Type == Pin.PinType.TransitionOut ){
-						((ProxyABState)transition.EndPosition.ProxyParent).checkPins ();
-					}
-					// Delete Condition transition
-					if( transition.Condition.AssociatedTransitions.Count > 0 ){
-						foreach (ProxyABTransition trans in transition.Condition.AssociatedTransitions) {
-							DeleteTransition (trans);
-						}
-					}
-                }
-                ShiftIdTransition(id_transition_to_remove);
-            } else
-            {
-                RemoveTransitionSyntTree(transition);
-            }
-            // Unlink            
- 		               
-			// Remove Pin
-			// Destroy( transition.Condition.gameObject );
-			// Destroy Object
-			Destroy (transition.gameObject);
-
         }
     }
 
@@ -1521,7 +1539,109 @@ public class MCEditorManager : MonoBehaviour {
     }
 	#endregion
 
-	#region Transition Create Delete
+	#region Delete Model
+	void DeleteTransition( ProxyABTransition transition )
+	{
+		if (transition != null) {
+
+			// Transition between Action/State and Action/State
+			if (transition.Condition != null)
+			{
+				if ( !(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut	|| transition.StartPosition.Pin_Type == Pin.PinType.Param)
+					&& !(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut || transition.EndPosition.Pin_Type == Pin.PinType.Param) )
+				{
+					AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
+					// Update Pins
+					if( transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut ){
+						((ProxyABState)transition.StartPosition.ProxyParent).checkPins ();
+					}
+					if( transition.EndPosition.ProxyParent is ProxyABState && transition.EndPosition.Pin_Type == Pin.PinType.TransitionOut ){
+						((ProxyABState)transition.EndPosition.ProxyParent).checkPins ();
+					}
+					// Delete Condition transition
+					if( transition.Condition.AssociatedTransitions.Count > 0 ){
+						foreach (ProxyABTransition trans in transition.Condition.AssociatedTransitions) {
+							DeleteTransition (trans);
+						}
+					}
+				}
+			} else
+			{
+				RemoveTransitionSyntTree(transition);
+			}
+			// Unlink            
+
+			// Remove Pin
+			// Destroy( transition.Condition.gameObject );
+			// Destroy Object
+			Destroy (transition.gameObject);
+		}
+	}
+
+	void deleteTransitions( MCEditor_Proxy _proxy ){
+		// remove transitions
+		List<Pin> pins = _proxy.AllPins;
+		foreach( Pin _pin in pins ){
+			foreach( ProxyABTransition _transition in _pin.AssociatedTransitions ){
+				DeleteTransition ( _transition );
+			}
+		}
+	}
+
+	public void deleteProxy( ProxyABState _state ){
+		// check init
+		if (_state.AbState.Id != AbModel.InitStateId) {
+			ABState state = AbModel.getState (_state.AbState.Id);
+
+			// remove transitions
+			deleteTransitions (_state);
+
+			// Remove from model
+			if (state != null) {
+				AbModel.delete (state);
+				proxyStates.Remove (_state);
+				statesDictionnary.Remove (state);
+			}
+
+			Destroy (_state.gameObject);
+		}
+	}
+	public void deleteProxy( ProxyABAction _action ){
+		ABState action = AbModel.getState (_action.AbState.Id);
+
+		// remove transitions
+		deleteTransitions( _action );
+
+		// Remove from model
+		if (action != null) {
+			AbModel.delete( action );
+			proxyActions.Remove (_action);
+			actionsDictionnary.Remove ( action );
+		}
+
+		Destroy ( _action.gameObject );
+	}
+	public void deleteProxy( ProxyABOperator _operator ){
+		// remove transitions
+		deleteTransitions( _operator );
+
+		// Remove from model
+		proxyOperators.Remove (_operator);
+
+		Destroy ( _operator.gameObject );
+	}
+	public void deleteProxy( ProxyABParam _param ){
+		// remove transitions
+		deleteTransitions( _param );
+
+		// Remove from model
+		proxyParams.Remove (_param);
+
+		Destroy ( _param.gameObject );
+	}
+	#endregion
+
+	#region Transition UI Create Delete
 	Pin transition_Pin_Start = null;
 	ProxyABTransition transition_Selected = null;
 
@@ -1558,5 +1678,14 @@ public class MCEditorManager : MonoBehaviour {
             this.transition_Selected = null;
         }
     }
+	#endregion
+
+	#region Delete UI Proxy
+	void deleteSelectedProxies(){
+		MCEditor_Proxy proxy = MCEditor_Proxy.clicked;
+		if (proxy != null) {
+			proxy.deleteProxy ();
+		}
+	}
 	#endregion
 }

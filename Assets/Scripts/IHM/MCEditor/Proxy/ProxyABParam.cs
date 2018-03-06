@@ -123,6 +123,11 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		return text;
 	}
 
+	public System.Type getOutcomeType ()
+	{
+		return this.AbParam.getOutcomeType ();
+	}
+
 	#region INSTANTIATE
 	public static ProxyABParam instantiate( IABParam paramObj, bool isLoaded ){
 		return instantiate ( paramObj, isLoaded, calculateParamPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
@@ -155,6 +160,11 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 	{
 		Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
 		MCEditor_DialogBoxManager.instance.instantiateValue (this, pos);
+	}
+
+	public override void deleteProxy ()
+	{
+		MCEditorManager.instance.deleteProxy ( this );
 	}
 
 	#endregion

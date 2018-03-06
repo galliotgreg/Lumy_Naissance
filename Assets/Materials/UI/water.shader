@@ -77,8 +77,8 @@ Shader "Custom/water" {
                 i.screenPos = float4( i.screenPos.xy / i.screenPos.w, 0, 0 );
                 i.screenPos.y *= _ProjectionParams.x;
                 float3 normalDirection = i.normalDir;
-                float4 node_2665 = _Time + _TimeEditor;
-                float2 node_2952 = (i.uv0+node_2665.g*float2(0.05,0.05));
+                float4 node_6070 = _Time + _TimeEditor;
+                float2 node_2952 = (i.uv0+node_6070.g*float2(0.05,0.05));
                 float4 _TextureNoise_var = tex2D(_TextureNoise,TRANSFORM_TEX(node_2952, _TextureNoise));
                 float2 sceneUVs = float2(1,grabSign)*i.screenPos.xy*0.5+0.5 + (_TextureNoise_var.rgb.rg*_Refraction);
                 float4 sceneColor = tex2D(_GrabTexture, sceneUVs);
@@ -163,8 +163,8 @@ Shader "Custom/water" {
                 i.screenPos = float4( i.screenPos.xy / i.screenPos.w, 0, 0 );
                 i.screenPos.y *= _ProjectionParams.x;
                 float3 normalDirection = i.normalDir;
-                float4 node_6195 = _Time + _TimeEditor;
-                float2 node_2952 = (i.uv0+node_6195.g*float2(0.05,0.05));
+                float4 node_6497 = _Time + _TimeEditor;
+                float2 node_2952 = (i.uv0+node_6497.g*float2(0.05,0.05));
                 float4 _TextureNoise_var = tex2D(_TextureNoise,TRANSFORM_TEX(node_2952, _TextureNoise));
                 float2 sceneUVs = float2(1,grabSign)*i.screenPos.xy*0.5+0.5 + (_TextureNoise_var.rgb.rg*_Refraction);
                 float4 sceneColor = tex2D(_GrabTexture, sceneUVs);

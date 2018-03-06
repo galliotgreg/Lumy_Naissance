@@ -54,26 +54,26 @@ public Pin Income {
 }
 #endregion
 
-void Awake()
-{
-	//pinList = new List<Pin>();
-}
+	void Awake()
+	{
+		//pinList = new List<Pin>();
+	}
 
-// Use this for initialization
-void Start () {
-	if (IsLoaded)// when the Action is created by loading behavior file
-	{            
-		isLoaded = false;
-}
-else // when the Action is created in the editor.
-{
-	/*ABAction abAction = ABActionFactory.CreateAction(action.ToLower());
-            Text actionName = this.GetComponentInChildren<Text>();
-            actionName.text = this.name;*/
+	// Use this for initialization
+	void Start () {
+		if (IsLoaded)// when the Action is created by loading behavior file
+		{            
+			isLoaded = false;
+		}
+		else // when the Action is created in the editor.
+		{
+			/*ABAction abAction = ABActionFactory.CreateAction(action.ToLower());
+		            Text actionName = this.GetComponentInChildren<Text>();
+		            actionName.text = this.name;*/
 
-	// TODO ATTENTION
-	//this.abState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(name, abAction));
-}
+			// TODO ATTENTION
+			//this.abState = MCEditorManager.instance.AbModel.getState(MCEditorManager.instance.AbModel.AddState(name, abAction));
+		}
 		calculatePinPosition ();
 	}
 
@@ -96,6 +96,20 @@ else // when the Action is created in the editor.
 
     }
 
+	public Pin getParamPin( int index ){
+		List<Pin> pins = getPins (Pin.PinType.ActionParam);
+		foreach (Pin p in pins) {
+			if (p.Pin_order.OrderPosition == index + 1) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	public IABOperator getParamOperator( int index ){
+		return this.AbState.Action.Parameters [index];
+	}
+
 #region Instantiate
 public static ProxyABAction instantiate( ABState state ){
 	return instantiate( state, calculateActionPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
@@ -112,13 +126,15 @@ public static ProxyABAction instantiate( ABState state, Vector3 position, Transf
 
 	// Create Pins
 	if (state.Action.Parameters != null) {
-		foreach (IABGateOperator param in state.Action.Parameters) {
-				Pin start = Pin.instantiate (Pin.PinType.ActionParam, Pin.calculatePinPosition (result,Pin.PinType.ActionParam,result), result.transform);
+		for (int i = 0; i < state.Action.Parameters.Length; i++) {
+			IABGateOperator param = state.Action.Parameters [i];
+				Pin p = Pin.instantiate (Pin.PinType.ActionParam, Pin.calculatePinPosition (result, Pin.PinType.ActionParam, result), result.transform);
+				p.Pin_order.OrderPosition = i+1;
 		}
 	}
 
 	// Income
-	Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result,Pin.PinType.TransitionIn,result), result.transform);
+	Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result,Pin.PinType.TransitionIn,result), result.transform).Pin_order.OrderPosition = 0;
 
 	return result;
 }
@@ -133,6 +149,11 @@ public static Vector3 calculateActionPosition( Transform parent ){
 	public override void doubleClick ()
 	{
 		// Nothing to do
+	}
+
+	public override void deleteProxy ()
+	{
+		MCEditorManager.instance.deleteProxy ( this );
 	}
 
 	#endregion

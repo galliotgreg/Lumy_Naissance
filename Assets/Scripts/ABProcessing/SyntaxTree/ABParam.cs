@@ -7,7 +7,7 @@ public abstract class ABParam<T> : ABNode, IABParam
     protected string identifier;
     protected T value;
 
-    public ABParam(string identifier, T value)
+	public ABParam(string identifier, T value)
     {
         this.identifier = identifier;
         this.value = value;
@@ -47,4 +47,9 @@ public abstract class ABParam<T> : ABNode, IABParam
             return valuedParam.Value;
         }
     }
+
+	public System.Type getOutcomeType ()
+	{
+		return typeof(T);
+	}
 }
