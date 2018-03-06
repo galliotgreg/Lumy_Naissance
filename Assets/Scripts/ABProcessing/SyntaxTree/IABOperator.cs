@@ -8,4 +8,5 @@ public interface IABOperator {
 	System.Type getOutcomeType ();
 
 	System.Type getIncomeType (int index);
+	bool acceptIncome (int index, System.Type income);
 }

@@ -158,9 +158,13 @@ public class TraceScript : MonoBehaviour {
 		Vector3 posAVec3 = AgentBehavior.vec2ToWorld ( posA );
 		Vector3 posBVec3 = AgentBehavior.vec2ToWorld ( posB );
 
-		UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
-		UnityEngine.AI.NavMesh.CalculatePath( posAVec3, posBVec3, 1, auxpath );
-
+        //UnityEngine.AI.NavMeshHit hitA;
+        //UnityEngine.AI.NavMesh.SamplePosition(posAVec3, out hitA, 1000f, UnityEngine.AI.NavMesh.AllAreas);
+        //UnityEngine.AI.NavMeshHit hitB;
+        //UnityEngine.AI.NavMesh.SamplePosition(posBVec3, out hitB, 1000f, UnityEngine.AI.NavMesh.AllAreas);
+        UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
+		UnityEngine.AI.NavMesh.CalculatePath(posAVec3, posBVec3, UnityEngine.AI.NavMesh.AllAreas, auxpath );
+      
 		for (int i = 0; i < auxpath.corners.Length-1; i++) {
 			result.AddRange ( traceRectBetween( auxpath.corners[i], auxpath.corners[i+1] ) );
 		}

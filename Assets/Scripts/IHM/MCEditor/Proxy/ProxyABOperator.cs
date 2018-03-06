@@ -236,7 +236,13 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		return this.AbOperator.getOutcomeType ();
 	}
 
-	public System.Type getIncomeType( int index ){
+	public System.Type getIncomeType( int index )
+	{
 		return this.AbOperator.getIncomeType (index);
+	}
+
+	public bool acceptIncome (int index, System.Type income)
+	{
+		return this.AbOperator.acceptIncome (index, income);
 	}
 }

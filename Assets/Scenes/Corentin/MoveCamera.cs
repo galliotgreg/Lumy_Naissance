@@ -6,6 +6,7 @@ public class MoveCamera : MonoBehaviour
 {
     public float speed = 10.0f;
     private bool isMovable = false;
+    private bool noDialogBox = true;
 
     // Use this for initialization
     void Start()
@@ -15,12 +16,19 @@ public class MoveCamera : MonoBehaviour
 
     void Update()
     {
+
         if (Input.GetMouseButtonDown(1))
         {
             isMovable = !isMovable;
         }
 
-        if (isMovable)
+        if (GameObject.FindGameObjectWithTag("MCEditor_DialogBox"))
+        {
+            noDialogBox = false;
+        }
+        else noDialogBox = true;
+
+        if (isMovable && noDialogBox)
         {
             if (Input.GetAxis("Mouse X") > 0)
             {
