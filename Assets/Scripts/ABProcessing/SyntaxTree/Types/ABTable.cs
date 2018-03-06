@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ABTable<T> : IABType where T : IABSimpleType
+public class ABTable<T> : IABComplexType where T : IABSimpleType
 {
     private T[] values;
 
@@ -18,4 +18,14 @@ public class ABTable<T> : IABType where T : IABSimpleType
             this.values = value;
         }
     }
+
+	#region IABComplexType implementation
+
+	System.Type IABComplexType.getInternalType (int index = 0)
+	{
+		// ignore index
+		return typeof(T);
+	}
+
+	#endregion
 }
