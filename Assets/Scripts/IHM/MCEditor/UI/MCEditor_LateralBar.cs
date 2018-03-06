@@ -21,18 +21,16 @@ public class MCEditor_LateralBar : MonoBehaviour {
 	[SerializeField]
 	UnityEngine.UI.Button button;
 	[SerializeField]
-	UnityEngine.UI.Text text;
+	UnityEngine.UI.Image arrow;
 
 	// Use this for initialization
 	void Start () {
 		switch (side) {
 		case Side.Left:
 			initialAnchorX = parent.anchorMin.x;
-			text.text = "<<";
 			break;
 		case Side.Right:
 			initialAnchorX = parent.anchorMax.x;
-			text.text = ">>";
 			break;
 		}
 
@@ -49,14 +47,13 @@ public class MCEditor_LateralBar : MonoBehaviour {
 			
 			switch (side) {
 			case Side.Left:
-				parent.anchorMin = new Vector2( 0, parent.anchorMin.y );
-				//bar.anchorMax = new Vector2( 0, bar.anchorMax.y );
-				text.text = ">>";
+				parent.anchorMin = new Vector2 (0, parent.anchorMin.y);
+				arrow.transform.Rotate ( new Vector3(0,0,180) );
 				break;
 			case Side.Right:
 				parent.anchorMax = new Vector2( 1, parent.anchorMax.y );
 				//bar.anchorMin = new Vector2( 1, bar.anchorMin.y );
-				text.text = "<<";
+				arrow.transform.Rotate ( new Vector3(0,0,180) );
 				break;
 			}
 			bar.gameObject.SetActive (false);
@@ -66,13 +63,11 @@ public class MCEditor_LateralBar : MonoBehaviour {
 			switch (side) {
 			case Side.Left:
 				parent.anchorMin = new Vector2( initialAnchorX, parent.anchorMin.y );
-				//bar.anchorMax = new Vector2( initialAnchorX, bar.anchorMax.y );
-				text.text = "<<";
+				arrow.transform.Rotate ( new Vector3(0,0,-180) );
 				break;
 			case Side.Right:
 				parent.anchorMax = new Vector2( initialAnchorX, parent.anchorMax.y );
-				//bar.anchorMin = new Vector2( initialAnchorX, bar.anchorMin.y );
-				text.text = ">>";
+				arrow.transform.Rotate ( new Vector3(0,0,-180) );
 				break;
 			}
 			bar.gameObject.SetActive (true);
