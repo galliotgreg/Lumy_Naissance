@@ -6,4 +6,6 @@ public interface IABOperator {
     ABNode[] Inputs { get; set; }  
 
 	System.Type getOutcomeType ();
+
+	System.Type getIncomeType (int index);
 }

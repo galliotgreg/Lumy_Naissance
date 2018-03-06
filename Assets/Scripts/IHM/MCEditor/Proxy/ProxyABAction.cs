@@ -130,7 +130,6 @@ public static ProxyABAction instantiate( ABState state, Vector3 position, Transf
 			IABGateOperator param = state.Action.Parameters [i];
 				Pin p = Pin.instantiate (Pin.PinType.ActionParam, Pin.calculatePinPosition (result, Pin.PinType.ActionParam, result), result.transform);
 				p.Pin_order.OrderPosition = i+1;
-				p.Pin_order.Visible = false;
 		}
 	}
 

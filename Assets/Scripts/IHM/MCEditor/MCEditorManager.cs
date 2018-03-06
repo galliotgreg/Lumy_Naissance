@@ -1000,7 +1000,6 @@ public class MCEditorManager : MonoBehaviour {
             {
 				// Check type
 				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
-				Debug.Log (paramType.ToString ());
 				if (!activateTypeValidation || actionParamType == paramType) {
 					LinkAction_Param (start, end);
 					validTransition = true;
@@ -1013,15 +1012,24 @@ public class MCEditorManager : MonoBehaviour {
         }
         else if (start.Pin_Type == Pin.PinType.OperatorIn)
         {
+			// Check type
+			System.Type opStartType = ((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType( start.Pin_order.OrderPosition-1 );
             if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
-                LinkOperator_Operator(start, end);
-				validTransition = true;
+				// Check type
+				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || opStartType == opEndType) {
+					LinkOperator_Operator (start, end);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Param)
             {
-                LinkOperator_Param(start, end);
-				validTransition = true;
+				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
+				if (!activateTypeValidation || opStartType == paramType) {
+					LinkOperator_Param (start, end);
+					validTransition = true;
+				}
             }
             else
             {
@@ -1030,24 +1038,33 @@ public class MCEditorManager : MonoBehaviour {
         }
         else if (start.Pin_Type == Pin.PinType.OperatorOut)
         {
+			// Check type
+			System.Type opStartType = ((ProxyABOperator)start.ProxyParent).getOutcomeType();
             if (end.Pin_Type == Pin.PinType.OperatorIn)
             {
-                LinkOperator_Operator(end, start);
-				validTransition = true;
+				// Check type
+				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType( end.Pin_order.OrderPosition-1 );
+				if (!activateTypeValidation || opStartType == opEndType) {
+					LinkOperator_Operator (end, start);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Condition)
             {
 				// Check type
 				// Condition accepts only bool values
-				if (!activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator is ABOperator<ABBool>) {
+				if (!activateTypeValidation || opStartType == typeof(ABBool)) {
 					LinkGateOperator_Operator (end, start);
 					validTransition = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.ActionParam)
             {
-                LinkAction_Operator(end, start);
-				validTransition = true;
+				System.Type actionParamType = ((ProxyABAction)end.ProxyParent).getParamOperator( end.Pin_order.OrderPosition-1 ).getOutcomeType ();
+				if (!activateTypeValidation || opStartType == actionParamType) {
+					LinkAction_Operator (end, start);
+					validTransition = true;
+				}
             }
             else
             {
@@ -1055,25 +1072,32 @@ public class MCEditorManager : MonoBehaviour {
             }
         }
         else if (start.Pin_Type == Pin.PinType.Param)
-        {            
+        {
+			System.Type paramType = ((ProxyABParam)start.ProxyParent).getOutcomeType();
             if (end.Pin_Type == Pin.PinType.OperatorIn)
             {
-                LinkOperator_Param(end, start);
-				validTransition = true;
+				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType( end.Pin_order.OrderPosition-1 );
+				if (!activateTypeValidation || paramType == opEndType) {
+					LinkOperator_Param (end, start);
+					validTransition = true;
+				}
             }
             else if (end.Pin_Type == Pin.PinType.Condition)
             {
 				// Check type
 				// Condition accepts only bool values
-				if (!activateTypeValidation || ((ProxyABParam)start.ProxyParent).AbParam is ABBoolParam) {
+				if (!activateTypeValidation || paramType == typeof(ABBool)) {
 					LinkGateOperator_Param (end, start);
 					validTransition = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.ActionParam)
             {
-                LinkAction_Param(end, start);
-				validTransition = true;
+				System.Type actionParamType = ((ProxyABAction)end.ProxyParent).getParamOperator( end.Pin_order.OrderPosition-1 ).getOutcomeType ();
+				if (!activateTypeValidation || paramType == actionParamType) {
+					LinkAction_Param (end, start);
+					validTransition = true;
+				}
             }
             else
             {
