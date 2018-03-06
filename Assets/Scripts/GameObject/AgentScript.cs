@@ -55,7 +55,8 @@ public class AgentScript : MonoBehaviour {
 	[SerializeField]
 	private float layTimeCost;
 
-	[SerializeField]
+    [AttrName(Identifier = "visionRange")]
+    [SerializeField]
 	private float visionRange;
 
     [SerializeField]
