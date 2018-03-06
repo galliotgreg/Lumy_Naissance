@@ -29,15 +29,25 @@ public class Pin_Order : MonoBehaviour {
 		set {
 			// Deactivate the gameObject if the value <= 0
 			if (orderPosition <= 0) {
-				if (this.gameObject.activeSelf) {
-					this.gameObject.SetActive (false);
-				}
+				Visible = false;
 			} else {
-				if (!this.gameObject.activeSelf) {
-					this.gameObject.SetActive (true);
-				}
+				Visible = true;
 			}
 			orderPositionText.text = value;
+		}
+	}
+
+	public bool Visible {
+		get {
+			return this.gameObject.activeSelf;
+		}
+		set {
+			if ( !value && this.gameObject.activeSelf ) {
+				this.gameObject.SetActive (false);
+			}
+			else if(value && !this.gameObject.activeSelf){
+				this.gameObject.SetActive (true);
+			}
 		}
 	}
 

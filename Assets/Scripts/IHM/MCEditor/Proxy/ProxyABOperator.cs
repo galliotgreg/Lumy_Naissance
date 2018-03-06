@@ -121,6 +121,10 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		
 	}
 
+	public ABNode getParamOperator( int index ){
+		return this.AbOperator.Inputs [index];
+	}
+
 	#region INSTANTIATE
 	public static ProxyABOperator instantiate( IABOperator operatorObj, bool isLoaded ){
 		return instantiate ( operatorObj, isLoaded, calculateOperatorPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
@@ -226,4 +230,13 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 	}
 
 	#endregion
+
+	public System.Type getOutcomeType ()
+	{
+		return this.AbOperator.getOutcomeType ();
+	}
+
+	public System.Type getIncomeType( int index ){
+		return this.AbOperator.getIncomeType (index);
+	}
 }
