@@ -243,6 +243,8 @@ public class LumyEditorManager : MonoBehaviour
         agentContext.enabled = false;
         AgentEntity agentEntity = editedLumy.GetComponent<AgentEntity>();
         agentEntity.enabled = false;
+        //SetPlayerColor colorSetter = editedLumy.GetComponent<SetPlayerColor>();
+        //colorSetter.enabled = false;
 
         //Set lumy to Forward Kinematic
         GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
