@@ -955,6 +955,7 @@ public class MCEditorManager : MonoBehaviour {
 
         int transitionId = -1;
 		bool validTransition = false;
+		bool invalidTransitionType = false;
 		bool activateTypeValidation = true;
 
         if (start.Pin_Type == Pin.PinType.Condition)
@@ -964,9 +965,11 @@ public class MCEditorManager : MonoBehaviour {
 				// Check type
 				// Condition accepts only bool values
 				System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
-				if ( !activateTypeValidation || opType == typeof(ABBool)) {
+				if (!activateTypeValidation || opType == typeof(ABBool)) {
 					LinkGateOperator_Operator (start, end);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.Param)
@@ -977,6 +980,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || paramType == typeof(ABBool)) {
 					LinkGateOperator_Param (start, end);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else
@@ -994,6 +999,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || actionParamType == opType) {
 					LinkAction_Operator (start, end);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.Param)
@@ -1003,6 +1010,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || actionParamType == paramType) {
 					LinkAction_Param (start, end);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else
@@ -1021,6 +1030,8 @@ public class MCEditorManager : MonoBehaviour {
 				if ( !activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator.acceptIncome( start.Pin_order.OrderPosition-1, opEndType ) ){
 					LinkOperator_Operator (start, end);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.Param)
@@ -1029,6 +1040,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator.acceptIncome( start.Pin_order.OrderPosition-1, paramType ) ) {
 					LinkOperator_Param (start, end);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else
@@ -1046,6 +1059,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator.acceptIncome( end.Pin_order.OrderPosition-1, opStartType )) {
 					LinkOperator_Operator (end, start);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.Condition)
@@ -1055,6 +1070,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || opStartType == typeof(ABBool)) {
 					LinkGateOperator_Operator (end, start);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.ActionParam)
@@ -1063,6 +1080,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || opStartType == actionParamType) {
 					LinkAction_Operator (end, start);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else
@@ -1078,6 +1097,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator.acceptIncome( end.Pin_order.OrderPosition-1, paramType )) {
 					LinkOperator_Param (end, start);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.Condition)
@@ -1087,6 +1108,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || paramType == typeof(ABBool)) {
 					LinkGateOperator_Param (end, start);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else if (end.Pin_Type == Pin.PinType.ActionParam)
@@ -1095,6 +1118,8 @@ public class MCEditorManager : MonoBehaviour {
 				if (!activateTypeValidation || paramType == actionParamType) {
 					LinkAction_Param (end, start);
 					validTransition = true;
+				} else {
+					invalidTransitionType = true;
 				}
             }
             else
@@ -1184,7 +1209,14 @@ public class MCEditorManager : MonoBehaviour {
 				((ProxyABState)end.ProxyParent).checkPins ();
 			}
 		} else {
+
 			Destroy ( trans.gameObject );
+
+			if (invalidTransitionType) {
+				Debug.LogError ("Throw Exception : transition not authorized due the types of pins");
+			} else {
+				Debug.LogError ("Throw Exception : transition not authorized due the IN/OUT status of pins");
+			}
 		}
     }
 
