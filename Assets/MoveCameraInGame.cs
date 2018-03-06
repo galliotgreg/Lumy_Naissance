@@ -39,7 +39,6 @@ public class MoveCameraInGame : MonoBehaviour {
         float zAxisValue = Input.GetAxis("Vertical");
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        Debug.Log(scroll); 
         Vector3 cameraPos = gameObject.transform.position; 
        
         //Right
