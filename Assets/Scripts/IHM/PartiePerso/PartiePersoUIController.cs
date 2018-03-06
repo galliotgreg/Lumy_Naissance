@@ -55,19 +55,21 @@ public class PartiePersoUIController : MonoBehaviour {
 
     [Header("Gisement")]
     [SerializeField]
-    private int minGisement = 125;
+    private int minGisement = 100;
     [SerializeField]
-    private int mediumGisement = 250;
+    private int mediumGisement = 150;
     [SerializeField]
-    private int maxGisement = 500;
+    private int maxGisement = 200;
 
     [Header("Resources Start")]
     [SerializeField]
-    private int minRes = 10;
+    private int minRes = 100;
     [SerializeField]
-    private int mediumRes = 20;
+    private int mediumRes = 250;
     [SerializeField]
-    private int maxRes = 30;
+    private int maxRes = 500;
+    [SerializeField]
+    private int DebugValueRes = 3000;
 
 
     [Header("Timer")]
@@ -158,8 +160,14 @@ public class PartiePersoUIController : MonoBehaviour {
         AppContextManager.instance.LoadPlayerSpecies(player1SpecieName, player2SpecieName);
 
         //Launch
-        //NavigationManager.instance.SwapScenes("MapPersonnalise", Vector3.zero);
-        NavigationManager.instance.SwapScenes("map2", Vector3.zero);
+        if (Input.GetKey(KeyCode.Alpha1)) {
+
+            NavigationManager.instance.SwapScenes("MapPersonnalise", Vector3.zero);
+        }
+        else if (Input.GetKey(KeyCode.Alpha2)) {
+
+            NavigationManager.instance.SwapScenes("map2", Vector3.zero);
+        }
     }
 
     private void SelectP1ActiveSwarm(string swarmName)
@@ -199,6 +207,9 @@ public class PartiePersoUIController : MonoBehaviour {
                 break;
             case 2:
                 SwapManager.instance.SetPlayerResources(maxRes);
+                break;
+            case 3:
+                SwapManager.instance.SetPlayerResources(DebugValueRes);
                 break;
         }
         switch (gameTimer.value)
@@ -241,6 +252,8 @@ public class PartiePersoUIController : MonoBehaviour {
             startResources.value = 1;
         else if (SwapManager.instance.GetPlayerResources() == maxRes)
             startResources.value = 2;
+        else if (SwapManager.instance.GetPlayerResources() == DebugValueRes)
+            resourcesStock.value = 3;
 
         if (SwapManager.instance.GetPlayerStock() == minGisement)
             resourcesStock.value = 0;

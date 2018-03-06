@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameParamsScript : MonoBehaviour {
+
+
     [AttrName(Identifier = "seamSize")]
     [SerializeField]
     private int seamSize;
@@ -90,7 +92,8 @@ public class GameParamsScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        GameManager.instance.TimerLeft = totalTime;
+        //  GameManager.instance.TimerLeft = totalTime;
+        totalTime = SwapManager.instance.GetPlayerTimer();
     }
 	
 	// Update is called once per frame

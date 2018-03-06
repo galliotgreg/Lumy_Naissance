@@ -153,11 +153,15 @@ public class InGameUIController : MonoBehaviour
     /// </summary>
     private void CheckWinCondition()
     {
+        //Wait until Game is Initialized 
+        //All the Hive to be instantiate for example
         if (startTime > 0)
         {
             startTime -= Time.deltaTime;
             return; 
         }
+
+        //Check Win Conditions 
         GameManager.Winner winner = gameManager.WinnerPlayer;
         if (!winState)
         {

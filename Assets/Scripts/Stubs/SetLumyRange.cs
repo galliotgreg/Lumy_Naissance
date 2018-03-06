@@ -9,6 +9,7 @@ public class SetLumyRange : MonoBehaviour {
     private float pickRange;
     private float visionRange;
     void Start () {
+        GameObject go = gameObject;
         atkRange = GetComponentInChildren<AgentScript>().AtkRange;
         pickRange = GetComponentInChildren<AgentScript>().PickRange;
         visionRange = GetComponentInChildren<AgentScript>().VisionRange;
