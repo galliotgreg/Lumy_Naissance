@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -739,12 +739,13 @@ MonoBehaviour:
   startResources: {fileID: 355616876}
   gameTimer: {fileID: 1918451477}
   lumyLimit: {fileID: 1429774427}
-  minGisement: 125
-  mediumGisement: 250
-  maxGisement: 500
-  minRes: 10
-  mediumRes: 25
+  minGisement: 100
+  mediumGisement: 150
+  maxGisement: 200
+  minRes: 100
+  mediumRes: 250
   maxRes: 500
+  DebugValueRes: 3000
   minTimer: 100
   mediumTimer: 300
   maxTimer: 420
@@ -1310,11 +1311,13 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Faible (10)
+    - m_Text: Faible (100)
       m_Image: {fileID: 0}
-    - m_Text: Moyenne (25)
+    - m_Text: Moyenne (250)
       m_Image: {fileID: 0}
-    - m_Text: "El\xE9v\xE9e (50)"
+    - m_Text: "El\xE9v\xE9e (500)"
+      m_Image: {fileID: 0}
+    - m_Text: Devellopeur(3000)
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2532,7 +2535,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Faible (10)
+  m_Text: Faible (100)
 --- !u!222 &712391641
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4569,11 +4572,11 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Petit
+    - m_Text: Petit (100)
       m_Image: {fileID: 0}
-    - m_Text: Moyen
+    - m_Text: Moyen (150)
       m_Image: {fileID: 0}
-    - m_Text: Grand
+    - m_Text: Grand (200)
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4680,7 +4683,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Petit
+  m_Text: Petit (100)
 --- !u!222 &1294851776
 CanvasRenderer:
   m_ObjectHideFlags: 0
