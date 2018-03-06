@@ -14,10 +14,7 @@ public class SetPlayerColor : MonoBehaviour {
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         Color color = Color.white;
         AgentEntity agent = transform.parent.parent.GetComponent<AgentEntity>();
-        if (agent.Authority == PlayerAuthority.Player1)
-        {
-            color = Color.white;
-        } else
+        if (agent.Home != null && agent.Authority == PlayerAuthority.Player2)
         {
             color = new Color32(50, 0, 90, 255);
         }
