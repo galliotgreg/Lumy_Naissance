@@ -262,4 +262,34 @@ public class ABModel {
 		return UnlinkStates (start.Name, end.Name);
 	}
 	#endregion
+
+	public static System.Type ParamTypeToType( ParamType type ){
+		switch ( type ) {
+		case ParamType.Bool:
+			return typeof(ABBool);
+		case ParamType.Color:
+			return typeof(ABColor);
+		case ParamType.Ref:
+			return typeof(ABRef);
+		case ParamType.Scalar:
+			return typeof(ABScalar);
+		case ParamType.Text:
+			return typeof(ABText);
+		case ParamType.Vec:
+			return typeof(ABVec);
+		case ParamType.BoolTable:
+			return typeof(ABTable<ABBool>);
+		case ParamType.ColorTable:
+			return typeof(ABTable<ABColor>);
+		case ParamType.RefTable:
+			return typeof(ABTable<ABRef>);
+		case ParamType.ScalarTable:
+			return typeof(ABTable<ABScalar>);
+		case ParamType.TextTable:
+			return typeof(ABTable<ABText>);
+		case ParamType.VecTable:
+			return typeof(ABTable<ABVec>);
+		}
+		return null;
+	}
 }
