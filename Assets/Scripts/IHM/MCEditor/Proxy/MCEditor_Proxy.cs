@@ -84,6 +84,8 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 	{
 		if (lastClick > 0 && Time.time - lastClick < doubleClickIntervalMseconds/1000f) {
 			doubleClick ();
+
+			Debug.Log ( "MCEditor : Selected proxy => "+this.GetProxyName() );
 			clicked = this;
 		}
 		lastClick = Time.time;
