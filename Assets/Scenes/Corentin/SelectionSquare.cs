@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class SelectionSquare : MonoBehaviour
 {
-    //Add all units in the scene to this array
+
     public GameObject[] allUnits;
 
     [SerializeField]
@@ -19,11 +19,6 @@ public class SelectionSquare : MonoBehaviour
 
     bool hasCreatedSquare;
 
-    //The materials
-    //public Material normalMaterial;
-    //public Material highlightMaterial;
-    //public Material selectedMaterial;
-
     [System.NonSerialized]
     public List<GameObject> selectedUnits = new List<GameObject>();
 
@@ -33,8 +28,7 @@ public class SelectionSquare : MonoBehaviour
     void Start()
     {
         //Desactivate the square selection image
-        selectionSquareImage.gameObject.SetActive(false);
-        
+        selectionSquareImage.gameObject.SetActive(false); 
     }
 
     void Update()
@@ -95,16 +89,16 @@ public class SelectionSquare : MonoBehaviour
                     {
                         //Debug.Log("is within polygon");
                         if (currentUnit.GetComponent<MeshRenderer>() != null)
-                            currentUnit.GetComponent<MeshRenderer>().material.color /= 0.95f;
+                            currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
 
                         selectedUnits.Add(currentUnit);
                     }
                     //Otherwise deselect the unit if it's not in the square
-                    /*else
+                    else
                     {
                         if (currentUnit.GetComponent<MeshRenderer>() != null)
-                            currentUnit.GetComponent<MeshRenderer>().material = normalMaterial;
-                    }*/
+                            currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                    }
                 }
             }
 
@@ -124,7 +118,8 @@ public class SelectionSquare : MonoBehaviour
             //Deselect all units
             for (int i = 0; i < selectedUnits.Count; i++)
             {
-                //selectedUnits[i].GetComponent<MeshRenderer>().material = normalMaterial;
+                if (selectedUnits[i].GetComponent<MeshRenderer>() != null)
+                    selectedUnits[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
             }
 
             //Clear the list with selected units
@@ -139,9 +134,9 @@ public class SelectionSquare : MonoBehaviour
                     GameObject activeUnit = hit.collider.gameObject;
                 //Set this unit to selected
                 if (activeUnit.GetComponent<MeshRenderer>() != null)
-                    activeUnit.GetComponent<MeshRenderer>().material.color /= 0.95f;
-                    //Add it to the list of selected units, which is now just 1 unit
-                    selectedUnits.Add(activeUnit);
+                    activeUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
+                //Add it to the list of selected units, which is now just 1 unit
+                selectedUnits.Add(activeUnit);
                 
             }
         }
@@ -173,15 +168,15 @@ public class SelectionSquare : MonoBehaviour
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
                         if (currentUnit.GetComponent<MeshRenderer>() != null) 
-                            currentUnit.GetComponent<MeshRenderer>().material.color *= 0.95f;
+                            currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
 
                     }
                     //Otherwise desactivate
-                    /*else
+                    else
                     {
                         if (currentUnit.GetComponent<MeshRenderer>() != null)
-                            currentUnit.GetComponent<MeshRenderer>().material = normalMaterial;
-                    }*/
+                            currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                    }
                 }
             }
         }
