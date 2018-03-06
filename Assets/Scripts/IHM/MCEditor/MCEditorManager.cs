@@ -955,7 +955,7 @@ public class MCEditorManager : MonoBehaviour {
 
         int transitionId = -1;
 		bool validTransition = false;
-		bool activateTypeValidation = false;
+		bool activateTypeValidation = true;
 
         if (start.Pin_Type == Pin.PinType.Condition)
         {
@@ -1013,12 +1013,12 @@ public class MCEditorManager : MonoBehaviour {
         else if (start.Pin_Type == Pin.PinType.OperatorIn)
         {
 			// Check type
-			System.Type opStartType = ((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType( start.Pin_order.OrderPosition-1 );
+			//System.Type opStartType = ((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType( start.Pin_order.OrderPosition-1 );
             if (end.Pin_Type == Pin.PinType.OperatorOut)
             {
 				// Check type
 				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
-				if (!activateTypeValidation || opStartType == opEndType) {
+				if ( !activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator.acceptIncome( start.Pin_order.OrderPosition-1, opEndType ) ){
 					LinkOperator_Operator (start, end);
 					validTransition = true;
 				}
@@ -1026,7 +1026,7 @@ public class MCEditorManager : MonoBehaviour {
             else if (end.Pin_Type == Pin.PinType.Param)
             {
 				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
-				if (!activateTypeValidation || opStartType == paramType) {
+				if (!activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator.acceptIncome( start.Pin_order.OrderPosition-1, paramType ) ) {
 					LinkOperator_Param (start, end);
 					validTransition = true;
 				}
@@ -1043,8 +1043,7 @@ public class MCEditorManager : MonoBehaviour {
             if (end.Pin_Type == Pin.PinType.OperatorIn)
             {
 				// Check type
-				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType( end.Pin_order.OrderPosition-1 );
-				if (!activateTypeValidation || opStartType == opEndType) {
+				if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator.acceptIncome( end.Pin_order.OrderPosition-1, opStartType )) {
 					LinkOperator_Operator (end, start);
 					validTransition = true;
 				}
@@ -1076,8 +1075,7 @@ public class MCEditorManager : MonoBehaviour {
 			System.Type paramType = ((ProxyABParam)start.ProxyParent).getOutcomeType();
             if (end.Pin_Type == Pin.PinType.OperatorIn)
             {
-				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType( end.Pin_order.OrderPosition-1 );
-				if (!activateTypeValidation || paramType == opEndType) {
+				if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator.acceptIncome( end.Pin_order.OrderPosition-1, paramType )) {
 					LinkOperator_Param (end, start);
 					validTransition = true;
 				}
