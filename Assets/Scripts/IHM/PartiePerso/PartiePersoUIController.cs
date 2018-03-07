@@ -65,9 +65,9 @@ public class PartiePersoUIController : MonoBehaviour {
     [SerializeField]
     private int minRes = 100;
     [SerializeField]
-    private int mediumRes = 250;
+    private int mediumRes = 150;
     [SerializeField]
-    private int maxRes = 500;
+    private int maxRes = 200;
     [SerializeField]
     private int DebugValueRes = 3000;
 
