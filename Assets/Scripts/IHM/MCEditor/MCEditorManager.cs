@@ -956,7 +956,7 @@ public class MCEditorManager : MonoBehaviour {
         int transitionId = -1;
 		bool validTransition = false;
 		bool invalidTransitionType = false;
-		bool activateTypeValidation = true;
+		bool activateTypeValidation = false;
 
         if (start.Pin_Type == Pin.PinType.Condition)
         {
