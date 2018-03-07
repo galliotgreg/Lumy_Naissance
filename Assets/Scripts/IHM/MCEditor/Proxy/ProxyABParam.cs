@@ -106,19 +106,19 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		
 	}
 
-	public string GetViewValue()
+	public static string GetViewValue( IABParam param )
 	{
 		string text = "";
-		if (this.AbParam is ABParam<ABRef>) {
-			if (((ABParam<ABRef>)this.AbParam).Value != null) {
-				text += this.AbParam.Identifier.ToString ();
+		if (param is ABParam<ABRef>) {
+			if (((ABParam<ABRef>)param).Value != null) {
+				text += param.Identifier.ToString ();
 			}
-		} else if (this.AbParam is ABTableParam<ABRef>) {
-			if (((ABTableParam<ABRef>)this.AbParam).Value != null) {
-				text += this.AbParam.Identifier.ToString ();
+		} else if (param is ABTableParam<ABRef>) {
+			if (((ABTableParam<ABRef>)param).Value != null) {
+				text += param.Identifier.ToString ();
 			}
 		} else {
-			text += MCEditorManager.GetParamValue ((ABNode)this.AbParam);
+			text += MCEditorManager.GetParamValue ((ABNode)param);
 		}
 		return text;
 	}
@@ -141,7 +141,7 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		result.AbParam = paramObj;
 
 		// Set text
-		result.SetProxyName( result.GetViewValue() );
+		result.SetProxyName( GetViewValue( result.AbParam ) );
 
 		// Outcome pin
 		Pin.instantiate( Pin.PinType.Param, Pin.calculatePinPosition (result), result.transform );
