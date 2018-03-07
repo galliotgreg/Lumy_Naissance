@@ -15,7 +15,7 @@ public class SelectionSquare : MonoBehaviour
     Vector3 squareEndPos;
 
     float clickTime = 0f;
-    public float clickDelay = 0.3f;
+    public float clickDelay = 0.5f;
 
     bool hasCreatedSquare;
 
