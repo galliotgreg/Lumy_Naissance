@@ -7,14 +7,17 @@ public abstract class MCEditor_DialogBox_Param : MCEditor_DialogBox_Proxy {
 	protected ProxyABParam paramProxy;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		base.Start ();
 		paramProxy = ((ProxyABParam)this.proxy);
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
 		base.Update ();
+		if (Input.GetKeyDown (KeyCode.Return)) {
+			confirm ();
+		}
 	}
 
 	#region implemented abstract members of MCEditor_DialogBox_Proxy
