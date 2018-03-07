@@ -25,30 +25,30 @@ public class MC_Inventory_Params : MC_Inventory {
 		// Scalar
 		ABScalar s = new ABScalar();
 		s.Value = 0;
-		parameters.Add ( new ABScalParam ("scal", s));
+		parameters.Add ( new ABScalParam ("const", s));
 		// Text
 		ABText t = new ABText();
 		t.Value = "text";
-		parameters.Add ( new ABTextParam ("text", t ) );
+		parameters.Add ( new ABTextParam ("const", t ) );
 		// Boolean
 		ABBool abBoolTrue = new ABBool ();
 		abBoolTrue.Value = true;
-		parameters.Add ( new ABBoolParam ("true", abBoolTrue));
+		parameters.Add ( new ABBoolParam ("const", abBoolTrue));
 		ABBool abBoolFalse = new ABBool ();
 		abBoolFalse.Value = false;
-		parameters.Add ( new ABBoolParam ("false", abBoolFalse));
+		parameters.Add ( new ABBoolParam ("const", abBoolFalse));
 		// Color
 		ABColor abColor_Red = new ABColor (); abColor_Red.Value = ABColor.Color.Red;
-		parameters.Add ( new ABColorParam ("red", abColor_Red));
+		parameters.Add ( new ABColorParam ("const", abColor_Red));
 		ABColor abColor_Green = new ABColor (); abColor_Green.Value = ABColor.Color.Green;
-		parameters.Add ( new ABColorParam ("green", abColor_Green));
+		parameters.Add ( new ABColorParam ("const", abColor_Green));
 		ABColor abColor_Blue = new ABColor (); abColor_Blue.Value = ABColor.Color.Blue;
-		parameters.Add ( new ABColorParam ("blue", abColor_Blue));
+		parameters.Add ( new ABColorParam ("const", abColor_Blue));
 		// Vector
 		ABVec v = new ABVec();
 		v.X = 0;
 		v.Y = 0;
-		parameters.Add ( new ABVecParam ("vec", v));
+		parameters.Add ( new ABVecParam ("const", v));
 
 		setItems ( parameters );
 	}
@@ -62,7 +62,15 @@ public class MC_Inventory_Params : MC_Inventory {
 
 	protected override void configItem (MC_InventoryItem item)
 	{
-		item.Text.text = ((IABParam)item.Item).Identifier;
+		if (item.Item is ABScalParam) {
+			item.Text.text = "Scalar";
+		} else if (item.Item is ABVecParam) {
+			item.Text.text = "Vec";
+		} else if (item.Item is ABTextParam) {
+			item.Text.text = "Text";
+		} else {
+			item.Text.text = ProxyABParam.GetViewValue ((IABParam)item.Item);
+		}
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Param;
 	}
