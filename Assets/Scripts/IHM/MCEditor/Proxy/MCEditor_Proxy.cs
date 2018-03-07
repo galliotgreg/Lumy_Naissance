@@ -51,7 +51,7 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 			return getNodeName( (ABNode)((ProxyABOperator)this).AbOperator );
 		}
 		else if (this is ProxyABParam) {
-			return ((ProxyABParam)this).GetViewValue();
+			return ProxyABParam.GetViewValue( ((ProxyABParam)this).AbParam );
 		}
 		return "NODE";
 	}

@@ -10,6 +10,7 @@ public class MCEditor_DialogBox_Param_Scalar : MCEditor_DialogBox_Param {
 	// Use this for initialization
 	void Start () {
 		base.Start ();
+		value.ActivateInputField ();
 	}
 
 	// Update is called once per frame

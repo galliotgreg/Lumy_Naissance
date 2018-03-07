@@ -12,11 +12,21 @@ public class MCEditor_DialogBox_Param_Vec : MCEditor_DialogBox_Param {
 	// Use this for initialization
 	void Start () {
 		base.Start ();
+
+		valueX.ActivateInputField ();
 	}
 
 	// Update is called once per frame
 	void Update () {
 		base.Update ();
+		if (Input.GetKeyDown (KeyCode.Tab)) {
+			if (valueX.isFocused) {
+				valueY.ActivateInputField ();
+			}
+			if (valueY.isFocused) {
+				valueX.ActivateInputField ();
+			}
+		}
 	}
 
 	#region implemented abstract members of MCEditor_DialogBox_Param

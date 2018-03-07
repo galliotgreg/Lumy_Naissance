@@ -4785,8 +4785,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 393822062}
   m_HandleRect: {fileID: 393822061}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.75
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4911,6 +4911,7 @@ GameObject:
   - component: {fileID: 916096288}
   - component: {fileID: 916096287}
   - component: {fileID: 916096286}
+  - component: {fileID: 916096289}
   m_Layer: 5
   m_Name: btn_Play
   m_TagString: Untagged
@@ -4975,7 +4976,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 916096287}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 916096289}
+        m_MethodName: OnClickChangeCursor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &916096287
@@ -5011,6 +5023,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 916096284}
+--- !u!114 &916096289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 916096284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24dfe7d7a511c14aa967e65440f0002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorMode: 0
+  hotSpot: {x: 0, y: 0}
 --- !u!1 &991348531
 GameObject:
   m_ObjectHideFlags: 0
@@ -5988,6 +6013,7 @@ GameObject:
   - component: {fileID: 1094317519}
   - component: {fileID: 1094317518}
   - component: {fileID: 1094317517}
+  - component: {fileID: 1094317522}
   m_Layer: 5
   m_Name: btn_menu
   m_TagString: Untagged
@@ -6079,8 +6105,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1094317517}
-        m_MethodName: 
+      - m_Target: {fileID: 1094317522}
+        m_MethodName: OnClickChangeCursor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6125,6 +6151,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1094317515}
+--- !u!114 &1094317522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1094317515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24dfe7d7a511c14aa967e65440f0002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorMode: 0
+  hotSpot: {x: 0, y: 0}
 --- !u!1 &1146875447
 GameObject:
   m_ObjectHideFlags: 0
@@ -8832,8 +8871,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2026384699}
   m_HandleRect: {fileID: 2026384698}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.75
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

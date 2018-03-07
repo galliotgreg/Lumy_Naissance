@@ -52,6 +52,11 @@ public class PartiePersoUIController : MonoBehaviour {
     Dropdown gameTimer;
     [SerializeField]
     Dropdown lumyLimit;
+    [SerializeField]
+    Button swapSceneButton;
+
+    [SerializeField]
+    List<Image> imagesScenes; 
 
     [Header("Gisement")]
     [SerializeField]
@@ -88,12 +93,44 @@ public class PartiePersoUIController : MonoBehaviour {
     [SerializeField]
     private int maxLumy = 250;
 
+    private string sceneTxtField = "MapPersonnalise"; 
+
     // Use this for initialization
     void Start () {
         CreateP1SwarmSelectionButons();
         CreateP2SwarmSelectionButons();
         CheckParams();
         InitMenu();
+        ButtonListener(); 
+    }
+
+    private void ButtonListener ()
+    {
+        swapSceneButton.onClick.AddListener(swapSceneOnClick); 
+    }
+
+    private void swapSceneOnClick()
+    {
+        int activeIndex = 0; 
+        for(int i=0; i<imagesScenes.Count; i++)
+        {
+            if(imagesScenes[i].IsActive())
+            {
+                activeIndex = i;
+            }
+        }
+        imagesScenes[activeIndex].gameObject.SetActive(false); 
+        if(activeIndex < imagesScenes.Count -1)
+        {
+            activeIndex ++;
+            imagesScenes[activeIndex].gameObject.SetActive(true); 
+        }
+        else
+        {
+            activeIndex = 0;
+            imagesScenes[activeIndex].gameObject.SetActive(true); 
+        }
+        sceneTxtField = imagesScenes[activeIndex].name;
     }
 
     private void CreateP1SwarmSelectionButons()
@@ -151,6 +188,11 @@ public class PartiePersoUIController : MonoBehaviour {
         }
     }
 
+    private void ChangeMap()
+    {
+
+    }
+
     public void LaunchGame()
     {
         //Set the settings of the game and save them in the PlayerPrefs
@@ -160,14 +202,7 @@ public class PartiePersoUIController : MonoBehaviour {
         AppContextManager.instance.LoadPlayerSpecies(player1SpecieName, player2SpecieName);
 
         //Launch
-        if (Input.GetKey(KeyCode.Alpha1)) {
-
-            NavigationManager.instance.SwapScenes("MapPersonnalise", Vector3.zero);
-        }
-        else if (Input.GetKey(KeyCode.Alpha2)) {
-
-            NavigationManager.instance.SwapScenes("map2", Vector3.zero);
-        }
+        NavigationManager.instance.SwapScenes(sceneTxtField, Vector3.zero);
     }
 
     private void SelectP1ActiveSwarm(string swarmName)
@@ -306,6 +341,11 @@ public class PartiePersoUIController : MonoBehaviour {
         if (SwapManager.instance == null)
         {
             Debug.LogError("SwapManager is not instantiate");
+        }
+
+        if (swapSceneButton == null)
+        {
+            Debug.LogError("SwapSceneButton is not implemented in UI"); 
         }
     }
 }

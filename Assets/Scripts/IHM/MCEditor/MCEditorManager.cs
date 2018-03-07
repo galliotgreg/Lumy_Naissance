@@ -956,7 +956,7 @@ public class MCEditorManager : MonoBehaviour {
         int transitionId = -1;
 		bool validTransition = false;
 		bool invalidTransitionType = false;
-		bool activateTypeValidation = true;
+		bool activateTypeValidation = false;
 
         if (start.Pin_Type == Pin.PinType.Condition)
         {
@@ -1573,9 +1573,13 @@ public class MCEditorManager : MonoBehaviour {
 	void DeleteTransition( ProxyABTransition transition )
 	{
 		if (transition != null) {
-
-			// Transition between Action/State and Action/State
-			if (transition.Condition != null)
+            int id_transition_to_remove = 0;
+            if (transition.Transition != null)
+            {
+                id_transition_to_remove = transition.Transition.Id;
+            }
+            // Transition between Action/State and Action/State
+            if (transition.Condition != null)
 			{
 				if ( !(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut	|| transition.StartPosition.Pin_Type == Pin.PinType.Param)
 					&& !(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut || transition.EndPosition.Pin_Type == Pin.PinType.Param) )
@@ -1594,8 +1598,9 @@ public class MCEditorManager : MonoBehaviour {
 							DeleteTransition (trans);
 						}
 					}
-				}
-			} else
+                }
+                abModel.shiftIDTransition(id_transition_to_remove);
+            } else
 			{
 				RemoveTransitionSyntTree(transition);
 			}

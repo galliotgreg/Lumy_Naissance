@@ -27,12 +27,12 @@ public abstract class MCEditor_DialogBox_Proxy : MCEditor_DialogBox {
 	#endregion
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		base.Start ();
 	}
 
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
 		base.Update ();
 	}
 
