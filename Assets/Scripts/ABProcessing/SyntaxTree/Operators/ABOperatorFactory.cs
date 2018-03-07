@@ -37,7 +37,7 @@ public class ABOperatorFactory {
         TypeStringToString.Add("AB_Bool_IsSet_Bool_Operator", "BisSetB");
         TypeStringToString.Add("AB_Bool_NotEquals_Bool_Bool_Operator", "B!=BB");
         TypeStringToString.Add("AB_Scal_Size_BoolTab_Operator", "SsizeB[]");
-        TypeStringToString.Add("AB_ColorTab_Agg_CStar_Operator", "C[]aggC*");
+        TypeStringToString.Add("AB_ColorTab_Agg_ColorStar_Operator", "C[]aggC*");
         TypeStringToString.Add("AB_Bool_Equals_Color_Color_Operator", "B==CC");
         TypeStringToString.Add("AB_Color_Get_Ref_Txt_Operator", "CgetRT");
         TypeStringToString.Add("AB_ColorTab_Get_RefTab_Txt_Operator", "C[]getR[]T");
@@ -151,7 +151,7 @@ public class ABOperatorFactory {
                 type = OperatorType.Scal_Size_BoolTab;
                 break;
             case "C[]aggC*":
-                type = OperatorType.ColorTab_Agg_CStar;
+                type = OperatorType.ColorTab_Agg_ColorStar;
                 break;
             case "B==CC":
                 type = OperatorType.Bool_Equals_Color_Color;
@@ -426,8 +426,8 @@ public class ABOperatorFactory {
             case OperatorType.Scal_Size_BoolTab:
                 abOperator = new AB_Scal_Size_BoolTab_Operator();
                 break;
-            case OperatorType.ColorTab_Agg_CStar:
-                abOperator = new AB_ColorTab_Agg_CStar_Operator();
+            case OperatorType.ColorTab_Agg_ColorStar:
+                abOperator = new AB_ColorTab_Agg_ColorStar_Operator();
                 break;
             case OperatorType.Bool_Equals_Color_Color:
                 abOperator = new AB_Bool_Equals_Color_Color_Operator();
