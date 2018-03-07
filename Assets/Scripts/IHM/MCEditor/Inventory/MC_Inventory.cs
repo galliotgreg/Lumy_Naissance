@@ -25,6 +25,12 @@ public abstract class MC_Inventory : MonoBehaviour {
 	protected GameObject itemPrefab;
 
 	protected void setItems (List<System.Object> items){
+		// Clear items
+		foreach(MC_InventoryItem item in container.GetComponentsInChildren<MC_InventoryItem>()){
+			Destroy (item.gameObject);
+		}
+
+		// Create new items
 		foreach( System.Object item in items ){
 			GameObject newItem = Instantiate (itemPrefab);
 
