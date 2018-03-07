@@ -46,8 +46,10 @@ public class TraceAction : GameAction {
 		// TraceScript
 		if( tracePrefab != null ){
 			GameObject traceObject = Instantiate( tracePrefab, this.transform.position, this.transform.rotation );
-			TraceScript traceScript = traceObject.GetComponent<TraceScript>();
-			if (traceScript != null) {
+            traceObject.transform.SetParent(GameManager.instance.transform);
+            TraceScript traceScript = traceObject.GetComponent<TraceScript>();
+            
+            if (traceScript != null) {
 				if (path.Length == 1) {
 					traceScript.CreateTrace (color, AgentBehavior.worldToVec2 (this.transform.position), AgentBehavior.worldToVec2 (path [0]), agentEntity.Authority, traceUnitPrefab);
 				} else {
