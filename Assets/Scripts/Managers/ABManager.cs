@@ -90,47 +90,53 @@ public class ABManager : MonoBehaviour
     {
         foreach (AgentEntity agent in agents)
         {
-            // Compute Action
-            ABInstance instance = FindABInstance(agent.Id);
-            ABContext context = CreateABContextFromAgentContext(agent.Context);
-            ABAction action = processor.ProcessABInstance(instance, context);
-
-            //Compute Action Parameters
-            List<IABType> actionParams = new List<IABType>();
-
-            if (action != null && action.Parameters != null)
+            try
             {
-                for (int i = 0; i < action.Parameters.Length; i++)
-                {
-                    if (action.Parameters[i] is AB_TxtGate_Operator)
-                    {
-                        IABType param =
-                            ((AB_TxtGate_Operator)action.Parameters[i]).Evaluate(context);
-                        actionParams.Add(param);
-                    }
-                    else if (action.Parameters[i] is AB_VecGate_Operator)
-                    {
-                        IABType param =
-                            ((AB_VecGate_Operator)action.Parameters[i]).Evaluate(context);
-                        actionParams.Add(param);
-                    }
-                    else if (action.Parameters[i] is AB_ColorGate_Operator)
-                    {
-                        IABType param =
-                            ((AB_ColorGate_Operator)action.Parameters[i]).Evaluate(context);
-                        actionParams.Add(param);
-                    }
-                    else if (action.Parameters[i] is AB_RefGate_Operator)
-                    {
-                        IABType param =
-                            ((AB_RefGate_Operator)action.Parameters[i]).Evaluate(context);
-                        actionParams.Add(param);
-                    }
-                    // TODO add type for each new param type
-                }
-            }
+                // Compute Action
+                ABInstance instance = FindABInstance(agent.Id);
+                ABContext context = CreateABContextFromAgentContext(agent.Context);
+                ABAction action = processor.ProcessABInstance(instance, context);
 
-            agent.setAction(action, actionParams.ToArray());
+                //Compute Action Parameters
+                List<IABType> actionParams = new List<IABType>();
+
+                if (action != null && action.Parameters != null)
+                {
+                    for (int i = 0; i < action.Parameters.Length; i++)
+                    {
+                        if (action.Parameters[i] is AB_TxtGate_Operator)
+                        {
+                            IABType param =
+                                ((AB_TxtGate_Operator)action.Parameters[i]).Evaluate(context);
+                            actionParams.Add(param);
+                        }
+                        else if (action.Parameters[i] is AB_VecGate_Operator)
+                        {
+                            IABType param =
+                                ((AB_VecGate_Operator)action.Parameters[i]).Evaluate(context);
+                            actionParams.Add(param);
+                        }
+                        else if (action.Parameters[i] is AB_ColorGate_Operator)
+                        {
+                            IABType param =
+                                ((AB_ColorGate_Operator)action.Parameters[i]).Evaluate(context);
+                            actionParams.Add(param);
+                        }
+                        else if (action.Parameters[i] is AB_RefGate_Operator)
+                        {
+                            IABType param =
+                                ((AB_RefGate_Operator)action.Parameters[i]).Evaluate(context);
+                            actionParams.Add(param);
+                        }
+                        // TODO add type for each new param type
+                    }
+                }
+
+                agent.setAction(action, actionParams.ToArray());
+            } catch (Exception e)
+            {
+                MessagesManager.instance.LogMsg("Something happened during your MC execution. You might miss something !! \nError is :\n" + e.Message);
+            }
         }
     }
 
