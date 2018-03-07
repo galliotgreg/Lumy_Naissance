@@ -4,25 +4,78 @@ using UnityEngine;
 
 public class MC_Inventory_Operators : MC_Inventory {
 
+	List<IABOperator> allOperators;
+
+	[SerializeField]
+	UnityEngine.UI.Dropdown returnTypeDropdown;
+
 	// Use this for initialization
 	void Start () {
 		base.Start ();
 
 		// Load Operators
-		List<System.Object> operators = new List<System.Object> ();
+		allOperators = new List<IABOperator> ();
 		foreach (OperatorType operatorType in System.Enum.GetValues( typeof( OperatorType ) )) {
-		//foreach (OperatorType operatorType in new List<OperatorType>(){OperatorType.BoolTab_Agg_BoolStar}) {	// test : 1 item
 			if (operatorType != OperatorType.None) {
 				try{
-					operators.Add ( ABOperatorFactory.CreateOperator( operatorType ) );
+					allOperators.Add ( ABOperatorFactory.CreateOperator( operatorType ) );
 				}
 				catch(System.NotImplementedException ex){
 					Debug.Log (ex);
 				}
 			}
 		}
-		setItems ( operators );
+		setItems ( listToObject<IABOperator>( allOperators ));
+
+		loadReturnTypeDropdown ();
+
+		returnTypeDropdown.onValueChanged.AddListener (changeReturnTypeDropdown);
 	}
+
+	List<System.Object> listToObject<T>( List<T> list ){
+		List<System.Object> result = new List<object> ();
+
+		foreach( T item in list ){
+			result.Add ( item );
+		}
+
+		return result;
+	}
+
+	#region Filter
+	void loadReturnTypeDropdown(){
+		returnTypeDropdown.ClearOptions ();
+
+		List<string> types = new List<string> ();
+		types.Add ( "All" );
+		foreach( ParamType type in System.Enum.GetValues( typeof( ParamType ) ) ){
+			if (type != ParamType.None) {
+				types.Add (type.ToString ());
+			}
+		}
+		returnTypeDropdown.AddOptions ( types );
+	}
+
+	public void changeReturnTypeDropdown( int index ){
+		setItems (listToObject<IABOperator>( filterReturnType (index, allOperators) ));
+	}
+
+	public List<IABOperator> filterReturnType( int index, List<IABOperator> operators ){
+		if ( index == 0 ) {
+			return operators;
+		}
+
+		// other types
+		System.Type selectedType = ABModel.ParamTypeToType( (ParamType) System.Enum.GetValues( typeof( ParamType ) ).GetValue( index - 1 ) );
+		List<IABOperator> result = new List<IABOperator>();
+		foreach ( IABOperator oper in operators ) {
+			if( oper.getOutcomeType() == selectedType ){
+				result.Add ( oper );
+			}
+		}
+		return result;
+	}
+	#endregion
 	
 	// Update is called once per frame
 	void Update () {
