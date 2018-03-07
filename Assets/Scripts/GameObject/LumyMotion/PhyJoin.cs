@@ -31,6 +31,9 @@ public class PhyJoin : MonoBehaviour {
 
     private System.Random rand;
     private MeshRenderer meshRenderer;
+    private MeshFilter meshFilter; 
+
+
     private Light pointLight;
 
     public PhyBone[] DstBones
@@ -63,9 +66,18 @@ public class PhyJoin : MonoBehaviour {
     void Start () {
         meshRenderer = GetComponent<MeshRenderer>();
         pointLight = GetComponent<Light>();
-        rand = new System.Random(seed);      
+        rand = new System.Random(seed);
+        PlaceTail(); 
     }
 	
+    private void PlaceTail()
+    {
+        if(this.gameObject.transform.parent.name == "Head")
+        {
+            this.gameObject.transform.Rotate(0, 180, 0);
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
         totalTime += Time.deltaTime;
@@ -86,8 +98,19 @@ public class PhyJoin : MonoBehaviour {
         }
         UpdateLight();
 
+        UpdateRotation(); 
+
         LerpLight();
 	}
+
+    private void UpdateRotation()
+    {
+        if (SrcBone != null)
+        {
+            gameObject.transform.Rotate(new Vector3(0, SrcBone.transform.rotation.y /2, 0));
+        }
+       
+    }
 
     private void LerpLight()
     {
@@ -102,6 +125,7 @@ public class PhyJoin : MonoBehaviour {
             meshRenderer.material.SetColor("_EmissionColor", color * intensity);
             pointLight.color = color;
             pointLight.intensity = intensity;
+            
         }
     }
 
