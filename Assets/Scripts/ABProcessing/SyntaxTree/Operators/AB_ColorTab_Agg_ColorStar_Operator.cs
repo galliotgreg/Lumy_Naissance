@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-public class AB_ColorTab_Agg_CStar_Operator : ABOperator<ABTable<ABColor>>
+public class AB_ColorTab_Agg_ColorStar_Operator : ABOperator<ABTable<ABColor>>
 {
-    public AB_ColorTab_Agg_CStar_Operator()
+    public AB_ColorTab_Agg_ColorStar_Operator()
     {
         this.Inputs = new ABNode[32];
     }

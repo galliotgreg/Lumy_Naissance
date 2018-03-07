@@ -14,7 +14,7 @@ public enum OperatorType
     Bool_IsSet_Bool,
     Bool_NotEquals_Bool_Bool,
     Scal_Size_BoolTab,
-    ColorTab_Agg_CStar,
+    ColorTab_Agg_ColorStar,
     Bool_Equals_Color_Color,
     Color_Get_Ref_Txt,
     ColorTab_Get_RefTab_Txt,
