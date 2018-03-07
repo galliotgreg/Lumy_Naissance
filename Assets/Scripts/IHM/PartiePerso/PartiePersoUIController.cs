@@ -42,6 +42,12 @@ public class PartiePersoUIController : MonoBehaviour {
     [SerializeField]
     private GameObject player2SwarmSelectionPanel;
 
+    [SerializeField]
+    private GameObject player1SelectedSwarmField;
+
+    [SerializeField]
+    private GameObject player2SelectedSwarmField;
+
 
     [Header("UI")]
     [SerializeField]
@@ -208,11 +214,13 @@ public class PartiePersoUIController : MonoBehaviour {
     private void SelectP1ActiveSwarm(string swarmName)
     {
         player1SpecieName = swarmName;
+        player1SelectedSwarmField.GetComponent<Text>().text = swarmName;
     }
 
     private void SelectP2ActiveSwarm(string swarmName)
     {
         player2SpecieName = swarmName;
+        player2SelectedSwarmField.GetComponent<Text>().text = swarmName;
     }
 
     /// <summary>
