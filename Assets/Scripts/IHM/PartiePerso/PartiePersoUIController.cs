@@ -199,10 +199,13 @@ public class PartiePersoUIController : MonoBehaviour {
         SetPrefsGame(); 
         
         //Load Species
-        AppContextManager.instance.LoadPlayerSpecies(player1SpecieName, player2SpecieName);
-
-        //Launch
-        NavigationManager.instance.SwapScenes(sceneTxtField, Vector3.zero);
+        if(player1SpecieName.Length != 0 || player2SpecieName.Length != 0)
+        {
+            AppContextManager.instance.LoadPlayerSpecies(player1SpecieName, player2SpecieName);
+            //Launch
+            NavigationManager.instance.SwapScenes(sceneTxtField, Vector3.zero);
+        }
+      
     }
 
     private void SelectP1ActiveSwarm(string swarmName)
