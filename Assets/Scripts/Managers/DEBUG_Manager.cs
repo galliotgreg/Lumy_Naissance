@@ -9,7 +9,8 @@ public class DEBUG_Manager : MonoBehaviour {
     /// </summary>
     public static DEBUG_Manager instance = null;
 
-    public bool debug = false;
+    public bool debugRange = false;
+    public bool debugCast = false;
 
     /// <summary>
     /// Enforce Singleton properties

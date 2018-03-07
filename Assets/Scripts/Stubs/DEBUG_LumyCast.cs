@@ -7,7 +7,7 @@ public class DEBUG_LumyCast : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        if (DEBUG_Manager.instance.debug == true) {
+        if (DEBUG_Manager.instance.debugCast == true) {
 
             gameObject.SetActive(true);
 

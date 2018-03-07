@@ -258,7 +258,7 @@ public class AgentContext : MonoBehaviour
 	/// <returns>The cooldown.</returns>
 	float getCooldown( AgentComponent[] agentComponents ){
 		int nbComposants = agentComponents.Length;
-		return 0.5f * nbComposants;
+		return 1.25f * nbComposants;
 	}
 
 	/// <summary>

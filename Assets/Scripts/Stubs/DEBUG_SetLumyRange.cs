@@ -10,7 +10,7 @@ public class DEBUG_SetLumyRange : MonoBehaviour {
     private float visionRange;
     void Start () {
 
-        if(DEBUG_Manager.instance.debug == true) {
+        if(DEBUG_Manager.instance.debugRange == true) {
 
             gameObject.SetActive(true);
 
