@@ -182,22 +182,28 @@ public class CastesUIController : MonoBehaviour {
 
     public void CreateSwarmSelectionButons()
     {
+
         string[] speciesNames = AppContextManager.instance.GetSpeciesFolderNames();
+
+        // Set ScrollRect sizes
+        RectTransform rec = swarmSelectionPanel.transform.GetComponent<RectTransform>();
+        rec.sizeDelta = new Vector2(rec.sizeDelta.x, speciesNames.Length * (swarmSelectionBtnPrefab.GetComponent<RectTransform>().sizeDelta.y + 20f) + 20f);
+        
         for (int i=0; i < speciesNames.Length; i++)
         {
             GameObject swarmSelectionButton = Instantiate(swarmSelectionBtnPrefab);
             Button button = swarmSelectionButton.GetComponent<Button>();
             Text text = swarmSelectionButton.GetComponentInChildren<Text>();
             RectTransform rectTransform = swarmSelectionButton.GetComponent<RectTransform>();
-            swarmSelectionButton.transform.parent = swarmSelectionPanel.transform;
+            swarmSelectionButton.transform.SetParent(swarmSelectionPanel.transform);
 
             //Set Text
             text.text = speciesNames[i];
 
             //Set Position
             rectTransform.localPosition = new Vector3(
-                -300f + i * (rectTransform.rect.width + 20f),
-                25f,
+                0,
+                -i * (rectTransform.rect.height + 20f) - 20f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
