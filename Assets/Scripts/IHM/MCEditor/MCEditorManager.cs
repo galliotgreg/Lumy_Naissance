@@ -284,7 +284,7 @@ public class MCEditorManager : MonoBehaviour {
             if (state.Action != null)
             {
 				ProxyABAction proxyAction = MCEditor_Proxy_Factory.instantiateAction( state );
-				this.registerAction ( state, proxyAction );
+				this.registerAction ( proxyAction );
 
 				// Create SyntaxTrees
 				List<Pin> pins = proxyAction.getPins( Pin.PinType.ActionParam );
@@ -309,7 +309,7 @@ public class MCEditorManager : MonoBehaviour {
 			// States
             else {
 				ProxyABState proxyState = MCEditor_Proxy_Factory.instantiateState (state, abModel.InitStateId == state.Id );
-				this.registerState ( state, proxyState );
+				this.registerState ( proxyState );
             }
         }
     }
@@ -585,24 +585,23 @@ public class MCEditorManager : MonoBehaviour {
             {
                 csvcontent.AppendLine(state.Id + "," + state.Name + "," + "trigger{"+state.Action.Type.ToString().ToLower()+"}");
 
-                for (int i = 0; i < state.Action.Parameters.Length; i++)
-                {
-                    if (state.Action.Parameters[i].Inputs[0] != null)
-                    {
-                        StringBuilder syntTreeContent = new StringBuilder();
-                        syntTreeContent.AppendLine("Syntax Tree,output,");
-                        syntTreeContent.AppendLine("1," + state.Name + "->"+ i + ",");
-                        syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
+				if (state.Action.Parameters != null) {
+					for (int i = 0; i < state.Action.Parameters.Length; i++) {
+						if (state.Action.Parameters [i].Inputs [0] != null) {
+							StringBuilder syntTreeContent = new StringBuilder ();
+							syntTreeContent.AppendLine ("Syntax Tree,output,");
+							syntTreeContent.AppendLine ("1," + state.Name + "->" + i + ",");
+							syntTreeContent.AppendLine ("Nodes,Type,output (Node -> Input)");
 
-                        idNodeSyntTree = 0;
-                        foreach (ABNode node in state.Action.Parameters[i].Inputs)
-                        {
-                            Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
-                        }
-                        syntTreeContent.AppendLine(",,");
-                        syntTrees.Add(syntTreeContent);
-                    }
-                }
+							idNodeSyntTree = 0;
+							foreach (ABNode node in state.Action.Parameters[i].Inputs) {
+								Save_Ope_Param (idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+							}
+							syntTreeContent.AppendLine (",,");
+							syntTrees.Add (syntTreeContent);
+						}
+					}
+				}
             }
             else
             {
@@ -756,37 +755,37 @@ public class MCEditorManager : MonoBehaviour {
 
 	#region REGISTER PROXY
 	// Action
-	public void registerAction( ABState state, ProxyABAction action ){
-		if (AbModel.getState (state.Id) == null) {
-			state.Id = AbModel.AddState ( state.Name, state.Action );
+	// return the success of the operation [if necessary]
+	public bool registerAction( ProxyABAction proxyAction ){
+		// check disponibility
+		//Alter name if exists
+		proxyAction.Name = getAvailableStateName( proxyAction.AbState.Name );
+
+		if (AbModel.getState (proxyAction.AbState.Id) == null) {
+			proxyAction.AbState.Id = AbModel.AddState (proxyAction.AbState.Name, proxyAction.AbState.Action);
+			proxyAction.AbState = AbModel.getState (proxyAction.AbState.Id);
 		}
-		proxyActions.Add(action);
-		actionsDictionnary.Add(state, action);
+		proxyActions.Add(proxyAction);
+		actionsDictionnary.Add(proxyAction.AbState, proxyAction);
+
+		return true;
 	}
 
 	// State
-	public bool registerState( ABState state, ProxyABState proxyState ){
+	// return the success of the operation [if necessary]
+	public bool registerState( ProxyABState proxyState ){
 		// check disponibility
         //Alter name if exists
-        int suffixId = 0;
-        string candidateName = state.Name;
-        bool available = stateAvailable(candidateName);
-        while (!available)
-        {
-            candidateName = state.Name + "_" + suffixId++;
-            available = stateAvailable(candidateName);
-        }
-        proxyState.Name = candidateName;
-		state.Name = candidateName;
+		proxyState.Name = getAvailableStateName( proxyState.AbState.Name );
 
-        if (available) {
-			if (AbModel.getState (state.Id) == null) {
-				state.Id = AbModel.AddState (state.Name, state.Action);
-			}
-			proxyStates.Add (proxyState);
-			statesDictionnary.Add (AbModel.getState (state.Id), proxyState);
+		if (AbModel.getState (proxyState.AbState.Id) == null) {
+			proxyState.AbState.Id = AbModel.AddState (proxyState.AbState.Name, proxyState.AbState.Action);
+			proxyState.AbState = AbModel.getState (proxyState.AbState.Id);
 		}
-		return available;
+		proxyStates.Add (proxyState);
+		statesDictionnary.Add (proxyState.AbState, proxyState);
+
+		return true;
 	}
 	public bool changeModelStateName( ProxyABState proxyState, string newValue ){
 		// check disponibility
@@ -800,10 +799,44 @@ public class MCEditorManager : MonoBehaviour {
 		}
 		return available;
 	}
+	public bool changeModelActionName( ProxyABAction proxyAction, string newValue ){
+		// check disponibility
+		bool available = stateAvailable(newValue);
+
+		if (available) {
+			// Change value in the model
+			if (AbModel.getState (proxyAction.AbState.Id) != null) {
+				AbModel.getState (proxyAction.AbState.Id).Name = newValue;
+			}
+		}
+		return available;
+	}
+
+	public string getAvailableStateName( string name ){
+		bool available = stateAvailable( name );
+
+		if (available) {
+			return name;
+		}
+
+		int suffixId = 0;
+		while (true)
+		{
+			string candidateName = name + "_" + suffixId++;
+			if (stateAvailable (candidateName)) {
+				return candidateName;
+			}
+		}
+	}
 	public bool stateAvailable( string name ){
 		// check disponibility
 		bool available = true;
 		foreach( ABState s in statesDictionnary.Keys ){
+			if (s.Name == name) {
+				available = false;
+			}
+		}
+		foreach( ABState s in actionsDictionnary.Keys ){
 			if (s.Name == name) {
 				available = false;
 			}

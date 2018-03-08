@@ -26,6 +26,18 @@ set
 }
 }
 
+	public string Name {
+		get {
+			return name;
+		}
+		set {
+			UnityEngine.UI.Text stateName = this.GetComponentInChildren<UnityEngine.UI.Text>();
+			stateName.text = value;
+			abState.Name = value;
+			name = value;
+		}
+	}
+
 public ABState AbState
 {
 	get
@@ -149,7 +161,8 @@ public static Vector3 calculateActionPosition( Transform parent ){
 
 	public override void doubleClick ()
 	{
-		// Nothing to do
+		Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
+		MCEditor_DialogBoxManager.instance.instantiateActionName (this, pos);
 	}
 
 	public override void deleteProxy ()

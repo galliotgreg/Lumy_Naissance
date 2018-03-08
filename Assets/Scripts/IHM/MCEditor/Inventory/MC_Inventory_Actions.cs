@@ -44,7 +44,7 @@ public class MC_Inventory_Actions : MC_Inventory {
 	{
 		ABState itemState = (ABState)item.Item;
 		ABState newState = new ABState (itemState.Id, itemState.Name);
-		newState.Action = itemState.Action;
+		newState.Action = itemState.Action.CloneEmpty();
 		ProxyABAction result = MCEditor_Proxy_Factory.instantiateAction( newState );
 		return result.gameObject;
 	}
@@ -52,7 +52,9 @@ public class MC_Inventory_Actions : MC_Inventory {
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)
 	{
 		ProxyABAction actionProxy = proxy.GetComponent<ProxyABAction> ();
-		MCEditorManager.instance.registerAction( actionProxy.AbState, actionProxy );
+		if (!MCEditorManager.instance.registerAction (actionProxy)) {
+			Destroy (proxy);
+		}
 	}
 
 	#endregion

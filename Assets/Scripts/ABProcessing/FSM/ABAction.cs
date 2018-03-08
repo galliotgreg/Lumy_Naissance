@@ -31,4 +31,6 @@ public abstract class ABAction {
             parameters = value;
         }
     }
+
+	public abstract ABAction CloneEmpty ();
 }
