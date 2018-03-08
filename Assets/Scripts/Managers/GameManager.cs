@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
     private GameObject p1_queen;
     private GameObject p2_queen;
 
-    public enum Winner { Player1,Player2,Equality, None };
+    public enum Winner { Player1Q,Player2Q, Player1R, Player2R,Equality, None };
     private Winner winnerPlayer; 
 
 
@@ -181,13 +181,13 @@ public class GameManager : MonoBehaviour {
         if (p1_queen == null)
         {
             gameNotOver = false; 
-            winnerPlayer = Winner.Player2;
+            winnerPlayer = Winner.Player2Q;
             return; 
         }
         else if (p2_queen == null)
         {
             gameNotOver = false;
-            winnerPlayer = Winner.Player1;
+            winnerPlayer = Winner.Player1Q;
             return; 
         }
 
@@ -197,9 +197,9 @@ public class GameManager : MonoBehaviour {
         {
             gameNotOver = false; 
             if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2))
-                winnerPlayer = Winner.Player1;
+                winnerPlayer = Winner.Player1R;
             else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
-                winnerPlayer = Winner.Player2;
+                winnerPlayer = Winner.Player2R;
             else
                 winnerPlayer = Winner.Equality; 
         }
