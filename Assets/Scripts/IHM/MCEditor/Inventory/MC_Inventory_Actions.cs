@@ -10,20 +10,28 @@ public class MC_Inventory_Actions : MC_Inventory {
 
 		// Load Operators
 		List<System.Object> actions = new List<System.Object> ();
-		foreach (ActionType actionType in LumyEditorManager.instance.EditedLumy.GetComponent< AgentEntity >().getAgentActions() ){
-			// filter by enable actions
-			if (actionType != ActionType.None) {
-				try{
-					ABState state = new ABState( -1, actionType.ToString() );
-					state.Action = ABActionFactory.CreateAction( actionType );
-					actions.Add ( state );
-				}
-				catch(System.NotImplementedException ex){
-					Debug.Log (ex);
-				}
-			}
-		}
-		setItems ( actions );
+        if (AppContextManager.instance.PrysmeEdit) {
+            foreach (ActionType actionType in LumyEditorManager.instance.EditedLumy.GetComponent<AgentEntity>().getAgentActions()) {
+                // filter by enable actions
+                if (actionType != ActionType.None) {
+                    try {
+                        ABState state = new ABState(-1, actionType.ToString());
+                        state.Action = ABActionFactory.CreateAction(actionType);
+                        actions.Add(state);
+                    }
+                    catch (System.NotImplementedException ex) {
+                        Debug.Log(ex);
+                    }
+                }
+            }
+            setItems(actions);
+        }else
+        {
+            ABState state = new ABState(-1, ActionType.Lay.ToString());
+            state.Action = ABActionFactory.CreateAction(ActionType.Lay);
+            actions.Add(state);
+            setItems(actions);
+        }
 	}
 	
 	// Update is called once per frame
