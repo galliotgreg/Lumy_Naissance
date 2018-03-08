@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MessagesManager : MonoBehaviour {
     /// <summary>
@@ -26,9 +27,20 @@ public class MessagesManager : MonoBehaviour {
         }
     }
 
+    [SerializeField]
+    private GameObject msgPanel;
+    [SerializeField]
+    private Text content;
+
+    public void CloseMsgPanel()
+    {
+        msgPanel.SetActive(false);
+    }
+
     public void LogMsg(string msg)
     {
-
+        content.text = msg;
+        msgPanel.SetActive(true);
     }
 
     // Use this for initialization

@@ -339,7 +339,8 @@ public class MCEditorManager : MonoBehaviour {
 
                 if(inputNode == null)
                 {
-                    break;
+                    Debug.Log("Il y avait un break ici avant");
+                    //break;
                 }
 
                 Pin end = RecNodeSynthTree(inputNode);

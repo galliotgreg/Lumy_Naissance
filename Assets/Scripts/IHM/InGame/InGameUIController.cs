@@ -169,13 +169,19 @@ public class InGameUIController : MonoBehaviour
             {
                 winState = true;
                 victoryMenu.SetActive(true);
-                if (winner == GameManager.Winner.Player1)
+                if (winner == GameManager.Winner.Player1R)
                 {
-                    victory.text = "Victoire du Joueur 1";
+                    victory.text = "Victoire du Joueur 1 : Avantage à la ressources";
                 }
-                if (winner == GameManager.Winner.Player2)
+                if (winner == GameManager.Winner.Player2R)
                 {
-                    victory.text = " Victoire du Joueur 2 ";
+                    victory.text = " Victoire du Joueur 2 : Avantage à la ressources";
+                }
+                if (winner == GameManager.Winner.Player1Q) {
+                    victory.text = "Victoire du Joueur 1 : Destruction du prysme adverse";
+                }
+                if (winner == GameManager.Winner.Player2Q) {
+                    victory.text = " Victoire du Joueur 2 : Destruction du prysme adverse";
                 }
                 if (winner == GameManager.Winner.Equality)
                 {
