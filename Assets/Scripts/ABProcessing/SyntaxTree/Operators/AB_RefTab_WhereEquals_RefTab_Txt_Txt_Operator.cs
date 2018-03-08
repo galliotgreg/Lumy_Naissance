@@ -1,4 +1,8 @@
-﻿public class AB_RefTab_WhereEquals_RefTab_Txt_Txt_Operator : ABOperator<ABTable<ABRef>>
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class AB_RefTab_WhereEquals_RefTab_Txt_Txt_Operator : ABOperator<ABTable<ABRef>>
 {
     public AB_RefTab_WhereEquals_RefTab_Txt_Txt_Operator()
     {
@@ -25,12 +29,21 @@
 
         //Return
         ABTable<ABRef> result = TypeFactory.CreateEmptyTable<ABRef>();
+        
+        IList<ABRef> listResult = new List<ABRef>();
 
-        for (int i = 0; i < tab.Values.Length; i++) {
+        for (int i = 0; i < tab.Values.Length; i++)
+        {
 
-            if (tab.Values[i].GetAttr(text.Value) != null && ((ABText)tab.Values[i].GetAttr(text.Value)).Value == b1.Value) {
-                result.Values[i] = tab.Values[i];
+            if (tab.Values[i].GetAttr(text.Value) != null && ((ABText)tab.Values[i].GetAttr(text.Value)).Value == b1.Value)
+            {
+                listResult.Add(tab.Values[i]);
             }
+        }
+        result.Values = new ABRef[listResult.Count];
+        for (int i = 0; i < listResult.Count; i++)
+        {
+            result.Values[i] = listResult[i];
         }
 
         return result;
