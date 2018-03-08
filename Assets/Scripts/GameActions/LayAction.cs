@@ -22,7 +22,8 @@ public class LayAction : GameAction {
 	private GameObject currentTemplate;
 	private AgentScript.ResourceCost currentCost;
 
-	private bool CoolDownAuthorized = false;
+	private bool CoolDownAuthorized = true;		// Indicates if the cooldown authorizes the execution of the action
+	private bool firstExecution = true;			// Indicates the first execution of the action
 
 	/// <summary>
 	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
@@ -82,7 +83,8 @@ public class LayAction : GameAction {
 			&& cost.getResourceByColor( ABColor.Color.Green ) <= home.GreenResAmout
 			&& cost.getResourceByColor( ABColor.Color.Blue ) <= home.BlueResAmout);
 	}
-    
+    // activate
+	// execute
 	#region implemented abstract members of GameAction
 	protected override void initAction ()
 	{
@@ -91,15 +93,19 @@ public class LayAction : GameAction {
 
 	protected override void executeAction ()
 	{
-		CoolDownAuthorized = true;
+		CoolDownAuthorized = !firstExecution; // As the action is executed on ActivateAction, and the authorization is given by ExecuteAction (which is executed by default), it avoids the incorrect authorization during the first execution
+		firstExecution = false;
 	}
 
 	protected override void activateAction ()
 	{
 		// this action is evaluated on activation. And it is executed if the cooldown is elapsed
 		if( !CoolDownAuthorized ) {
+			// Debug.LogError ( "===== NOT" );
 		}
 		if ( CoolDownAuthorized ) {
+			this.CoolDownAuthorized = false;
+			// Debug.LogError ( "* AUTH" );
 			currentTemplate = GameManager.instance.GetUnitTemplate (agentEntity.Authority, castName);
 			AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
 
@@ -112,7 +118,6 @@ public class LayAction : GameAction {
 			DecreaseResources (currentCost);
 
 			this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
-			this.CoolDownAuthorized = false;
 
 			// wait for cooldownTime
 			Invoke ("Lay", this.CoolDownTime);
@@ -123,7 +128,8 @@ public class LayAction : GameAction {
 
 	protected override void deactivateAction ()
 	{
-		return;
+		// ATTENTION : TODO
+		// CoolDownAuthorized = true;	// if the action is deactivated and executeAction is not called
 	}
 	#endregion
 }
