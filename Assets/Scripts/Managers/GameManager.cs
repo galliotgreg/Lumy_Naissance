@@ -315,7 +315,7 @@ public class GameManager : MonoBehaviour {
             template, emptyComponentPrefab
         );
 
-        template.GetComponent<AgentEntity>().Context.Model.Cast = "Prysme";
+        template.GetComponent<AgentEntity>().Context.Model.Cast = "prysme";
 
         return template;
     }
