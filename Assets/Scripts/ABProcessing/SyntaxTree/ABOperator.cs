@@ -31,17 +31,17 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		int indexPlusStart = index + 3;
 
 		string[] terms = this.GetType ().ToString ().Split ('_');
-		try{
+		try{ // Txt; Scal; 
 			foreach( ParamType t in System.Enum.GetValues( typeof( ParamType ) ) ){
-				if( t.ToString() == terms[indexPlusStart] ){
+				if( getTypeName( t ) == terms[indexPlusStart] ){
 					return ABModel.ParamTypeToType( t );
-				}else if( t.ToString() == terms[indexPlusStart] + "le" ){// ScalTab + le => Table
+				}else if( getTypeName( t ) == terms[indexPlusStart] + "le" ){// ScalTab + le => ScalTable
 					return ABModel.ParamTypeToType( t );
-				}else if( t.ToString() + "Star" == terms[indexPlusStart]  ){// Scal + Star => Star
+				}else if( getTypeName( t ) + "Star" == terms[indexPlusStart]  ){// Scal + Star => Star
 					return ABStar<ABBool>.generateABStar( t );
 				}
 			}
-		}catch(System.Exception ex){}
+		}catch(System.Exception ex){return ABModel.ParamTypeToType( ParamType.None );}
 		return ABModel.ParamTypeToType( ParamType.None );
 	}
 
@@ -52,7 +52,7 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 			return true;
 		} else {
 			// Check Star Param
-			if( thisType.GetGenericArguments().Length > 0 ){
+			if( thisType.IsGenericType && thisType.GetGenericTypeDefinition() == typeof( ABStar<> ) && thisType.GetGenericArguments().Length > 0 ){
 				System.Type argType = thisType.GetGenericArguments()[0];
 
 				if (argType == income) {
@@ -68,5 +68,23 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		}
 
 		return false;
+	}
+
+	public static string getTypeName( ParamType type ){
+		if( type == ParamType.Scalar ){
+			return "Scal";
+		}
+		else if( type == ParamType.Text ){
+			return "Txt";
+		}
+		else if( type == ParamType.ScalarTable ){
+			return "ScalTable";
+		}
+		else if( type == ParamType.TextTable ){
+			return "TxtTable";
+		}
+		else{
+			return type.ToString();
+		}
 	}
 }
