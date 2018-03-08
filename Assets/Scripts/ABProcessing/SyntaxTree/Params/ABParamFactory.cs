@@ -212,6 +212,7 @@ public class ABParamFactory
 
     public static IABParam CreateBoolTableParam(string identifier, bool[] values)
     {
+        //Build param
         ABTable<ABBool> boolTab = TypeFactory.CreateEmptyTable<ABBool>();
         boolTab.Values = new ABBool[values.Length];
         for (int i = 0; i < values.Length; i++)
@@ -260,12 +261,21 @@ public class ABParamFactory
 
     public static IABParam CreateTextTableParam(string identifier, string[] values)
     {
+        //Clean null values
+        IList<string> cleanedValues = new List<string>();
+        for (int i = 0; i < values.Length; i++) {
+            if (values[i] != null) {
+                cleanedValues.Add(values[i]);
+            }
+        }
+
+        //Build Values
         ABTable<ABText> textTab = TypeFactory.CreateEmptyTable<ABText>();
-        textTab.Values = new ABText[values.Length];
-        for (int i = 0; i < values.Length; i++)
+        textTab.Values = new ABText[cleanedValues.Count];
+        for (int i = 0; i < cleanedValues.Count; i++)
         {
             ABText textVal = TypeFactory.CreateEmptyText();
-            textVal.Value = values[i];
+            textVal.Value = cleanedValues[i];
             textTab.Values[i] = textVal;
         }
         ABTableParam<ABText> param = new ABTableParam<ABText>(identifier, textTab);
@@ -376,15 +386,24 @@ public class ABParamFactory
 
     public static IABParam CreateRefTableParam(String identifier, object[][] objects)
     {
+        //Clean null values
+        IList<object[]> cleanedValues = new List<object[]>();
+        for (int i = 0; i < objects.Length; i++) {
+            if (objects[i] != null) {
+                cleanedValues.Add(objects[i]);
+            }
+        }
+
+        //Build Values
         ABTable<ABRef> refTab = TypeFactory.CreateEmptyTable<ABRef>();
-        refTab.Values = new ABRef[objects.Length];
-        for (int i = 0; i < objects.Length; i++)
+        refTab.Values = new ABRef[cleanedValues.Count];
+        for (int i = 0; i < cleanedValues.Count; i++)
         {
             ABRef refVal = null;
-            if (objects[i] != null)
+            if (cleanedValues[i] != null)
             {
                 refVal = TypeFactory.CreateEmptyRef();
-				foreach (object obj in objects[i])
+				foreach (object obj in cleanedValues[i])
                 {
                     FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.NonPublic | BindingFlags.Instance);
                     foreach (FieldInfo field in fields)

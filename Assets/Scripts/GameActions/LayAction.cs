@@ -22,6 +22,9 @@ public class LayAction : GameAction {
 	private GameObject currentTemplate;
 	private AgentScript.ResourceCost currentCost;
 
+	private bool CoolDownAuthorized = true;		// Indicates if the cooldown authorizes the execution of the action
+	private bool firstExecution = true;			// Indicates the first execution of the action
+
 	/// <summary>
 	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
 	/// </summary>
@@ -41,6 +44,9 @@ public class LayAction : GameAction {
         child.GetComponent<AgentEntity>().GameParams =
             GameManager.instance.GameParam.GetComponent<GameParamsScript>();
     }
+
+	private void preLay( GameObject childTemplate, AgentScript.ResourceCost cost ){
+	}
 
     /// <summary>
     /// TODO check if used. Remove if not
@@ -77,40 +83,53 @@ public class LayAction : GameAction {
 			&& cost.getResourceByColor( ABColor.Color.Green ) <= home.GreenResAmout
 			&& cost.getResourceByColor( ABColor.Color.Blue ) <= home.BlueResAmout);
 	}
-    
+    // activate
+	// execute
 	#region implemented abstract members of GameAction
 	protected override void initAction ()
 	{
 		this.CoolDownActivate = true;
 	}
 
-
 	protected override void executeAction ()
 	{
-		currentTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
-		AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
-
-		currentCost = new AgentScript.ResourceCost( unitEntity.Context.Model.ProdCost );
-        if (!CheckResources(currentTemplate, currentCost))
-            return;
-        if (this.agentEntity.Home.getPopulation().Count >= SwapManager.instance.GetPlayerNbLumy())
-            return; 
-
-		DecreaseResources( currentCost );
-
-		this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
-		// wait for cooldownTime
-		Invoke( "Lay", this.CoolDownTime );
+		CoolDownAuthorized = !firstExecution; // As the action is executed on ActivateAction, and the authorization is given by ExecuteAction (which is executed by default), it avoids the incorrect authorization during the first execution
+		firstExecution = false;
 	}
 
 	protected override void activateAction ()
 	{
+		// this action is evaluated on activation. And it is executed if the cooldown is elapsed
+		if( !CoolDownAuthorized ) {
+			// Debug.LogError ( "===== NOT" );
+		}
+		if ( CoolDownAuthorized ) {
+			this.CoolDownAuthorized = false;
+			// Debug.LogError ( "* AUTH" );
+			currentTemplate = GameManager.instance.GetUnitTemplate (agentEntity.Authority, castName);
+			AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
+
+			currentCost = new AgentScript.ResourceCost (unitEntity.Context.Model.ProdCost);
+			if (!CheckResources (currentTemplate, currentCost))
+				return;
+			if (this.agentEntity.Home.getPopulation ().Count >= SwapManager.instance.GetPlayerNbLumy ())
+				return; 
+
+			DecreaseResources (currentCost);
+
+			this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
+
+			// wait for cooldownTime
+			Invoke ("Lay", this.CoolDownTime);
+		}
+
 		return;
 	}
 
 	protected override void deactivateAction ()
 	{
-		return;
+		// ATTENTION : TODO
+		// CoolDownAuthorized = true;	// if the action is deactivated and executeAction is not called
 	}
 	#endregion
 }

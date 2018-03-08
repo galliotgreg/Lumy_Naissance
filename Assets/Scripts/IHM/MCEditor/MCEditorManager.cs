@@ -88,7 +88,18 @@ public class MCEditorManager : MonoBehaviour {
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
 
         /**START DO NOT COMMIT**/
-        MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;        
+        if (AppContextManager.instance.PrysmeEdit)
+        {
+            AppContextManager.instance.PrysmeEdit = false;
+            MC_OrigFilePath = AppContextManager.instance.ActiveSpecieFolderPath 
+                + AppContextManager.instance.PRYSME_FILE_NAME
+                + AppContextManager.instance.CSV_EXT;
+
+        }
+        else
+        {
+            MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;
+        }
         //MC_OrigFilePath = "Assets/Inputs/Test/GREG_TRANS_STATE_STATE_TEST.csv";
         /**END DO NOT COMMIT**/
 

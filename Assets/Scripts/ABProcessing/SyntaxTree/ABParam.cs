@@ -48,6 +48,13 @@ public abstract class ABParam<T> : ABNode, IABParam
         }
     }
 
+	protected abstract IABParam CloneParam ();
+
+	public IABParam Clone ()
+	{
+		return CloneParam();
+	}
+
 	public System.Type getOutcomeType ()
 	{
 		return typeof(T);
