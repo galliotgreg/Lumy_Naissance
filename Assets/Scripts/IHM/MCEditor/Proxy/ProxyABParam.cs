@@ -168,4 +168,9 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 	}
 
 	#endregion
+
+	public IABParam Clone ()
+	{
+		throw new System.NotImplementedException ();
+	}
 }

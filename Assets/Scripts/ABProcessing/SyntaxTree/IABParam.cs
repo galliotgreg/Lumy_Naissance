@@ -6,5 +6,7 @@ public interface IABParam
 {
     string Identifier { get; }
 
+	IABParam Clone ();
+
 	System.Type getOutcomeType ();
 }

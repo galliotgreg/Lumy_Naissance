@@ -9,4 +9,13 @@ public class ABBoolParam : ABParam<ABBool>
         this.identifier = identifier;
         this.value = value;
     }
+
+	#region implemented abstract members of ABParam
+
+	protected override IABParam CloneParam ()
+	{
+		return ABParamFactory.CreateBoolParam ( this.identifier, this.value.Value );
+	}
+
+	#endregion
 }

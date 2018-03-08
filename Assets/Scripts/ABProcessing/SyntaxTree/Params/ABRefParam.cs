@@ -9,4 +9,13 @@ public class ABRefParam : ABParam<ABRef>
         this.identifier = identifier;
         this.value = value;
     }
+
+	#region implemented abstract members of ABParam
+
+	protected override IABParam CloneParam ()
+	{
+		return new ABRefParam ( this.identifier, this.value );
+	}
+
+	#endregion
 }

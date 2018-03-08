@@ -22,6 +22,8 @@ public class LayAction : GameAction {
 	private GameObject currentTemplate;
 	private AgentScript.ResourceCost currentCost;
 
+	private bool CoolDownAuthorized = false;
+
 	/// <summary>
 	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
 	/// </summary>
@@ -41,6 +43,9 @@ public class LayAction : GameAction {
         child.GetComponent<AgentEntity>().GameParams =
             GameManager.instance.GameParam.GetComponent<GameParamsScript>();
     }
+
+	private void preLay( GameObject childTemplate, AgentScript.ResourceCost cost ){
+	}
 
     /// <summary>
     /// TODO check if used. Remove if not
@@ -84,27 +89,35 @@ public class LayAction : GameAction {
 		this.CoolDownActivate = true;
 	}
 
-
 	protected override void executeAction ()
 	{
-		currentTemplate = GameManager.instance.GetUnitTemplate( agentEntity.Authority, castName );
-		AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
-
-		currentCost = new AgentScript.ResourceCost( unitEntity.Context.Model.ProdCost );
-        if (!CheckResources(currentTemplate, currentCost))
-            return;
-        if (this.agentEntity.Home.getPopulation().Count >= SwapManager.instance.GetPlayerNbLumy())
-            return; 
-
-		DecreaseResources( currentCost );
-
-		this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
-		// wait for cooldownTime
-		Invoke( "Lay", this.CoolDownTime );
+		CoolDownAuthorized = true;
 	}
 
 	protected override void activateAction ()
 	{
+		// this action is evaluated on activation. And it is executed if the cooldown is elapsed
+		if( !CoolDownAuthorized ) {
+		}
+		if ( CoolDownAuthorized ) {
+			currentTemplate = GameManager.instance.GetUnitTemplate (agentEntity.Authority, castName);
+			AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
+
+			currentCost = new AgentScript.ResourceCost (unitEntity.Context.Model.ProdCost);
+			if (!CheckResources (currentTemplate, currentCost))
+				return;
+			if (this.agentEntity.Home.getPopulation ().Count >= SwapManager.instance.GetPlayerNbLumy ())
+				return; 
+
+			DecreaseResources (currentCost);
+
+			this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
+			this.CoolDownAuthorized = false;
+
+			// wait for cooldownTime
+			Invoke ("Lay", this.CoolDownTime);
+		}
+
 		return;
 	}
 
