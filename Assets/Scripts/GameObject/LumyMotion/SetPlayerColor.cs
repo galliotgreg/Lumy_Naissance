@@ -19,9 +19,9 @@ public class SetPlayerColor : MonoBehaviour {
             AgentEntity agent = transform.parent.parent.GetComponent<AgentEntity>();
             if (agent.Home != null && agent.Authority == PlayerAuthority.Player2)
             {
-                color = new Color32(50, 0, 90, 255);
+                color = new Color32(230, 60, 250, 255);
             }
         }
-        meshRenderer.material.color = color;
+        meshRenderer.material.SetColor("_TintColor", color);
     }
 }
