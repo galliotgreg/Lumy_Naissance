@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DEBUG_LumyCast : MonoBehaviour {
 
@@ -14,18 +15,9 @@ public class DEBUG_LumyCast : MonoBehaviour {
             Renderer rend = GetComponent<Renderer>();
             //rend.material.shader = Shader.Find("Emmisive");
             string caste = gameObject.GetComponentInParent<AgentScript>().Cast;
-            if (caste == "ouvrier") {
 
-                rend.material.color = Color.green;
-            }
-            if (caste == "scoot") {
-
-                rend.material.color = Color.blue;
-            }
-            if (caste == "soldier") {
-
-                rend.material.color = Color.red;
-            }
+            Text castName = gameObject.GetComponentInChildren<Text>();
+            castName.text = caste;
         }
         else {
             gameObject.SetActive(false);
