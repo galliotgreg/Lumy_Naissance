@@ -23,7 +23,10 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		try{
 			return Evaluate( context );
 		}
-		catch( OperatorParam_MC_Exception paramEx ){
+		catch( Operator_MC_Exception opEx ){
+			throw new Operator_MC_Exception ( this, opEx );
+		}
+		catch( Param_MC_Exception paramEx ){
 			throw new Operator_MC_Exception ( this, paramEx );
 		}
 	}
