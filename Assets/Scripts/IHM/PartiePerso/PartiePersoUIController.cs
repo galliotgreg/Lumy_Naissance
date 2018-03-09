@@ -66,11 +66,11 @@ public class PartiePersoUIController : MonoBehaviour {
 
     [Header("Gisement")]
     [SerializeField]
-    private int minGisement = 100;
+    private int minGisement = 1000;
     [SerializeField]
-    private int mediumGisement = 150;
+    private int mediumGisement = 1500;
     [SerializeField]
-    private int maxGisement = 200;
+    private int maxGisement = 2000;
 
     [Header("Resources Start")]
     [SerializeField]

@@ -95,7 +95,7 @@ public class TraceScript : MonoBehaviour {
 	}
 
 	#region CreateTrace
-	void CreateTrace_Points( Color32 color, PlayerAuthority authority, Vector2[] controlPoints, Vector2[] visualPoints, GameObject traceUnitPrefab, float lifeTime = 10 ){
+	void CreateTrace_Points( Color32 color, PlayerAuthority authority, Vector2[] controlPoints, Vector2[] visualPoints, GameObject traceUnitPrefab, float lifeTime = 12 ){
 		this.color = color;
 		this.authority = authority;
 		this.lifeTime = lifeTime;
@@ -113,12 +113,12 @@ public class TraceScript : MonoBehaviour {
 	}
 
 	// One point path
-	public void CreateTrace( Color32 color, Vector2 start, Vector2 target, PlayerAuthority authority, GameObject traceUnitPrefab, float lifeTime = 10 ){
+	public void CreateTrace( Color32 color, Vector2 start, Vector2 target, PlayerAuthority authority, GameObject traceUnitPrefab, float lifeTime = 12 ){
 		CreateTrace_Points ( color, authority, new Vector2[]{start,target}, traceBetween( start, target ).ToArray(), traceUnitPrefab, lifeTime );
 	}
 
 	// more than one point path
-	public void CreateTrace( Color32 color, Vector2 start, Vector2[] controlPoints, PlayerAuthority authority, GameObject traceUnitPrefab, float lifeTime = 10 ){
+	public void CreateTrace( Color32 color, Vector2 start, Vector2[] controlPoints, PlayerAuthority authority, GameObject traceUnitPrefab, float lifeTime = 12 ){
 		// trace points
 		List<Vector2> result = new List<Vector2> ();
 
