@@ -11,4 +11,13 @@ public class ABTraceAction : ABAction
         this.parameters[0] = new AB_ColorGate_Operator();
         this.parameters[1] = new AB_VecGate_Operator();
     }
+
+	#region implemented abstract members of ABAction
+
+	public override ABAction CloneEmpty ()
+	{
+		return ABActionFactory.CreateAction (ActionType.Trace);
+	}
+
+	#endregion
 }

@@ -28,6 +28,10 @@ public class CastesUIController : MonoBehaviour {
         }
     }
 
+    void Update()
+    {
+    }
+
     [SerializeField]
     private float TREE_H_MARGIN = 4;
     [SerializeField]
@@ -188,7 +192,12 @@ public class CastesUIController : MonoBehaviour {
         // Set ScrollRect sizes
         RectTransform rec = swarmSelectionPanel.transform.GetComponent<RectTransform>();
         rec.sizeDelta = new Vector2(rec.sizeDelta.x, speciesNames.Length * (swarmSelectionBtnPrefab.GetComponent<RectTransform>().sizeDelta.y + 20f) + 20f);
-        
+
+        foreach (Transform child in swarmSelectionPanel.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
         for (int i=0; i < speciesNames.Length; i++)
         {
             GameObject swarmSelectionButton = Instantiate(swarmSelectionBtnPrefab);
@@ -210,6 +219,7 @@ public class CastesUIController : MonoBehaviour {
             //Set Callback
             button.onClick.AddListener(delegate { SelectActiveSwarm(text.text); });
         }
+
     }
 
     public void SelectActiveSwarm(string swarmName)

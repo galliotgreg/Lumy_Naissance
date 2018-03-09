@@ -167,12 +167,16 @@ public class Pin : DragSelectableProxyGameObject {
 		result.transform.position = position;
 		result.ProxyParent = parent.gameObject.GetComponent<MCEditor_Proxy> ();
 
-        result.SetPinColor();        
+        if(result.Pin_Type != PinType.ActionParam)
+        {
+            result.SetPinColor();
+        }
+        
 
 		return result;
 	}
 
-    private void SetPinColor()
+    public void SetPinColor()
     {
         Color color = new Color();        
 
@@ -199,7 +203,20 @@ public class Pin : DragSelectableProxyGameObject {
             string type = parent.AbParam.GetType().ToString();
             this.regularColor = PinColor.GetColorPinFromType(type);            
         }
-        else if (this.pin_Type == Pin.PinType.Condition || this.pin_Type == Pin.PinType.ActionParam)
+        else if (this.pin_Type == Pin.PinType.Condition)
+        {
+            this.regularColor = PinColor.GetColorPinFromType("Bool");
+        }
+        else if (this.pin_Type == Pin.PinType.ActionParam)
+        {
+            if (this.GetComponentInParent<ProxyABAction>().AbState.Action.Parameters.Length > 0)
+            {
+                Debug.Log("Pin order : " + (pin_order.OrderPosition));
+                string actionParamType = this.GetComponentInParent<ProxyABAction>().AbState.Action.Parameters[pin_order.OrderPosition-1].GetType().ToString();
+                this.regularColor = PinColor.GetColorPinFromType(actionParamType);
+            }            
+        }
+        else
         {
             this.regularColor = Color.white;
         }

@@ -10,20 +10,28 @@ public class MC_Inventory_Actions : MC_Inventory {
 
 		// Load Operators
 		List<System.Object> actions = new List<System.Object> ();
-		foreach (ActionType actionType in LumyEditorManager.instance.EditedLumy.GetComponent< AgentEntity >().getAgentActions() ){
-			// filter by enable actions
-			if (actionType != ActionType.None) {
-				try{
-					ABState state = new ABState( -1, actionType.ToString() );
-					state.Action = ABActionFactory.CreateAction( actionType );
-					actions.Add ( state );
-				}
-				catch(System.NotImplementedException ex){
-					Debug.Log (ex);
-				}
-			}
-		}
-		setItems ( actions );
+        if (AppContextManager.instance.PrysmeEdit) {
+            foreach (ActionType actionType in LumyEditorManager.instance.EditedLumy.GetComponent<AgentEntity>().getAgentActions()) {
+                // filter by enable actions
+                if (actionType != ActionType.None) {
+                    try {
+                        ABState state = new ABState(-1, actionType.ToString());
+                        state.Action = ABActionFactory.CreateAction(actionType);
+                        actions.Add(state);
+                    }
+                    catch (System.NotImplementedException ex) {
+                        Debug.Log(ex);
+                    }
+                }
+            }
+            setItems(actions);
+        }else
+        {
+            ABState state = new ABState(-1, ActionType.Lay.ToString());
+            state.Action = ABActionFactory.CreateAction(ActionType.Lay);
+            actions.Add(state);
+            setItems(actions);
+        }
 	}
 	
 	// Update is called once per frame
@@ -44,7 +52,7 @@ public class MC_Inventory_Actions : MC_Inventory {
 	{
 		ABState itemState = (ABState)item.Item;
 		ABState newState = new ABState (itemState.Id, itemState.Name);
-		newState.Action = itemState.Action;
+		newState.Action = itemState.Action.CloneEmpty();
 		ProxyABAction result = MCEditor_Proxy_Factory.instantiateAction( newState );
 		return result.gameObject;
 	}
@@ -52,7 +60,9 @@ public class MC_Inventory_Actions : MC_Inventory {
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)
 	{
 		ProxyABAction actionProxy = proxy.GetComponent<ProxyABAction> ();
-		MCEditorManager.instance.registerAction( actionProxy.AbState, actionProxy );
+		if (!MCEditorManager.instance.registerAction (actionProxy)) {
+			Destroy (proxy);
+		}
 	}
 
 	#endregion
