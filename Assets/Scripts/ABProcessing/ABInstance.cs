@@ -41,6 +41,7 @@ public class ABInstance {
 
         curStateId = model.InitStateId;
         while (!model.HasAction(curStateId) 
+			//&& curStateId != -1	// Replaces (nbTransitionFires++ < maxTransitionFires)
             && nbTransitionFires++ < maxTransitionFires)
         {
             curStateId = model.FireTransition(curStateId, context);

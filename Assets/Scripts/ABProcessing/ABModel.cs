@@ -188,10 +188,15 @@ public class ABModel {
 				if (transition.Condition == null) {
 					return transition.End.Id;
 				} else {
-					AB_BoolGate_Operator condition = transition.Condition;
-					ABBool result = condition.Evaluate (context);
-					if (result.Value) {
-						return transition.End.Id;
+					try{
+						AB_BoolGate_Operator condition = transition.Condition;
+						ABBool result = condition.EvaluateOperator (context);
+
+						if (result.Value) {
+							return transition.End.Id;
+						}
+					}catch( SyntaxTree_MC_Exception syntaxEx ){
+						throw new Condition_MC_Exception( transition, syntaxEx );
 					}
 				}
 			}

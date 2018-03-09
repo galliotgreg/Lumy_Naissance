@@ -100,40 +100,53 @@ public class ABManager : MonoBehaviour
                 //Compute Action Parameters
                 List<IABType> actionParams = new List<IABType>();
 
-                if (action != null && action.Parameters != null)
-                {
-                    for (int i = 0; i < action.Parameters.Length; i++)
-                    {
-                        if (action.Parameters[i] is AB_TxtGate_Operator)
-                        {
-                            IABType param =
-                                ((AB_TxtGate_Operator)action.Parameters[i]).Evaluate(context);
-                            actionParams.Add(param);
-                        }
-                        else if (action.Parameters[i] is AB_VecGate_Operator)
-                        {
-                            IABType param =
-                                ((AB_VecGate_Operator)action.Parameters[i]).Evaluate(context);
-                            actionParams.Add(param);
-                        }
-                        else if (action.Parameters[i] is AB_ColorGate_Operator)
-                        {
-                            IABType param =
-                                ((AB_ColorGate_Operator)action.Parameters[i]).Evaluate(context);
-                            actionParams.Add(param);
-                        }
-                        else if (action.Parameters[i] is AB_RefGate_Operator)
-                        {
-                            IABType param =
-                                ((AB_RefGate_Operator)action.Parameters[i]).Evaluate(context);
-                            actionParams.Add(param);
-                        }
-                        // TODO add type for each new param type
-                    }
-                }
+				try{
+	                if (action != null && action.Parameters != null)
+	                {
+	                    for (int i = 0; i < action.Parameters.Length; i++)
+	                    {
+	                        if (action.Parameters[i] is AB_TxtGate_Operator)
+	                        {
+	                            IABType param =
+									((AB_TxtGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+	                            actionParams.Add(param);
+	                        }
+	                        else if (action.Parameters[i] is AB_VecGate_Operator)
+	                        {
+	                            IABType param =
+									((AB_VecGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+	                            actionParams.Add(param);
+	                        }
+	                        else if (action.Parameters[i] is AB_ColorGate_Operator)
+	                        {
+	                            IABType param =
+									((AB_ColorGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+	                            actionParams.Add(param);
+	                        }
+	                        else if (action.Parameters[i] is AB_RefGate_Operator)
+	                        {
+	                            IABType param =
+									((AB_RefGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+	                            actionParams.Add(param);
+	                        }
+	                        // TODO add type for each new param type
+	                    }
+	                }
+				}
+				// Exceptions on creatings params
+				catch( SyntaxTree_MC_Exception syntaxEx ){
+					throw new ActionParam_MC_Exception ( action, syntaxEx );
+				}
 
                 agent.setAction(action, actionParams.ToArray());
-            } catch (Exception e)
+            }
+			catch( Action_Exception actionEx ){
+				MessagesManager.instance.LogMsg("ACTION PARAM NULL");
+			}
+			catch( SyntaxTree_MC_Exception syntaxEx ){
+				MessagesManager.instance.LogMsg("SYNTAX");
+			}
+			catch (Exception e)
             {
                 MessagesManager.instance.LogMsg("Something happened during your MC execution. You might miss something !! \nError is :\n" + e.Message);
             }
