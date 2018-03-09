@@ -48,7 +48,7 @@ public class VecTabGetRefTabTxt_Op_TEST : MonoBehaviour {
         ope.Inputs[1] = tParam;
 
         //Test
-        ABTable<ABVec> testValue = ope.Evaluate(ctx);
+        ABTable<ABVec> testValue = ope.EvaluateOperator(ctx);
         ABVec[] valuesExpected = new ABVec[tab.Values.Length];
         for (int i = 0; i < tab.Values.Length; i++)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AB_RefGate_Operator : ABGateOperator<ABRef> {
-	public override ABRef Evaluate(ABContext context)
+	protected override ABRef Evaluate(ABContext context)
 	{
 		ABRef r = null;
 		ABNode input = Inputs[0];

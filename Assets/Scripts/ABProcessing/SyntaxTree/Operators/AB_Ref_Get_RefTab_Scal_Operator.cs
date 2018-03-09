@@ -5,7 +5,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABRef Evaluate(ABContext context)
+	protected override ABRef Evaluate(ABContext context)
     {
         ABTable<ABRef> tab = null;
         ABNode input1 = Inputs[0];

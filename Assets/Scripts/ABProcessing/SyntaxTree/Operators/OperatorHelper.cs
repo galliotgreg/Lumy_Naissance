@@ -24,7 +24,7 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABScalar>)
         {
             ABOperator<ABScalar> abOperator = (ABOperator<ABScalar>)input;
-            s1 = abOperator.Evaluate(context);
+			s1 = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABScalar>)
         {
@@ -45,12 +45,12 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABVec>)
         {
             ABOperator<ABVec> abOperator = (ABOperator<ABVec>)input;
-            v1 = abOperator.Evaluate(context);
+			v1 = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABVec>)
         {
             ABParam<ABVec> param = (ABParam<ABVec>)input;
-            v1 = param.Evaluate(context);
+			v1 = param.Evaluate(context);
         }
         else
         {
@@ -68,7 +68,7 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABTable<ABScalar>>)
         {
             ABOperator<ABTable<ABScalar>> abOperator = (ABOperator<ABTable<ABScalar>>)input;
-            tab = abOperator.Evaluate(context);
+			tab = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABTable<ABScalar>>)
         {
@@ -88,7 +88,7 @@ public class OperatorHelper : MonoBehaviour
 
         if (input is ABOperator<ABTable<ABBool>>) {
             ABOperator<ABTable<ABBool>> abOperator = (ABOperator<ABTable<ABBool>>)input;
-            tab = abOperator.Evaluate(context);
+			tab = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABTable<ABBool>>) {
             ABParam<ABTable<ABBool>> param = (ABParam<ABTable<ABBool>>)input;
@@ -107,11 +107,11 @@ public class OperatorHelper : MonoBehaviour
 
         if (input is ABOperator<ABTable<ABColor>>) {
             ABOperator<ABTable<ABColor>> abOperator = (ABOperator<ABTable<ABColor>>)input;
-            tab = abOperator.Evaluate(context);
+			tab = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABTable<ABColor>>) {
             ABParam<ABTable<ABColor>> param = (ABParam<ABTable<ABColor>>)input;
-            tab = param.Evaluate(context);
+			tab = param.Evaluate(context);
         }
         else {
             throw new System.NotSupportedException();
@@ -127,7 +127,7 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABTable<ABVec>>)
         {
             ABOperator<ABTable<ABVec>> abOperator = (ABOperator<ABTable<ABVec>>)input;
-            tab = abOperator.Evaluate(context);
+			tab = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABTable<ABVec>>)
         {
@@ -148,7 +148,7 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABTable<ABRef>>)
         {
             ABOperator<ABTable<ABRef>> abOperator = (ABOperator<ABTable<ABRef>>)input;
-            tab = abOperator.Evaluate(context);
+			tab = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABTable<ABRef>>)
         {
@@ -168,7 +168,7 @@ public class OperatorHelper : MonoBehaviour
         ABTable<ABText> tab = null;
         if (input is ABOperator<ABTable<ABText>>) {
             ABOperator<ABTable<ABText>> abOperator = (ABOperator<ABTable<ABText>>)input;
-            tab = abOperator.Evaluate(context);
+			tab = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABTable<ABText>>) {
             ABParam<ABTable<ABText>> param = (ABParam<ABTable<ABText>>)input;
@@ -190,7 +190,7 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABRef>)
         {
             ABOperator<ABRef> abOperator = (ABOperator<ABRef>)input;
-            reference = abOperator.Evaluate(context);
+			reference = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABRef>)
         {
@@ -212,7 +212,7 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABText>)
         {
             ABOperator<ABText> abOperator = (ABOperator<ABText>)input;
-            identifier = abOperator.Evaluate(context);
+			identifier = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABText>)
         {
@@ -233,7 +233,7 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABBool>)
         {
             ABOperator<ABBool> abOperator = (ABOperator<ABBool>)input;
-            identifier = abOperator.Evaluate(context);
+			identifier = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABBool>)
         {
@@ -254,7 +254,7 @@ public class OperatorHelper : MonoBehaviour
         if (input is ABOperator<ABColor>)
         {
             ABOperator<ABColor> abOperator = (ABOperator<ABColor>)input;
-            identifier = abOperator.Evaluate(context);
+			identifier = abOperator.EvaluateOperator(context);
         }
         else if (input is ABParam<ABColor>)
         {

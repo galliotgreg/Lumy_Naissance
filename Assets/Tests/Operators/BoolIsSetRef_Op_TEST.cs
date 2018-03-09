@@ -26,7 +26,7 @@ class BoolIsSetRef_Op_TEST : MonoBehaviour{
         ope.Inputs[0] = ref1;
 
         //Test
-        bool testValue = ope.Evaluate(ctx).Value;
+        bool testValue = ope.EvaluateOperator(ctx).Value;
         bool expected;
         
         if(ref1 != null) {

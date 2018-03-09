@@ -9,7 +9,7 @@ public class AB_Bool_Equals_Vec_Vec_Operator : ABOperator<ABBool>
         this.Inputs = new ABNode[2];
     }
 
-    public override ABBool Evaluate(ABContext context)
+	protected override ABBool Evaluate(ABContext context)
     {
         //Get s1
         ABVec s1 = null;

@@ -23,12 +23,12 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		try{
 			return Evaluate( context );
 		}
-		catch( System.Exception ex ){
-			throw new OperatorParam_MC_Exception ( this, context, ex.Message );
+		catch( OperatorParam_MC_Exception paramEx ){
+			throw new Operator_MC_Exception ( this, paramEx );
 		}
 	}
 
-	public abstract T Evaluate(ABContext context);
+	protected abstract T Evaluate(ABContext context);
 
 	public System.Type getOutcomeType ()
 	{

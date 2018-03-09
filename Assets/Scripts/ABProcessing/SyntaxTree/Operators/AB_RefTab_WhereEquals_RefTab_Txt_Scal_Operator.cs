@@ -10,7 +10,7 @@ public class AB_RefTab_WhereEquals_RefTab_Txt_Scal_Operator : ABOperator<ABTable
         this.Inputs = new ABNode[3];
     }
 
-    public override ABTable<ABRef> Evaluate(ABContext context)
+	protected override ABTable<ABRef> Evaluate(ABContext context)
     {
         //Get s1
         ABTable<ABRef> tab = null;

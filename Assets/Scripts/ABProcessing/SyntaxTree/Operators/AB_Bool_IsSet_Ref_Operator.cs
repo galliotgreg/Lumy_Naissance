@@ -7,13 +7,12 @@ public class AB_Bool_IsSet_Ref_Operator : ABOperator<ABBool>
         this.Inputs = new ABNode[1];
     }
 
-    public override ABBool Evaluate(ABContext context)
+	protected override ABBool Evaluate(ABContext context)
     {
         ABNode node = Inputs[0];
         if (node is ABParam<ABRef>)
         {
-            ABParam<ABRef> param = (ABParam<ABRef>)node;
-            ABRef reference = param.Evaluate(context);
+			ABRef reference = OperatorHelper.Instance.getRefParam( context, node );
 
             ABBool result = TypeFactory.CreateEmptyBool();
             result.Value = reference != null;

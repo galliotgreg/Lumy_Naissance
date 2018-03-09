@@ -6,7 +6,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABColor Evaluate(ABContext context)
+	protected override ABColor Evaluate(ABContext context)
     {
         //Get ref
         ABRef reference = null;

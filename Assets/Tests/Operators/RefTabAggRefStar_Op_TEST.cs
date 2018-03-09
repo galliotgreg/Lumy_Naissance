@@ -34,7 +34,7 @@ public class RefTabAggRefStar_Op_TEST : MonoBehaviour {
 
         //Test
         float[] refVal = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-        ABRef[] testVal = ope.Evaluate(ctx).Values;
+        ABRef[] testVal = ope.EvaluateOperator(ctx).Values;
         bool testOk = true;
         int failIdx = -1;
         for (int i = 0; i < refVal.Length; i++)
