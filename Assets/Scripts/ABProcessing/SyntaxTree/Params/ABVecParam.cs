@@ -8,4 +8,13 @@ public class ABVecParam : ABParam<ABVec> {
         this.identifier = identifier;
         this.value = value;
     }
+
+	#region implemented abstract members of ABParam
+
+	protected override IABParam CloneParam ()
+	{
+		return ABParamFactory.CreateVecParam ( this.identifier, this.value.X, this.value.Y );
+	}
+
+	#endregion
 }

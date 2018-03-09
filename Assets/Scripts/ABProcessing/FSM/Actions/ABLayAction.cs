@@ -8,4 +8,13 @@ public class ABLayAction : ABAction {
         this.parameters = new IABGateOperator[1];
         this.parameters[0] = new AB_TxtGate_Operator();
     }
+
+	#region implemented abstract members of ABAction
+
+	public override ABAction CloneEmpty ()
+	{
+		return ABActionFactory.CreateAction (ActionType.Lay);
+	}
+
+	#endregion
 }

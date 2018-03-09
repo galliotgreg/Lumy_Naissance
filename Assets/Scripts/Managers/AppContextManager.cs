@@ -44,6 +44,8 @@ public class AppContextManager : MonoBehaviour
     private Specie activeSpecie;
     private Cast activeCast;
 
+    private bool prysmeEdit = false;
+
     /// <summary>
     /// Path to the folder hosting all available species
     /// </summary>
@@ -91,6 +93,12 @@ public class AppContextManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     public string DEFAULT_SPECIE_NAME = "maNuee";
+
+    /// <summary>
+    /// File name of the prysme behavior file.
+    /// </summary>
+    [SerializeField]
+    public string PRYSME_FILE_NAME = "prysme_behavior";
 
     /// <summary>
     /// Casts files suffix
@@ -212,6 +220,19 @@ public class AppContextManager : MonoBehaviour
         set
         {
             templateFolderPath = value;
+        }
+    }
+
+    public bool PrysmeEdit
+    {
+        get
+        {
+            return prysmeEdit;
+        }
+
+        set
+        {
+            prysmeEdit = value;
         }
     }
 

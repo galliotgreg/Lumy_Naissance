@@ -26,6 +26,18 @@ set
 }
 }
 
+	public string Name {
+		get {
+			return name;
+		}
+		set {
+			UnityEngine.UI.Text stateName = this.GetComponentInChildren<UnityEngine.UI.Text>();
+			stateName.text = value;
+			abState.Name = value;
+			name = value;
+		}
+	}
+
 public ABState AbState
 {
 	get
@@ -130,6 +142,7 @@ public static ProxyABAction instantiate( ABState state, Vector3 position, Transf
 			IABGateOperator param = state.Action.Parameters [i];
 				Pin p = Pin.instantiate (Pin.PinType.ActionParam, Pin.calculatePinPosition (result, Pin.PinType.ActionParam, result), result.transform);
 				p.Pin_order.OrderPosition = i+1;
+                p.SetPinColor();
 		}
 	}
 
@@ -148,7 +161,8 @@ public static Vector3 calculateActionPosition( Transform parent ){
 
 	public override void doubleClick ()
 	{
-		// Nothing to do
+		Vector2 pos = new Vector2 (transform.position.x, transform.position.y);
+		MCEditor_DialogBoxManager.instance.instantiateActionName (this, pos);
 	}
 
 	public override void deleteProxy ()

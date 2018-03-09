@@ -166,6 +166,8 @@ public class LumyEditorManager : MonoBehaviour
         GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
         PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
         skeletonScript.BuildSkeleton();
+
+        compo.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right);
     }
 
     /// <summary>
@@ -212,6 +214,8 @@ public class LumyEditorManager : MonoBehaviour
         GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
         PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
         skeletonScript.BuildSkeleton();
+
+        compo.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right);
     }
 
     /// <summary>
@@ -250,6 +254,8 @@ public class LumyEditorManager : MonoBehaviour
         GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
         PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
         skeletonScript.IsIK = false;
+
+        editedLumy.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right);
     }
 
     /// <summary>

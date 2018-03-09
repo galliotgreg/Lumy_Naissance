@@ -9,4 +9,13 @@ public class ABScalParam : ABParam<ABScalar>
         this.identifier = identifier;
         this.value = value;
     }
+
+	#region implemented abstract members of ABParam
+
+	protected override IABParam CloneParam ()
+	{
+		return ABParamFactory.CreateScalarParam ( this.identifier, this.value.Value );
+	}
+
+	#endregion
 }

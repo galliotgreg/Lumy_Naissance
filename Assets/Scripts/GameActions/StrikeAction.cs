@@ -20,7 +20,7 @@ public class StrikeAction : GameAction {
 	{
 		this.CoolDownActivate = true;
 		if (this.agentAttr.ActSpd <= 0) {
-			this.CoolDownTime = 0;
+			this.CoolDownTime = 0;	// No action is performed
 		} else {
 			this.CoolDownTime = 1/(this.agentAttr.ActSpd/5);
 		}

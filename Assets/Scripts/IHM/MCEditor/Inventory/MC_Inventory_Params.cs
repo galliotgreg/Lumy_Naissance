@@ -77,7 +77,8 @@ public class MC_Inventory_Params : MC_Inventory {
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		ProxyABParam result = MCEditor_Proxy_Factory.instantiateParam( (IABParam)item.Item, false );
+		IABParam newParam = ((IABParam)item.Item).Clone ();
+		ProxyABParam result = MCEditor_Proxy_Factory.instantiateParam( newParam, false );
 		return result.gameObject;
 	}
 

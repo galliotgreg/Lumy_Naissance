@@ -80,6 +80,7 @@ public class ClickAndDrop : MonoBehaviour {
         objectToHold.GetComponent<Image>().sprite = this.gameObject.GetComponent<Image>().sprite;*/
 
         heldObject = Instantiate(emptyComponentPrefab);
+        heldObject.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right);
         heldObject.transform.position = new Vector3(
             heldObject.transform.position.x, 
             heldObject.transform.position.y,
@@ -103,7 +104,8 @@ public class ClickAndDrop : MonoBehaviour {
     {
         //Vector3 pos = (Input.mousePosition.x, Input.mousePosition.y,  GameObject.Find("WorldCanvas").GetComponent<RectTransform>().z);
         Vector3 pos = Input.mousePosition;
-        pos.z = 10;
+        pos.z = 10f;
         heldObject.transform.position = GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(pos);
+        heldObject.transform.position = new Vector3(heldObject.transform.position.x, heldObject.transform.position.y, -1f);
     }
 }

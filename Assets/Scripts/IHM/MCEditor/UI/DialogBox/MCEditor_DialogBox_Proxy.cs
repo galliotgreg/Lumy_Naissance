@@ -34,6 +34,10 @@ public abstract class MCEditor_DialogBox_Proxy : MCEditor_DialogBox {
 	// Update is called once per frame
 	protected void Update () {
 		base.Update ();
+
+		if (Input.GetKeyDown (KeyCode.Return) || Input.GetKeyDown (KeyCode.KeypadEnter)) {
+			confirm ();
+		}
 	}
 
 	#region implemented abstract members of MCEditor_DialogBox
