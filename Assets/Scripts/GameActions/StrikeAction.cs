@@ -5,6 +5,7 @@ using UnityEngine;
 public class StrikeAction : GameAction {
 
 	private GameObject target;
+    public GameObject Projectile;
 
 	public GameObject Target {
 		get {
@@ -31,7 +32,14 @@ public class StrikeAction : GameAction {
 		if( target is GameObject && target != null ){
 			AgentEntity targetAgent = target.GetComponent<AgentEntity>();
 
-			if( targetAgent != null ){
+            //add vfx
+            GameObject projectile = Instantiate(Projectile, this.transform.position, Quaternion.identity);
+            projectile.GetComponent<Rigidbody>().velocity = this.transform.forward * 5.0f;
+            projectile.GetComponent<Rigidbody>().MovePosition(targetAgent.Context.Model.transform.position);
+            Destroy(projectile, projectile.GetComponentInChildren<ParticleSystem>().duration);
+            //add vfx end
+
+            if ( targetAgent != null ){
 				AgentScript targetModel = targetAgent.Context.Model;
 
 				// Check if the player hits some other
