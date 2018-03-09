@@ -9,10 +9,10 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	/// </summary>
 	public static Unit_GameObj_Manager instance = null;
 
-	/// <summary>
-	/// Enforce Singleton properties
-	/// </summary>
-	void Awake()
+    /// <summary>
+    /// Enforce Singleton properties
+    /// </summary>
+    void Awake()
 	{
 		//Check if instance already exists and set it to this if not
 		if (instance == null)
