@@ -23,8 +23,8 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		try{
 			return Evaluate( context );
 		}
-		catch( System.Exception syntaxEx ){
-			throw new OperatorParam_MC_Exception ( this, context );
+		catch( System.Exception ex ){
+			throw new OperatorParam_MC_Exception ( this, context, ex.Message );
 		}
 	}
 

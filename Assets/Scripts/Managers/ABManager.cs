@@ -141,10 +141,10 @@ public class ABManager : MonoBehaviour
                 agent.setAction(action, actionParams.ToArray());
             }
 			catch( Action_Exception actionEx ){
-				MessagesManager.instance.LogMsg("ACTION PARAM NULL");
+				MessagesManager.instance.LogMsg("ACTION");
 			}
 			catch( SyntaxTree_MC_Exception syntaxEx ){
-				MessagesManager.instance.LogMsg("SYNTAX");
+				MessagesManager.instance.LogMsg("Syntax Error : \n"+syntaxEx.getMessage());
 			}
 			catch (Exception e)
             {

@@ -9,4 +9,14 @@ public class ActionParam_MC_Exception : Intermediate_SyntaxTree_MC_Exception {
 		: base( internalException ) {
 		this.actionSource = action;
 	}
+
+	#region implemented abstract members of SyntaxTree_MC_Exception
+
+	protected override string getNodeMessage ()
+	{
+		// TODO replace by the state name
+		return "Action : "+actionSource.Type.ToString ();
+	}
+
+	#endregion
 }
