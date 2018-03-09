@@ -152,7 +152,7 @@ public class CastesUIController : MonoBehaviour {
                 UICast.transform.position = new Vector3(x, y, 0f);
             }
         }
-        rootUICast.transform.localPosition = new Vector3(0, 295, 0);
+        rootUICast.transform.localPosition = new Vector3(734, -132, 0);
     }
 
     private static string GetCastKeyFromUICast(GameObject UICast)
