@@ -67,7 +67,6 @@ public class CostManager : MonoBehaviour
 
         //Handle Behavior Cost
         float behaviorCost = ComputeBehaviorCost(behaviorModel);
-
         //Merge costs
         string[] keys = new string[3];
         int ind = 0;
@@ -284,7 +283,7 @@ public class CostManager : MonoBehaviour
         {
             if (state.Action != null)
             {
-                if (state.Action.ToString() == "ABDropAction")
+             //   if (state.Action.ToString() == "ABDropAction")
                 if(state.Action.Parameters != null)
                 {
                      foreach (ABNode param in state.Action.Parameters)
@@ -312,7 +311,10 @@ public class CostManager : MonoBehaviour
             }
             mc_cost += ComputeTreeCost(abOperator.Inputs[0]);
         }
-
+        //if (mc_cost < 1)
+        //{
+        //    return 1; 
+        //}
         return (float) Math.Log(mc_cost, 2f);
     }
 
