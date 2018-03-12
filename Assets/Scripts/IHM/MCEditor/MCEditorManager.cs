@@ -90,7 +90,6 @@ public class MCEditorManager : MonoBehaviour {
         /**START DO NOT COMMIT**/
         if (AppContextManager.instance.PrysmeEdit)
         {
-            AppContextManager.instance.PrysmeEdit = false;
             MC_OrigFilePath = AppContextManager.instance.ActiveSpecieFolderPath 
                 + AppContextManager.instance.PRYSME_FILE_NAME
                 + AppContextManager.instance.CSV_EXT;
@@ -129,6 +128,10 @@ public class MCEditorManager : MonoBehaviour {
 			this.deleteSelectedProxies ();
 		}
     }
+
+	private void OnDestroy(){
+		AppContextManager.instance.PrysmeEdit = false;
+	}
 
     private void SetupModel()
     {

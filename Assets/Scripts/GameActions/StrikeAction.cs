@@ -5,9 +5,10 @@ using UnityEngine;
 public class StrikeAction : GameAction {
 
 	private GameObject target;
-    public GameObject Projectile;
+    public GameObject Projectile_J1;
+    public GameObject Projectile_J2;
 
-	public GameObject Target {
+    public GameObject Target {
 		get {
 			return target;
 		}
@@ -33,7 +34,15 @@ public class StrikeAction : GameAction {
 			AgentEntity targetAgent = target.GetComponent<AgentEntity>();
 
             //add vfx
-            GameObject projectile = Instantiate(Projectile, this.transform.position, Quaternion.identity);
+            //DISOCIATE TWO PREFAB FOR EACH AUTHORITY
+            GameObject projectile;
+
+            if (this.agentEntity.Authority == PlayerAuthority.Player2)
+            {
+                projectile = Instantiate(Projectile_J2, this.transform.position, Quaternion.identity);
+            }
+            else projectile = Instantiate(Projectile_J1, this.transform.position, Quaternion.identity);
+
             projectile.GetComponent<Rigidbody>().velocity = this.transform.forward * 5.0f;
             projectile.GetComponent<Rigidbody>().MovePosition(targetAgent.Context.Model.transform.position);
             Destroy(projectile, projectile.GetComponentInChildren<ParticleSystem>().duration);
