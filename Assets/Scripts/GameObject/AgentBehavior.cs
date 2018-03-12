@@ -187,7 +187,7 @@ public class AgentBehavior : MonoBehaviour
 		
 		}
 		catch( System.Exception ex ){
-			throw new Action_Exception ( curAction, ex.Message );
+			throw new Action_Exception ( curAction, null, ex.Message );
 		}
 	}
 

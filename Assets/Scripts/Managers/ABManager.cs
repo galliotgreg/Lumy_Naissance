@@ -93,9 +93,9 @@ public class ABManager : MonoBehaviour
             try
             {
                 // Compute Action
-                ABInstance instance = FindABInstance(agent.Id);
-                ABContext context = CreateABContextFromAgentContext(agent.Context);
-                ABAction action = processor.ProcessABInstance(instance, context);
+            	ABInstance instance = FindABInstance(agent.Id);
+            	ABContext context = CreateABContextFromAgentContext(agent.Context);
+				ABAction action = processor.ProcessABInstance(instance, context);
 
                 //Compute Action Parameters
                 List<IABType> actionParams = new List<IABType>();
@@ -137,11 +137,11 @@ public class ABManager : MonoBehaviour
 				catch( SyntaxTree_MC_Exception syntaxEx ){
 					throw new ActionParam_MC_Exception ( action, syntaxEx );
 				}
+				catch( System.Exception someEx ){
+					throw new Action_Exception ( action, context, someEx.Message );
+				}
 
                 agent.setAction(action, actionParams.ToArray());
-            }
-			catch( Action_Exception actionEx ){
-				MessagesManager.instance.LogMsg("ACTION");
 			}
 			catch( SyntaxTree_MC_Exception syntaxEx ){
 				MessagesManager.instance.LogMsg("Syntax Error : \n"+syntaxEx.getMessage());

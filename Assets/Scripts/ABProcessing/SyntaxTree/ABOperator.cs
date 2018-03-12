@@ -29,6 +29,9 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		catch( Param_MC_Exception paramEx ){
 			throw new Operator_MC_Exception ( this, paramEx );
 		}
+		catch( System.Exception someEx ){
+			throw new Operator_Exception ( this, context, someEx.Message );
+		}
 	}
 
 	protected abstract T Evaluate(ABContext context);
