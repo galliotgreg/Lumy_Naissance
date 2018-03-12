@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 using System.IO;
 using Zip_Tool;
 
@@ -18,11 +17,13 @@ public class ExportController : MonoBehaviour {
 
     void ExportSpecie()
     {
-        string path = EditorUtility.OpenFolderPanel("Name", filePath, "");
-        Debug.Log(path);
-        string[] filesName = Directory.GetFiles(path, "*.csv",SearchOption.TopDirectoryOnly);
+        Debug.LogError("Export not implemented yet !");
+        return;
+        //string path = EditorUtility.OpenFolderPanel("Name", filePath, "");
+        //Debug.Log(path);
+        //string[] filesName = Directory.GetFiles(path, "*.csv",SearchOption.TopDirectoryOnly);
 
-        ZipUtil.Zip(path, filesName);
+        //ZipUtil.Zip(path, filesName);
         
     }
 }

@@ -139,7 +139,7 @@ public class CastesUIController : MonoBehaviour {
             treeSteps[ComputeLeaveHeight(curCast) - 1].Add(UICast);
         }
 
-        //Layout
+        //Layout Tree
         for (int step = 0; step < treeSteps.Count; step++)
         {
             for (int offset = 0; offset < treeSteps[step].Count; offset++)
@@ -152,7 +152,40 @@ public class CastesUIController : MonoBehaviour {
                 UICast.transform.position = new Vector3(x, y, 0f);
             }
         }
-        rootUICast.transform.localPosition = new Vector3(734, -132, 0);
+
+        //Layout On canvas
+        //Find boundaries
+        float left = rootUICast.transform.position.x;
+        float right = rootUICast.transform.position.x;
+        float top = rootUICast.transform.position.y;
+        float bottom = rootUICast.transform.position.y;
+        float margin = 200f;
+        foreach (GameObject UICasst in UICasts)
+        {
+            if (UICasst.transform.position.x < left)
+            {
+                left = UICasst.transform.position.x;
+            }
+            if(UICasst.transform.position.x > right)
+            {
+                right = UICasst.transform.position.x;
+            }
+            if (UICasst.transform.position.y < bottom)
+            {
+                bottom = UICasst.transform.position.y;
+            }
+            if (UICasst.transform.position.y > top)
+            {
+                top = UICasst.transform.position.y;
+            }
+        }
+
+        RectTransform rectTrans = nueePrincipalePanel.GetComponent<RectTransform>();
+        float width = right - left;
+        float height = top - bottom;
+        rectTrans.sizeDelta = new Vector2(width * 100f + margin * 2, height * 100f + margin * 2);
+
+        rootUICast.transform.localPosition = new Vector3((width/2) * 100f + margin + 500f, -margin, 0);
     }
 
     private static string GetCastKeyFromUICast(GameObject UICast)
