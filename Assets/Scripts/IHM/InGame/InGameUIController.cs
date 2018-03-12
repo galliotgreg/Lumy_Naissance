@@ -62,6 +62,11 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Button quitVictory;
 
+    [SerializeField]
+    private Button Menu;
+    [SerializeField]
+    private GameObject subMenu;
+
     /// <summary>
     /// Timer 
     /// </summary>
@@ -131,6 +136,8 @@ public class InGameUIController : MonoBehaviour
         Menu_MainMenu.onClick.AddListener(GoToMainMenu);
         Menu_PersonnalizedMap.onClick.AddListener(GoToPersonnalizedMap);
         Menu_Caste.onClick.AddListener(GoToCasteMenu);
+
+        Menu.onClick.AddListener(SwitchMenu);
 
         //Player Species 
         J1_Species.text = SwapManager.instance.GetPlayer1Name();
@@ -419,6 +426,10 @@ public class InGameUIController : MonoBehaviour
         }
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
 
+    }
+
+    void SwitchMenu() {
+        subMenu.SetActive(!subMenu.activeSelf);
     }
 }
 
