@@ -18,7 +18,7 @@ public class InGameUIController : MonoBehaviour
     /// <summary>
     /// Resources 
     /// </summary>
-    [Header("Resources Panel")]
+    [Header("Player Infos Panel")]
     [SerializeField]
     private Text J1_Red_Resources;
     [SerializeField]
@@ -28,13 +28,17 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text J1_Pop;
     [SerializeField]
+    private Text J1_Species;
+    [SerializeField]
     private Text J2_Red_Resources;
     [SerializeField]
     private Text J2_Green_Resources;
     [SerializeField]
     private Text J2_Blue_Resources;
     [SerializeField]
-    private Text J2_Pop; 
+    private Text J2_Pop;
+    [SerializeField]
+    private Text J2_Species;
 
     [Header("Main Menu")]
     [SerializeField]
@@ -104,6 +108,7 @@ public class InGameUIController : MonoBehaviour
         Init();
         if(!isNotNull())
             return; 
+
     }
 
     /// <summary>
@@ -125,8 +130,11 @@ public class InGameUIController : MonoBehaviour
         quitVictory.onClick.AddListener(ExitGame);
         Menu_MainMenu.onClick.AddListener(GoToMainMenu);
         Menu_PersonnalizedMap.onClick.AddListener(GoToPersonnalizedMap);
-        Menu_Caste.onClick.AddListener(GoToCasteMenu); 
+        Menu_Caste.onClick.AddListener(GoToCasteMenu);
 
+        //Player Species 
+        J1_Species.text = SwapManager.instance.GetPlayer1Name();
+        J2_Species.text = SwapManager.instance.GetPlayer2Name(); 
     }
 
 
