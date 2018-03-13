@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1504115113}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -498,7 +498,7 @@ MeshCollider:
   m_GameObject: {fileID: 10337223}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
@@ -4265,7 +4265,7 @@ MeshCollider:
   m_GameObject: {fileID: 98506650}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
@@ -5118,7 +5118,7 @@ MeshCollider:
   m_GameObject: {fileID: 286095965}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
@@ -7666,7 +7666,7 @@ MeshCollider:
   m_GameObject: {fileID: 655988420}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
@@ -9399,6 +9399,7 @@ GameObject:
   - component: {fileID: 944673872}
   - component: {fileID: 944673871}
   - component: {fileID: 944673877}
+  - component: {fileID: 944673878}
   m_Layer: 0
   m_Name: MapPersonnaliseCamera
   m_TagString: MainCamera
@@ -9508,6 +9509,17 @@ MonoBehaviour:
   minY: -38
   minZoom: 26
   maxZoom: 40
+--- !u!114 &944673878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 944673870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8bb3687ab76394583a1854ed25e0dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &949542359
 GameObject:
   m_ObjectHideFlags: 0
@@ -10455,7 +10467,7 @@ MeshCollider:
   m_GameObject: {fileID: 1103918352}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
@@ -11075,7 +11087,7 @@ MeshCollider:
   m_GameObject: {fileID: 1253528163}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
@@ -16076,7 +16088,7 @@ MeshCollider:
   m_GameObject: {fileID: 1516766003}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_InflateMesh: 0
@@ -20459,11 +20471,11 @@ Transform:
   - {fileID: 286095966}
   - {fileID: 10337224}
   - {fileID: 1103918353}
-  - {fileID: 856022205}
   - {fileID: 1993097568}
-  - {fileID: 360027413}
+  - {fileID: 856022205}
   - {fileID: 538360697}
   - {fileID: 968195481}
+  - {fileID: 360027413}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25134,7 +25146,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1.0000001, z: 0.99999994}
   m_Children: []
   m_Father: {fileID: 1767082691}
-  m_RootOrder: 55
+  m_RootOrder: 54
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!108 &1993097569
 Light:
