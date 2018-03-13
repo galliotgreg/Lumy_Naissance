@@ -56,7 +56,7 @@ public class OptionManager : MonoBehaviour {
 	void Update () {
 
         DebugGisement();
-
+        DebugLifebar();
     }
 
     private void DebugGisement()
@@ -86,15 +86,19 @@ public class OptionManager : MonoBehaviour {
 
     private void DebugLifebar()
     {
+        float health;
+        float maxHealth;
+        Image healthbar;
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
         if (lifeBar.isOn == true)
         {
             foreach (GameObject lumy in lumys)
             {
-                /*lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                health = GetComponentInParent<AgentScript>().Vitality;
-                maxHealth = 
-                healthBar.fillAmount = health / maxHealth;*/
+                lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                maxHealth = lumy.transform.GetChild(1).GetComponent<AgentScript>().VitalityMax;
+                healthbar = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
+                health = lumy.transform.GetChild(1).GetComponent<AgentScript>().Vitality;
+                healthbar.fillAmount = health / maxHealth;
 
             }
         }
