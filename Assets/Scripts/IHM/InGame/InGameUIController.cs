@@ -46,7 +46,9 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Button Menu_PersonnalizedMap;
     [SerializeField]
-    private Button Menu_Caste; 
+    private Button Menu_Caste;
+    [SerializeField]
+    private Button Menu_OptionsDebug;
 
     [Header("Victory Screen")]
     [SerializeField]
@@ -66,6 +68,8 @@ public class InGameUIController : MonoBehaviour
     private Button Menu;
     [SerializeField]
     private GameObject subMenu;
+    [SerializeField]
+    private GameObject panelOptionsDebug;
 
     /// <summary>
     /// Timer 
@@ -136,6 +140,7 @@ public class InGameUIController : MonoBehaviour
         Menu_MainMenu.onClick.AddListener(GoToMainMenu);
         Menu_PersonnalizedMap.onClick.AddListener(GoToPersonnalizedMap);
         Menu_Caste.onClick.AddListener(GoToCasteMenu);
+        Menu_OptionsDebug.onClick.AddListener(OpenOptionsDebug);
 
         Menu.onClick.AddListener(SwitchMenu);
 
@@ -425,6 +430,16 @@ public class InGameUIController : MonoBehaviour
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
+
+    }
+
+    private void OpenOptionsDebug() {
+
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        panelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
 
     }
 
