@@ -32,6 +32,10 @@ public class OptionManager : MonoBehaviour {
     [SerializeField]
     private Toggle suiviRessources;
 
+    private float rangeVision;
+    private float rangePick;
+    private float rangeAttack;
+
     void Awake()
     {
         //Check if instance already exists and set it to this if not
@@ -57,6 +61,9 @@ public class OptionManager : MonoBehaviour {
 
         DebugGisement();
         DebugLifebar();
+        DebugAtkRange();
+        DebugVisionRange();
+        DebugPickRange();
     }
 
     private void DebugGisement()
@@ -107,6 +114,78 @@ public class OptionManager : MonoBehaviour {
             foreach (GameObject lumy in lumys)
             {
                 lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void DebugVisionRange()
+    {
+        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
+        if(visionRange.isOn == true)
+        {
+            foreach(GameObject lumy in lumys)
+            {
+                Transform vRange = lumy.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.transform;
+                vRange.gameObject.SetActive(true);
+                rangeVision = lumy.transform.GetChild(1).GetComponent<AgentScript>().VisionRange;
+
+                vRange.localScale = new Vector3(rangeVision * 2, 0.01f, rangeVision * 2);
+            }
+        }
+        else
+        {
+            foreach (GameObject lumy in lumys)
+            {
+                Transform vRange = lumy.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.transform;
+                vRange.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void DebugAtkRange()
+    {
+        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
+        if (atkRange.isOn == true)
+        {
+            foreach (GameObject lumy in lumys)
+            {
+                Transform attackRange = lumy.transform.GetChild(1).GetChild(0).GetChild(0).gameObject.transform;
+                attackRange.gameObject.SetActive(true);
+                rangeAttack = lumy.transform.GetChild(1).GetComponent<AgentScript>().AtkRange;
+
+                attackRange.localScale = new Vector3(rangeAttack * 2, 0.01f, rangeAttack * 2);
+            }
+        }
+        else
+        {
+            foreach (GameObject lumy in lumys)
+            {
+                Transform attackRange = lumy.transform.GetChild(1).GetChild(0).GetChild(0).gameObject.transform;
+                attackRange.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void DebugPickRange()
+    {
+        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
+        if (pickRange.isOn == true)
+        {
+            foreach (GameObject lumy in lumys)
+            {
+                Transform pkRange = lumy.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.transform;
+                pkRange.gameObject.SetActive(true);
+                rangePick = lumy.transform.GetChild(1).GetComponent<AgentScript>().PickRange;
+
+                pkRange.localScale = new Vector3(rangePick * 2, 0.01f, rangePick * 2);
+            }
+        }
+        else
+        {
+            foreach (GameObject lumy in lumys)
+            {
+                Transform pkRange = lumy.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.transform;
+                pkRange.gameObject.SetActive(false);
             }
         }
     }
