@@ -8,6 +8,7 @@ public class DEBUG_lumyLife : MonoBehaviour {
     private Image healthBar;
     private float maxHealth = 0f;
     private float health = 0f;
+    private Toggle tog;
     // Use this for initialization
     void Start () {
         Transform child = GetComponentInChildren<Image>().transform.GetChild(0);

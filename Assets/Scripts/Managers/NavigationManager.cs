@@ -120,30 +120,16 @@ public class NavigationManager : MonoBehaviour {
     {
         GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
 
-        // Zoomer sur le bouton
+        // Faire disparaître le canvas en fondu
         GameObject canvas = GameObject.Find(currentScene + "Canvas");
         canvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
-        if (zoomOnCanvas)
+        float alpha = canvas.GetComponent<CanvasGroup>().alpha;
+        while (alpha > 0.0f)
         {
-            Vector3 dir = (canvas.transform.position - camera.transform.position).normalized;
-            while (Vector3.Dot(dir, canvas.transform.position - camera.transform.position) > zoomEndDistance)
-            {
-                Vector3 towards = Vector3.MoveTowards(
-                    canvas.transform.position,
-                    camera.transform.position + canvas.transform.position - sightPoint,
-                    zoomStep);
-                canvas.transform.position = towards;
-                canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
-                yield return true;
-            }
-        }
-
-        // Attendre la fin du déchargement de la scène initiale
-        AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
-        while (!unload.isDone)
-        {
-            yield return null;
+            alpha = canvas.GetComponent<CanvasGroup>().alpha;
+            canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
+            yield return true;
         }
 
         // Attendre la fin du chargement de la scène de destination
@@ -152,7 +138,13 @@ public class NavigationManager : MonoBehaviour {
         {
             yield return null;
         }
-        SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(false);
+
+        // Attendre la fin du déchargement de la scène initiale
+        AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
+        while (!unload.isDone)
+        {
+            yield return null;
+        }
 
         // Vérifier la conservation de la strate-mère
         Scene scene = SceneManager.GetSceneByName(nextScene);
@@ -170,16 +162,12 @@ public class NavigationManager : MonoBehaviour {
             yield return null;
         }
 
-        SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(true);
-
         findPriorityCamera();
 
         while (!layerLoaded)
         {
             yield return null;
         }
-
-        
 
         // Mettre à jour les propriétés du gestionnaire
         if (addToPreviousList)
@@ -193,7 +181,7 @@ public class NavigationManager : MonoBehaviour {
         // Faire apparaître le canvas en fondu
         canvas = GameObject.Find(nextScene + "Canvas");
         canvas.GetComponent<CanvasGroup>().alpha = 0f;
-        float alpha = canvas.GetComponent<CanvasGroup>().alpha;
+        alpha = canvas.GetComponent<CanvasGroup>().alpha;
         while (alpha < 1.0f)
         {
             alpha = canvas.GetComponent<CanvasGroup>().alpha;
