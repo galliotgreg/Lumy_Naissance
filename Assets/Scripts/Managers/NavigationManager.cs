@@ -243,17 +243,6 @@ public class NavigationManager : MonoBehaviour {
     IEnumerator SwapLayersCo(string nextScene, string newLayer)
     {
 
-        /*// Fondre au noir
-        GameObject darkScreen = GameObject.Find("DarkScreen");
-        Image darkImg = darkScreen.GetComponent<Image>();
-        float darkAlpha = darkImg.color.a;
-        while (darkAlpha < 1.0f)
-        {
-            darkAlpha = darkScreen.GetComponent<Image>().color.a;
-            darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a + fadeStep);
-            yield return true;
-        }*/
-
         // Attendre la fin du déchargement de la strate-mère initiale
         AsyncOperation unloadLayer = SceneManager.UnloadSceneAsync(currentLayer);
         while (!unloadLayer.isDone)
@@ -269,14 +258,6 @@ public class NavigationManager : MonoBehaviour {
         {
             yield return null;
         }
-
-        /*// Fondre depuis le noir
-        while (darkAlpha > 0f)
-        {
-            darkAlpha = darkScreen.GetComponent<Image>().color.a;
-            darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a - fadeStep);
-            yield return true;
-        }*/
 
         // Mettre à jour la strate courante
         currentLayer = newLayer;
