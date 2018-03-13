@@ -30,8 +30,8 @@ public class ABManager : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private float fps = 5f;
+    //[SerializeField]
+    private float fps = 1f;
     private float cooldown = -1f;
     [SerializeField]
     private string inputsFolderPath = "Inputs/";
@@ -49,6 +49,8 @@ public class ABManager : MonoBehaviour
     /// </summary>
     bool executeFrame = false;
 
+	Dictionary<AgentEntity, Tracing> currentTracings;
+
     public string InputsFolderPath
     {
         get
@@ -65,7 +67,7 @@ public class ABManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+		this.currentTracings = new Dictionary<AgentEntity, Tracing> ();
     }
 
     // Update is called once per frame
@@ -95,7 +97,11 @@ public class ABManager : MonoBehaviour
                 // Compute Action
             	ABInstance instance = FindABInstance(agent.Id);
             	ABContext context = CreateABContextFromAgentContext(agent.Context);
-				ABAction action = processor.ProcessABInstance(instance, context);
+				// Evaluating and Getting trace from evoluation
+				Tracing tracing = processor.ProcessABInstance(instance, context);
+				addCurrentTracing( agent, tracing );
+				Debug.Log( getCurrentTracing(agent).toString() );
+				ABAction action = processor.actionFromTracing( instance, tracing );
 
                 //Compute Action Parameters
                 List<IABType> actionParams = new List<IABType>();
@@ -460,4 +466,17 @@ public class ABManager : MonoBehaviour
 
         return param;
     }
+
+	#region Current Tracings
+	public void addCurrentTracing( AgentEntity entity, Tracing tracing ){
+		if (currentTracings.ContainsKey (entity)) {
+			currentTracings [entity] = tracing;
+		} else {
+			currentTracings.Add (entity, tracing);
+		}
+	}
+	public Tracing getCurrentTracing( AgentEntity entity ){
+		return currentTracings [entity];
+	}
+	#endregion
 }
