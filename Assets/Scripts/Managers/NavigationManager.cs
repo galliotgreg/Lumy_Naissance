@@ -46,7 +46,7 @@ public class NavigationManager : MonoBehaviour {
     private bool addToPreviousList = true;
     private bool sceneLoaded = false;
     private bool zoomOnCanvas = true;
-    private bool fadeToBlack = true;
+    private bool fadeToBlack = false;
 
     // Use this for initialization
     void Start () {
