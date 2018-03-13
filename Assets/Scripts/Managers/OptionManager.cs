@@ -28,13 +28,9 @@ public class OptionManager : MonoBehaviour {
     [SerializeField]
     private Toggle trace;
     [SerializeField]
-    public Toggle gisements;
+    private Toggle gisements;
     [SerializeField]
     private Toggle suiviRessources;
-
-    [SerializeField]
-    public bool gisementsBool = false;
-
 
     void Awake()
     {
@@ -53,19 +49,61 @@ public class OptionManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
-        gisementsBool = gisements.isOn;
+        DebugGisement();
+
     }
 
-    public GameObject[] GetMinerals()
+    private void DebugGisement()
     {
-       GameObject[] minerais;
 
-        minerais = GameObject.FindGameObjectsWithTag("minerais");
-        return minerais;
+       GameObject[] minerais = GameObject.FindGameObjectsWithTag("minerais");
+
+        if (gisements.isOn == true)
+        {
+            foreach (GameObject ressource in minerais)
+            {
+                ressource.transform.GetChild(0).gameObject.SetActive(true);
+                string stock = ressource.GetComponent<ResourceScript>().Stock.ToString();
+                Text stockText = ressource.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Text>();
+                stockText.text = stock;
+            }
+        }
+        else
+        {
+            foreach (GameObject ressource in minerais)
+            {
+                ressource.transform.GetChild(0).gameObject.SetActive(false);
+            }
+        }
+    }
+   
+
+    private void DebugLifebar()
+    {
+        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
+        if (lifeBar.isOn == true)
+        {
+            foreach (GameObject lumy in lumys)
+            {
+                /*lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                health = GetComponentInParent<AgentScript>().Vitality;
+                maxHealth = 
+                healthBar.fillAmount = health / maxHealth;*/
+
+            }
+        }
+        else
+        {
+            foreach (GameObject lumy in lumys)
+            {
+                lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
     }
 }

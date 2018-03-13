@@ -168,6 +168,7 @@ public class InGameUIController : MonoBehaviour
             exitMenu.SetActive(!exitMenu.activeSelf);
     }
 
+    #region WinConditions
     /// <summary>
     /// Check if the winner variable is on a Win State 
     /// </summary>
@@ -213,7 +214,7 @@ public class InGameUIController : MonoBehaviour
         }
        
     }
-
+    #endregion
 
     /// <summary>
     /// Update the UI with the parameters : Resources and Timer
@@ -257,7 +258,9 @@ public class InGameUIController : MonoBehaviour
         }
         
         J1_Pop.text = "" +gameManager.GetHome(PlayerAuthority.Player1).getPopulation().Count;    
-        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;  
+        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;
+
+        UnitStats(); 
     }
 
     /// <summary>
@@ -281,6 +284,7 @@ public class InGameUIController : MonoBehaviour
         return true;
     }
 
+    #region Validator
     /// <summary>
     /// Check is UI gameobjetcs are not null 
     /// </summary>
@@ -389,7 +393,9 @@ public class InGameUIController : MonoBehaviour
 
         return true; 
     }
+    #endregion
 
+    #region BtnListener
     private void CloseExitMenu()
     {
         exitMenu.SetActive(false);
@@ -446,6 +452,39 @@ public class InGameUIController : MonoBehaviour
     void SwitchMenu() {
         subMenu.SetActive(!subMenu.activeSelf);
     }
+    #endregion
+
+    private void UnitStats()
+    {
+        //TODO CREATE VISUALS 
+        Camera camera = NavigationManager.instance.GetCurrentCamera(); 
+        AgentScript self = camera.GetComponent<CameraRay>().Self;
+        if(self == null)
+        {
+            return; 
+        }
+        float vitality = self.Vitality;
+        float visionRange = self.VisionRange;
+        float vitalityMax = self.VitalityMax;
+        float strength = self.Strength;
+        float pickRange = self.PickRange;
+        float atkRange = self.AtkRange;
+        float actSpeed = self.ActSpd;
+        float moveSpeed = self.MoveSpd;
+        float nbItemMax = self.NbItemMax;
+        float nbItem = self.NbItem;
+        float layTimeCost = self.LayTimeCost;
+        float stamina = self.Stamina;
+        string cast = self.Cast;
+    }
+
+    private void getCurAction()
+    {
+        //Warning Real State from the Action.
+        //Maybe make a traduction for more visibility.
+        Camera camera = NavigationManager.instance.GetCurrentCamera();
+        string action = camera.GetComponent<CameraRay>().Action;
+    }
+
 }
 
-   
