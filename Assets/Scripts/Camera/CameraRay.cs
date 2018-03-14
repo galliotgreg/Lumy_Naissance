@@ -29,9 +29,6 @@ public class CameraRay : MonoBehaviour {
         }
     }
 
-
-
-
     // Use this for initialization
     void Start () {
         camera = this.gameObject.GetComponent<Camera>(); 

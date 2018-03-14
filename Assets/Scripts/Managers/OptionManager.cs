@@ -32,6 +32,15 @@ public class OptionManager : MonoBehaviour {
     [SerializeField]
     private Toggle suiviRessources;
 
+
+    public Toggle DirectionLumy
+    {
+        get
+        {
+            return directionLumy;
+        }
+    }
+
     void Awake()
     {
         //Check if instance already exists and set it to this if not

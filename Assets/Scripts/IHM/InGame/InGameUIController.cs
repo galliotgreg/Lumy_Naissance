@@ -458,6 +458,10 @@ public class InGameUIController : MonoBehaviour
     {
         //TODO CREATE VISUALS 
         Camera camera = NavigationManager.instance.GetCurrentCamera(); 
+        if (camera == null)
+        {
+            return;
+        }
         AgentScript self = camera.GetComponent<CameraRay>().Self;
         if(self == null)
         {
