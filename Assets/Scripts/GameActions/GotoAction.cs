@@ -110,7 +110,6 @@ public class GotoAction : GameAction {
 
             // Debug.DrawLine(position, dest, Color.blue);
             //Draw Line 
-            Debug.Log(OptionManager.instance); 
             if(OptionManager.instance.DirectionLumy != null)
             {
                 if (OptionManager.instance.DirectionLumy.isOn)
@@ -164,6 +163,7 @@ public class GotoAction : GameAction {
     void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
     {
         GameObject myLine = new GameObject();
+        myLine.transform.SetParent(GameManager.instance.transform); 
         myLine.transform.position = start;
         myLine.AddComponent<LineRenderer>();
         LineRenderer lr = myLine.GetComponent<LineRenderer>();
