@@ -5,6 +5,7 @@ using UnityEngine;
 public class ABMacroOperator<T> : ABOperator<T>
 {
     private string className;
+    private string viewName;
 
     public override string ClassName
     {
@@ -16,6 +17,19 @@ public class ABMacroOperator<T> : ABOperator<T>
         set
         {
             className = value;
+        }
+    }
+
+    public string ViewName
+    {
+        get
+        {
+            return viewName;
+        }
+
+        set
+        {
+            viewName = value;
         }
     }
 
