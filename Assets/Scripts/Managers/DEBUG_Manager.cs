@@ -11,6 +11,8 @@ public class DEBUG_Manager : MonoBehaviour {
 
     public bool debugRange = false;
     public bool debugCast = false;
+    public bool debugMineraiStock = false;
+    public bool debuglumyLife = false;
 
     /// <summary>
     /// Enforce Singleton properties

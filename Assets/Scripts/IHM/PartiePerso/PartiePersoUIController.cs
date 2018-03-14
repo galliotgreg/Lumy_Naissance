@@ -284,6 +284,9 @@ public class PartiePersoUIController : MonoBehaviour {
                 break;
         }
 
+        SwapManager.instance.SetPlayer1Name(player1SpecieName);
+        SwapManager.instance.SetPlayer2Name(player2SpecieName);
+
     }
     
     
@@ -321,6 +324,8 @@ public class PartiePersoUIController : MonoBehaviour {
             gameTimer.value = 1;
         else if (SwapManager.instance.GetPlayerNbLumy() == maxTimer)
             gameTimer.value = 2;
+
+
     }
 
 

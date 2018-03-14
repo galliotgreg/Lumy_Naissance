@@ -73,7 +73,6 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
             //add fx 
             GameObject explosion = Instantiate(Deathexplosion, target.Context.Model.transform.position, Quaternion.identity);
-            explosion.GetComponentInChildren<ParticleSystem>().transform.localScale /= 10.0f;
             Destroy(explosion, explosion.GetComponentInChildren<ParticleSystem>().duration);
             //add fx end
 

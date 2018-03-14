@@ -8,6 +8,8 @@ public class SwapManager : MonoBehaviour {
     private string keyStock = "StockKey";
     private string keyNbLumy = "NbLumyKey";
     private string keyTimer = "TimerKey";
+    private string keyPlayer1Name = "Player1NameKey";
+    private string keyPlayer2Name = "Player2NameKey";
 
     // The static instance of the Singleton for external access
     public static SwapManager instance = null;
@@ -66,6 +68,14 @@ public class SwapManager : MonoBehaviour {
         PlayerPrefs.SetFloat(keyTimer, timer); 
     }
 
+    public void SetPlayer1Name(string playerName) {
+        PlayerPrefs.SetString(keyPlayer1Name, playerName);
+    }
+    public void SetPlayer2Name(string playerName) {
+        PlayerPrefs.SetString(keyPlayer2Name, playerName);
+    }
+
+
     /// <summary>
     /// Get the resources at the start of the game for each Player
     /// </summary>
@@ -100,6 +110,14 @@ public class SwapManager : MonoBehaviour {
     public float GetPlayerTimer()
     {
         return PlayerPrefs.GetFloat(keyTimer); 
+    }
+
+    public string GetPlayer1Name() {
+        return PlayerPrefs.GetString(keyPlayer1Name);
+    }
+
+    public string GetPlayer2Name() {
+        return PlayerPrefs.GetString(keyPlayer2Name);
     }
 
 
