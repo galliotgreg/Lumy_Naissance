@@ -106,7 +106,21 @@ public class TraceScript : MonoBehaviour {
 		if( traceUnitPrefab != null ){
 			foreach( Vector2 pos in visualPoints ){
 				GameObject traceUnitObject = Instantiate( traceUnitPrefab, AgentBehavior.vec2ToWorld( pos ), this.transform.rotation, this.transform );
-				TraceUnitGameObject traceUnit = traceUnitObject.GetComponent<TraceUnitGameObject> ();
+                if (OptionManager.instance.Trace != null) {
+                    if (OptionManager.instance.Trace.isOn)
+                        traceUnitObject.GetComponent<MeshRenderer>().enabled = true;
+                    else {
+                        traceUnitObject.GetComponent<MeshRenderer>().enabled = false; 
+                    }
+                }
+                if (OptionManager.instance.TraceJ2 != null) {
+                    if (OptionManager.instance.TraceJ2.isOn)
+                        traceUnitObject.GetComponent<MeshRenderer>().enabled = true;
+                    else {
+                        traceUnitObject.GetComponent<MeshRenderer>().enabled = false;
+                    }
+                }
+                TraceUnitGameObject traceUnit = traceUnitObject.GetComponent<TraceUnitGameObject> ();
 				traceUnit.Color = color;
 			}
 		}

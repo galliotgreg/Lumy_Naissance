@@ -8,7 +8,7 @@ public class AB_VecTab_Get_RefTab_Txt_Operator : ABOperator<ABTable<ABVec>> {
         this.Inputs = new ABNode[2];
     }
 
-    public override ABTable<ABVec> Evaluate(ABContext context)
+	protected override ABTable<ABVec> Evaluate(ABContext context)
     {
         ABTable<ABRef> tab = null;
         ABNode input1 = Inputs[0];

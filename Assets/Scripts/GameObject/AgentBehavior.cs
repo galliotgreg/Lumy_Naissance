@@ -94,6 +94,8 @@ public class AgentBehavior : MonoBehaviour
     }
 
 	private void executeAction(){
+		try{
+
 		//We arre between 2 IA frames
 		/*if (curActionParams == null)
 		{
@@ -181,6 +183,11 @@ public class AgentBehavior : MonoBehaviour
 			break;
 		case ActionType.None:
 			break;
+		}
+		
+		}
+		catch( System.Exception ex ){
+			throw new Action_Exception ( curAction, null, ex.Message );
 		}
 	}
 

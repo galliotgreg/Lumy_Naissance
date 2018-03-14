@@ -4,7 +4,7 @@
         this.Inputs = new ABNode[1];
     }
 
-    public override ABScalar Evaluate(ABContext context)
+	protected override ABScalar Evaluate(ABContext context)
     {
         ABTable<ABScalar> tab = null;
         ABNode input1 = Inputs[0];

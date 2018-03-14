@@ -6,7 +6,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABTable<ABBool> Evaluate(ABContext context)
+	protected override ABTable<ABBool> Evaluate(ABContext context)
     {
         ABTable<ABRef> tab = null;
         ABNode input1 = Inputs[0];
@@ -21,13 +21,11 @@
         ABTable<ABBool> result = TypeFactory.CreateEmptyTable<ABBool>();
 
         for (int i = 0; i < tab.Values.Length; i++) {
-            if(((ABText)tab.Values[i].GetAttr(text.Value)).Value == text.Value) {
-
-                //result.Values[i].Value = text.Value;
+			if(((ABBool)tab.Values[i].GetAttr(text.Value)) != null) {
+				result.Values[i].Value = ((ABBool)tab.Values[i].GetAttr(text.Value)).Value;
             }
         }
         
-       // result.Value = length;
         return result;
     }
 }

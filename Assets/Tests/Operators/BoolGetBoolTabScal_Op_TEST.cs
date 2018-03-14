@@ -35,7 +35,7 @@ class BoolGetBoolTabScal_Op_TEST : MonoBehaviour {
 
         //Test
         ABBool testValue = new ABBool();
-        testValue = ope.Evaluate(ctx);
+        testValue = ope.EvaluateOperator(ctx);
         Debug.Log("testValue : " + testValue.Value);
         ABBool expected = new ABBool();
         expected.Value = tab[(int)r2.Value];

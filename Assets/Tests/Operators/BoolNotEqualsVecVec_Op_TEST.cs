@@ -35,7 +35,7 @@ public class BoolNotEqualsVecVec_Op_TEST : MonoBehaviour {
         ope.Inputs[1] = arg2;
 
         //Test
-        bool testValue = ope.Evaluate(ctx).Value;
+        bool testValue = ope.EvaluateOperator(ctx).Value;
         bool expected = (x1 != x2 && y1 != y2) && !((float) Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) < 0.0001);
         if (testValue == expected)
         {

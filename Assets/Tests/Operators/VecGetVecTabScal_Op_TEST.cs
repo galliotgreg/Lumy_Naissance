@@ -39,8 +39,8 @@ public class VecGetVecTabScal_Op_TEST : MonoBehaviour {
         ope.Inputs[1] = arg2;
 
         //Test
-        float xVec = ope.Evaluate(ctx).X;
-        float yVec = ope.Evaluate(ctx).Y;
+        float xVec = ope.EvaluateOperator(ctx).X;
+        float yVec = ope.EvaluateOperator(ctx).Y;
         float xExpected = xTab[5];
         float yExpected = yTab[5];
         if (xVec == xExpected && yVec == yExpected)

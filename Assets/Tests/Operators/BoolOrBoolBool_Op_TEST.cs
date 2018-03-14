@@ -31,7 +31,7 @@ public class BoolOrBoolBool_Op_TEST : MonoBehaviour
         ope.Inputs[1] = arg2;
 
         //Test
-        bool testValue = ope.Evaluate(ctx).Value;
+        bool testValue = ope.EvaluateOperator(ctx).Value;
         bool expected = b1 | b2;
         if (testValue == expected)
         {

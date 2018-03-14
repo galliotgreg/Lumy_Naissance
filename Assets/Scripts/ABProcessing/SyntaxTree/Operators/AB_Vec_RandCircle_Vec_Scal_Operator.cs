@@ -9,7 +9,7 @@ public class AB_Vec_RandCircle_Vec_Scal_Operator : ABOperator<ABVec>
         this.Inputs = new ABNode[2];
     }
 
-    public override ABVec Evaluate(ABContext context)
+	protected override ABVec Evaluate(ABContext context)
     {
         //Get center
         ABVec center = null;

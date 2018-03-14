@@ -35,7 +35,7 @@ class ScalGetScalTabScal_Op_TEST : MonoBehaviour {
 
         //Test
         ABScalar testValue = new ABScalar();
-        testValue = ope.Evaluate(ctx);
+        testValue = ope.EvaluateOperator(ctx);
         ABScalar expected = new ABScalar();
         expected.Value = tab[(int)r2.Value];
         if (testValue.Value == expected.Value) {
