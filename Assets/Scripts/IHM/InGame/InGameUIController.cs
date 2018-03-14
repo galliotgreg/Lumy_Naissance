@@ -108,6 +108,17 @@ public class InGameUIController : MonoBehaviour
     private Text pickupRangeText;
     [SerializeField]
     private Text strikeRangeText;
+    [SerializeField]
+    private Text curPosText;
+    [SerializeField]
+    private Text trgPosText;
+    [SerializeField]
+    private Text LayTimeText;
+    [SerializeField]
+    private Text castText;
+    [SerializeField]
+    private Text item; 
+
 
 
     /// <summary>

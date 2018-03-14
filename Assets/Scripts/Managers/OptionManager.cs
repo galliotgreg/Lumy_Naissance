@@ -31,7 +31,7 @@ public class OptionManager : MonoBehaviour {
     private Toggle gisements;
     [SerializeField]
     private Toggle suiviRessources;
-
+    
     private float rangeVision;
     private float rangePick;
     private float rangeAttack;
