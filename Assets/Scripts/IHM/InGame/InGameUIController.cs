@@ -524,7 +524,7 @@ public class InGameUIController : MonoBehaviour
         string layTimeCost = self.LayTimeCost.ToString();
         string stamina = self.Stamina.ToString();
         string cast = self.Cast;
-
+        
 
 
         vitalityText.text = vitality;
