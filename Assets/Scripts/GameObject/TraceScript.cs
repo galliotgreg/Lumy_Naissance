@@ -113,6 +113,13 @@ public class TraceScript : MonoBehaviour {
                         traceUnitObject.GetComponent<MeshRenderer>().enabled = false; 
                     }
                 }
+                if (OptionManager.instance.TraceJ2 != null) {
+                    if (OptionManager.instance.TraceJ2.isOn)
+                        traceUnitObject.GetComponent<MeshRenderer>().enabled = true;
+                    else {
+                        traceUnitObject.GetComponent<MeshRenderer>().enabled = false;
+                    }
+                }
                 TraceUnitGameObject traceUnit = traceUnitObject.GetComponent<TraceUnitGameObject> ();
 				traceUnit.Color = color;
 			}
