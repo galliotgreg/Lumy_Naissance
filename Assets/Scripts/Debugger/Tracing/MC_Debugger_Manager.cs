@@ -48,7 +48,12 @@ public class MC_Debugger_Manager : MonoBehaviour {
 		activateDebugger (ABManager.instance.Agent0);	// test
 
 		if (lateralBar != null) {
+			lateralBarWidth = lateralBar.anchorMax.x;
 			hide ();
+		}
+
+		if (lateralBarButton != null) {
+			lateralBarButton.onClick.AddListener ( clickLateralBar );
 		}
 	}
 	
@@ -81,6 +86,12 @@ public class MC_Debugger_Manager : MonoBehaviour {
 
 	[SerializeField]
 	RectTransform lateralBar;
+	[SerializeField]
+	UnityEngine.UI.Button lateralBarButton;
+	[SerializeField]
+	UnityEngine.UI.Image lateralBarImage;
+	[SerializeField]
+	float lateralBarWidth;
 	public void clickLateralBar(){
 		if (hidden) {
 			show ();
@@ -91,9 +102,13 @@ public class MC_Debugger_Manager : MonoBehaviour {
 
 	void hide(){
 		hidden = true;
+		lateralBar.anchorMax = new Vector2 ( 0, lateralBar.anchorMax.y );
+		lateralBarImage.transform.Rotate (0,0,-180);
 	}
 	void show(){
 		hidden = false;
+		lateralBar.anchorMax = new Vector2 ( lateralBarWidth, lateralBar.anchorMax.y );
+		lateralBarImage.transform.Rotate (0,0,180);
 	}
 	#endregion
 
