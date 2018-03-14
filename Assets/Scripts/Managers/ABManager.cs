@@ -40,9 +40,15 @@ public class ABManager : MonoBehaviour
     private ABProcessor processor = new ABProcessor();
     private ABParser parser = new ABParser();
 
-    private List<AgentEntity> agents = new List<AgentEntity>();
+	private List<AgentEntity> agents = new List<AgentEntity>();
     private List<ABModel> models = new List<ABModel>();
     private List<ABInstance> instances = new List<ABInstance>();
+
+	public AgentEntity Agent0 {
+		get {
+			return agents[0];
+		}
+	}
 
     /// <summary>
     /// If true, the agents's models will be evaluated.
@@ -100,7 +106,7 @@ public class ABManager : MonoBehaviour
 				// Evaluating and Getting trace from evoluation
 				Tracing tracing = processor.ProcessABInstance(instance, context);
 				addCurrentTracing( agent, tracing );
-				Debug.Log( getCurrentTracing(agent).toString() );
+				// Debug.Log( getCurrentTracing(agent).toString() );
 				ABAction action = processor.actionFromTracing( instance, tracing );
 
                 //Compute Action Parameters
@@ -476,7 +482,10 @@ public class ABManager : MonoBehaviour
 		}
 	}
 	public Tracing getCurrentTracing( AgentEntity entity ){
-		return currentTracings [entity];
+		if (currentTracings.ContainsKey (entity)) {
+			return currentTracings [entity];
+		}
+		return null;
 	}
 	#endregion
 }

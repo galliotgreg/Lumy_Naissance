@@ -1,4 +1,6 @@
-﻿public class TracingInfo {
+﻿using UnityEngine;
+
+public class TracingInfo {
 	ABState state;
 
 	public TracingInfo( ABState state ){
@@ -16,13 +18,13 @@
 		return state.Name + " ("+state.Id+") ";
 	}
 
-	public MCEditor_Proxy InfoProxy( ABModel model ){
+	public Debugger_Node InfoProxy( ABModel model, Transform parent ){
 		if (state.Action == null) {
 			// State
-			return MCEditor_Proxy_Factory.instantiateState (state, state.Id == model.InitStateId);
+			return MC_Debugger_Factory.instance.instantiateState (state, state.Id == model.InitStateId, parent);
 		} else {
 			// Action
-			return MCEditor_Proxy_Factory.instantiateAction (state);
+			return MC_Debugger_Factory.instance.instantiateState (state, false, parent);
 		}
 	}
 }
