@@ -269,7 +269,11 @@ public class AgentScript : MonoBehaviour {
 
        
         GameObject res  = Instantiate(mineral);
+        
+
         res.transform.SetParent(this.transform);
+        res.transform.position = res.transform.parent.position;
+ 
         res.GetComponent<ResourceScript>().Stock = 1;
         res.GetComponent<ResourceScript>().Color = resource.Color;
 
