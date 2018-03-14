@@ -25,6 +25,5 @@ public class AB_Bool_And_Bool_Bool_Operator : ABOperator<ABBool>
         ABBool result = TypeFactory.CreateEmptyBool();
         result.Value = s1.Value & s2.Value;
         return result;
-
     }
 }

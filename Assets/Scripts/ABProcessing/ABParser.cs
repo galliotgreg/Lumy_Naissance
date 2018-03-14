@@ -15,8 +15,23 @@ public class ABParser
     private IABGateOperator curGateOperator;
     private List<ABNode> curNodes;
 
+    private List<ABNode> macros;
+
+    public void LoadMacros()
+    {
+        //TODO Remove this debug stub (Implement Factory)
+        macros = new List<ABNode>();
+        ABMacroOperator<ABRef> macro = new ABMacroOperator<ABRef>();
+        macro.AllocInputs(1);
+        macro.ClassName = "AB_Ref_Test_RefTab_Operator";
+        macros.Add(macro);
+        //TODO end stub
+    }
+
     private void InitialiseParser()
     {
+        LoadMacros();
+
         isInStatesBlock = false;
         isInTransitionBlock = false;
         isInSyntaxTreeBlock = false;
@@ -118,7 +133,11 @@ public class ABParser
                 break;
             case "param":
                 node = (ABNode)ParseParam(typeParams);
-
+                break;
+            case "macro":
+                //TODO Remove this debug stub
+                node = macros[0];
+                //TODO end stub
                 break;
             default:
                 throw new NotSupportedException("Node type" + typeName + " not handled !");

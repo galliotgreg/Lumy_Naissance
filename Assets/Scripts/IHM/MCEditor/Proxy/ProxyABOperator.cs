@@ -103,6 +103,19 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
             curPinIn = value;
         }
     }
+
+    public string ClassName
+    {
+        get
+        {
+            return abOperator.ClassName;
+        }
+
+        set
+        {
+            abOperator.ClassName = value;
+        }
+    }
     #endregion
 
     // Use this for initialization

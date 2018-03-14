@@ -19,6 +19,19 @@ public abstract class ABOperator<T> : ABNode, IABOperator
         }
     }
 
+    public virtual string ClassName
+    {
+        get
+        {
+            return GetType().ToString();
+        }
+
+        set
+        {
+            throw new System.NotSupportedException();
+        }
+    }
+
     public abstract T Evaluate(ABContext context);
 
 	public System.Type getOutcomeType ()
