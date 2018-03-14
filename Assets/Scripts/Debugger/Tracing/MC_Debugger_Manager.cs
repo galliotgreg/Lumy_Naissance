@@ -31,7 +31,7 @@ public class MC_Debugger_Manager : MonoBehaviour {
 
 	// Current Values to be shown
 	ABModel current_Model;
-	AgentEntity current_Entity;
+	AgentEntity current_Entity = null;
 	Tracing current_Tracing;
 
 	bool hidden = false;
@@ -45,7 +45,6 @@ public class MC_Debugger_Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		activateDebugger (ABManager.instance.Agent0);	// test
 
 		if (lateralBar != null) {
 			lateralBarWidth = lateralBar.anchorMax.x;

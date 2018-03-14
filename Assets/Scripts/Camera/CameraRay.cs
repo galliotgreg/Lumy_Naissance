@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// This Script needs to be attach to the Camera which has the focus of the game
@@ -11,8 +12,9 @@ public class CameraRay : MonoBehaviour {
     private Camera camera;
     [SerializeField]
     private AgentScript self;
-    private string action;  
+    private string action;
 
+    private int fingerID = -1;
 
     public AgentScript Self
     {
@@ -50,20 +52,23 @@ public class CameraRay : MonoBehaviour {
     {
         RaycastHit hit;
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 100.0f))
+        if (Physics.Raycast(ray, out hit, 100.0f) && (!EventSystem.current.IsPointerOverGameObject(fingerID)))
         {
             if (hit.transform.name == "EmptyComponentPrefab(Clone)")
             {
                 GameObject parent = hit.transform.parent.parent.gameObject;
                 self = parent.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
                 action = parent.GetComponent<AgentBehavior>().CurActionType.ToString();
+                MC_Debugger_Manager.instance.activateDebugger(parent.GetComponent<AgentEntity>()); 
+            }
+            else
+            {
+                MC_Debugger_Manager.instance.deactivateDebugger();
+                self = null;
+                action = "None";
             }
         }
-        else
-        {
-            self = null;
-            action = "None";
-        }
+        
     }
 
    

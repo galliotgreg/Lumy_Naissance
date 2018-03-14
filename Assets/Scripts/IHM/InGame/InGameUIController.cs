@@ -500,6 +500,14 @@ public class InGameUIController : MonoBehaviour
         AgentScript self = cameraRay.Self;
         if(self == null)
         {
+            vitalityText.text = "-";
+            strenghtText.text = "-";
+            staminaText.text = "-";
+            moveSpeedText.text = "-";
+            actionSpeedText.text = "-";
+            visionText.text = "-";
+            pickupRangeText.text = "-";
+            strikeRangeText.text = "-";
             return; 
         }
 
@@ -517,7 +525,6 @@ public class InGameUIController : MonoBehaviour
         string stamina = self.Stamina.ToString();
         string cast = self.Cast;
 
-        Debug.Log(vitality); 
 
 
         vitalityText.text = vitality;
