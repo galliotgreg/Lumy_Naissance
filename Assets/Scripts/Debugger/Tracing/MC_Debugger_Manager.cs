@@ -4,6 +4,28 @@ using UnityEngine;
 
 public class MC_Debugger_Manager : MonoBehaviour {
 
+	#region SINGLETON
+	/// <summary>
+	/// The static instance of the Singleton for external access
+	/// </summary>
+	public static MC_Debugger_Manager instance = null;
+
+	void Awake()
+	{
+		//Check if instance already exists and set it to this if not
+		if (instance == null)
+		{
+			instance = this;
+		}
+
+		//Enforce the unicity of the Singleton
+		else if (instance != this)
+		{
+			Destroy(gameObject);
+		}
+	}
+	#endregion
+
 	[SerializeField]
 	GameObject container;
 
@@ -12,16 +34,42 @@ public class MC_Debugger_Manager : MonoBehaviour {
 	AgentEntity current_Entity;
 	Tracing current_Tracing;
 
+	bool hidden = false;
+
+	public void drawDebugger(){
+		current_Tracing = ABManager.instance.getCurrentTracing (current_Entity);
+
+		clearTracing ();
+		instantiateTracing( current_Tracing, current_Model );
+	}
+
+	// Use this for initialization
+	void Start () {
+		activateDebugger (ABManager.instance.Agent0);	// test
+
+		if (lateralBar != null) {
+			hide ();
+		}
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		if (!hidden){
+			if (current_Entity != null) {
+				drawDebugger ();
+			}else{
+				clearTracing ();
+				deactivateDebugger ();
+			}
+		}
+	}
+
+	#region Activation
 	public void activateDebugger( AgentEntity entity ){
 		// activate container
 		// get data
 		current_Entity = entity;
 		current_Model = ABManager.instance.FindABInstance( entity.Id ).Model;
-		current_Tracing = ABManager.instance.getCurrentTracing (entity);
-
-		// Draw model
-		clearTracing ();
-		instantiateTracing( current_Tracing, current_Model );
 	}
 	public void deactivateDebugger(){
 		// deactivate container
@@ -31,17 +79,23 @@ public class MC_Debugger_Manager : MonoBehaviour {
 		current_Tracing = null;
 	}
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (ABManager.instance.Agent0 != null) {
-			activateDebugger (ABManager.instance.Agent0);
+	[SerializeField]
+	RectTransform lateralBar;
+	public void clickLateralBar(){
+		if (hidden) {
+			show ();
+		} else {
+			hide ();
 		}
 	}
+
+	void hide(){
+		hidden = true;
+	}
+	void show(){
+		hidden = false;
+	}
+	#endregion
 
 	#region Tracing
 	void instantiateTracing( Tracing tracing, ABModel model ){
