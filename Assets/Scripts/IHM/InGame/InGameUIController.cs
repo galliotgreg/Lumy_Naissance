@@ -89,7 +89,26 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Button cancel_ExitMenu;
     [SerializeField]
-    private Canvas canvas; 
+    private Canvas canvas;
+
+    [Header("Stats Lumy")]
+    [SerializeField]
+    private Text vitalityText;
+    [SerializeField]
+    private Text strenghtText;
+    [SerializeField]
+    private Text staminaText;
+    [SerializeField]
+    private Text moveSpeedText;
+    [SerializeField]
+    private Text actionSpeedText;
+    [SerializeField]
+    private Text visionText;
+    [SerializeField]
+    private Text pickupRangeText;
+    [SerializeField]
+    private Text strikeRangeText;
+
 
     /// <summary>
     /// Enforce Singleton properties
@@ -458,24 +477,46 @@ public class InGameUIController : MonoBehaviour
     {
         //TODO CREATE VISUALS 
         Camera camera = NavigationManager.instance.GetCurrentCamera(); 
-        AgentScript self = camera.GetComponent<CameraRay>().Self;
+        if (camera == null) {
+            Debug.LogError("ERROR: CAMERA NOT SET"); 
+            return; 
+        }
+        CameraRay cameraRay = camera.GetComponent<CameraRay>();
+        if (cameraRay == null) {
+            Debug.LogError("ERROR : SCRIPT NOT SET ON CAMERA");
+            return;
+        }
+        AgentScript self = cameraRay.Self;
         if(self == null)
         {
             return; 
         }
-        float vitality = self.Vitality;
-        float visionRange = self.VisionRange;
-        float vitalityMax = self.VitalityMax;
-        float strength = self.Strength;
-        float pickRange = self.PickRange;
-        float atkRange = self.AtkRange;
-        float actSpeed = self.ActSpd;
-        float moveSpeed = self.MoveSpd;
-        float nbItemMax = self.NbItemMax;
-        float nbItem = self.NbItem;
-        float layTimeCost = self.LayTimeCost;
-        float stamina = self.Stamina;
+
+        string vitality = self.Vitality.ToString();
+        string visionRange = self.VisionRange.ToString();
+        string vitalityMax = self.VitalityMax.ToString();
+        string strength = self.Strength.ToString();
+        string pickRange = self.PickRange.ToString();
+        string atkRange = self.AtkRange.ToString();
+        string actSpeed = self.ActSpd.ToString();
+        string moveSpeed = self.MoveSpd.ToString();
+        string nbItemMax = self.NbItemMax.ToString();
+        string nbItem = self.NbItem.ToString();
+        string layTimeCost = self.LayTimeCost.ToString();
+        string stamina = self.Stamina.ToString();
         string cast = self.Cast;
+
+        Debug.Log(vitality); 
+
+
+        vitalityText.text = vitality;
+        strenghtText.text = strength;
+        staminaText.text = stamina.ToString();
+        moveSpeedText.text = moveSpeed;
+        actionSpeedText.text = actSpeed;
+        visionText.text = visionRange;
+        pickupRangeText.text = pickRange;
+        strikeRangeText.text = atkRange;
     }
 
     private void getCurAction()

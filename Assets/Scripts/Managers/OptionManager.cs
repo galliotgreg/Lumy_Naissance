@@ -64,6 +64,7 @@ public class OptionManager : MonoBehaviour {
         DebugAtkRange();
         DebugVisionRange();
         DebugPickRange();
+        DebugLumyName();
     }
 
     private void DebugGisement()
@@ -101,7 +102,7 @@ public class OptionManager : MonoBehaviour {
         {
             foreach (GameObject lumy in lumys)
             {
-                lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
                 maxHealth = lumy.transform.GetChild(1).GetComponent<AgentScript>().VitalityMax;
                 healthbar = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
                 health = lumy.transform.GetChild(1).GetComponent<AgentScript>().Vitality;
@@ -113,7 +114,27 @@ public class OptionManager : MonoBehaviour {
         {
             foreach (GameObject lumy in lumys)
             {
-                lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(false);
+                lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void DebugLumyName() {
+
+        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
+
+        if (lumyName.isOn == true) {
+            foreach (GameObject lumy in lumys) {
+                lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(true);
+                string name = lumy.transform.GetChild(1).GetComponent<AgentScript>().Cast;
+                Text castName = lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>();
+                castName.text = name;
+
+            }
+        }
+        else {
+            foreach (GameObject lumy in lumys) {
+                lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.SetActive(false);
             }
         }
     }
