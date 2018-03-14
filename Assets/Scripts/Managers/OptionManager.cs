@@ -45,6 +45,12 @@ public class OptionManager : MonoBehaviour {
         }
     }
 
+    public Toggle Trace {
+        get {
+            return trace;
+        }
+    }
+
     void Awake()
     {
         //Check if instance already exists and set it to this if not
