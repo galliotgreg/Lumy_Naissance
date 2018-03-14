@@ -7,6 +7,7 @@ public class OptionManager : MonoBehaviour {
 
     public static OptionManager instance = null;
 
+    [Header("Joueur 1")]
     [SerializeField]
     private Toggle visionRange;
     [SerializeField]
@@ -31,7 +32,33 @@ public class OptionManager : MonoBehaviour {
     private Toggle gisements;
     [SerializeField]
     private Toggle suiviRessources;
-    
+
+    [Header("Joueur 2")]
+    [SerializeField]
+    private Toggle visionRangeJ2;
+    [SerializeField]
+    private Toggle atkRangeJ2;
+    [SerializeField]
+    private Toggle pickRangeJ2;
+    [SerializeField]
+    private Toggle lifeBarJ2;
+    [SerializeField]
+    private Toggle lumyNameJ2;
+    [SerializeField]
+    private Toggle directionLumyJ2;
+    [SerializeField]
+    private Toggle lumyCostJ2;
+    [SerializeField]
+    private Toggle lumycComponentsJ2;
+    [SerializeField]
+    private Toggle lumyActionJ2;
+    [SerializeField]
+    private Toggle traceJ2;
+    [SerializeField]
+    private Toggle gisementsJ2;
+    [SerializeField]
+    private Toggle suiviRessourcesJ2;
+
     private float rangeVision;
     private float rangePick;
     private float rangeAttack;
