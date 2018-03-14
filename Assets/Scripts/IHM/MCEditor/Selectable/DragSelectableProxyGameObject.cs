@@ -86,6 +86,11 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 		}
 	}
 
+    public Color GetColor()
+    {
+        return regularColor;
+    }
+
 	protected void selectGameObject(){
 		selected = true;
 	}

@@ -89,7 +89,26 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Button cancel_ExitMenu;
     [SerializeField]
-    private Canvas canvas; 
+    private Canvas canvas;
+
+    [Header("Stats Lumy")]
+    [SerializeField]
+    private Text vitalityText;
+    [SerializeField]
+    private Text strenghtText;
+    [SerializeField]
+    private Text staminaText;
+    [SerializeField]
+    private Text moveSpeedText;
+    [SerializeField]
+    private Text actionSpeedText;
+    [SerializeField]
+    private Text visionText;
+    [SerializeField]
+    private Text pickupRangeText;
+    [SerializeField]
+    private Text strikeRangeText;
+
 
     /// <summary>
     /// Enforce Singleton properties
@@ -168,6 +187,7 @@ public class InGameUIController : MonoBehaviour
             exitMenu.SetActive(!exitMenu.activeSelf);
     }
 
+    #region WinConditions
     /// <summary>
     /// Check if the winner variable is on a Win State 
     /// </summary>
@@ -213,7 +233,7 @@ public class InGameUIController : MonoBehaviour
         }
        
     }
-
+    #endregion
 
     /// <summary>
     /// Update the UI with the parameters : Resources and Timer
@@ -257,7 +277,9 @@ public class InGameUIController : MonoBehaviour
         }
         
         J1_Pop.text = "" +gameManager.GetHome(PlayerAuthority.Player1).getPopulation().Count;    
-        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;  
+        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;
+
+        UnitStats(); 
     }
 
     /// <summary>
@@ -281,6 +303,7 @@ public class InGameUIController : MonoBehaviour
         return true;
     }
 
+    #region Validator
     /// <summary>
     /// Check is UI gameobjetcs are not null 
     /// </summary>
@@ -389,7 +412,9 @@ public class InGameUIController : MonoBehaviour
 
         return true; 
     }
+    #endregion
 
+    #region BtnListener
     private void CloseExitMenu()
     {
         exitMenu.SetActive(false);
@@ -446,6 +471,61 @@ public class InGameUIController : MonoBehaviour
     void SwitchMenu() {
         subMenu.SetActive(!subMenu.activeSelf);
     }
+    #endregion
+
+    private void UnitStats()
+    {
+        //TODO CREATE VISUALS 
+        Camera camera = NavigationManager.instance.GetCurrentCamera(); 
+        if (camera == null) {
+            Debug.LogError("ERROR: CAMERA NOT SET"); 
+            return; 
+        }
+        CameraRay cameraRay = camera.GetComponent<CameraRay>();
+        if (cameraRay == null) {
+            Debug.LogError("ERROR : SCRIPT NOT SET ON CAMERA");
+            return;
+        }
+        AgentScript self = cameraRay.Self;
+        if(self == null)
+        {
+            return; 
+        }
+
+        string vitality = self.Vitality.ToString();
+        string visionRange = self.VisionRange.ToString();
+        string vitalityMax = self.VitalityMax.ToString();
+        string strength = self.Strength.ToString();
+        string pickRange = self.PickRange.ToString();
+        string atkRange = self.AtkRange.ToString();
+        string actSpeed = self.ActSpd.ToString();
+        string moveSpeed = self.MoveSpd.ToString();
+        string nbItemMax = self.NbItemMax.ToString();
+        string nbItem = self.NbItem.ToString();
+        string layTimeCost = self.LayTimeCost.ToString();
+        string stamina = self.Stamina.ToString();
+        string cast = self.Cast;
+
+        Debug.Log(vitality); 
+
+
+        vitalityText.text = vitality;
+        strenghtText.text = strength;
+        staminaText.text = stamina.ToString();
+        moveSpeedText.text = moveSpeed;
+        actionSpeedText.text = actSpeed;
+        visionText.text = visionRange;
+        pickupRangeText.text = pickRange;
+        strikeRangeText.text = atkRange;
+    }
+
+    private void getCurAction()
+    {
+        //Warning Real State from the Action.
+        //Maybe make a traduction for more visibility.
+        Camera camera = NavigationManager.instance.GetCurrentCamera();
+        string action = camera.GetComponent<CameraRay>().Action;
+    }
+
 }
 
-   
