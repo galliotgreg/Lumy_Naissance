@@ -500,6 +500,14 @@ public class InGameUIController : MonoBehaviour
         AgentScript self = cameraRay.Self;
         if(self == null)
         {
+            vitalityText.text = "-";
+            strenghtText.text = "-";
+            staminaText.text = "-";
+            moveSpeedText.text = "-";
+            actionSpeedText.text = "-";
+            visionText.text = "-";
+            pickupRangeText.text = "-";
+            strikeRangeText.text = "-";
             return; 
         }
 
