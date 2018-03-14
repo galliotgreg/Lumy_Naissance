@@ -8,7 +8,7 @@ public class AB_BoolTab_Agg_BoolStar_Operator : ABOperator<ABTable<ABBool>>
         this.Inputs = new ABNode[32];
     }
 
-    public override ABTable<ABBool> Evaluate(ABContext context)
+	protected override ABTable<ABBool> Evaluate(ABContext context)
     {
         //StackAllInputs
         IList<ABBool> stackedNodes = new List<ABBool>();
@@ -18,25 +18,21 @@ public class AB_BoolTab_Agg_BoolStar_Operator : ABOperator<ABTable<ABBool>>
             }
 
             if (input is ABOperator<ABBool>) {
-                ABOperator<ABBool> abOperator = (ABOperator<ABBool>)input;
-                ABBool booleen = abOperator.Evaluate(context);
+				ABBool booleen = OperatorHelper.Instance.getBoolParam ( context, input );
                 stackedNodes.Add(booleen);
             }
             else if (input is ABParam<ABBool>) {
-                ABParam<ABBool> param = (ABParam<ABBool>)input;
-                ABBool booleen = param.Evaluate(context);
+				ABBool booleen = OperatorHelper.Instance.getBoolParam ( context, input );
                 stackedNodes.Add(booleen);
             }
             else if (input is ABOperator<ABTable<ABBool>>) {
-                ABOperator<ABTable<ABBool>> abOperator = (ABOperator<ABTable<ABBool>>)input;
-                ABTable<ABBool> boolTab = abOperator.Evaluate(context);
+				ABTable<ABBool> boolTab = OperatorHelper.Instance.getTabBoolParam ( context, input );
                 foreach (ABBool booleen in boolTab.Values) {
                     stackedNodes.Add(booleen);
                 }
             }
             else if (input is ABParam<ABTable<ABBool>>) {
-                ABParam<ABTable<ABBool>> param = (ABParam<ABTable<ABBool>>)input;
-                ABTable<ABBool> boolTab = param.Evaluate(context);
+				ABTable<ABBool> boolTab = OperatorHelper.Instance.getTabBoolParam ( context, input );
                 foreach (ABBool booleen in boolTab.Values) {
                     stackedNodes.Add(booleen);
                 }

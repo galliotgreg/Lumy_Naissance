@@ -31,7 +31,7 @@ public class ScalSubScalScal_Op_TEST : MonoBehaviour
         ope.Inputs[1] = arg2;
 
         //Test
-        float testValue = ope.Evaluate(ctx).Value;
+        float testValue = ope.EvaluateOperator(ctx).Value;
         float expected = r1 - r2;
         if (testValue == expected)
         {

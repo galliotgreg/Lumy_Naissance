@@ -7,7 +7,7 @@ public class AB_ColorTab_Agg_ColorStar_Operator : ABOperator<ABTable<ABColor>>
         this.Inputs = new ABNode[32];
     }
 
-    public override ABTable<ABColor> Evaluate(ABContext context)
+	protected override ABTable<ABColor> Evaluate(ABContext context)
     {
         //StackAllInputs
         IList<ABColor> stackedNodes = new List<ABColor>();
@@ -17,25 +17,21 @@ public class AB_ColorTab_Agg_ColorStar_Operator : ABOperator<ABTable<ABColor>>
             }
 
             if (input is ABOperator<ABColor>) {
-                ABOperator<ABColor> abOperator = (ABOperator<ABColor>)input;
-                ABColor color = abOperator.Evaluate(context);
+				ABColor color = OperatorHelper.Instance.getColorParam( context, input );
                 stackedNodes.Add(color);
             }
             else if (input is ABParam<ABColor>) {
-                ABParam<ABColor> param = (ABParam<ABColor>)input;
-                ABColor color = param.Evaluate(context);
+				ABColor color = OperatorHelper.Instance.getColorParam( context, input );
                 stackedNodes.Add(color);
             }
             else if (input is ABOperator<ABTable<ABColor>>) {
-                ABOperator<ABTable<ABColor>> abOperator = (ABOperator<ABTable<ABColor>>)input;
-                ABTable<ABColor> colorTab = abOperator.Evaluate(context);
+				ABTable<ABColor> colorTab = OperatorHelper.Instance.getTabColorParam( context, input );
                 foreach (ABColor color in colorTab.Values) {
                     stackedNodes.Add(color);
                 }
             }
             else if (input is ABParam<ABTable<ABColor>>) {
-                ABParam<ABTable<ABColor>> param = (ABParam<ABTable<ABColor>>)input;
-                ABTable<ABColor> colorTab = param.Evaluate(context);
+				ABTable<ABColor> colorTab = OperatorHelper.Instance.getTabColorParam( context, input );
                 foreach (ABColor color in colorTab.Values) {
                     stackedNodes.Add(color);
                 }

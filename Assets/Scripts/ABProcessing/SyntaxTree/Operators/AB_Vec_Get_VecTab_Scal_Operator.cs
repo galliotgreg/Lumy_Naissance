@@ -7,7 +7,7 @@ public class AB_Vec_Get_VecTab_Scal_Operator : ABOperator<ABVec> {
         this.Inputs = new ABNode[2];
     }
 
-    public override ABVec Evaluate(ABContext context)
+	protected override ABVec Evaluate(ABContext context)
     {
         ABTable<ABVec> tab = null;
         ABNode input1 = Inputs[0];

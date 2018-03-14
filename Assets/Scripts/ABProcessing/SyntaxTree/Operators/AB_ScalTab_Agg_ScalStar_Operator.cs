@@ -5,8 +5,9 @@
         throw new System.NotImplementedException();
     }
 
-    public override ABTable<ABScalar> Evaluate(ABContext context)
+	protected override ABTable<ABScalar> Evaluate(ABContext context)
     {
+		// TODO NOTIMPLEMENTED
         throw new System.NotImplementedException();
     }
 }

@@ -2,12 +2,10 @@
 {
     public AB_ScalTab_Get_RefTab_Txt_Operator()
     {
-
         this.Inputs = new ABNode[2];
-        //throw new System.NotImplementedException();
     }
 
-    public override ABTable<ABScalar> Evaluate(ABContext context)
+	protected override ABTable<ABScalar> Evaluate(ABContext context)
     {
         ABTable<ABRef> tab = null;
         ABNode input1 = Inputs[0];
@@ -25,6 +23,5 @@
         ABTable<ABScalar> result = TypeFactory.CreateEmptyTable<ABScalar>();
         result.Values = values;
         return result;
-        //throw new System.NotImplementedException();
     }
 }

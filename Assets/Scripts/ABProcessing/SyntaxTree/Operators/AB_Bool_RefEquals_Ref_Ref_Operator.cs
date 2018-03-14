@@ -6,7 +6,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABBool Evaluate(ABContext context)
+	protected override ABBool Evaluate(ABContext context)
     {
         //Retieve first arg s1
         ABRef r1 = null;
@@ -26,7 +26,7 @@
         else {
             result.Value = false;
         }
-        //result.Value = s1.Value + s2.Value;
+
         return result;
     }
 }

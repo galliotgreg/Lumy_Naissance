@@ -19,7 +19,7 @@ public class ABMacroOperator<T> : ABOperator<T>
         }
     }
 
-    public override T Evaluate(ABContext context)
+    protected override T Evaluate(ABContext context)
     {
         throw new System.NotImplementedException();
     }

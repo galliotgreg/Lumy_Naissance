@@ -104,9 +104,15 @@ public class MCEditor_Proxy_Factory : MonoBehaviour {
     public static ProxyABState instantiateState( ABState state, bool init ){
 		return ProxyABState.instantiate (state, init);
 	}
+	public static ProxyABState instantiateState( ABState state, bool init, Transform parent ){
+		return ProxyABState.instantiate (state, init, parent);
+	}
 
 	public static ProxyABAction instantiateAction( ABState state ){
 		return ProxyABAction.instantiate ( state );
+	}
+	public static ProxyABAction instantiateAction( ABState state, Transform parent ){
+		return ProxyABAction.instantiate ( state, parent );
 	}
 
 	public static ProxyABOperator instantiateOperator( IABOperator operatorObj, bool isLoaded ){

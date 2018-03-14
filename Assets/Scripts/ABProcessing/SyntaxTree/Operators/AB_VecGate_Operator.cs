@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AB_VecGate_Operator : ABGateOperator<ABTable<ABVec>>
 {
-    public override ABTable<ABVec> Evaluate(ABContext context)
+	protected override ABTable<ABVec> Evaluate(ABContext context)
     {
         ABTable<ABVec> vTab = null;
         ABNode input = Inputs[0];
