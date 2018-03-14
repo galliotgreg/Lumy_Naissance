@@ -24,6 +24,8 @@ public class ABParser
         ABMacroOperator<ABRef> macro = new ABMacroOperator<ABRef>();
         macro.AllocInputs(1);
         macro.ClassName = "AB_Ref_Test_RefTab_Operator";
+        macro.ViewName = "Ref_Test_RefTab";
+        macro.SymbolName = "RtestR[]";
         macros.Add(macro);
         //TODO end stub
     }

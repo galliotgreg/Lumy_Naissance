@@ -6,6 +6,7 @@ public class ABMacroOperator<T> : ABOperator<T>
 {
     private string className;
     private string viewName;
+    private string symbolName;
 
     public override string ClassName
     {
@@ -30,6 +31,19 @@ public class ABMacroOperator<T> : ABOperator<T>
         set
         {
             viewName = value;
+        }
+    }
+
+    public string SymbolName
+    {
+        get
+        {
+            return symbolName;
+        }
+
+        set
+        {
+            symbolName = value;
         }
     }
 
