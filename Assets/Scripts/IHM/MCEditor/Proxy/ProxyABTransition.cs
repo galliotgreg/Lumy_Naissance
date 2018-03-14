@@ -179,6 +179,12 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 		start.associateTransition (proxyABTransition);
 		end.associateTransition (proxyABTransition);
 
+        if(start.GetColor() == end.GetColor())
+        {
+            proxyABTransition.regularColor = start.GetColor();
+        }
+
+
 		if (createCondition) {
 			addConditionPin ( proxyABTransition );
 		}

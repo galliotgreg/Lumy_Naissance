@@ -7,8 +7,9 @@ using UnityEngine;
 /// </summary>
 public class CameraRay : MonoBehaviour {
 
-
+    [SerializeField]
     private Camera camera;
+    [SerializeField]
     private AgentScript self;
     private string action;  
 
@@ -31,6 +32,8 @@ public class CameraRay : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        self = null;
+        action = "None"; 
         camera = this.gameObject.GetComponent<Camera>(); 
 	}
 	
@@ -52,7 +55,7 @@ public class CameraRay : MonoBehaviour {
             if (hit.transform.name == "EmptyComponentPrefab(Clone)")
             {
                 GameObject parent = hit.transform.parent.parent.gameObject;
-                AgentScript self = parent.GetComponent<AgentScript>();
+                self = parent.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
                 action = parent.GetComponent<AgentBehavior>().CurActionType.ToString();
             }
         }
