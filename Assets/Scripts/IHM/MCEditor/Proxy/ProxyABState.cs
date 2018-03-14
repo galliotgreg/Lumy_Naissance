@@ -164,6 +164,9 @@ public class ProxyABState : MCEditor_Proxy {
 	public static ProxyABState instantiate( ABState state, bool init ){
 		return instantiate (state, init, calculateStatePosition (MCEditorManager.instance.MCparent), MCEditorManager.instance.MCparent);
 	}
+	public static ProxyABState instantiate( ABState state, bool init, Transform parent ){
+		return instantiate (state, init, calculateStatePosition (parent), parent);
+	}
 	public static ProxyABState instantiate( ABState state, bool init, Vector3 position, Transform parent ){
 		ProxyABState result = Instantiate<ProxyABState>( MCEditor_Proxy_Factory.instance.StatePrefab, parent);
 		result.IsLoaded = true;

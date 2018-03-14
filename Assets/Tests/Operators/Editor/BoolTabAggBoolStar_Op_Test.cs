@@ -50,7 +50,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = getOperator( ctx, arg1 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -67,7 +67,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = getOperator( ctx, arg1 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -85,7 +85,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = getOperator( ctx, arg1, arg2 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -103,7 +103,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1 );
 
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -121,7 +121,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1, arg2 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -139,7 +139,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1, arg2 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -157,7 +157,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1, arg2 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -173,7 +173,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = getOperator( ctx );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -191,7 +191,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -211,7 +211,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1, arg2 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -231,7 +231,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1, arg2 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -249,7 +249,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -269,7 +269,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1, arg2 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );
@@ -289,7 +289,7 @@ public class BoolTabAggBoolStar_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_BoolTab_Agg_BoolStar_Operator ope = Operator_Test<AB_BoolTab_Agg_BoolStar_Operator>.getOperator_ABParams( symbol, ctx, arg1, arg2 );
 		// Test operator
-		ABBool[] result = ope.Evaluate( ctx ).Values;
+		ABBool[] result = ope.EvaluateOperator(ctx).Values;
 		Assert.AreEqual( expected.Length, result.Length );
 		for( int i = 0; i < expected.Length; i++ ){
 			Assert.AreEqual( expected[i], result[i].Value );

@@ -26,7 +26,7 @@ class BoolNotEqualsRefRef_Op_TEST : MonoBehaviour{
         ope.Inputs[1] = ref2;
 
         //Test
-        bool testValue = ope.Evaluate(ctx).Value;
+        bool testValue = ope.EvaluateOperator(ctx).Value;
         bool expected;
         if (ref1 != ref2) {
             expected = true;

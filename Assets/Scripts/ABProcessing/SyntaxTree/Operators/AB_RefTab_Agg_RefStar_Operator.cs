@@ -7,7 +7,7 @@ public class AB_RefTab_Agg_RefStar_Operator : ABOperator<ABTable<ABRef>>
         this.Inputs = new ABNode[32];
     }
 
-    public override ABTable<ABRef> Evaluate(ABContext context)
+	protected override ABTable<ABRef> Evaluate(ABContext context)
     {
         //StackAllInputs
         IList<ABRef> stackedNodes = new List<ABRef>();
@@ -20,28 +20,24 @@ public class AB_RefTab_Agg_RefStar_Operator : ABOperator<ABTable<ABRef>>
 
             if (input is ABOperator<ABRef>)
             {
-                ABOperator<ABRef> abOperator = (ABOperator<ABRef>)input;
-                ABRef reference = abOperator.Evaluate(context);
+				ABRef reference = OperatorHelper.Instance.getRefParam ( context, input );
                 stackedNodes.Add(reference);
             }
             else if (input is ABParam<ABRef>)
             {
-                ABParam<ABRef> param = (ABParam<ABRef>)input;
-                ABRef reference = param.Evaluate(context);
+				ABRef reference = OperatorHelper.Instance.getRefParam ( context, input );
                 stackedNodes.Add(reference);
             }
             else if (input is ABOperator<ABTable<ABRef>>)
             {
-                ABOperator<ABTable<ABRef>> abOperator = (ABOperator<ABTable<ABRef>>)input;
-                ABTable<ABRef> refTab = abOperator.Evaluate(context);
+				ABTable<ABRef> refTab = OperatorHelper.Instance.getTabRefParam ( context, input );
                 foreach (ABRef reference in refTab.Values) {
                     stackedNodes.Add(reference);
                 }
             }
             else if (input is ABParam<ABTable<ABRef>>)
             {
-                ABParam<ABTable<ABRef>> param = (ABParam<ABTable<ABRef>>)input;
-                ABTable<ABRef> refTab = param.Evaluate(context);
+				ABTable<ABRef> refTab = OperatorHelper.Instance.getTabRefParam ( context, input );
                 foreach (ABRef reference in refTab.Values)
                 {
                     stackedNodes.Add(reference);

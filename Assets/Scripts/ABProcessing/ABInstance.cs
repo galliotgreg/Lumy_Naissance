@@ -35,17 +35,40 @@ public class ABInstance {
         }
     }
 
-    public int Evaluate(ABContext context)
+	/*public int Evaluate(ABContext context)
     {
         int nbTransitionFires = 0;
 
         curStateId = model.InitStateId;
+
         while (!model.HasAction(curStateId) 
+			//&& curStateId != -1	)// Replaces (nbTransitionFires++ < maxTransitionFires)
             && nbTransitionFires++ < maxTransitionFires)
         {
             curStateId = model.FireTransition(curStateId, context);
         }
 
         return curStateId;
-    }
+    }*/
+
+	public Tracing Evaluate(ABContext context){
+		return EvaluateRec (context, model.getState ( model.InitStateId ));
+	}
+
+	public Tracing EvaluateRec(ABContext context, ABState currentState){
+		if (model.HasAction (currentState.Id)) {
+			return new Terminal_Tracing (new TracingInfo (currentState));
+		} else {
+			int nextStateId = model.FireTransition(currentState.Id, context);
+
+			if (nextStateId == -1) {
+				// No active transition
+				return new Terminal_Tracing (new TracingInfo (currentState));
+			} else {
+				// Next state
+				ABState nextState = model.getState( nextStateId );
+				return new Intermediate_Tracing( EvaluateRec( context, model.getState( nextStateId ) ), new TracingInfo( currentState ) );
+			}
+		}
+	}
 }

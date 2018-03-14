@@ -31,21 +31,26 @@ public abstract class ABParam<T> : ABNode, IABParam
 
     public T Evaluate(ABContext context)
     {
-        if (identifier == "0") {
-            Debug.Log("erer");
-        }
+		try{
+	        if (identifier == "0") {
+	            Debug.Log("erer");
+	        }
 
-        if (identifier == "const")
-        {
-            return value;
-        }
-        else
-        {
-            ABParam<T> valuedParam = (ABParam<T>)context.GetParam(identifier);
-            if (valuedParam == null)
-                Debug.LogError(identifier + " not found");
-            return valuedParam.Value;
-        }
+	        if (identifier == "const")
+	        {
+	            return value;
+	        }
+	        else
+	        {
+	            ABParam<T> valuedParam = (ABParam<T>)context.GetParam(identifier);
+	            if (valuedParam == null)
+	                Debug.LogError(identifier + " not found");
+	            return valuedParam.Value;
+	        }
+		}
+		catch( System.Exception ex ){
+			throw new Param_MC_Exception ( this, context, ex.Message );
+		}
     }
 
 	protected abstract IABParam CloneParam ();

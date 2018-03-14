@@ -32,7 +32,22 @@ public abstract class ABOperator<T> : ABNode, IABOperator
         }
     }
 
-    public abstract T Evaluate(ABContext context);
+	public T EvaluateOperator(ABContext context){
+		try{
+			return Evaluate( context );
+		}
+		catch( Operator_MC_Exception opEx ){
+			throw new Operator_MC_Exception ( this, opEx );
+		}
+		catch( Param_MC_Exception paramEx ){
+			throw new Operator_MC_Exception ( this, paramEx );
+		}
+		catch( System.Exception someEx ){
+			throw new Operator_Exception ( this, context, someEx.Message );
+		}
+	}
+
+	protected abstract T Evaluate(ABContext context);
 
 	public System.Type getOutcomeType ()
 	{

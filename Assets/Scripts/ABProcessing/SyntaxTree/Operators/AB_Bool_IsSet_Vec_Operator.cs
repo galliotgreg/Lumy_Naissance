@@ -6,7 +6,7 @@
         this.Inputs = new ABNode[1];
     }
 
-    public override ABBool Evaluate(ABContext context)
+	protected override ABBool Evaluate(ABContext context)
     {
         ABVec s1 = null;
         ABNode input1 = Inputs[0];
@@ -19,7 +19,7 @@
         else {
             result.Value = false;
         }
-        //result.Value = s1.Value + s2.Value;
+        
         return result;
     }
 }

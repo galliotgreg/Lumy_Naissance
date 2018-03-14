@@ -43,7 +43,7 @@ public class BoolAndBoolBool_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_Bool_And_Bool_Bool_Operator ope = getOperator( ctx, arg1, arg2 );
 		// Test operator
-		Assert.AreEqual( expected, ope.Evaluate( ctx ).Value );
+		Assert.AreEqual( expected, ope.EvaluateOperator(ctx).Value );
 	}
 
 	[Test]
@@ -57,7 +57,7 @@ public class BoolAndBoolBool_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_Bool_And_Bool_Bool_Operator ope = getOperator( ctx, arg1, arg2 );
 		// Test operator
-		Assert.AreEqual( expected, ope.Evaluate( ctx ).Value );
+		Assert.AreEqual( expected, ope.EvaluateOperator(ctx).Value );
 	}
 
 	[Test]
@@ -71,7 +71,7 @@ public class BoolAndBoolBool_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_Bool_And_Bool_Bool_Operator ope = getOperator( ctx, arg1, arg2 );
 		// Test operator
-		Assert.AreEqual( expected, ope.Evaluate( ctx ).Value );
+		Assert.AreEqual( expected, ope.EvaluateOperator(ctx).Value );
 	}
 
 	[Test]
@@ -85,7 +85,7 @@ public class BoolAndBoolBool_Op_Test {
 		ABContext ctx = new ABContext();
 		AB_Bool_And_Bool_Bool_Operator ope = getOperator( ctx, arg1, arg2 );
 		// Test operator
-		Assert.AreEqual( expected, ope.Evaluate( ctx ).Value );
+		Assert.AreEqual( expected, ope.EvaluateOperator(ctx).Value );
 	}
 
 	[Test]
@@ -94,7 +94,7 @@ public class BoolAndBoolBool_Op_Test {
 			// Create operator
 			ABContext ctx = new ABContext();
 			AB_Bool_And_Bool_Bool_Operator ope = getOperator( ctx );
-			ope.Evaluate( ctx );
+			ope.EvaluateOperator(ctx);
 		}
 		catch( System.Exception ex ){
 			// If an exception occurs, the test is succeeded
@@ -112,7 +112,7 @@ public class BoolAndBoolBool_Op_Test {
 		try{
 			ABContext ctx = new ABContext();
 			AB_Bool_And_Bool_Bool_Operator ope = getOperator( ctx, null, arg2 );
-			ope.Evaluate( ctx );
+			ope.EvaluateOperator(ctx);
 		}
 		catch( System.Exception ex ){
 			// If an exception occurs, the test is succeeded
@@ -130,7 +130,7 @@ public class BoolAndBoolBool_Op_Test {
 		try{
 			ABContext ctx = new ABContext();
 			AB_Bool_And_Bool_Bool_Operator ope = getOperator( ctx, arg1, null );
-			ope.Evaluate( ctx );
+			ope.EvaluateOperator(ctx);
 		}
 		catch( System.Exception ex ){
 			// If an exception occurs, the test is succeeded

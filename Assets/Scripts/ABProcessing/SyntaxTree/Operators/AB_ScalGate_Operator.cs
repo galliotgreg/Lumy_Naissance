@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class AB_ScalGate_Operator : ABGateOperator<ABScalar>
 {
-    public override ABScalar Evaluate(ABContext context)
+	protected override ABScalar Evaluate(ABContext context)
     {
+		// TODO NOTIMPLEMENTED
         throw new NotImplementedException();
     }
 }

@@ -38,7 +38,7 @@ class ScalSizeColorTab_Op_TEST : MonoBehaviour{
         ope.Inputs[0] = arg;
 
         //Test
-        int testValue = (int)ope.Evaluate(ctx).Value;
+        int testValue = (int)ope.EvaluateOperator(ctx).Value;
         int expected = size;
         if (testValue == expected) {
             Debug.Log(this.GetType().Name + " OK");

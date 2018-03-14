@@ -25,7 +25,7 @@ public class BoolEqualsColorColor_Op_TEST : MonoBehaviour
         ope.Inputs[1] = arg2;
 
         //Test
-        bool testValue = ope.Evaluate(ctx).Value;
+        bool testValue = ope.EvaluateOperator(ctx).Value;
         bool expected = false;
 
         if (testValue == expected)
@@ -50,7 +50,7 @@ public class BoolEqualsColorColor_Op_TEST : MonoBehaviour
         ope.Inputs[1] = arg2;
 
         //Test
-        bool testValue = ope.Evaluate(ctx).Value;
+        bool testValue = ope.EvaluateOperator(ctx).Value;
         bool expected = true;
 
         if (testValue == expected)

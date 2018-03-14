@@ -7,7 +7,7 @@ public class AB_VecTab_Agg_VecStar_Operator : ABOperator<ABTable<ABVec>>
         this.Inputs = new ABNode[32];
     }
 
-    public override ABTable<ABVec> Evaluate(ABContext context)
+	protected override ABTable<ABVec> Evaluate(ABContext context)
     {
         //StackAllInputs
         IList<ABVec> stackedNodes = new List<ABVec>();
@@ -20,20 +20,17 @@ public class AB_VecTab_Agg_VecStar_Operator : ABOperator<ABTable<ABVec>>
 
             if (input is ABOperator<ABVec>)
             {
-                ABOperator<ABVec> abOperator = (ABOperator<ABVec>)input;
-                ABVec vec = abOperator.Evaluate(context);
+				ABVec vec = OperatorHelper.Instance.getVecParam ( context, input );
                 stackedNodes.Add(vec);
             }
             else if (input is ABParam<ABVec>)
             {
-                ABParam<ABVec> param = (ABParam<ABVec>)input;
-                ABVec vec = param.Evaluate(context);
+				ABVec vec = OperatorHelper.Instance.getVecParam ( context, input );
                 stackedNodes.Add(vec);
             }
             else if (input is ABOperator<ABTable<ABVec>>)
             {
-                ABOperator<ABTable<ABVec>> abOperator = (ABOperator<ABTable<ABVec>>)input;
-                ABTable<ABVec> vecTab = abOperator.Evaluate(context);
+				ABTable<ABVec> vecTab = OperatorHelper.Instance.getTabVecParam ( context, input );
                 foreach (ABVec vec in vecTab.Values)
                 {
                     stackedNodes.Add(vec);
@@ -41,8 +38,7 @@ public class AB_VecTab_Agg_VecStar_Operator : ABOperator<ABTable<ABVec>>
             }
             else if (input is ABParam<ABTable<ABVec>>)
             {
-                ABParam<ABTable<ABVec>> param = (ABParam<ABTable<ABVec>>)input;
-                ABTable<ABVec> vecTab = param.Evaluate(context);
+				ABTable<ABVec> vecTab = OperatorHelper.Instance.getTabVecParam ( context, input );
                 foreach (ABVec vec in vecTab.Values)
                 {
                     stackedNodes.Add(vec);

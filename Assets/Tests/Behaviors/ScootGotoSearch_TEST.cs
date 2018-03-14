@@ -18,7 +18,7 @@ public class ScootGotoSearch_TEST : MonoBehaviour {
 	void Update () {
         ABInstance behaviorInstance = behaviorManager.FindABInstance(agent.Id);
         ABContext context = behaviorManager.CreateABContextFromAgentContext(agent.Context);
-        int finalStateId = behaviorInstance.Evaluate(context);
+		int finalStateId = behaviorInstance.Evaluate(context).getLastTracingInfo().State.Id;
         String finalStateName = behaviorInstance.Model.GetStateName(finalStateId);
 
         if (finalStateName == expected)
