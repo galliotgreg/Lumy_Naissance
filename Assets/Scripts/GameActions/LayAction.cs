@@ -36,12 +36,14 @@ public class LayAction : GameAction {
             childTemplate, this.transform.position, this.transform.rotation);
         child.SetActive(true);
         child.transform.parent = GameManager.instance.transform; 
-		child.name = child.GetComponent<AgentEntity> ().CastName;
+		AgentEntity childEntity = child.GetComponent<AgentEntity> ();
+		child.name = childEntity.CastName;
+		childEntity.Context.setModelValues (this.agentEntity.Authority);
         //Increment Population 
-		this.agentEntity.Home.addUnit( child.GetComponent<AgentEntity>() );
+		this.agentEntity.Home.addUnit( childEntity );
 
         //Set GameParams
-        child.GetComponent<AgentEntity>().GameParams =
+		childEntity.GameParams =
             GameManager.instance.GameParam.GetComponent<GameParamsScript>();
     }
 
