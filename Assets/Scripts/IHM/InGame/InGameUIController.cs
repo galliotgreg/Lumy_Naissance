@@ -135,6 +135,7 @@ public class InGameUIController : MonoBehaviour
     /// Variables for CastUIDisplay
     /// </summary>
     private List<GameObject> castUiList = new List<GameObject>();
+    private List<GameObject> castUiListJ2 = new List<GameObject>();
     private Dictionary<string, int> popJ1 = new Dictionary<string, int>();
     private Dictionary<string, int> popJ2 = new Dictionary<string, int>();
 
@@ -647,7 +648,7 @@ public class InGameUIController : MonoBehaviour
         {
             if (unit.Value != 0)
             {
-                GameObject go = Instantiate(unitGo);
+                GameObject go = Instantiate(unitGoJ1);
                 castUiList.Add(go);
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
@@ -656,43 +657,42 @@ public class InGameUIController : MonoBehaviour
         }
     }
 
-    public void unitCost()
-    {
-        AgentScript self = getUnitSelf();
-        if(self == null)
-        {
-            //Set values to "-" like for stats
-            return; 
-        }
-
-        Dictionary<string, int> costs = self.ProdCost;
-        foreach (KeyValuePair<string, int> cost in costs)
-        {
-            //Set color and count like stats for the lumy 
-            string color = cost.Key;
-            int count = cost.Value;
-            Debug.Log("COLOR : " + color + " " + count); 
-        }
-        //Enjoy this incredible code ;) 
-
-    }
+    
     private void DisplayUnitsJ2(Dictionary<string, int> units) {
         //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
         //Clean list if element in it
-        foreach (GameObject go in castUiList) {
-            castUiList.Remove(go);
+        foreach (GameObject go in castUiListJ2) {
+            
             Destroy(go);
         }
+        castUiListJ2.Clear();
         //Create UI cast and add them to the list 
         foreach (KeyValuePair<string, int> unit in units) {
             if (unit.Value != 0) {
                 GameObject go = Instantiate(unitGoJ2);
-                castUiList.Add(go);
+                castUiListJ2.Add(go);
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
             }
         }
+    }
+
+    public void unitCost() {
+        AgentScript self = getUnitSelf();
+        if (self == null) {
+            //Set values to "-" like for stats
+            return;
+        }
+
+        Dictionary<string, int> costs = self.ProdCost;
+        foreach (KeyValuePair<string, int> cost in costs) {
+            //Set color and count like stats for the lumy 
+            string color = cost.Key;
+            int count = cost.Value;
+        }
+        //Enjoy this incredible code ;) 
+
     }
 
 }
