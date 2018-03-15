@@ -64,10 +64,7 @@ public class OptionManager : MonoBehaviour {
     private float rangeAttack;
 
 
-    private IList<string> productionJ1 = new List<string>();
-    private IList<string> productionJ2 = new List<string>();
-    private IList<GameObject> queens = new List<GameObject>();
-
+   
 
     public Toggle DirectionLumy
     {
@@ -113,7 +110,6 @@ public class OptionManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        DebugPopulationJ1();
     }
 	
 	// Update is called once per frame
@@ -135,48 +131,10 @@ public class OptionManager : MonoBehaviour {
         DebugDirectionJ2();
         DebugTraceJ1();
         DebugTraceJ2();
-        DebugProduction();
         
     }
 
-    private void DebugPopulationJ1() {
 
-        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
-
-        foreach (GameObject lumy in lumys) {
-            if(lumy.gameObject.name == "p1_queen" || lumy.gameObject.name == "p2_queen") {
-                queens.Add(lumy);
-            }
-        }
-
-        productionJ1.Add(queens[0].GetComponent<LayAction>().CastName);
-        productionJ2.Add(queens[1].GetComponent<LayAction>().CastName);
-        Debug.Log("queens : " + queens.Count);
-
-    }
-
-    private void DebugProduction() {
-        
-        foreach (string name in productionJ1) {
-            if (name != queens[0].GetComponent<LayAction>().CastName) {
-
-                productionJ1.Add(queens[0].GetComponent<LayAction>().CastName);
-            }
-        }
-        
-        foreach (string name in productionJ2) {
-
-            if (name != queens[1].GetComponent<LayAction>().CastName) {
-
-                productionJ2.Add(queens[1].GetComponent<LayAction>().CastName);
-            }
-        }
-
-        Debug.Log("Production J1 : " + productionJ1.Count);
-        Debug.Log("Production J2 : " + productionJ2.Count);
-
-
-    }
 
     private void DebugDirectionJ1() {
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha1)) {

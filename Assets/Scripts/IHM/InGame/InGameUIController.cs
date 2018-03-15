@@ -122,7 +122,12 @@ public class InGameUIController : MonoBehaviour
     private Text castText;
     [SerializeField]
     private Text item;
+    [SerializeField]
+    private GameObject unit;
 
+    Dictionary<string, int> castsJ1;
+    Dictionary<string, int> castsJ2; 
+    
 
     private List<GameObject> queens = new List<GameObject>();
 
@@ -190,6 +195,9 @@ public class InGameUIController : MonoBehaviour
                 queens.Add(lumy);
             }
         }
+
+
+        DisplayUnits();
     }
 
 
@@ -309,7 +317,7 @@ public class InGameUIController : MonoBehaviour
         J1_PrysmeLife.text = queens[0].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[0].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
         J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
 
-        UnitStats(); 
+        UnitStats();
     }
 
     /// <summary>
@@ -570,6 +578,41 @@ public class InGameUIController : MonoBehaviour
         //Maybe make a traduction for more visibility.
         Camera camera = NavigationManager.instance.GetCurrentCamera();
         string action = camera.GetComponent<CameraRay>().Action;
+    }
+    //TODO REMOVE once implemented in UI 
+    private void test ()
+    {
+        Dictionary<string, int> units =  getAllUnit(PlayerAuthority.Player1);
+        int nbLignes = units.Count;
+        foreach (KeyValuePair<string, int> unit in units)
+        {
+            string casteName = unit.Key;
+            int castePop = unit.Value; 
+        }
+    }
+
+    private Dictionary<string,int> getAllUnit(PlayerAuthority player)
+    {
+        if(PlayerAuthority.Player1 == player)
+        {
+           return  GameObject.Find("p1_hive").GetComponent<HomeScript>().Population;
+        }
+        else if(PlayerAuthority.Player2 == player)
+        {
+           return GameObject.Find("p2_hive").GetComponent<HomeScript>().Population;
+        }
+        return null; 
+    }
+
+    private void DisplayUnits() {
+        //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
+        //int nbLignes = units.Count;
+        //for(int i=0; i < nbLignes; i++) {
+        //    GameObject go = Instantiate(unit);
+        //    go.transform.GetChild(0).GetComponent<Text>().text = i.ToString();
+        //    go.transform.GetChild(1).GetComponent<Text>().text = i.ToString() + "-";
+        //    go.transform.SetParent(unit.transform.parent.gameObject.transform); 
+        //}
     }
 
 }
