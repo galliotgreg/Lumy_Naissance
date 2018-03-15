@@ -107,7 +107,24 @@ public class GotoAction : GameAction {
 
             Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
             dest.y = agentAttr.transform.position.y;
-            Debug.DrawLine(position, dest, Color.blue);
+
+            // Debug.DrawLine(position, dest, Color.blue);
+            //Draw Line 
+            if(OptionManager.instance.DirectionLumy != null)
+            {
+                if (OptionManager.instance.DirectionLumy.isOn)
+                {
+                    DrawLine(position, dest, Color.blue, 0.2f);
+                }
+            }
+
+            if (OptionManager.instance.DirectionLumyJ2 != null) {
+                if (OptionManager.instance.DirectionLumyJ2.isOn) {
+                    DrawLine(position, dest, Color.blue, 0.2f);
+                }
+            }
+
+
             if (path.status == NavMeshPathStatus.PathPartial)
             {
                 agentAttr.TrgPos = agentAttr.CurPos;
@@ -124,7 +141,7 @@ public class GotoAction : GameAction {
 
             dest = vec2ToWorld(agentAttr.TrgPos);
             dest.y = agentAttr.transform.position.y;
-            //Debug.DrawLine(position, dest,Color.red);
+           
 
             navMeshAgent.acceleration = 1000;
 			navMeshAgent.speed = agentAttr.MoveSpd;
@@ -148,6 +165,21 @@ public class GotoAction : GameAction {
         }
         return agentAttr.transform.position;
 	}
+
+    void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
+    {
+        GameObject myLine = new GameObject();
+        myLine.transform.SetParent(GameManager.instance.transform); 
+        myLine.transform.position = start;
+        myLine.AddComponent<LineRenderer>();
+        LineRenderer lr = myLine.GetComponent<LineRenderer>();
+        //lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
+        lr.SetColors(color, color);
+        lr.SetWidth(0.1f, 0.1f);
+        lr.SetPosition(0, start);
+        lr.SetPosition(1, end);
+        GameObject.Destroy(myLine, duration);
+    }
 
     private int indexClosest( Vector2 pos, Vector3[] _path ){
 		int resultIndex = 0;

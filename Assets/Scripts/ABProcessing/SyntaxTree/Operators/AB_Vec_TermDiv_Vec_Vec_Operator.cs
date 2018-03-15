@@ -5,7 +5,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABVec Evaluate(ABContext context)
+	protected override ABVec Evaluate(ABContext context)
     {
         //Retieve first arg s1
         ABVec s1 = null;

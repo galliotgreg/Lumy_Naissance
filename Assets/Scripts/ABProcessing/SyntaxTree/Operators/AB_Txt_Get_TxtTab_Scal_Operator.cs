@@ -7,7 +7,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABText Evaluate(ABContext context)
+	protected override ABText Evaluate(ABContext context)
     {
         ABTable<ABText> tab = null;
         ABNode input1 = Inputs[0];

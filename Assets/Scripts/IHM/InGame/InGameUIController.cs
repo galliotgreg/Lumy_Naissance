@@ -30,6 +30,8 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text J1_Species;
     [SerializeField]
+    private Text J1_PrysmeLife;
+    [SerializeField]
     private Text J2_Red_Resources;
     [SerializeField]
     private Text J2_Green_Resources;
@@ -39,6 +41,8 @@ public class InGameUIController : MonoBehaviour
     private Text J2_Pop;
     [SerializeField]
     private Text J2_Species;
+    [SerializeField]
+    private Text J2_PrysmeLife;
 
     [Header("Main Menu")]
     [SerializeField]
@@ -89,7 +93,38 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Button cancel_ExitMenu;
     [SerializeField]
-    private Canvas canvas; 
+    private Canvas canvas;
+
+    [Header("Stats Lumy")]
+    [SerializeField]
+    private Text vitalityText;
+    [SerializeField]
+    private Text strenghtText;
+    [SerializeField]
+    private Text staminaText;
+    [SerializeField]
+    private Text moveSpeedText;
+    [SerializeField]
+    private Text actionSpeedText;
+    [SerializeField]
+    private Text visionText;
+    [SerializeField]
+    private Text pickupRangeText;
+    [SerializeField]
+    private Text strikeRangeText;
+    [SerializeField]
+    private Text curPosText;
+    [SerializeField]
+    private Text trgPosText;
+    [SerializeField]
+    private Text LayTimeText;
+    [SerializeField]
+    private Text castText;
+    [SerializeField]
+    private Text item;
+
+
+    private List<GameObject> queens = new List<GameObject>();
 
     /// <summary>
     /// Enforce Singleton properties
@@ -146,7 +181,15 @@ public class InGameUIController : MonoBehaviour
 
         //Player Species 
         J1_Species.text = SwapManager.instance.GetPlayer1Name();
-        J2_Species.text = SwapManager.instance.GetPlayer2Name(); 
+        J2_Species.text = SwapManager.instance.GetPlayer2Name();
+
+        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
+
+        foreach (GameObject lumy in lumys) {
+            if (lumy.gameObject.name == "p1_queen" || lumy.gameObject.name == "p2_queen") {
+                queens.Add(lumy);
+            }
+        }
     }
 
 
@@ -168,6 +211,7 @@ public class InGameUIController : MonoBehaviour
             exitMenu.SetActive(!exitMenu.activeSelf);
     }
 
+    #region WinConditions
     /// <summary>
     /// Check if the winner variable is on a Win State 
     /// </summary>
@@ -213,7 +257,7 @@ public class InGameUIController : MonoBehaviour
         }
        
     }
-
+    #endregion
 
     /// <summary>
     /// Update the UI with the parameters : Resources and Timer
@@ -257,7 +301,15 @@ public class InGameUIController : MonoBehaviour
         }
         
         J1_Pop.text = "" +gameManager.GetHome(PlayerAuthority.Player1).getPopulation().Count;    
-        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;  
+        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;
+
+
+
+
+        J1_PrysmeLife.text = queens[0].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[0].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
+        J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
+
+        UnitStats(); 
     }
 
     /// <summary>
@@ -281,6 +333,7 @@ public class InGameUIController : MonoBehaviour
         return true;
     }
 
+    #region Validator
     /// <summary>
     /// Check is UI gameobjetcs are not null 
     /// </summary>
@@ -389,7 +442,9 @@ public class InGameUIController : MonoBehaviour
 
         return true; 
     }
+    #endregion
 
+    #region BtnListener
     private void CloseExitMenu()
     {
         exitMenu.SetActive(false);
@@ -446,6 +501,76 @@ public class InGameUIController : MonoBehaviour
     void SwitchMenu() {
         subMenu.SetActive(!subMenu.activeSelf);
     }
+    #endregion
+
+    private void UnitStats()
+    {
+        //TODO CREATE VISUALS 
+        Camera camera = NavigationManager.instance.GetCurrentCamera(); 
+        if (camera == null) {
+            Debug.LogError("ERROR: CAMERA NOT SET"); 
+            return; 
+        }
+        CameraRay cameraRay = camera.GetComponent<CameraRay>();
+        if (cameraRay == null) {
+            Debug.LogError("ERROR : SCRIPT NOT SET ON CAMERA");
+            return;
+        }
+        AgentScript self = cameraRay.Self;
+        if(self == null)
+        {
+            vitalityText.text = "-";
+            strenghtText.text = "-";
+            staminaText.text = "-";
+            moveSpeedText.text = "-";
+            actionSpeedText.text = "-";
+            visionText.text = "-";
+            pickupRangeText.text = "-";
+            strikeRangeText.text = "-";
+            item.text = "-";
+            LayTimeText.text = "-";
+            castText.text = "-";
+            
+            return; 
+        }
+
+        string vitality = self.Vitality.ToString();
+        string visionRange = self.VisionRange.ToString();
+        string vitalityMax = self.VitalityMax.ToString();
+        string strength = self.Strength.ToString();
+        string pickRange = self.PickRange.ToString();
+        string atkRange = self.AtkRange.ToString();
+        string actSpeed = self.ActSpd.ToString();
+        string moveSpeed = self.MoveSpd.ToString();
+        string nbItemMax = self.NbItemMax.ToString();
+        string nbItem = self.NbItem.ToString();
+        string layTimeCost = self.LayTimeCost.ToString();
+        string stamina = self.Stamina.ToString();
+        string cast = self.Cast;
+        
+        vitalityText.text = vitality + " / " + self.VitalityMax.ToString();
+        strenghtText.text = strength;
+        staminaText.text = stamina.ToString();
+        moveSpeedText.text = moveSpeed;
+        actionSpeedText.text = actSpeed;
+        visionText.text = visionRange;
+        pickupRangeText.text = pickRange;
+        strikeRangeText.text = atkRange;
+        item.text = nbItem + " / " + nbItemMax;
+        LayTimeText.text = layTimeCost;
+        castText.text = cast;
+        
+        
+
+    }
+
+    private void getCurAction()
+    {
+        //Warning Real State from the Action.
+        //Maybe make a traduction for more visibility.
+        Camera camera = NavigationManager.instance.GetCurrentCamera();
+        string action = camera.GetComponent<CameraRay>().Action;
+    }
+
 }
 
-   

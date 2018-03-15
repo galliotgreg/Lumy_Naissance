@@ -46,6 +46,7 @@ public class NavigationManager : MonoBehaviour {
     private bool addToPreviousList = true;
     private bool sceneLoaded = false;
     private bool zoomOnCanvas = true;
+    private bool fadeToBlack = false;
 
     // Use this for initialization
     void Start () {
@@ -78,6 +79,11 @@ public class NavigationManager : MonoBehaviour {
         currentScene = initialScene;
         currentLayer = layerToLoad;
 
+    }
+
+    public void ActivateFadeToBlack()
+    {
+        fadeToBlack = true;
     }
 
     public void SwapScenes(string nextScene, Vector3 sightPoint)
@@ -120,30 +126,30 @@ public class NavigationManager : MonoBehaviour {
     {
         GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
 
-        // Zoomer sur le bouton
+        // Faire disparaître le canvas en fondu
         GameObject canvas = GameObject.Find(currentScene + "Canvas");
         canvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
-        if (zoomOnCanvas)
+        float alpha = canvas.GetComponent<CanvasGroup>().alpha;
+        while (alpha > 0.0f)
         {
-            Vector3 dir = (canvas.transform.position - camera.transform.position).normalized;
-            while (Vector3.Dot(dir, canvas.transform.position - camera.transform.position) > zoomEndDistance)
-            {
-                Vector3 towards = Vector3.MoveTowards(
-                    canvas.transform.position,
-                    camera.transform.position + canvas.transform.position - sightPoint,
-                    zoomStep);
-                canvas.transform.position = towards;
-                canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
-                yield return true;
-            }
+            alpha = canvas.GetComponent<CanvasGroup>().alpha;
+            canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
+            yield return true;
         }
 
-        // Attendre la fin du déchargement de la scène initiale
-        AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
-        while (!unload.isDone)
+        // Fondre au noir
+        GameObject darkScreen = GameObject.Find("DarkScreen");
+        Image darkImg = darkScreen.GetComponent<Image>();
+        float darkAlpha = darkImg.color.a;
+        if (fadeToBlack)
         {
-            yield return null;
+            while (darkAlpha < 1.0f)
+            {
+                darkAlpha = darkScreen.GetComponent<Image>().color.a;
+                darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a + fadeStep);
+                yield return true;
+            }
         }
 
         // Attendre la fin du chargement de la scène de destination
@@ -152,7 +158,16 @@ public class NavigationManager : MonoBehaviour {
         {
             yield return null;
         }
-        SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(false);
+
+        canvas = GameObject.Find(nextScene + "Canvas");
+        canvas.SetActive(false);
+
+        // Attendre la fin du déchargement de la scène initiale
+        AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
+        while (!unload.isDone)
+        {
+            yield return null;
+        }
 
         // Vérifier la conservation de la strate-mère
         Scene scene = SceneManager.GetSceneByName(nextScene);
@@ -170,16 +185,12 @@ public class NavigationManager : MonoBehaviour {
             yield return null;
         }
 
-        SceneManager.GetSceneByName(nextScene).GetRootGameObjects()[0].SetActive(true);
-
         findPriorityCamera();
 
         while (!layerLoaded)
         {
             yield return null;
         }
-
-        
 
         // Mettre à jour les propriétés du gestionnaire
         if (addToPreviousList)
@@ -190,10 +201,23 @@ public class NavigationManager : MonoBehaviour {
         
         currentScene = nextScene;
 
+        // Fondre depuis le noir
+        if (fadeToBlack)
+        {
+            while (darkAlpha > 0f)
+            {
+                darkAlpha = darkScreen.GetComponent<Image>().color.a;
+                darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a - fadeStep);
+                yield return true;
+            }
+        }
+
         // Faire apparaître le canvas en fondu
-        canvas = GameObject.Find(nextScene + "Canvas");
         canvas.GetComponent<CanvasGroup>().alpha = 0f;
-        float alpha = canvas.GetComponent<CanvasGroup>().alpha;
+        alpha = canvas.GetComponent<CanvasGroup>().alpha;
+
+        canvas.SetActive(true);
+
         while (alpha < 1.0f)
         {
             alpha = canvas.GetComponent<CanvasGroup>().alpha;
@@ -209,6 +233,7 @@ public class NavigationManager : MonoBehaviour {
         lastPanelLoaded = null;
         sceneLoaded = true;
         zoomOnCanvas = true;
+        fadeToBlack = false;
 
         // Arrêter la coroutine de transition
         StopCoroutine(SwapScenesCo(nextScene, sightPoint));
@@ -217,17 +242,6 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator SwapLayersCo(string nextScene, string newLayer)
     {
-
-        // Fondre au noir
-        GameObject darkScreen = GameObject.Find("DarkScreen");
-        Image darkImg = darkScreen.GetComponent<Image>();
-        float darkAlpha = darkImg.color.a;
-        while (darkAlpha < 1.0f)
-        {
-            darkAlpha = darkScreen.GetComponent<Image>().color.a;
-            darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a + fadeStep);
-            yield return true;
-        }
 
         // Attendre la fin du déchargement de la strate-mère initiale
         AsyncOperation unloadLayer = SceneManager.UnloadSceneAsync(currentLayer);
@@ -243,14 +257,6 @@ public class NavigationManager : MonoBehaviour {
         while (!loadLayer.isDone)
         {
             yield return null;
-        }
-
-        // Fondre depuis le noir
-        while (darkAlpha > 0f)
-        {
-            darkAlpha = darkScreen.GetComponent<Image>().color.a;
-            darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a - fadeStep);
-            yield return true;
         }
 
         // Mettre à jour la strate courante

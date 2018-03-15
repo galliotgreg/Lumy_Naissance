@@ -30,8 +30,8 @@ public class ABManager : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private float fps = 5f;
+    //[SerializeField]
+    private float fps = 1f;
     private float cooldown = -1f;
     [SerializeField]
     private string inputsFolderPath = "Inputs/";
@@ -40,14 +40,22 @@ public class ABManager : MonoBehaviour
     private ABProcessor processor = new ABProcessor();
     private ABParser parser = new ABParser();
 
-    private List<AgentEntity> agents = new List<AgentEntity>();
+	private List<AgentEntity> agents = new List<AgentEntity>();
     private List<ABModel> models = new List<ABModel>();
     private List<ABInstance> instances = new List<ABInstance>();
+
+	public AgentEntity Agent0 {
+		get {
+			return agents[0];
+		}
+	}
 
     /// <summary>
     /// If true, the agents's models will be evaluated.
     /// </summary>
     bool executeFrame = false;
+
+	Dictionary<AgentEntity, Tracing> currentTracings;
 
     public string InputsFolderPath
     {
@@ -65,7 +73,7 @@ public class ABManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+		this.currentTracings = new Dictionary<AgentEntity, Tracing> ();
     }
 
     // Update is called once per frame
@@ -93,47 +101,64 @@ public class ABManager : MonoBehaviour
             try
             {
                 // Compute Action
-                ABInstance instance = FindABInstance(agent.Id);
-                ABContext context = CreateABContextFromAgentContext(agent.Context);
-                ABAction action = processor.ProcessABInstance(instance, context);
+            	ABInstance instance = FindABInstance(agent.Id);
+            	ABContext context = CreateABContextFromAgentContext(agent.Context);
+				// Evaluating and Getting trace from evoluation
+				Tracing tracing = processor.ProcessABInstance(instance, context);
+				addCurrentTracing( agent, tracing );
+				// Debug.Log( getCurrentTracing(agent).toString() );
+				ABAction action = processor.actionFromTracing( instance, tracing );
 
                 //Compute Action Parameters
                 List<IABType> actionParams = new List<IABType>();
 
-                if (action != null && action.Parameters != null)
-                {
-                    for (int i = 0; i < action.Parameters.Length; i++)
-                    {
-                        if (action.Parameters[i] is AB_TxtGate_Operator)
-                        {
-                            IABType param =
-                                ((AB_TxtGate_Operator)action.Parameters[i]).Evaluate(context);
-                            actionParams.Add(param);
-                        }
-                        else if (action.Parameters[i] is AB_VecGate_Operator)
-                        {
-                            IABType param =
-                                ((AB_VecGate_Operator)action.Parameters[i]).Evaluate(context);
-                            actionParams.Add(param);
-                        }
-                        else if (action.Parameters[i] is AB_ColorGate_Operator)
-                        {
-                            IABType param =
-                                ((AB_ColorGate_Operator)action.Parameters[i]).Evaluate(context);
-                            actionParams.Add(param);
-                        }
-                        else if (action.Parameters[i] is AB_RefGate_Operator)
-                        {
-                            IABType param =
-                                ((AB_RefGate_Operator)action.Parameters[i]).Evaluate(context);
-                            actionParams.Add(param);
-                        }
-                        // TODO add type for each new param type
-                    }
-                }
+				try{
+	                if (action != null && action.Parameters != null)
+	                {
+	                    for (int i = 0; i < action.Parameters.Length; i++)
+	                    {
+	                        if (action.Parameters[i] is AB_TxtGate_Operator)
+	                        {
+	                            IABType param =
+									((AB_TxtGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+	                            actionParams.Add(param);
+	                        }
+	                        else if (action.Parameters[i] is AB_VecGate_Operator)
+	                        {
+	                            IABType param =
+									((AB_VecGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+	                            actionParams.Add(param);
+	                        }
+	                        else if (action.Parameters[i] is AB_ColorGate_Operator)
+	                        {
+	                            IABType param =
+									((AB_ColorGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+	                            actionParams.Add(param);
+	                        }
+	                        else if (action.Parameters[i] is AB_RefGate_Operator)
+	                        {
+	                            IABType param =
+									((AB_RefGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+	                            actionParams.Add(param);
+	                        }
+	                        // TODO add type for each new param type
+	                    }
+	                }
+				}
+				// Exceptions on creatings params
+				catch( SyntaxTree_MC_Exception syntaxEx ){
+					throw new ActionParam_MC_Exception ( action, syntaxEx );
+				}
+				catch( System.Exception someEx ){
+					throw new Action_Exception ( action, context, someEx.Message );
+				}
 
                 agent.setAction(action, actionParams.ToArray());
-            } catch (Exception e)
+			}
+			catch( SyntaxTree_MC_Exception syntaxEx ){
+				MessagesManager.instance.LogMsg("Syntax Error : \n"+syntaxEx.getMessage());
+			}
+			catch (Exception e)
             {
                 MessagesManager.instance.LogMsg("Something happened during your MC execution. You might miss something !! \nError is :\n" + e.Message);
             }
@@ -447,4 +472,20 @@ public class ABManager : MonoBehaviour
 
         return param;
     }
+
+	#region Current Tracings
+	public void addCurrentTracing( AgentEntity entity, Tracing tracing ){
+		if (currentTracings.ContainsKey (entity)) {
+			currentTracings [entity] = tracing;
+		} else {
+			currentTracings.Add (entity, tracing);
+		}
+	}
+	public Tracing getCurrentTracing( AgentEntity entity ){
+		if (currentTracings.ContainsKey (entity)) {
+			return currentTracings [entity];
+		}
+		return null;
+	}
+	#endregion
 }

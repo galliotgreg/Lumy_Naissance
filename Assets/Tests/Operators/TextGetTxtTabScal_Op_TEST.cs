@@ -34,7 +34,7 @@ class TextGetTxtTabScal_Op_TEST : MonoBehaviour{
 
         //Test
         ABText testValue = new ABText();
-        testValue = ope.Evaluate(ctx);
+        testValue = ope.EvaluateOperator(ctx);
         ABText expected = new ABText();
         expected.Value = tab[(int)r2.Value];
         //float expectedRed = redTab[(int)r2.Value];

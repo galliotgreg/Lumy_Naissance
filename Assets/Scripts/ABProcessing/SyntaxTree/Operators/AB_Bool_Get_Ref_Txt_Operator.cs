@@ -9,7 +9,7 @@ public class AB_Bool_Get_Ref_Txt_Operator : ABOperator<ABBool>
 		this.Inputs = new ABNode[2];
     }
 
-    public override ABBool Evaluate(ABContext context)
+	protected override ABBool Evaluate(ABContext context)
     {
 		//Get s1
 		ABNode input1 = Inputs[0];

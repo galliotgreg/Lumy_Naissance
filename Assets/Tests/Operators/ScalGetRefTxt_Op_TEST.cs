@@ -31,10 +31,10 @@ class ScalGetRefTxt_Op_TEST : MonoBehaviour{
         Debug.Log("ope" + ope);
         Debug.Log("ref1" + ref1);
         Debug.Log("arg2" + arg2);
-        Debug.Log("test :" + ope.Evaluate(ctx).Value);
+        Debug.Log("test :" + ope.EvaluateOperator(ctx).Value);
 
         float testValue;
-        testValue = ope.Evaluate(ctx).Value;
+        testValue = ope.EvaluateOperator(ctx).Value;
         float expected;
         expected = ((ABScalar)ref1.Value.GetAttr(s)).Value;
         if (testValue == expected) {

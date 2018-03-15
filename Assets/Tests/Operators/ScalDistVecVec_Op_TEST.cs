@@ -35,7 +35,7 @@ public class ScalDistVecVec_Op_TEST : MonoBehaviour {
         ope.Inputs[1] = arg2;
 
         //Test
-        float testValue = ope.Evaluate(ctx).Value;
+        float testValue = ope.EvaluateOperator(ctx).Value;
         float expected = (float)Math.Sqrt((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1));
         //if (testValue == expected)
         if(Math.Abs(testValue - expected) < 0.0001)

@@ -34,7 +34,7 @@ public class VecTermProdVecVec_Op_TEST : MonoBehaviour {
         ope.Inputs[1] = arg2;
 
         //Test
-        ABVec testValue = ope.Evaluate(ctx);
+        ABVec testValue = ope.EvaluateOperator(ctx);
         ABVec expected = TypeFactory.CreateEmptyVec();
         expected.X = x1 * x2;
         expected.Y = y1 * y2;

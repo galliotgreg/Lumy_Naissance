@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class AB_TxtGate_Operator : ABGateOperator<ABText>
 {
-    public override ABText Evaluate(ABContext context)
+	protected override ABText Evaluate(ABContext context)
     {
         ABText t = null;
         ABNode input = Inputs[0];

@@ -7,7 +7,7 @@ public class AB_Bool_LessThan_Scal_Scal_Operator : ABOperator<ABBool>
         this.Inputs = new ABNode[2];
     }
 
-    public override ABBool Evaluate(ABContext context)
+	protected override ABBool Evaluate(ABContext context)
     {
         //Get s1
         ABScalar s1 = null;
