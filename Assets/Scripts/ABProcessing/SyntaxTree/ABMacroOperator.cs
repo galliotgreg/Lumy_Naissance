@@ -21,10 +21,10 @@ public class ABMacroOperator<T> : ABOperator<T>
         }
     }
 
-    public string ViewName
+    public override string ViewName
     {
         get
-        {
+        {            
             return viewName;
         }
 
