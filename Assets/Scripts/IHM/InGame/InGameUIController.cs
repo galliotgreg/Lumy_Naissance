@@ -529,6 +529,7 @@ public class InGameUIController : MonoBehaviour
             strikeRangeText.text = "-";
             item.text = "-";
             LayTimeText.text = "-";
+            castText.text = "-";
             
             return; 
         }
@@ -557,6 +558,7 @@ public class InGameUIController : MonoBehaviour
         strikeRangeText.text = atkRange;
         item.text = nbItem + " / " + nbItemMax;
         LayTimeText.text = layTimeCost;
+        castText.text = cast;
         
         
 
