@@ -117,8 +117,11 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text castText;
     [SerializeField]
-    private Text item; 
+    private Text item;
 
+    Dictionary<string, int> castsJ1;
+    Dictionary<string, int> castsJ2; 
+    
 
 
     /// <summary>
@@ -525,8 +528,6 @@ public class InGameUIController : MonoBehaviour
         string stamina = self.Stamina.ToString();
         string cast = self.Cast;
 
-
-
         vitalityText.text = vitality;
         strenghtText.text = strength;
         staminaText.text = stamina.ToString();
@@ -543,6 +544,30 @@ public class InGameUIController : MonoBehaviour
         //Maybe make a traduction for more visibility.
         Camera camera = NavigationManager.instance.GetCurrentCamera();
         string action = camera.GetComponent<CameraRay>().Action;
+    }
+    //TODO REMOVE once implemented in UI 
+    private void test ()
+    {
+        Dictionary<string, int> units =  getAllUnit(PlayerAuthority.Player1);
+        int nbLignes = units.Count;
+        foreach (KeyValuePair<string, int> unit in units)
+        {
+            string casteName = unit.Key;
+            int castePop = unit.Value; 
+        }
+    }
+
+    private Dictionary<string,int> getAllUnit(PlayerAuthority player)
+    {
+        if(PlayerAuthority.Player1 == player)
+        {
+           return  GameObject.Find("p1_hive").GetComponent<HomeScript>().Population;
+        }
+        else if(PlayerAuthority.Player2 == player)
+        {
+           return GameObject.Find("p2_hive").GetComponent<HomeScript>().Population;
+        }
+        return null; 
     }
 
 }
