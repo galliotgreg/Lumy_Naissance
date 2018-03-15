@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -123,11 +124,18 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text item;
     [SerializeField]
-    private GameObject unit;
+    private GameObject unitGo;
 
     Dictionary<string, int> castsJ1;
     Dictionary<string, int> castsJ2; 
-    
+
+    /// <summary>
+    /// Variables for CastUIDisplay
+    /// </summary>
+    private List<GameObject> castUiList = new List<GameObject>();
+    private Dictionary<string, int> popJ1 = new Dictionary<string, int>();
+    private Dictionary<string, int> popJ2 = new Dictionary<string, int>();
+
 
     private List<GameObject> queens = new List<GameObject>();
 
@@ -156,8 +164,8 @@ public class InGameUIController : MonoBehaviour
     {
         Init();
         if(!isNotNull())
-            return; 
-
+            return;
+        popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
     }
 
     /// <summary>
@@ -195,9 +203,6 @@ public class InGameUIController : MonoBehaviour
                 queens.Add(lumy);
             }
         }
-
-
-        DisplayUnits();
     }
 
 
@@ -207,7 +212,6 @@ public class InGameUIController : MonoBehaviour
         CheckWinCondition();
         CheckKeys(); 
         UpdateUI();
-      
     }
 
     /// <summary>
@@ -318,6 +322,7 @@ public class InGameUIController : MonoBehaviour
         J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
 
         UnitStats();
+        getAllUnit(PlayerAuthority.Player1); 
     }
 
     /// <summary>
@@ -595,24 +600,67 @@ public class InGameUIController : MonoBehaviour
     {
         if(PlayerAuthority.Player1 == player)
         {
-           return  GameObject.Find("p1_hive").GetComponent<HomeScript>().Population;
+            if (!CheckDicoEquality(popJ1, GameObject.Find("p1_hive").GetComponent<HomeScript>().Population)){
+                DisplayUnits(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+                popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+            }
+
+            //if (!popJ1.Equals(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population)) {
+            //    DisplayUnits(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+            //    popJ1 = GameObject.Find("p1_hive").GetComponent<HomeScript>().Population;
+            //}
         }
-        else if(PlayerAuthority.Player2 == player)
-        {
-           return GameObject.Find("p2_hive").GetComponent<HomeScript>().Population;
-        }
+        //else if(PlayerAuthority.Player2 == player)
+        //{
+        //    if (!popJ2.Equals(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population)) {
+        //        DisplayUnits(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
+        //        popJ2 = GameObject.Find("p2_hive").GetComponent<HomeScript>().Population;
+        //    }
+        //}
+
+
         return null; 
     }
 
-    private void DisplayUnits() {
+   
+    private bool CheckDicoEquality (Dictionary<string, int> dico1, Dictionary<string, int> dico2) {
+        // check keys are the same
+        
+        foreach (string str in dico1.Keys) {
+            if (!dico2.ContainsKey(str)) {
+                return false;
+            }      
+        }
+        // check values are the same
+        foreach (string str in dico1.Keys) {
+            if (!dico1[str].Equals(dico2[str])) {
+                return false;
+            } 
+        }
+        return true; 
+    }
+
+
+
+
+
+    private void DisplayUnits(Dictionary<string,int> units) {
         //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
-        //int nbLignes = units.Count;
-        //for(int i=0; i < nbLignes; i++) {
-        //    GameObject go = Instantiate(unit);
-        //    go.transform.GetChild(0).GetComponent<Text>().text = i.ToString();
-        //    go.transform.GetChild(1).GetComponent<Text>().text = i.ToString() + "-";
-        //    go.transform.SetParent(unit.transform.parent.gameObject.transform); 
-        //}
+        //Clean list if element in it
+        foreach(GameObject go in castUiList) {
+            castUiList.Remove(go);
+            Destroy(go);
+        }
+        //Create UI cast and add them to the list 
+        foreach(KeyValuePair<string, int> unit in units) {
+            if (unit.Value!=0) {
+                GameObject go = Instantiate(unitGo);
+                castUiList.Add(go); 
+                go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
+                go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
+                go.transform.SetParent(unitGo.transform.parent.gameObject.transform);
+            }
+        }
     }
 
 }
