@@ -30,6 +30,8 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text J1_Species;
     [SerializeField]
+    private Text J1_PrysmeLife;
+    [SerializeField]
     private Text J2_Red_Resources;
     [SerializeField]
     private Text J2_Green_Resources;
@@ -39,6 +41,8 @@ public class InGameUIController : MonoBehaviour
     private Text J2_Pop;
     [SerializeField]
     private Text J2_Species;
+    [SerializeField]
+    private Text J2_PrysmeLife;
 
     [Header("Main Menu")]
     [SerializeField]
@@ -123,6 +127,7 @@ public class InGameUIController : MonoBehaviour
     Dictionary<string, int> castsJ2; 
     
 
+    private List<GameObject> queens = new List<GameObject>();
 
     /// <summary>
     /// Enforce Singleton properties
@@ -179,7 +184,15 @@ public class InGameUIController : MonoBehaviour
 
         //Player Species 
         J1_Species.text = SwapManager.instance.GetPlayer1Name();
-        J2_Species.text = SwapManager.instance.GetPlayer2Name(); 
+        J2_Species.text = SwapManager.instance.GetPlayer2Name();
+
+        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
+
+        foreach (GameObject lumy in lumys) {
+            if (lumy.gameObject.name == "p1_queen" || lumy.gameObject.name == "p2_queen") {
+                queens.Add(lumy);
+            }
+        }
     }
 
 
@@ -292,6 +305,12 @@ public class InGameUIController : MonoBehaviour
         
         J1_Pop.text = "" +gameManager.GetHome(PlayerAuthority.Player1).getPopulation().Count;    
         J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;
+
+
+
+
+        J1_PrysmeLife.text = queens[0].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[0].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
+        J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
 
         UnitStats(); 
     }
@@ -511,6 +530,10 @@ public class InGameUIController : MonoBehaviour
             visionText.text = "-";
             pickupRangeText.text = "-";
             strikeRangeText.text = "-";
+            item.text = "-";
+            LayTimeText.text = "-";
+            castText.text = "-";
+            
             return; 
         }
 
@@ -527,8 +550,8 @@ public class InGameUIController : MonoBehaviour
         string layTimeCost = self.LayTimeCost.ToString();
         string stamina = self.Stamina.ToString();
         string cast = self.Cast;
-
-        vitalityText.text = vitality;
+        
+        vitalityText.text = vitality + " / " + self.VitalityMax.ToString();
         strenghtText.text = strength;
         staminaText.text = stamina.ToString();
         moveSpeedText.text = moveSpeed;
@@ -536,6 +559,12 @@ public class InGameUIController : MonoBehaviour
         visionText.text = visionRange;
         pickupRangeText.text = pickRange;
         strikeRangeText.text = atkRange;
+        item.text = nbItem + " / " + nbItemMax;
+        LayTimeText.text = layTimeCost;
+        castText.text = cast;
+        
+        
+
     }
 
     private void getCurAction()

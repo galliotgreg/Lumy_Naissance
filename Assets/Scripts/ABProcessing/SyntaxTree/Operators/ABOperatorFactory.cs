@@ -116,6 +116,8 @@ public class ABOperatorFactory {
         TypeStringToString.Add("AB_Vec_TermProd_Vec_Vec_Operator", "V*VV");
         TypeStringToString.Add("AB_Scal_MinVal_ScalTab_Operator", "SminValS[]");
         TypeStringToString.Add("AB_Ref_Get_RefTab_Scal_Operator", "RgetR[]S");
+        // MACRO - COMPOSANT
+        TypeStringToString.Add("AB_Ref_Test_RefTab_Operator", "RtestR[]");
     }
 
     private static OperatorType GetTypeFromStr(string typeStr)

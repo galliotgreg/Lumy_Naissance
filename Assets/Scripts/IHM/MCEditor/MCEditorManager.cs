@@ -167,7 +167,7 @@ public class MCEditorManager : MonoBehaviour {
         {
             foreach (ProxyABOperator proxy in proxyOperators)
             {
-                if (operatorDictionary[((IABOperator)proxy.AbOperator).GetType().ToString()] == nameProxy)
+                if (operatorDictionary[((IABOperator)proxy.AbOperator).ClassName] == nameProxy)
                 {
                     if (!proxy.IsPositioned)
                     {
@@ -438,19 +438,34 @@ public class MCEditorManager : MonoBehaviour {
         int idParentnode = idNodeSyntTree;        
         if (idNodeSyntTree == 0)
         {
+
             if (node is IABOperator)
             {
-                string type = operatorDictionary[((IABOperator)node).GetType().ToString()];
-
-                syntTreeContent.AppendLine(idNodeSyntTree + ",operator{" + type + "},");
-                idNodeSyntTree++;
-                idNodeInputPin = 0;
-                foreach (ABNode input in ((IABOperator)node).Inputs)
+                string type = operatorDictionary[((IABOperator)node).ClassName];
+                if (!operatorDictionary.ContainsKey(((IABOperator)node).ClassName))
                 {
-                    /**Recursive function**/                    
-                    Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
-                    idNodeInputPin++;
-                    
+                    Debug.LogError(((IABOperator)node).GetType().ToString() + " n'est pas dans la le dictionnaire des opérateurs. Vérifier l'orthographe Dans le fichier ABOperatorFactory");
+                }
+                else
+                {
+                    //TODO : REFACTO avec une interface IABMAcroOperator
+                    if (node.GetType().ToString().Contains("Macro"))
+                    {
+                        syntTreeContent.AppendLine(idParentnode + ",macro{" + type + "}" + ",");
+                    }
+                    else
+                    {
+                        syntTreeContent.AppendLine(idNodeSyntTree + ",operator{" + type + "},");
+                    }
+                    idNodeSyntTree++;
+                    idNodeInputPin = 0;
+                    foreach (ABNode input in ((IABOperator)node).Inputs)
+                    {
+                        /**Recursive function**/
+                        Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
+                        idNodeInputPin++;
+
+                    }
                 }
             }
             else if (node is IABParam)
@@ -478,27 +493,38 @@ public class MCEditorManager : MonoBehaviour {
             }
         }
         else
-        {            
+        {
             if (node is IABOperator)
-            {
+            {                
                 string type = "";
-                if (!operatorDictionary.ContainsKey(((IABOperator)node).GetType().ToString()))
+                if (!operatorDictionary.ContainsKey(((IABOperator)node).ClassName))
                 {
                     Debug.LogError(((IABOperator)node).GetType().ToString() + " n'est pas dans la le dictionnaire des opérateurs. Vérifier l'orthographe Dans le fichier ABOperatorFactory");
-                } else
-                {
-                    type = operatorDictionary[((IABOperator)node).GetType().ToString()];
                 }
-                syntTreeContent.AppendLine(idParentnode + ",operator{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
-                idNodeSyntTree++;
-                idNodeInputPin = 0;
-                foreach (ABNode input in ((IABOperator)node).Inputs)
+                else
                 {
-                    /**Recursive function**/
-                    Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
-                   idNodeInputPin++;
+                    type = operatorDictionary[((IABOperator)node).ClassName];
+
+                    //TODO : REFACTO avec une interface IABMAcroOperator
+                    if (node.GetType().ToString().Contains("Macro"))
+                    {
+                        type = operatorDictionary[((IABOperator)node).ClassName];
+                        syntTreeContent.AppendLine(idParentnode + ",macro{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
+                    }
+                    else
+                    {
+                        syntTreeContent.AppendLine(idParentnode + ",operator{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
+                    }
+                    idNodeSyntTree++;
+                    idNodeInputPin = 0;
+                    foreach (ABNode input in ((IABOperator)node).Inputs)
+                    {
+                        /**Recursive function**/
+                        Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
+                        idNodeInputPin++;
+                    }
                 }
-            }
+            }            
             else if (node is IABParam)
             {
                 string value = GetParamValue(node);
@@ -514,13 +540,13 @@ public class MCEditorManager : MonoBehaviour {
                 }
 
                 if (((IABParam)node).Identifier != "const")
-                {                    
+                {
                     syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + type + ":" + ((IABParam)node).Identifier + "}" + "," + idNodeInput + "->" + idNodeInputPin);
                 }
                 else
                 {
-                    
-                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "}" + "," + idNodeInput + "->" + idNodeInputPin);                    
+
+                    syntTreeContent.AppendLine(idNodeSyntTree + ",param{" + ((IABParam)node).Identifier + " " + type + "=" + value + "}" + "," + idNodeInput + "->" + idNodeInputPin);
                 }
                 idNodeSyntTree++;
             }
@@ -550,7 +576,8 @@ public class MCEditorManager : MonoBehaviour {
         csvcontent.AppendLine("Operators,Position");
         foreach (ProxyABOperator ope in proxyOperators)
         {
-            string type = operatorDictionary[((IABOperator)ope.AbOperator).GetType().ToString()];
+            string type = "";
+            type = operatorDictionary[((IABOperator)ope).ClassName];        
 
             csvcontent.AppendLine(type + ", " + ope.transform.position.x.ToString() + ", "
                                                             + ope.transform.position.y.ToString() + ", "

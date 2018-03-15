@@ -40,6 +40,7 @@ public class DEBUG_mineraisStock : MonoBehaviour {
         //    {
         //        ressource.transform.GetChild(0).gameObject.SetActive(false);
         //    }
+
         //}
     }  
 }

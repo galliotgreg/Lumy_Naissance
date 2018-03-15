@@ -32,7 +32,13 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 		operatorName.text = getNodeName( node );
 	}
 
-	public void SetProxyName(string name)
+    public void SetMacroNodeName(ABNode node)
+    {
+        UnityEngine.UI.Text operatorName = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
+        operatorName.text = ((IABOperator)(node)).ClassName;
+    }
+
+    public void SetProxyName(string name)
 	{
 		UnityEngine.UI.Text text = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
 		text.text = name;
@@ -48,7 +54,15 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 			return ((ProxyABAction)this).AbState.Name;
 		}
 		else if (this is ProxyABOperator) {
-			return getNodeName( (ABNode)((ProxyABOperator)this).AbOperator );
+            if (((IABOperator)((ProxyABOperator)this).AbOperator).GetType().ToString().Contains("Macro"))
+            {
+                //TODO : use View Name
+                return "Macro";
+            }
+            else
+            {
+                return getNodeName((ABNode)((ProxyABOperator)this).AbOperator);
+            }                 			
 		}
 		else if (this is ProxyABParam) {
 			return ProxyABParam.GetViewValue( ((ProxyABParam)this).AbParam );
