@@ -124,7 +124,9 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text item;
     [SerializeField]
-    private GameObject unitGo;
+    private GameObject unitGoJ1;
+    [SerializeField]
+    private GameObject unitGoJ2;
 
     Dictionary<string, int> castsJ1;
     Dictionary<string, int> castsJ2; 
@@ -133,6 +135,7 @@ public class InGameUIController : MonoBehaviour
     /// Variables for CastUIDisplay
     /// </summary>
     private List<GameObject> castUiList = new List<GameObject>();
+    private List<GameObject> castUiListJ2 = new List<GameObject>();
     private Dictionary<string, int> popJ1 = new Dictionary<string, int>();
     private Dictionary<string, int> popJ2 = new Dictionary<string, int>();
 
@@ -166,6 +169,7 @@ public class InGameUIController : MonoBehaviour
         if(!isNotNull())
             return;
         popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+        popJ2 = new Dictionary<string, int>(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
     }
 
     /// <summary>
@@ -322,8 +326,8 @@ public class InGameUIController : MonoBehaviour
         J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
 
         UnitStats();
-        getAllUnit(PlayerAuthority.Player1); 
-        
+        getAllUnit(PlayerAuthority.Player1);
+        getAllUnit(PlayerAuthority.Player2);
     }
 
     /// <summary>
@@ -590,40 +594,21 @@ public class InGameUIController : MonoBehaviour
     }
 
     //TODO REMOVE once implemented in UI 
-    private void test ()
-    {
-        Dictionary<string, int> units =  getAllUnit(PlayerAuthority.Player1);
-        int nbLignes = units.Count;
-        foreach (KeyValuePair<string, int> unit in units)
-        {
-            string casteName = unit.Key;
-            int castePop = unit.Value; 
-        }
-    }
 
-    private Dictionary<string,int> getAllUnit(PlayerAuthority player)
-    {
-        if(PlayerAuthority.Player1 == player)
-        {
-            if (!CheckDicoEquality(popJ1, GameObject.Find("p1_hive").GetComponent<HomeScript>().Population)){
+    private Dictionary<string, int> getAllUnit(PlayerAuthority player) {
+        if (PlayerAuthority.Player1 == player) {
+            if (!CheckDicoEquality(popJ1, GameObject.Find("p1_hive").GetComponent<HomeScript>().Population)) {
                 DisplayUnits(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
                 popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
             }
 
-            //if (!popJ1.Equals(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population)) {
-            //    DisplayUnits(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
-            //    popJ1 = GameObject.Find("p1_hive").GetComponent<HomeScript>().Population;
-            //}
         }
-        //else if(PlayerAuthority.Player2 == player)
-        //{
-        //    if (!popJ2.Equals(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population)) {
-        //        DisplayUnits(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
-        //        popJ2 = GameObject.Find("p2_hive").GetComponent<HomeScript>().Population;
-        //    }
-        //}
-
-
+        if (PlayerAuthority.Player2 == player) {
+            if (!CheckDicoEquality(popJ2, GameObject.Find("p2_hive").GetComponent<HomeScript>().Population)) {
+                DisplayUnitsJ2(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
+                popJ2 = new Dictionary<string, int>(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
+            }
+        }
         return null; 
     }
 
@@ -663,34 +648,52 @@ public class InGameUIController : MonoBehaviour
         {
             if (unit.Value != 0)
             {
-                GameObject go = Instantiate(unitGo);
+                GameObject go = Instantiate(unitGoJ1);
                 castUiList.Add(go);
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
-                go.transform.SetParent(unitGo.transform.parent.gameObject.transform);
+                go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
             }
         }
     }
 
-    public void unitCost()
-    {
+    
+    private void DisplayUnitsJ2(Dictionary<string, int> units) {
+        //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
+        //Clean list if element in it
+        foreach (GameObject go in castUiListJ2) {
+            
+            Destroy(go);
+        }
+        castUiListJ2.Clear();
+        //Create UI cast and add them to the list 
+        foreach (KeyValuePair<string, int> unit in units) {
+            if (unit.Value != 0) {
+                GameObject go = Instantiate(unitGoJ2);
+                castUiListJ2.Add(go);
+                go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
+                go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
+                go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
+            }
+        }
+    }
+
+    public void unitCost() {
         AgentScript self = getUnitSelf();
-        if(self == null)
-        {
+        if (self == null) {
             //Set values to "-" like for stats
-            return; 
+            return;
         }
 
         Dictionary<string, int> costs = self.ProdCost;
-        foreach (KeyValuePair<string, int> cost in costs)
-        {
+        foreach (KeyValuePair<string, int> cost in costs) {
             //Set color and count like stats for the lumy 
             string color = cost.Key;
             int count = cost.Value;
-            Debug.Log("COLOR : " + color + " " + count); 
         }
         //Enjoy this incredible code ;) 
 
     }
+
 }
 
