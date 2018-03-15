@@ -508,6 +508,9 @@ public class InGameUIController : MonoBehaviour
             visionText.text = "-";
             pickupRangeText.text = "-";
             strikeRangeText.text = "-";
+            item.text = "-";
+            LayTimeText.text = "-";
+            
             return; 
         }
 
@@ -525,9 +528,7 @@ public class InGameUIController : MonoBehaviour
         string stamina = self.Stamina.ToString();
         string cast = self.Cast;
         
-
-
-        vitalityText.text = vitality;
+        vitalityText.text = vitality + " / " + self.VitalityMax.ToString();
         strenghtText.text = strength;
         staminaText.text = stamina.ToString();
         moveSpeedText.text = moveSpeed;
@@ -535,6 +536,11 @@ public class InGameUIController : MonoBehaviour
         visionText.text = visionRange;
         pickupRangeText.text = pickRange;
         strikeRangeText.text = atkRange;
+        item.text = nbItem + " / " + nbItemMax;
+        LayTimeText.text = layTimeCost;
+        
+        
+
     }
 
     private void getCurAction()
