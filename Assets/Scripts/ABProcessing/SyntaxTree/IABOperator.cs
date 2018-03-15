@@ -6,6 +6,7 @@ public interface IABOperator {
     ABNode[] Inputs { get; set; }
 
     string ClassName { get; set; }
+    string ViewName { get; set; }
 
     System.Type getOutcomeType ();
 

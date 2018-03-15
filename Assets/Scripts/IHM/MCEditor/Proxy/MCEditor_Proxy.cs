@@ -35,7 +35,8 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
     public void SetMacroNodeName(ABNode node)
     {
         UnityEngine.UI.Text operatorName = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
-        operatorName.text = ((IABOperator)(node)).ClassName;
+        string temp = ((IABOperator)(node)).ViewName;        
+        operatorName.text = temp;
     }
 
     public void SetProxyName(string name)
@@ -54,10 +55,9 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 			return ((ProxyABAction)this).AbState.Name;
 		}
 		else if (this is ProxyABOperator) {
-            if (((IABOperator)((ProxyABOperator)this).AbOperator).GetType().ToString().Contains("Macro"))
-            {
-                //TODO : use View Name
-                return "Macro";
+            if (((ProxyABOperator)this).isMacroComposant)
+            {               
+                return ((ProxyABOperator)this).ViewName;
             }
             else
             {
@@ -71,18 +71,18 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 	}
 
 	public static string getNodeName( ABNode node ){
-		string opeName = node.ToString();
-		char splitter = '_';
-		string[] newName = opeName.Split(splitter);
-		string newOpeName = "";
+        string opeName = node.ToString();
+        char splitter = '_';
+        string[] newName = opeName.Split(splitter);
+        string newOpeName = "";
 
-		for (int i = 1; i < newName.Length - 1; i++)
-		{
-			newOpeName += newName[i];
-		}
+        for (int i = 1; i < newName.Length - 1; i++)
+        {
+            newOpeName += newName[i];
+        }
 
-		return newOpeName;
-	}
+        return newOpeName;
+    }
 	#endregion
 
 	public static MCEditor_Proxy clicked = null;	// TEST for delete : selected proxy
