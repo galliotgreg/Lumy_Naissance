@@ -17,6 +17,10 @@ public class ImportController : MonoBehaviour {
 
     void ImportSpecie()
     {
+        // TODO Remove EdiorUtility
+        /* Application.dataPath + "/" +
+        System.IO.StreamReader reader = new System.IO.StreamReader(path);
+        return reader.ReadToEnd();*/
         string path = EditorUtility.OpenFilePanel("Name", filePath, "");
         if (path != null){
             Debug.Log(path);
