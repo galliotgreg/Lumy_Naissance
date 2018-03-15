@@ -8,7 +8,6 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class CameraRay : MonoBehaviour {
 
-    [SerializeField]
     private Camera camera;
     [SerializeField]
     private AgentScript self;
@@ -63,15 +62,17 @@ public class CameraRay : MonoBehaviour {
                 self = parent.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
                 self.gameObject.transform.GetChild(2).gameObject.SetActive(true);
                 action = parent.GetComponent<AgentBehavior>().CurActionType.ToString();
-                MC_Debugger_Manager.instance.activateDebugger(parent.GetComponent<AgentEntity>()); 
+                MC_Debugger_Manager.instance.activateDebugger(parent.GetComponent<AgentEntity>());
+                InGameUIController.instance.unitCost(); 
             }
             else
             {   
                 if(self != null) {
                     self.gameObject.transform.GetChild(2).gameObject.SetActive(false);
                 }
-
                 MC_Debugger_Manager.instance.deactivateDebugger();
+                
+             
                 self = null;
                 action = "None";
             }

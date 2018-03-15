@@ -522,18 +522,8 @@ public class InGameUIController : MonoBehaviour
 
     private void UnitStats()
     {
-        //TODO CREATE VISUALS 
-        Camera camera = NavigationManager.instance.GetCurrentCamera(); 
-        if (camera == null) {
-            Debug.LogError("ERROR: CAMERA NOT SET"); 
-            return; 
-        }
-        CameraRay cameraRay = camera.GetComponent<CameraRay>();
-        if (cameraRay == null) {
-            Debug.LogError("ERROR : SCRIPT NOT SET ON CAMERA");
-            return;
-        }
-        AgentScript self = cameraRay.Self;
+        AgentScript self = getUnitSelf(); 
+
         if(self == null)
         {
             vitalityText.text = "-";
@@ -581,13 +571,27 @@ public class InGameUIController : MonoBehaviour
 
     }
 
+   
+    private AgentScript getUnitSelf()
+    {
+        Camera camera = NavigationManager.instance.GetCurrentCamera();
+        if (camera != null)
+        {
+            CameraRay cameraRay = camera.GetComponent<CameraRay>();
+            if (cameraRay != null)
+            {
+                return cameraRay.Self;
+            }
+        }
+        return null; 
+    }
+
     private void getCurAction()
     {
-        //Warning Real State from the Action.
-        //Maybe make a traduction for more visibility.
         Camera camera = NavigationManager.instance.GetCurrentCamera();
         string action = camera.GetComponent<CameraRay>().Action;
     }
+
     //TODO REMOVE once implemented in UI 
 
     private Dictionary<string, int> getAllUnit(PlayerAuthority player) {
@@ -629,18 +633,22 @@ public class InGameUIController : MonoBehaviour
 
 
 
-    private void DisplayUnits(Dictionary<string,int> units) {
+    private void DisplayUnits(Dictionary<string, int> units)
+    {
         //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
         //Clean list if element in it
-        foreach(GameObject go in castUiList) {
-            castUiList.Remove(go);
+        foreach (GameObject go in castUiList)
+        {
             Destroy(go);
         }
+        castUiList.Clear(); 
         //Create UI cast and add them to the list 
-        foreach(KeyValuePair<string, int> unit in units) {
-            if (unit.Value!=0) {
-                GameObject go = Instantiate(unitGoJ1);
-                castUiList.Add(go); 
+        foreach (KeyValuePair<string, int> unit in units)
+        {
+            if (unit.Value != 0)
+            {
+                GameObject go = Instantiate(unitGo);
+                castUiList.Add(go);
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
@@ -648,6 +656,26 @@ public class InGameUIController : MonoBehaviour
         }
     }
 
+    public void unitCost()
+    {
+        AgentScript self = getUnitSelf();
+        if(self == null)
+        {
+            //Set values to "-" like for stats
+            return; 
+        }
+
+        Dictionary<string, int> costs = self.ProdCost;
+        foreach (KeyValuePair<string, int> cost in costs)
+        {
+            //Set color and count like stats for the lumy 
+            string color = cost.Key;
+            int count = cost.Value;
+            Debug.Log("COLOR : " + color + " " + count); 
+        }
+        //Enjoy this incredible code ;) 
+
+    }
     private void DisplayUnitsJ2(Dictionary<string, int> units) {
         //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
         //Clean list if element in it
