@@ -5,7 +5,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABScalar Evaluate(ABContext context)
+	protected override ABScalar Evaluate(ABContext context)
     {
         //Get ref
         ABRef reference = null;

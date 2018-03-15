@@ -117,8 +117,14 @@ public class GotoAction : GameAction {
                     DrawLine(position, dest, Color.blue, 0.2f);
                 }
             }
-           
-        
+
+            if (OptionManager.instance.DirectionLumyJ2 != null) {
+                if (OptionManager.instance.DirectionLumyJ2.isOn) {
+                    DrawLine(position, dest, Color.blue, 0.2f);
+                }
+            }
+
+
             if (path.status == NavMeshPathStatus.PathPartial)
             {
                 agentAttr.TrgPos = agentAttr.CurPos;

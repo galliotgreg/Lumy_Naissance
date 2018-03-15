@@ -5,7 +5,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABVec Evaluate(ABContext context)
+	protected override ABVec Evaluate(ABContext context)
     {
         //Get s1
         ABScalar s1 = null;

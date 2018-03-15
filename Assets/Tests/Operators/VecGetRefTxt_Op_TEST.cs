@@ -35,7 +35,7 @@ public class VecGetRefTxt_Op_TEST : MonoBehaviour {
         ope.Inputs[1] = text;
 
         //Test
-        ABVec testValue = (ABVec)ope.Evaluate(ctx);
+        ABVec testValue = (ABVec)ope.EvaluateOperator(ctx);
         if(testValue == null)
         {
             Debug.Log("OK pas de ABRef matchant avec 'test1'");            

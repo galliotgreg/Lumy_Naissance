@@ -7,7 +7,7 @@ public class AB_Scal_Dist_Vec_Vec_Operator : ABOperator<ABScalar>
         this.Inputs = new ABNode[2];
     }
 
-    public override ABScalar Evaluate(ABContext context)
+	protected override ABScalar Evaluate(ABContext context)
     {
         //Get v1
         ABVec v1 = null;

@@ -51,6 +51,7 @@ public class ABOperatorFactory {
         TypeStringToString.Add("AB_Bool_LessThan_Scal_Scal_Operator", "B<SS");
         TypeStringToString.Add("AB_Scal_MinId_ScalTab_Operator", "SminIdS[]");
         TypeStringToString.Add("AB_Scal_MaxId_ScalTab_Operator", "SmaxIdS[]");
+		TypeStringToString.Add("AB_Scal_MaxVal_ScalTab_Operator", "SmaxValS[]");
         TypeStringToString.Add("AB_Bool_Not_Bool_Operator", "B!B");
         TypeStringToString.Add("AB_Bool_Or_Bool_Bool_Operator", "B||BB");
         TypeStringToString.Add("AB_Vec_RandCircle_Vec_Scal_Operator", "VrandCircleVS");
@@ -470,6 +471,9 @@ public class ABOperatorFactory {
             case OperatorType.Scal_MaxId_ScalTab:
                 abOperator = new AB_Scal_MaxId_ScalTab_Operator();
                 break;
+			case OperatorType.Scal_MaxVal_ScalTab:
+				abOperator = new AB_Scal_MaxVal_ScalTab_Operator();
+				break;
             case OperatorType.Bool_Not_Bool:
                 abOperator = new AB_Bool_Not_Bool_Operator();
                 break;

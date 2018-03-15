@@ -5,8 +5,9 @@
         throw new System.NotImplementedException();
     }
 
-    public override ABVec Evaluate(ABContext context)
+	protected override ABVec Evaluate(ABContext context)
     {
+		// TODO NOTIMPLEMENTED
         throw new System.NotImplementedException();
     }
 }

@@ -32,7 +32,7 @@ class RefTabWhereEqualsRefTabTxtBool_Op_TEST : MonoBehaviour{
         ope.Inputs[2] = arg3;
 
         //Test
-        ABRef[] testValue = ope.Evaluate(ctx).Values;
+        ABRef[] testValue = ope.EvaluateOperator(ctx).Values;
         ABRef[] expected = null;
 
         for(int i = 0; i < tabRef1.Value.Values.Length; i++) {

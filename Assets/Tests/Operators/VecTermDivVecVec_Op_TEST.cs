@@ -35,7 +35,7 @@ public class VecTermDivVecVec_Op_TEST : MonoBehaviour
 
         //Test
         ABVec testValue = new ABVec();
-        testValue = ope.Evaluate(ctx);
+        testValue = ope.EvaluateOperator(ctx);
         ABVec expected = new ABVec();
         expected.X = r1.X / r2.X;
         expected.Y = r1.Y / r2.Y;

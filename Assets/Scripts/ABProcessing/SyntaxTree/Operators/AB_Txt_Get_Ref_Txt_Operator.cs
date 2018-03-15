@@ -5,7 +5,7 @@
         this.Inputs = new ABNode[2];
     }
 
-    public override ABText Evaluate(ABContext context)
+	protected override ABText Evaluate(ABContext context)
     {
         //Get ref
         ABRef reference = null;

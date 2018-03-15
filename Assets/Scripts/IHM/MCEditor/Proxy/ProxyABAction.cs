@@ -126,6 +126,9 @@ public Pin Income {
 public static ProxyABAction instantiate( ABState state ){
 	return instantiate( state, calculateActionPosition( MCEditorManager.instance.MCparent ), MCEditorManager.instance.MCparent );
 }
+public static ProxyABAction instantiate( ABState state, Transform parent ){
+	return instantiate( state, calculateActionPosition( parent ), parent );
+}
 public static ProxyABAction instantiate( ABState state, Vector3 position, Transform parent){
 	ProxyABAction result = Instantiate<ProxyABAction>( MCEditor_Proxy_Factory.instance.ActionPrefab, parent );
 	result.IsLoaded = true;

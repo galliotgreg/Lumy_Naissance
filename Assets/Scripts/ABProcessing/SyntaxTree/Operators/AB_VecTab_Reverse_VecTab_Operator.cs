@@ -9,7 +9,7 @@ public class AB_VecTab_Reverse_VecTab_Operator : ABOperator<ABTable<ABVec>>
         this.Inputs = new ABNode[1];
     }
 
-    public override ABTable<ABVec> Evaluate(ABContext context)
+	protected override ABTable<ABVec> Evaluate(ABContext context)
     {
         ABTable<ABVec> tab = null;
         ABNode input1 = Inputs[0];

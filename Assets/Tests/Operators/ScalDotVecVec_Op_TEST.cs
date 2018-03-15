@@ -33,7 +33,7 @@ public class ScalDotVecVec_Op_TEST : MonoBehaviour {
 
         //Test
         ABScalar testValue = new ABScalar();
-        testValue = ope.Evaluate(ctx);
+        testValue = ope.EvaluateOperator(ctx);
         ABScalar expected = new ABScalar();
         expected.Value = (v1.X * v2.X) + (v1.Y * v2.Y);
         if (Math.Abs(testValue.Value - expected.Value) < 0.0003) {

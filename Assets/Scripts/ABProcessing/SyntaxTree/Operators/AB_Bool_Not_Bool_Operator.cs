@@ -5,7 +5,7 @@
         this.Inputs = new ABNode[1];
     }
 
-    public override ABBool Evaluate(ABContext context)
+	protected override ABBool Evaluate(ABContext context)
     {        
         //Get s1
         ABBool s1 = null;

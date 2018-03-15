@@ -45,7 +45,7 @@ class ColorGetColorTabScal_Op_TEST : MonoBehaviour{
 
         //Test
         ABColor testValue = new ABColor();
-        testValue = ope.Evaluate(ctx);
+        testValue = ope.EvaluateOperator(ctx);
         ABColor expectedColor = new ABColor();
         expectedColor.Value = ABColor.Color.Red;
         //float expectedRed = redTab[(int)r2.Value];

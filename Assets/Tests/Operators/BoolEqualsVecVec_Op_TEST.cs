@@ -35,7 +35,7 @@ public class BoolEqualsVecVec_Op_TEST : MonoBehaviour
         ope.Inputs[1] = arg2;
 
         //Test
-        ABBool testValue = ope.Evaluate(ctx);
+        ABBool testValue = ope.EvaluateOperator(ctx);
         bool expected;
         if (r1.X == r2.X && r1.Y == r2.Y)
         {
