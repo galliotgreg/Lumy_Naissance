@@ -30,6 +30,7 @@ public class MC_Inventory_Operators : MC_Inventory {
 		loadReturnTypeDropdown ();
 
 		returnTypeDropdown.onValueChanged.AddListener (changeReturnTypeDropdown);
+		changeReturnTypeDropdown ( returnTypeDropdown.value );
 	}
 
 	List<System.Object> listToObject<T>( List<T> list ){
@@ -47,7 +48,6 @@ public class MC_Inventory_Operators : MC_Inventory {
 		returnTypeDropdown.ClearOptions ();
 
 		List<string> types = new List<string> ();
-		types.Add ( "All" );
 		foreach( ParamType type in System.Enum.GetValues( typeof( ParamType ) ) ){
 			if (type != ParamType.None) {
 				types.Add (type.ToString ());
@@ -61,12 +61,8 @@ public class MC_Inventory_Operators : MC_Inventory {
 	}
 
 	public List<IABOperator> filterReturnType( int index, List<IABOperator> operators ){
-		if ( index == 0 ) {
-			return operators;
-		}
-
 		// other types
-		System.Type selectedType = ABModel.ParamTypeToType( (ParamType) System.Enum.GetValues( typeof( ParamType ) ).GetValue( index - 1 ) );
+		System.Type selectedType = ABModel.ParamTypeToType( (ParamType) System.Enum.GetValues( typeof( ParamType ) ).GetValue( index ) );
 		List<IABOperator> result = new List<IABOperator>();
 		foreach ( IABOperator oper in operators ) {
 			if( oper.getOutcomeType() == selectedType ){
