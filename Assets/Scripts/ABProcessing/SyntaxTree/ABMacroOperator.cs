@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class ABMacroOperator<T> : ABOperator<T>
     private string className;
     private string viewName;
     private string symbolName;
+
+    private ABOperator<T> wrappedTree;
 
     public override string ClassName
     {
@@ -47,9 +50,28 @@ public class ABMacroOperator<T> : ABOperator<T>
         }
     }
 
+    public ABOperator<T> WrappedTree
+    {
+        get
+        {
+            return wrappedTree;
+        }
+
+        set
+        {
+            wrappedTree = value;
+        }
+    }
+
     protected override T Evaluate(ABContext context)
     {
-        throw new System.NotImplementedException();
+        ABContext subContext = ComputeSubContext(context);
+        return wrappedTree.EvaluateOperator(subContext);
+    }
+
+    private ABContext ComputeSubContext(ABContext context)
+    {
+        throw new NotImplementedException();
     }
 
     public void AllocInputs(int nbInputs)

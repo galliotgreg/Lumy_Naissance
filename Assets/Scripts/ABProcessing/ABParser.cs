@@ -15,25 +15,8 @@ public class ABParser
     private IABGateOperator curGateOperator;
     private List<ABNode> curNodes;
 
-    private List<ABNode> macros;
-
-    public void LoadMacros()
-    {
-        //TODO Remove this debug stub (Implement Factory)
-        macros = new List<ABNode>();
-        ABMacroOperator<ABRef> macro = new ABMacroOperator<ABRef>();
-        macro.AllocInputs(1);
-        macro.ClassName = "AB_Ref_Test_RefTab_Operator";
-        macro.ViewName = "Ref_Test_RefTab";
-        macro.SymbolName = "RtestR[]";
-        macros.Add(macro);
-        //TODO end stub
-    }
-
     private void InitialiseParser()
     {
-        LoadMacros();
-
         isInStatesBlock = false;
         isInTransitionBlock = false;
         isInSyntaxTreeBlock = false;
@@ -74,6 +57,12 @@ public class ABParser
         return model;
     }
 
+    public ABNode ParseMacroTree(List<string> lines)
+    {
+        //TODO Implement this
+        return null;
+    }
+
     private void ParseStateLine(String[] tokens)
     {
         string name = tokens[1];
@@ -110,8 +99,7 @@ public class ABParser
         {
             curGateOperator = new AB_BoolGate_Operator();
             model.SetCondition(transId, (AB_BoolGate_Operator) curGateOperator);
-        } else
-        {
+        } else {
             char[] separators = { '-', '>' };
             String stateName = tokens[1].Split(separators)[0];
             String pinIdStr = tokens[1].Split(separators)[2];
@@ -138,7 +126,7 @@ public class ABParser
                 break;
             case "macro":
                 //TODO Remove this debug stub
-                node = macros[0];
+                node = (ABNode)ParseMacro(typeParams);
                 //TODO end stub
                 break;
             default:
@@ -168,7 +156,7 @@ public class ABParser
             node.Output = (ABNode) curGateOperator;
         }
     }
-    
+
     public IABParam ParseParam(string typeParams)
     {
         char[] separators = { ' ', '=', ':' };
@@ -183,6 +171,11 @@ public class ABParser
         }
 
         return null;
+    }
+
+    public IABOperator ParseMacro(string typeParams)
+    {
+        return ABManager.instance.Macros[typeParams];
     }
 
     public IABOperator ParseOperator(string typeParams)

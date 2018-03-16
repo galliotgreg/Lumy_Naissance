@@ -35,6 +35,8 @@ public class ABManager : MonoBehaviour
     private float cooldown = -1f;
     [SerializeField]
     private string inputsFolderPath = "Inputs/";
+    [SerializeField]
+    private string macrosFolderPath = "Inputs/Macro/";
     private int lastId = 0;
 
     private ABProcessor processor = new ABProcessor();
@@ -55,7 +57,12 @@ public class ABManager : MonoBehaviour
     /// </summary>
     bool executeFrame = false;
 
-	Dictionary<AgentEntity, Tracing> currentTracings;
+    /// <summary>
+    /// Register the macro loader on start
+    /// </summary>
+    private Dictionary<string, IABOperator> macros;
+
+    Dictionary<AgentEntity, Tracing> currentTracings;
 
     public string InputsFolderPath
     {
@@ -70,10 +77,37 @@ public class ABManager : MonoBehaviour
         }
     }
 
+    public Dictionary<string, IABOperator> Macros
+    {
+        get
+        {
+            return macros;
+        }
+
+        set
+        {
+            macros = value;
+        }
+    }
+
+    public string MacrosFolderPath
+    {
+        get
+        {
+            return Application.dataPath + "/" + macrosFolderPath;
+        }
+
+        set
+        {
+            macrosFolderPath = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
 		this.currentTracings = new Dictionary<AgentEntity, Tracing> ();
+        LoadMacros();
     }
 
     // Update is called once per frame
@@ -92,6 +126,45 @@ public class ABManager : MonoBehaviour
             cooldown -= Time.deltaTime;
         }
 
+    }
+
+    public void LoadMacros()
+    {
+        macros = new Dictionary<string, IABOperator>();
+
+        DirectoryInfo info = new DirectoryInfo(MacrosFolderPath);
+        FileInfo[] filesInfo = info.GetFiles();
+        foreach (FileInfo file in filesInfo)
+        {
+            //Skip meta
+            if (file.Extension != AppContextManager.instance.CSV_EXT)
+            {
+                continue;
+            }
+
+            List<string> lines = readFile(file.FullName);
+
+            //Parse operator prototype
+            string[] tokens = lines[1].Split(',');
+            string returnType = tokens[0];
+            string name = tokens[1];
+            string[] argTypes = new string[tokens.Length - 2];
+            for (int i = 0; i < argTypes.Length; i++)
+            {
+                argTypes[i] = tokens[i + 2];
+            }
+
+            //Parse wrapped tree
+            ABParser parser = new ABParser();
+            lines.RemoveRange(0, 2);
+            ABNode wrappedTree = parser.ParseMacroTree(lines);
+            IABOperator macro = 
+                ABMacroOperatorFactory.CreateMacro(
+                    wrappedTree,
+                    returnType, name, argTypes);
+            string key = file.Name.Replace(AppContextManager.instance.CSV_EXT, "");
+            macros.Add(key, macro);
+        }
     }
 
     private void Frame()
@@ -257,6 +330,13 @@ public class ABManager : MonoBehaviour
 
     public ABModel LoadABModelFromFile(string path)
     {
+        List<string> lines = readFile(path);
+
+        return parser.Parse(lines);
+    }
+
+    private static List<string> readFile(string path)
+    {
         StreamReader reader = new StreamReader(path);
         List<string> lines = new List<string>();
         while (reader.Peek() >= 0)
@@ -264,7 +344,7 @@ public class ABManager : MonoBehaviour
             lines.Add(reader.ReadLine());
         }
 
-        return parser.Parse(lines);
+        return lines;
     }
 
     private ABInstance CreateABInstanceFromModel(ABModel model)
