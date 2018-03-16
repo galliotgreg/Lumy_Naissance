@@ -60,6 +60,13 @@ public class CameraRay : MonoBehaviour {
                 }
                 GameObject parent = hit.transform.parent.parent.gameObject;           
                 self = parent.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
+                Renderer rend = self.gameObject.transform.GetChild(2).gameObject.transform.GetChild(0).GetComponent<Renderer>();
+                if(self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
+                    rend.material.color = Color.blue;
+                }
+                if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
+                    rend.material.color = Color.red;
+                }
                 self.gameObject.transform.GetChild(2).gameObject.SetActive(true);
                 action = parent.GetComponent<AgentBehavior>().CurActionType.ToString();
                 MC_Debugger_Manager.instance.activateDebugger(parent.GetComponent<AgentEntity>());

@@ -127,6 +127,21 @@ public class InGameUIController : MonoBehaviour
     private GameObject unitGoJ1;
     [SerializeField]
     private GameObject unitGoJ2;
+    [SerializeField]
+    private Text unitCostRedText;
+    [SerializeField]
+    private Text unitCostGreenText;
+    [SerializeField]
+    private Text unitCostBlueText;
+    [SerializeField]
+    private Text alliesInSightText;
+    [SerializeField]
+    private Text ennemiesInSightText;
+    [SerializeField]
+    private Text ressourcesInSightText;
+    [SerializeField]
+    private Text tracesInSightText;
+
 
     Dictionary<string, int> castsJ1;
     Dictionary<string, int> castsJ2; 
@@ -326,6 +341,8 @@ public class InGameUIController : MonoBehaviour
         J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
 
         UnitStats();
+        DisplayInSight();
+        unitCost();
         getAllUnit(PlayerAuthority.Player1);
         getAllUnit(PlayerAuthority.Player2);
     }
@@ -525,8 +542,21 @@ public class InGameUIController : MonoBehaviour
     {
         AgentScript self = getUnitSelf(); 
 
+
         if(self == null)
         {
+            vitalityText.color = Color.white;
+            strenghtText.color = Color.white;
+            staminaText.color = Color.white;
+            moveSpeedText.color = Color.white;
+            actionSpeedText.color = Color.white;
+            visionText.color = Color.white;
+            pickupRangeText.color = Color.white;
+            strikeRangeText.color = Color.white;
+            item.color = Color.white;
+            LayTimeText.color = Color.white;
+            castText.color = Color.white;
+
             vitalityText.text = "-";
             strenghtText.text = "-";
             staminaText.text = "-";
@@ -556,6 +586,32 @@ public class InGameUIController : MonoBehaviour
         string stamina = self.Stamina.ToString();
         string cast = self.Cast;
         
+        if(self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
+            vitalityText.color = Color.blue;
+            strenghtText.color = Color.blue;
+            staminaText.color = Color.blue;
+            moveSpeedText.color = Color.blue;
+            actionSpeedText.color = Color.blue;
+            visionText.color = Color.blue;
+            pickupRangeText.color = Color.blue;
+            strikeRangeText.color = Color.blue;
+            item.color = Color.blue;
+            LayTimeText.color = Color.blue;
+            castText.color = Color.blue;
+        }
+        if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
+            vitalityText.color = Color.red;
+            strenghtText.color = Color.red;
+            staminaText.color = Color.red;
+            moveSpeedText.color = Color.red;
+            actionSpeedText.color = Color.red;
+            visionText.color = Color.red;
+            pickupRangeText.color = Color.red;
+            strikeRangeText.color = Color.red;
+            item.color = Color.red;
+            LayTimeText.color = Color.red;
+            castText.color = Color.red;
+        }
         vitalityText.text = vitality + " / " + self.VitalityMax.ToString();
         strenghtText.text = strength;
         staminaText.text = stamina.ToString();
@@ -650,6 +706,8 @@ public class InGameUIController : MonoBehaviour
             {
                 GameObject go = Instantiate(unitGoJ1);
                 castUiList.Add(go);
+                go.transform.GetChild(0).GetComponent<Text>().color = Color.blue;
+                go.transform.GetChild(1).GetComponent<Text>().color = Color.blue;
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
@@ -671,6 +729,8 @@ public class InGameUIController : MonoBehaviour
             if (unit.Value != 0) {
                 GameObject go = Instantiate(unitGoJ2);
                 castUiListJ2.Add(go);
+                go.transform.GetChild(0).GetComponent<Text>().color = Color.red;
+                go.transform.GetChild(1).GetComponent<Text>().color = Color.red;
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
@@ -678,10 +738,52 @@ public class InGameUIController : MonoBehaviour
         }
     }
 
+    private void DisplayInSight() {
+        AgentScript self = getUnitSelf();
+
+        if(self == null) {
+            alliesInSightText.color = Color.white;
+            ressourcesInSightText.color = Color.white;
+            ennemiesInSightText.color = Color.white;
+            tracesInSightText.color = Color.white;
+            alliesInSightText.text = "-";
+            ressourcesInSightText.text = "-";
+            ennemiesInSightText.text = "-";
+            tracesInSightText.text = "-";
+            return;
+        }
+
+        if(self.GetComponentInParent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
+            alliesInSightText.color = Color.blue;
+            ressourcesInSightText.color = Color.blue;
+            ennemiesInSightText.color = Color.blue;
+            tracesInSightText.color = Color.blue;
+        }
+        if (self.GetComponentInParent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
+            alliesInSightText.color = Color.red;
+            ressourcesInSightText.color = Color.red;
+            ennemiesInSightText.color = Color.red;
+            tracesInSightText.color = Color.red;
+        }
+
+        alliesInSightText.text = self.GetComponentInParent<AgentContext>().Allies.Length.ToString();
+        ressourcesInSightText.text = self.GetComponentInParent<AgentContext>().Resources.Length.ToString();
+        ennemiesInSightText.text = self.GetComponentInParent<AgentContext>().Enemies.Length.ToString();
+        tracesInSightText.text = self.GetComponentInParent<AgentContext>().Traces.Length.ToString();
+
+
+    }
+
     public void unitCost() {
         AgentScript self = getUnitSelf();
         if (self == null) {
             //Set values to "-" like for stats
+            unitCostRedText.color = Color.white;
+            unitCostGreenText.color = Color.white;
+            unitCostBlueText.color = Color.white;
+            unitCostRedText.text = "-";
+            unitCostGreenText.text = "-";
+            unitCostBlueText.text = "-";
             return;
         }
 
@@ -690,6 +792,27 @@ public class InGameUIController : MonoBehaviour
             //Set color and count like stats for the lumy 
             string color = cost.Key;
             int count = cost.Value;
+
+            if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
+                unitCostRedText.color = Color.blue;
+                unitCostGreenText.color = Color.blue;
+                unitCostBlueText.color = Color.blue;
+            }
+            if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
+                unitCostRedText.color = Color.red;
+                unitCostGreenText.color = Color.red;
+                unitCostBlueText.color = Color.red;
+            }
+
+            if (color == "Red") {
+                unitCostRedText.text = count.ToString();
+            }
+            if (color == "Green") {
+                unitCostGreenText.text = count.ToString();
+            }
+            if (color == "Blue") {
+                unitCostBlueText.text = count.ToString();
+            }
         }
         //Enjoy this incredible code ;) 
 
