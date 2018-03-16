@@ -32,7 +32,7 @@ public class ABContext {
     public ABContext Copy()
     {
         ABContext copy = new ABContext();
-        foreach (IABParam param in copy.parameters)
+        foreach (IABParam param in parameters)
         {
             copy.SetParam(param);
         }

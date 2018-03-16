@@ -113,7 +113,7 @@ public class ABMacroOperator<T> : ABOperator<T>
                 param = new ABRefParam((id++).ToString(), var);
             }
             else if (input is ABOperator<ABTable<ABBool>>
-                || input is ABParam< ABTable<ABBool>>)
+                || input is ABParam<ABTable<ABBool>>)
             {
                 ABTable<ABBool> var = OperatorHelper.Instance.getTabBoolParam(context, input);
                 param = new ABTableParam<ABBool>((id++).ToString(), var);

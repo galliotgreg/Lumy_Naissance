@@ -91,21 +91,21 @@ public class ABParser
             case "color":
                 return new AB_ColorGate_Operator();
             case "vec":
-                throw new System.NotImplementedException();
+                return new AB_VecGate_Operator();
             case "ref":
                 return new AB_RefGate_Operator();
             case "bool[]":
-                throw new System.NotImplementedException();
+                return new AB_BoolTabGate_Operator();
             case "scal[]":
-                throw new System.NotImplementedException();
+                return new AB_ScalTabGate_Operator();
             case "txt[]":
-                throw new System.NotImplementedException();
+                return new AB_TextTabGate_Operator();
             case "color[]":
-                throw new System.NotImplementedException();
+                return new AB_ColorTabGate_Operator();
             case "vec[]":
                 return new AB_VecTabGate_Operator(); ;
             case "ref[]":
-                throw new System.NotImplementedException();
+                return new AB_RefTabGate_Operator();
             default:
                 throw new System.NotImplementedException();
         }
@@ -230,6 +230,11 @@ public class ABParser
 
     public IABOperator ParseMacro(string typeParams)
     {
+        if (!ABManager.instance.Macros.ContainsKey(typeParams))
+        {
+            Debug.Log("");
+        }
+
         return ABManager.instance.Macros[typeParams];
     }
 
