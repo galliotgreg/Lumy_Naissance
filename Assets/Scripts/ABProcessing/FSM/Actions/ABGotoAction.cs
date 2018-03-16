@@ -8,7 +8,7 @@ public class ABGotoAction : ABAction
     {
         this.type = ActionType.Goto;
         this.parameters = new IABGateOperator[1];
-        this.parameters[0] = new AB_VecGate_Operator();
+        this.parameters[0] = new AB_VecTabGate_Operator();
     }
 
 	#region implemented abstract members of ABAction
