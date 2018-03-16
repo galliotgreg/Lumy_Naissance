@@ -51,6 +51,9 @@ public class MCToolManager : MonoBehaviour
     [SerializeField]
     private Button btn_Main;
 
+	[SerializeField]
+	DropArea centerZone;
+
 	#region PROPERTIES
 	ToolType CurrentTool {
 		get {
@@ -73,12 +76,14 @@ public class MCToolManager : MonoBehaviour
         //Mouse Button Press Down
         if (Input.GetMouseButtonDown(0))
         {
-			if (!inventory) {
-				RaycastHit hitInfo;
-				getTarget = ReturnClickedObject (out hitInfo);
+			RaycastHit hitInfo;
+			getTarget = ReturnClickedObject (out hitInfo);
 
+			if( centerZone.CanDrop ){
+			//if (!inventory) {
 				//Hit background
-				if (getTarget.name == "STUBS_backgroundCollider") {
+				if (getTarget == null) {
+				//if (getTarget.name == "STUBS_backgroundCollider") {
 					inventory = false;
 					//current tool activated
 					if (CurrentTool == ToolType.Selection) {

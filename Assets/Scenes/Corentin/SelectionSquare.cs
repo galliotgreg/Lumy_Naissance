@@ -6,31 +6,6 @@ using UnityEngine.EventSystems;
 
 public class SelectionSquare : MonoBehaviour
 {
-	#region SINGLETON
-    /// <summary>
-    /// The static instance of the Singleton for external access
-    /// </summary>
-    public static SelectionSquare instance = null;
-
-    /// <summary>
-    /// Enforce Singleton properties
-    /// </summary>
-    void Awake()
-    {
-        //Check if instance already exists and set it to this if not
-        if (instance == null)
-        {
-            instance = this;
-        }
-
-        //Enforce the unicity of the Singleton
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-	#endregion
-
     public GameObject[] allUnits;
 
     [SerializeField]
@@ -50,11 +25,14 @@ public class SelectionSquare : MonoBehaviour
     //The selection squares 4 corner positions
     Vector3 HG, HD, BG, BD;
 
+	void Awake(){
+		selectedUnits = new List<GameObject>();
+	}
+
     void Start()
     {
         //Desactivate the square selection image
         //selectionSquareImage.gameObject.SetActive(false);
-        selectedUnits = new List<GameObject>();
     }
 
     void Update()
