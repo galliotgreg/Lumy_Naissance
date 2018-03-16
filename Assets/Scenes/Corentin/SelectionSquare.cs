@@ -15,7 +15,7 @@ public class SelectionSquare : MonoBehaviour
     Vector3 squareEndPos;
 
     float clickTime = 0f;
-    public float clickDelay = 0.8f;
+    public float clickDelay = 0.5f;
 
     bool hasCreatedSquare;
 
@@ -32,7 +32,7 @@ public class SelectionSquare : MonoBehaviour
     void Start()
     {
         //Desactivate the square selection image
-        //selectionSquareImage.gameObject.SetActive(false);
+        selectionSquareImage.gameObject.SetActive(false);
     }
 
     void Update()
@@ -48,7 +48,7 @@ public class SelectionSquare : MonoBehaviour
         bool isHoldingDown = false;
 
         //Click the mouse button
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) ) // && !EventSystem.current.IsPointerOverGameObject()) 
         {
             clickTime = Time.time;
 
@@ -63,10 +63,10 @@ public class SelectionSquare : MonoBehaviour
             }
         }
         //Release the mouse button
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) )//&& !EventSystem.current.IsPointerOverGameObject())
         {
-            // selectionSquareImage.gameObject.SetActive(false);
-            if (Time.time - clickTime <= clickDelay && !EventSystem.current.IsPointerOverGameObject() )
+             //selectionSquareImage.gameObject.SetActive(false);
+            if (Time.time - clickTime <= clickDelay && !EventSystem.current.IsPointerOverGameObject())
             {
                 isClicking = true;
             }
@@ -82,6 +82,7 @@ public class SelectionSquare : MonoBehaviour
 
                 //Clear the list with selected unit
                 selectedUnits.Clear();
+                Debug.Log(selectedUnits);
 
                 //Select the units
                 for (int i = 0; i < allUnits.Length; i++)
@@ -365,7 +366,7 @@ public class SelectionSquare : MonoBehaviour
             //sphere4.position = BR;
 
             hasCreatedSquare = true;
-            //Debug.Log("has created square = " + hasCreatedSquare);
+            Debug.Log("has created square = " + hasCreatedSquare);
         }
     }
 }

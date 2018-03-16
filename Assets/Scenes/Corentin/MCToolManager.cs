@@ -137,6 +137,7 @@ public class MCToolManager : MonoBehaviour
         Ray ray = GameObject.Find("Camera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray.origin, ray.direction * 10, out hit))
         {
+            Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
             target = hit.collider.gameObject;
         }
         return target;
