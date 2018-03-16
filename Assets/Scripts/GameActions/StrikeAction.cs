@@ -40,10 +40,14 @@ public class StrikeAction : GameAction {
             if (this.agentEntity.Authority == PlayerAuthority.Player2)
             {
                 projectile = Instantiate(Projectile_J2, this.transform.position, Quaternion.identity);
+                projectile.transform.SetParent(GameManager.instance.transform);
             }
-            else projectile = Instantiate(Projectile_J1, this.transform.position, Quaternion.identity);
-
-            projectile.GetComponent<Rigidbody>().velocity = this.transform.forward * 5.0f;
+            else
+            {
+                projectile = Instantiate(Projectile_J1, this.transform.position, Quaternion.identity);
+                projectile.transform.SetParent(GameManager.instance.transform);
+            }
+                projectile.GetComponent<Rigidbody>().velocity = this.transform.forward * 5.0f;
             projectile.GetComponent<Rigidbody>().MovePosition(targetAgent.Context.Model.transform.position);
             Destroy(projectile, projectile.GetComponentInChildren<ParticleSystem>().duration);
             //add vfx end
