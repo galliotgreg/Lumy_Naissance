@@ -1,10 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class SelectionSquare : MonoBehaviour
 {
+    /// <summary>
+    /// The static instance of the Singleton for external access
+    /// </summary>
+    public static SelectionSquare instance = null;
+
+    /// <summary>
+    /// Enforce Singleton properties
+    /// </summary>
+    void Awake()
+    {
+        //Check if instance already exists and set it to this if not
+        if (instance == null)
+        {
+            instance = this;
+        }
+
+        //Enforce the unicity of the Singleton
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public GameObject[] allUnits;
 
@@ -15,26 +38,28 @@ public class SelectionSquare : MonoBehaviour
     Vector3 squareEndPos;
 
     float clickTime = 0f;
-    public float clickDelay = 0.5f;
+    public float clickDelay = 0.8f;
 
-    bool hasCreatedSquare;
+    public bool hasCreatedSquare;
 
     [System.NonSerialized]
-    public List<GameObject> selectedUnits = new List<GameObject>();
+    public List<GameObject> selectedUnits;
 
     //The selection squares 4 corner positions
     Vector3 HG, HD, BG, BD;
-   
+
     void Start()
     {
         //Desactivate the square selection image
-        selectionSquareImage.gameObject.SetActive(false); 
+        //selectionSquareImage.gameObject.SetActive(false);
+        selectedUnits = new List<GameObject>();
     }
 
     void Update()
     {
-        SelectUnits();
         allUnits = GameObject.FindGameObjectsWithTag("Selectable");
+
+        SelectUnits();
     }
 
     void SelectUnits()
@@ -51,7 +76,7 @@ public class SelectionSquare : MonoBehaviour
             //We dont yet know if we are drawing a square, but we need the first coordinate in case we do draw a square
             RaycastHit hit;
             //Fire ray from camera
-            if (Physics.Raycast(GameObject.Find("Camera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))  //Mathf.Infinity)) //Mathf.Infinity)) //200f, 1 << 8))
+            if (Physics.Raycast(GameObject.Find("Camera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity)) //200f, 1 << 8))
             {
                 //The corner position of the square
                 squareStartPos = hit.point;
@@ -61,8 +86,8 @@ public class SelectionSquare : MonoBehaviour
         //Release the mouse button
         if (Input.GetMouseButtonUp(0))
         {
-           // selectionSquareImage.gameObject.SetActive(false);
-            if (Time.time - clickTime <= clickDelay)
+            // selectionSquareImage.gameObject.SetActive(false);
+            if (Time.time - clickTime <= clickDelay && !EventSystem.current.IsPointerOverGameObject() )
             {
                 isClicking = true;
             }
@@ -106,7 +131,7 @@ public class SelectionSquare : MonoBehaviour
         //Holding down the mouse button
         if (Input.GetMouseButton(0))
         {
-            if (Time.time - clickTime > clickDelay)
+            if ()//(Time.time - clickTime > clickDelay)
             {
                 isHoldingDown = true;
             }
@@ -124,20 +149,22 @@ public class SelectionSquare : MonoBehaviour
 
             //Clear the list with selected units
             selectedUnits.Clear();
-
+            Debug.Log("la liste est clear");
+            
             //Try to select a new unit
             RaycastHit hit;
             //Fire ray from camera
             if (Physics.Raycast(GameObject.Find("Camera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity)) // 200f))
             {
-             
+                if (hit.collider.gameObject.tag == "Selectable")
+                {
                     GameObject activeUnit = hit.collider.gameObject;
-                //Set this unit to selected
-                if (activeUnit.GetComponent<MeshRenderer>() != null)
-                    activeUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
-                //Add it to the list of selected units, which is now just 1 unit
-                selectedUnits.Add(activeUnit);
-                
+                    //Set this unit to selected
+                    if (activeUnit.GetComponent<MeshRenderer>() != null)
+                        activeUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
+                    //Add it to the list of selected units, which is now just 1 unit
+                    selectedUnits.Add(activeUnit);
+                }
             }
         }
 
@@ -167,7 +194,7 @@ public class SelectionSquare : MonoBehaviour
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
-                        if (currentUnit.GetComponent<MeshRenderer>() != null) 
+                        if (currentUnit.GetComponent<MeshRenderer>() != null)
                             currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
 
                     }
@@ -211,41 +238,7 @@ public class SelectionSquare : MonoBehaviour
 
     //Is a point within a triangle
     bool IsWithinTriangle(Vector3 p, Vector3 p1, Vector3 p2, Vector3 p3)
-    {
-        /* bool isWithinTriangle = false;
-         Debug.Log("unitPOS : " + p);
-         Debug.Log("HG : " + p1);
-         Debug.Log("BG : " + p2);
-         Debug.Log("HD : " + p3);
-
-         float denominator = ((p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y));
-
-         float a = ((p2.y - p3.y) * (p.x - p3.x) + (p3.x - p2.x) * (p.y - p3.y)) / denominator;
-         float b = ((p3.y - p1.y) * (p.x - p3.x) + (p1.x - p3.x) * (p.y - p3.y)) / denominator;
-         float c = 1 - a - b;
-         //Debug.Log(a + " " + b + " " + c);
-
-         //The point is within the triangle if 0 <= a <= 1 and 0 <= b <= 1 and 0 <= c <= 1
-         //if (a >= 0f && a <= 1f && b >= 0f && b <= 1f && c >= 0f && c <= 1f)
-         if (a >= -1f && a <= 1f && b >= 0-1f && b <= 1f && c >= -1f && c <= 1f)
-         {
-             Debug.Log("is withintriangle");
-             isWithinTriangle = true;
-         }
-
-         return isWithinTriangle;*/
-        /*Vector2 v0 = p2 - p3;
-        Vector2 v1 = p1 - p3;
-        Vector2 v2 = p - p3;
-        float dot00 = Vector2.Dot(v0, v0);
-        float dot01 = Vector2.Dot(v0, v1);
-        float dot02 = Vector2.Dot(v0, v2);
-        float dot11 = Vector2.Dot(v1, v1);
-        float dot12 = Vector2.Dot(v1, v2);
-        float invDenom = 1.0f / (dot00 * dot11 - dot01 * dot01);
-        float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-        float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-        return ((u > 0.0f) && (v > 0.0f) && (u + v < 1.0f));*/
+    {        
         bool b1, b2, b3;
 
         b1 = Sign(p, p1, p2) < 0.0f;
@@ -262,12 +255,12 @@ public class SelectionSquare : MonoBehaviour
         //Vector3 squareStartScreen = squareStartPos;
         //squareStartScreen.x = squareStartScreen.x - GameObject.Find("Camera").GetComponent<Camera>().orthographicSize;
         //squareStartScreen.y = squareStartScreen.y - GameObject.Find("Camera").GetComponent<Camera>().orthographicSize;
-        
+
         RectTransform CanvasRect = GameObject.Find("EditeurMCSceneCanvas").GetComponent<RectTransform>();
         squareStartScreen.x = ((squareStartScreen.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
         squareStartScreen.y = ((squareStartScreen.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f));
         squareStartScreen.z = 0.0f;
-        
+
         //squareStartScreen.z = GameObject.Find("Camera").GetComponent<Camera>().transform.position.z;
         //Debug.Log("squareStartScreen : " + squareStartScreen);
 
@@ -283,7 +276,7 @@ public class SelectionSquare : MonoBehaviour
         squareEndPos.z = 0.0f;
         //squareEndPos = GameObject.Find("Camera").GetComponent<Camera>().WorldToScreenPoint(squareEndPos);
         //Debug.Log("squareEndPos : " + squareEndPos);
-        
+
         //Get the middle position of the square
         Vector3 middle = (squareStartScreen + squareEndPos) / 2.0f;
         //Debug.Log("middle : " + middle);
@@ -374,7 +367,7 @@ public class SelectionSquare : MonoBehaviour
         {
             //Debug.DrawRay(rayBD.origin, rayBD.direction * 10, Color.yellow);
             BD = hit.point;
-           // BD.x = ((BD.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
+            // BD.x = ((BD.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f));
             //BD.y = ((BD.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f));
             i++;
             //Debug.Log("BD = " + BD);
