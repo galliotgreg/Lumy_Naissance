@@ -11,6 +11,7 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
     int curPinIn = 0;
     bool isLoaded = false;
     bool isPositioned = false;
+    public bool isMacroComposant = false;
 
     #region PROPERTIES
     public ABNode[] Inputs {
@@ -20,6 +21,19 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 
         set {
             abOperator.Inputs = value;
+        }
+    }
+
+    public virtual string ViewName
+    {
+        get
+        {
+            return abOperator.ViewName;
+        }
+
+        set
+        {
+            throw new System.NotSupportedException();
         }
     }
 
@@ -147,7 +161,23 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		result.IsLoaded = isLoaded;
 		result.transform.position = position;
 		result.AbOperator = operatorObj;
-		result.SetNodeName( (ABNode)operatorObj );
+
+        //TODO : REFACTO avec interface IABMacroOperator
+        if (operatorObj.GetType().ToString().Contains("Macro")){
+            Renderer rend = result.GetComponent<Renderer>();
+            rend.material.shader = Shader.Find("Specular");
+            rend.material.SetColor("_SpecColor", Color.red);
+            result.isMacroComposant = true;
+        }
+
+        if (result.isMacroComposant)
+        {
+            result.SetMacroNodeName((ABNode)operatorObj);
+        }
+        else
+        {
+            result.SetNodeName((ABNode)operatorObj);
+        }
 
         // Create Pins
         if (operatorObj.Inputs.Length <= 3)

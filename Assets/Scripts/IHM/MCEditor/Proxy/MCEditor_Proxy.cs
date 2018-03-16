@@ -32,7 +32,14 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 		operatorName.text = getNodeName( node );
 	}
 
-	public void SetProxyName(string name)
+    public void SetMacroNodeName(ABNode node)
+    {
+        UnityEngine.UI.Text operatorName = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
+        string temp = ((IABOperator)(node)).ViewName;        
+        operatorName.text = temp;
+    }
+
+    public void SetProxyName(string name)
 	{
 		UnityEngine.UI.Text text = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
 		text.text = name;
@@ -48,7 +55,14 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 			return ((ProxyABAction)this).AbState.Name;
 		}
 		else if (this is ProxyABOperator) {
-			return getNodeName( (ABNode)((ProxyABOperator)this).AbOperator );
+            if (((ProxyABOperator)this).isMacroComposant)
+            {               
+                return ((ProxyABOperator)this).ViewName;
+            }
+            else
+            {
+                return getNodeName((ABNode)((ProxyABOperator)this).AbOperator);
+            }                 			
 		}
 		else if (this is ProxyABParam) {
 			return ProxyABParam.GetViewValue( ((ProxyABParam)this).AbParam );
@@ -57,18 +71,18 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 	}
 
 	public static string getNodeName( ABNode node ){
-		string opeName = node.ToString();
-		char splitter = '_';
-		string[] newName = opeName.Split(splitter);
-		string newOpeName = "";
+        string opeName = node.ToString();
+        char splitter = '_';
+        string[] newName = opeName.Split(splitter);
+        string newOpeName = "";
 
-		for (int i = 1; i < newName.Length - 1; i++)
-		{
-			newOpeName += newName[i];
-		}
+        for (int i = 1; i < newName.Length - 1; i++)
+        {
+            newOpeName += newName[i];
+        }
 
-		return newOpeName;
-	}
+        return newOpeName;
+    }
 	#endregion
 
 	public static MCEditor_Proxy clicked = null;	// TEST for delete : selected proxy

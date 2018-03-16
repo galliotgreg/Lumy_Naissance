@@ -10,6 +10,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	public static Unit_GameObj_Manager instance = null;
     public GameObject Deathexplosion;
 
+    
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -28,7 +29,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		}
 	}
 
-	Dictionary<PlayerAuthority,HomeScript> homes = new Dictionary<PlayerAuthority, HomeScript>();
+    Dictionary<PlayerAuthority,HomeScript> homes = new Dictionary<PlayerAuthority, HomeScript>();
 	List<ResourceScript> resources = new List<ResourceScript>();
 	Dictionary<PlayerAuthority, List<TraceScript>> traces = new Dictionary<PlayerAuthority, List<TraceScript>>();
 
@@ -73,6 +74,8 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
             //add fx 
             GameObject explosion = Instantiate(Deathexplosion, target.Context.Model.transform.position, Quaternion.identity);
+            //Move behind GameManager (avoid conflict with swapping scene) 
+            explosion.transform.SetParent(GameManager.instance.transform); 
             Destroy(explosion, explosion.GetComponentInChildren<ParticleSystem>().duration);
             //add fx end
 
@@ -100,11 +103,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
             Vector3 pos =  resource.gameObject.transform.position;
             resource.gameObject.transform.SetParent(this.transform);
             resource.gameObject.transform.position = pos; 
-       //     Instantiate(resource.gameObject);
-          //  resource.gameObject.transform.SetParent(this.transform); 
-			// Enabling resource when droping
-			//resource.gameObject.SetActive( true );
-			//resource.transform.SetParent( this.transform );
+
 			return true;
 		}
 		return false;
@@ -234,7 +233,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	public void KillUnit( AgentEntity unit ){
-		homes[ unit.Authority ].removeUnit( unit );
+        homes[ unit.Authority ].removeUnit( unit );
 		GameObject.Destroy( unit.gameObject );
 	}
 

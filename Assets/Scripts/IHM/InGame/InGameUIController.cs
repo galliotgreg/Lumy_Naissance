@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,6 +31,8 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text J1_Species;
     [SerializeField]
+    private Text J1_PrysmeLife;
+    [SerializeField]
     private Text J2_Red_Resources;
     [SerializeField]
     private Text J2_Green_Resources;
@@ -39,6 +42,8 @@ public class InGameUIController : MonoBehaviour
     private Text J2_Pop;
     [SerializeField]
     private Text J2_Species;
+    [SerializeField]
+    private Text J2_PrysmeLife;
 
     [Header("Main Menu")]
     [SerializeField]
@@ -117,9 +122,25 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text castText;
     [SerializeField]
-    private Text item; 
+    private Text item;
+    [SerializeField]
+    private GameObject unitGoJ1;
+    [SerializeField]
+    private GameObject unitGoJ2;
+
+    Dictionary<string, int> castsJ1;
+    Dictionary<string, int> castsJ2; 
+
+    /// <summary>
+    /// Variables for CastUIDisplay
+    /// </summary>
+    private List<GameObject> castUiList = new List<GameObject>();
+    private List<GameObject> castUiListJ2 = new List<GameObject>();
+    private Dictionary<string, int> popJ1 = new Dictionary<string, int>();
+    private Dictionary<string, int> popJ2 = new Dictionary<string, int>();
 
 
+    private List<GameObject> queens = new List<GameObject>();
 
     /// <summary>
     /// Enforce Singleton properties
@@ -146,8 +167,9 @@ public class InGameUIController : MonoBehaviour
     {
         Init();
         if(!isNotNull())
-            return; 
-
+            return;
+        popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+        popJ2 = new Dictionary<string, int>(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
     }
 
     /// <summary>
@@ -176,7 +198,15 @@ public class InGameUIController : MonoBehaviour
 
         //Player Species 
         J1_Species.text = SwapManager.instance.GetPlayer1Name();
-        J2_Species.text = SwapManager.instance.GetPlayer2Name(); 
+        J2_Species.text = SwapManager.instance.GetPlayer2Name();
+
+        GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
+
+        foreach (GameObject lumy in lumys) {
+            if (lumy.gameObject.name == "p1_queen" || lumy.gameObject.name == "p2_queen") {
+                queens.Add(lumy);
+            }
+        }
     }
 
 
@@ -186,7 +216,6 @@ public class InGameUIController : MonoBehaviour
         CheckWinCondition();
         CheckKeys(); 
         UpdateUI();
-      
     }
 
     /// <summary>
@@ -290,7 +319,15 @@ public class InGameUIController : MonoBehaviour
         J1_Pop.text = "" +gameManager.GetHome(PlayerAuthority.Player1).getPopulation().Count;    
         J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;
 
-        UnitStats(); 
+
+
+
+        J1_PrysmeLife.text = queens[0].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[0].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
+        J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
+
+        UnitStats();
+        getAllUnit(PlayerAuthority.Player1);
+        getAllUnit(PlayerAuthority.Player2);
     }
 
     /// <summary>
@@ -486,18 +523,8 @@ public class InGameUIController : MonoBehaviour
 
     private void UnitStats()
     {
-        //TODO CREATE VISUALS 
-        Camera camera = NavigationManager.instance.GetCurrentCamera(); 
-        if (camera == null) {
-            Debug.LogError("ERROR: CAMERA NOT SET"); 
-            return; 
-        }
-        CameraRay cameraRay = camera.GetComponent<CameraRay>();
-        if (cameraRay == null) {
-            Debug.LogError("ERROR : SCRIPT NOT SET ON CAMERA");
-            return;
-        }
-        AgentScript self = cameraRay.Self;
+        AgentScript self = getUnitSelf(); 
+
         if(self == null)
         {
             vitalityText.text = "-";
@@ -508,6 +535,10 @@ public class InGameUIController : MonoBehaviour
             visionText.text = "-";
             pickupRangeText.text = "-";
             strikeRangeText.text = "-";
+            item.text = "-";
+            LayTimeText.text = "-";
+            castText.text = "-";
+            
             return; 
         }
 
@@ -525,9 +556,7 @@ public class InGameUIController : MonoBehaviour
         string stamina = self.Stamina.ToString();
         string cast = self.Cast;
         
-
-
-        vitalityText.text = vitality;
+        vitalityText.text = vitality + " / " + self.VitalityMax.ToString();
         strenghtText.text = strength;
         staminaText.text = stamina.ToString();
         moveSpeedText.text = moveSpeed;
@@ -535,14 +564,135 @@ public class InGameUIController : MonoBehaviour
         visionText.text = visionRange;
         pickupRangeText.text = pickRange;
         strikeRangeText.text = atkRange;
+        item.text = nbItem + " / " + nbItemMax;
+        LayTimeText.text = layTimeCost;
+        castText.text = cast;
+        
+        
+
+    }
+
+   
+    private AgentScript getUnitSelf()
+    {
+        Camera camera = NavigationManager.instance.GetCurrentCamera();
+        if (camera != null)
+        {
+            CameraRay cameraRay = camera.GetComponent<CameraRay>();
+            if (cameraRay != null)
+            {
+                return cameraRay.Self;
+            }
+        }
+        return null; 
     }
 
     private void getCurAction()
     {
-        //Warning Real State from the Action.
-        //Maybe make a traduction for more visibility.
         Camera camera = NavigationManager.instance.GetCurrentCamera();
         string action = camera.GetComponent<CameraRay>().Action;
+    }
+
+    //TODO REMOVE once implemented in UI 
+
+    private Dictionary<string, int> getAllUnit(PlayerAuthority player) {
+        if (PlayerAuthority.Player1 == player) {
+            if (!CheckDicoEquality(popJ1, GameObject.Find("p1_hive").GetComponent<HomeScript>().Population)) {
+                DisplayUnits(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+                popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+            }
+
+        }
+        if (PlayerAuthority.Player2 == player) {
+            if (!CheckDicoEquality(popJ2, GameObject.Find("p2_hive").GetComponent<HomeScript>().Population)) {
+                DisplayUnitsJ2(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
+                popJ2 = new Dictionary<string, int>(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
+            }
+        }
+        return null; 
+    }
+
+   
+    private bool CheckDicoEquality (Dictionary<string, int> dico1, Dictionary<string, int> dico2) {
+        // check keys are the same
+        
+        foreach (string str in dico1.Keys) {
+            if (!dico2.ContainsKey(str)) {
+                return false;
+            }      
+        }
+        // check values are the same
+        foreach (string str in dico1.Keys) {
+            if (!dico1[str].Equals(dico2[str])) {
+                return false;
+            } 
+        }
+        return true; 
+    }
+
+
+
+
+
+    private void DisplayUnits(Dictionary<string, int> units)
+    {
+        //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
+        //Clean list if element in it
+        foreach (GameObject go in castUiList)
+        {
+            Destroy(go);
+        }
+        castUiList.Clear(); 
+        //Create UI cast and add them to the list 
+        foreach (KeyValuePair<string, int> unit in units)
+        {
+            if (unit.Value != 0)
+            {
+                GameObject go = Instantiate(unitGoJ1);
+                castUiList.Add(go);
+                go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
+                go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
+                go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
+            }
+        }
+    }
+
+    
+    private void DisplayUnitsJ2(Dictionary<string, int> units) {
+        //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
+        //Clean list if element in it
+        foreach (GameObject go in castUiListJ2) {
+            
+            Destroy(go);
+        }
+        castUiListJ2.Clear();
+        //Create UI cast and add them to the list 
+        foreach (KeyValuePair<string, int> unit in units) {
+            if (unit.Value != 0) {
+                GameObject go = Instantiate(unitGoJ2);
+                castUiListJ2.Add(go);
+                go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
+                go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
+                go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
+            }
+        }
+    }
+
+    public void unitCost() {
+        AgentScript self = getUnitSelf();
+        if (self == null) {
+            //Set values to "-" like for stats
+            return;
+        }
+
+        Dictionary<string, int> costs = self.ProdCost;
+        foreach (KeyValuePair<string, int> cost in costs) {
+            //Set color and count like stats for the lumy 
+            string color = cost.Key;
+            int count = cost.Value;
+        }
+        //Enjoy this incredible code ;) 
+
     }
 
 }

@@ -32,7 +32,29 @@ public abstract class ABOperator<T> : ABNode, IABOperator
         }
     }
 
-	public T EvaluateOperator(ABContext context){
+    public virtual string ViewName
+    {
+        get
+        {
+            string opeName = this.ToString();
+            char splitter = '_';
+            string[] newName = opeName.Split(splitter);
+            string newOpeName = "";
+
+            for (int i = 1; i < newName.Length - 1; i++)
+            {
+                newOpeName += newName[i];
+            }            
+            return newOpeName;
+        }
+
+        set
+        {
+            throw new System.NotSupportedException();
+        }
+    }
+
+    public T EvaluateOperator(ABContext context){
 		try{
 			return Evaluate( context );
 		}
