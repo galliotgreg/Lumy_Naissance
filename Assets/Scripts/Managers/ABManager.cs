@@ -196,10 +196,10 @@ public class ABManager : MonoBehaviour
 									((AB_TxtGate_Operator)action.Parameters[i]).EvaluateOperator(context);
 	                            actionParams.Add(param);
 	                        }
-	                        else if (action.Parameters[i] is AB_VecGate_Operator)
+	                        else if (action.Parameters[i] is AB_VecTabGate_Operator)
 	                        {
 	                            IABType param =
-									((AB_VecGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+									((AB_VecTabGate_Operator)action.Parameters[i]).EvaluateOperator(context);
 	                            actionParams.Add(param);
 	                        }
 	                        else if (action.Parameters[i] is AB_ColorGate_Operator)
