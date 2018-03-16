@@ -59,6 +59,7 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 
 	public void activateClick(){
 		GameObject proxy = inventory.instantiateProxy (this);
+		MCToolManager.instance.Inventory ();
 
 		dragObjectComponent.startDrag (proxy, this);
 	}
