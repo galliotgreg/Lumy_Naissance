@@ -32,7 +32,7 @@ public class MCToolManager : MonoBehaviour
     }
     
     List<GameObject> SelectedNodes = new List<GameObject>();
-    public GameObject getTarget;
+    GameObject getTarget;
     string CurrentTool = null;
     bool isMouseDragging;
     bool inventory = false;
@@ -66,7 +66,6 @@ public class MCToolManager : MonoBehaviour
                 if (CurrentTool == "Selection")
                 {
                     Debug.Log("le current tool est selection avec hit background");
-                    //GameObject.Find("Camera").GetComponent<SelectionSquare>().hasCreatedSquare = false;
                     GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = true;
                     SelectedNodes = GameObject.Find("Camera").GetComponent<SelectionSquare>().selectedUnits;
                     Debug.Log("il y a " + SelectedNodes.Count + " nodes selected");

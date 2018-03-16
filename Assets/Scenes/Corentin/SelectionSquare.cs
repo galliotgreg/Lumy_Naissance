@@ -40,7 +40,7 @@ public class SelectionSquare : MonoBehaviour
     float clickTime = 0f;
     public float clickDelay = 0.8f;
 
-    public bool hasCreatedSquare;
+    bool hasCreatedSquare;
 
     [System.NonSerialized]
     public List<GameObject> selectedUnits;
@@ -58,7 +58,6 @@ public class SelectionSquare : MonoBehaviour
     void Update()
     {
         allUnits = GameObject.FindGameObjectsWithTag("Selectable");
-
         SelectUnits();
     }
 
@@ -131,7 +130,7 @@ public class SelectionSquare : MonoBehaviour
         //Holding down the mouse button
         if (Input.GetMouseButton(0))
         {
-            if ()//(Time.time - clickTime > clickDelay)
+            if (Time.time - clickTime > clickDelay)
             {
                 isHoldingDown = true;
             }
