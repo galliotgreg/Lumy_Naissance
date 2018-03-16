@@ -64,65 +64,64 @@ public class MCToolManager : MonoBehaviour
 
     private void Start()
     {
-		btn_Selection.onClick.AddListener(() => CurrentTool = ToolType.Selection);
-		btn_Main.onClick.AddListener(() => CurrentTool = ToolType.Hand);
+		btn_Selection.onClick.AddListener(() => {CurrentTool = ToolType.Selection; CancelInventory();} );
+		btn_Main.onClick.AddListener(() => {CurrentTool = ToolType.Hand; CancelInventory();} );
     }
 
     private void Update()
     {
         //Mouse Button Press Down
-        if (Input.GetMouseButtonDown(0) && inventory == false)
+        if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit hitInfo;
-            getTarget = ReturnClickedObject(out hitInfo);
+			if (!inventory) {
+				RaycastHit hitInfo;
+				getTarget = ReturnClickedObject (out hitInfo);
 
-            //Hit background
-            if (getTarget.name == "STUBS_backgroundCollider")
-            {
-                inventory = false;
-                //current tool activated
-				if (CurrentTool == ToolType.Selection)
-                {
-                    Debug.Log("le current tool est selection avec hit background");
-                    GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = true;
-                    SelectedNodes = GameObject.Find("Camera").GetComponent<SelectionSquare>().selectedUnits;
-                    Debug.Log("il y a " + SelectedNodes.Count + " nodes selected");
-                }
-				if (CurrentTool == ToolType.Hand)
-                {
-                    GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = false;
-                    isMouseDragging = false;
-                }
-            }
+				//Hit background
+				if (getTarget.name == "STUBS_backgroundCollider") {
+					inventory = false;
+					//current tool activated
+					if (CurrentTool == ToolType.Selection) {
+						Debug.Log ("le current tool est selection avec hit background");
+						GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
+						SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
+						Debug.Log ("il y a " + SelectedNodes.Count + " nodes selected");
+					}
+					if (CurrentTool == ToolType.Hand) {
+						GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
+						isMouseDragging = false;
+					}
+				}
 
-            if (getTarget != null)
-            {
-                //hit something selectable (node, state, action...)
-                if (getTarget.tag == "Selectable")
-                {
-                    inventory = false;
-                    //current tool activated
-					if (CurrentTool == ToolType.Selection)
-                    {
-                        Debug.Log("le current tool est selection avec hit node");
-                        GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = true;
-                        SelectedNodes = GameObject.Find("Camera").GetComponent<SelectionSquare>().selectedUnits;
-                    }
-					if (CurrentTool == ToolType.Hand)
-                    {
-                        GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = false;
-                        isMouseDragging = true;
-                    }
-                }
-            }
-            
+				if (getTarget != null) {
+					//hit something selectable (node, state, action...)
+					if (getTarget.tag == "Selectable") {
+						inventory = false;
+						//current tool activated
+						if (CurrentTool == ToolType.Selection) {
+							Debug.Log ("le current tool est selection avec hit node");
+							GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
+							SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
+						}
+						if (CurrentTool == ToolType.Hand) {
+							GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
+							isMouseDragging = true;
+						}
+					}
+				}
+			} else {
+				// Disable square when inventory is selected
+				GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
+				isMouseDragging = false;
+			}
         }
+
         if(Input.GetMouseButtonUp(0))
         {
             isMouseDragging = false;
         }
 
-        if (isMouseDragging) ToolMain();
+		if (isMouseDragging && CurrentTool == ToolType.Hand) ToolMain();
 
     }
 
