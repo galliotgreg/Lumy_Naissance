@@ -103,7 +103,7 @@ public class ABParser
             case "color[]":
                 throw new System.NotImplementedException();
             case "vec[]":
-                return new AB_VecGate_Operator(); ;
+                return new AB_VecTabGate_Operator(); ;
             case "ref[]":
                 throw new System.NotImplementedException();
             default:
