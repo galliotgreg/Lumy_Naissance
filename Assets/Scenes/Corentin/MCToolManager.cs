@@ -173,5 +173,9 @@ public class MCToolManager : MonoBehaviour
     {
         inventory = true;
     }
+	public void CancelInventory()
+	{
+		inventory = false;
+	}
 }
 

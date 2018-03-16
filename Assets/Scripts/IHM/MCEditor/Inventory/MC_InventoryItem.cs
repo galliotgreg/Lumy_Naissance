@@ -68,6 +68,7 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 
 	public void endDrag (GameObject droppedObject)
 	{
+		MCToolManager.instance.CancelInventory ();
 		inventory.DropItem ( droppedObject, this );
 	}
 
