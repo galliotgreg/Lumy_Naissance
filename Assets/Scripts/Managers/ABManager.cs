@@ -157,7 +157,7 @@ public class ABManager : MonoBehaviour
             //Parse wrapped tree
             ABParser parser = new ABParser();
             lines.RemoveRange(0, 2);
-            ABNode wrappedTree = parser.ParseMacroTree(lines);
+            ABNode wrappedTree = parser.ParseMacroTree(lines, returnType);
             IABOperator macro = 
                 ABMacroOperatorFactory.CreateMacro(
                     wrappedTree,

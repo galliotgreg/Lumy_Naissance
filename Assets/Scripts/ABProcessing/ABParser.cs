@@ -49,7 +49,7 @@ public class ABParser
                 }
                 else if (isInNodeBlock)
                 {
-                    ParseNodeLine(tokens);
+                    ParseNodeLine(tokens, false);
                 }
             }
         }
@@ -57,10 +57,62 @@ public class ABParser
         return model;
     }
 
-    public ABNode ParseMacroTree(List<string> lines)
+    public ABNode ParseMacroTree(List<string> lines, string returnType)
     {
-        //TODO Implement this
+        //TODO remove stub
         return null;
+
+        curGateOperator = CreateGateFromType(returnType);
+
+        InitialiseParser();
+
+        foreach (string line in lines)
+        {
+            String[] tokens = line.Split(',');
+            if (tokens.Length > 0 && tokens[0] != "" && !DetectBlocks(tokens))
+            {
+                if (isInNodeBlock)
+                {
+                    ParseNodeLine(tokens, true);
+                }
+            }
+        }
+
+        return curGateOperator.Inputs[0];
+       
+    }
+
+    private IABGateOperator CreateGateFromType(string returnType)
+    {
+        switch (returnType)
+        {
+            case "bool":
+                return new AB_BoolGate_Operator();
+            case "scal":
+                return new AB_ScalGate_Operator();
+            case "txt":
+                return new AB_TxtGate_Operator();
+            case "color":
+                return new AB_ColorGate_Operator();
+            case "vec":
+                throw new System.NotImplementedException();
+            case "ref":
+                return new AB_RefGate_Operator();
+            case "bool[]":
+                throw new System.NotImplementedException();
+            case "scal[]":
+                throw new System.NotImplementedException();
+            case "txt[]":
+                throw new System.NotImplementedException();
+            case "color[]":
+                throw new System.NotImplementedException();
+            case "vec[]":
+                return new AB_VecGate_Operator(); ;
+            case "ref[]":
+                throw new System.NotImplementedException();
+            default:
+                throw new System.NotImplementedException();
+        }
     }
 
     private void ParseStateLine(String[] tokens)
@@ -108,7 +160,7 @@ public class ABParser
         }
     }
 
-    private void ParseNodeLine(String[] tokens)
+    private void ParseNodeLine(String[] tokens, bool isMacro)
     {
         String typeName = ExtractNodeType(tokens[1]);
         String typeParams = ExtractTypeParams(tokens[1]);
@@ -125,9 +177,7 @@ public class ABParser
                 node = (ABNode)ParseParam(typeParams);
                 break;
             case "macro":
-                //TODO Remove this debug stub
                 node = (ABNode)ParseMacro(typeParams);
-                //TODO end stub
                 break;
             default:
                 throw new NotSupportedException("Node type" + typeName + " not handled !");
