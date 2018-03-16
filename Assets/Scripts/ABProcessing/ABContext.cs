@@ -28,4 +28,14 @@ public class ABContext {
 
         parameters.Add(param);
     }
+
+    public ABContext Copy()
+    {
+        ABContext copy = new ABContext();
+        foreach (IABParam param in copy.parameters)
+        {
+            copy.SetParam(param);
+        }
+        return copy;
+    }
 }

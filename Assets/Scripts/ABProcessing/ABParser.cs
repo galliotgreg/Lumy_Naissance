@@ -59,12 +59,8 @@ public class ABParser
 
     public ABNode ParseMacroTree(List<string> lines, string returnType)
     {
-        //TODO remove stub
-        return null;
-
-        curGateOperator = CreateGateFromType(returnType);
-
         InitialiseParser();
+        curGateOperator = CreateGateFromType(returnType);
 
         foreach (string line in lines)
         {
@@ -179,6 +175,9 @@ public class ABParser
             case "macro":
                 node = (ABNode)ParseMacro(typeParams);
                 break;
+            case "arg":
+                node = (ABNode)ParseArg(typeParams);
+                break;
             default:
                 throw new NotSupportedException("Node type" + typeName + " not handled !");
         }
@@ -205,6 +204,12 @@ public class ABParser
             curGateOperator.Inputs[0] = node;
             node.Output = (ABNode) curGateOperator;
         }
+    }
+
+    private IABParam ParseArg(string typeParams)
+    {
+        String[] tokens = typeParams.Split(':');
+        return ABParamFactory.CreateParam(tokens[0], tokens[1], null);
     }
 
     public IABParam ParseParam(string typeParams)
