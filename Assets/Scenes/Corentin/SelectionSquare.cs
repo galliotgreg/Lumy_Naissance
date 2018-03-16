@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class SelectionSquare : MonoBehaviour
 {
+	#region SINGLETON
     /// <summary>
     /// The static instance of the Singleton for external access
     /// </summary>
@@ -28,6 +29,7 @@ public class SelectionSquare : MonoBehaviour
             Destroy(gameObject);
         }
     }
+	#endregion
 
     public GameObject[] allUnits;
 

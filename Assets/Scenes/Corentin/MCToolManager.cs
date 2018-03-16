@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class MCToolManager : MonoBehaviour
 {
-    
+	#region SINGLETON
     /// <summary>
     /// The static instance of the Singleton for external access
     /// </summary>
@@ -30,11 +30,20 @@ public class MCToolManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+	#endregion
     
+	public enum ToolType{
+		Selection,
+		Hand,
+		None
+	};
+
     List<GameObject> SelectedNodes = new List<GameObject>();
-    GameObject getTarget;
-    string CurrentTool = null;
+    public GameObject getTarget;
+	[SerializeField]
+	ToolType currentTool = ToolType.None;
     bool isMouseDragging;
+	[SerializeField]
     bool inventory = false;
 
     [SerializeField]
@@ -42,12 +51,21 @@ public class MCToolManager : MonoBehaviour
     [SerializeField]
     private Button btn_Main;
 
-
+	#region PROPERTIES
+	ToolType CurrentTool {
+		get {
+			return currentTool;
+		}
+		set {
+			currentTool = value;
+		}
+	}
+	#endregion
 
     private void Start()
     {
-        btn_Selection.onClick.AddListener(() => CurrentTool = "Selection");
-        btn_Main.onClick.AddListener(() => CurrentTool = "Main");
+		btn_Selection.onClick.AddListener(() => CurrentTool = ToolType.Selection);
+		btn_Main.onClick.AddListener(() => CurrentTool = ToolType.Hand);
     }
 
     private void Update()
@@ -63,14 +81,14 @@ public class MCToolManager : MonoBehaviour
             {
                 inventory = false;
                 //current tool activated
-                if (CurrentTool == "Selection")
+				if (CurrentTool == ToolType.Selection)
                 {
                     Debug.Log("le current tool est selection avec hit background");
                     GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = true;
                     SelectedNodes = GameObject.Find("Camera").GetComponent<SelectionSquare>().selectedUnits;
                     Debug.Log("il y a " + SelectedNodes.Count + " nodes selected");
                 }
-                if (CurrentTool == "Main")
+				if (CurrentTool == ToolType.Hand)
                 {
                     GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = false;
                     isMouseDragging = false;
@@ -84,13 +102,13 @@ public class MCToolManager : MonoBehaviour
                 {
                     inventory = false;
                     //current tool activated
-                    if (CurrentTool == "Selection")
+					if (CurrentTool == ToolType.Selection)
                     {
                         Debug.Log("le current tool est selection avec hit node");
                         GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = true;
                         SelectedNodes = GameObject.Find("Camera").GetComponent<SelectionSquare>().selectedUnits;
                     }
-                    if (CurrentTool == "Main")
+					if (CurrentTool == ToolType.Hand)
                     {
                         GameObject.Find("Camera").GetComponent<SelectionSquare>().enabled = false;
                         isMouseDragging = true;
