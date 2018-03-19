@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 public class CameraRay : MonoBehaviour {
 
     private Camera camera;
-    [SerializeField]
     private AgentScript self;
     private string action;
 

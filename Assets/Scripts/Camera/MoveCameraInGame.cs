@@ -9,8 +9,7 @@ public class MoveCameraInGame : MonoBehaviour {
 
 
     [SerializeField]
-    private float zoomSpeed = 10; 
-
+    private float speedCamera = 10;
 
 
     [SerializeField]
@@ -21,100 +20,92 @@ public class MoveCameraInGame : MonoBehaviour {
     private float maxY = -4;
     [SerializeField]
     private float minY = -38;
+    
 
+    private Vector3 cameraPos;
+
+    //ZOOM
+    private float currentZoom;
     [SerializeField]
-    private float minZoom = 26;
+    private Vector2 zoomRange = new Vector2(-10,10);
     [SerializeField]
-    private float maxZoom = 40; 
+    private Vector2 zoomAngleRange = new Vector2(20, 70); 
+    [SerializeField]
+    private float zoomSpeed = 10;
+    private Vector3 initPos;
+    private Vector3 initRotation;
+    private float zoomRotation = 1;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-        float xAxisValue = Input.GetAxis("Horizontal");
-        float zAxisValue = Input.GetAxis("Vertical");
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-        Vector3 cameraPos = gameObject.transform.position; 
+    // Use this for initialization
+    void Start () {
        
-        //Right
-        if (xAxisValue < 0 && cameraPos.x < minX)
-        {
-            xAxisValue = 0.0f;
-        }
-        //Left 
-        else if (xAxisValue > 0 && cameraPos.x > maxX)
-        {
-            xAxisValue = 0.0f;
-        }
-        //Down
-        if (zAxisValue < 0 && cameraPos.z < minY)
-        {
-            zAxisValue = 0.0f;
-        }
-        //Up
-        if (zAxisValue > 0 && cameraPos.z > maxY)
-        {
-            zAxisValue = 0.0f;
-        }
-
-        camera.transform.Translate(new Vector3(xAxisValue, 0.0f, zAxisValue), Space.World);
-
-        //Y min 26
-        //Y max 40; 
-        if (cameraPos.y < minZoom && scroll > 0)
-        {
-            scroll = 0; 
-        }
-        if (cameraPos.y > maxZoom && scroll < 0)
-        
-        {
-            scroll = 0;
-        }
-        camera.transform.Translate(0.0f, 0.0f, scroll * zoomSpeed);
-
-            /*
-            if (gameObject.transform.position.x < 9 && xAxisValue > 0)
-            {
-                gameObject.transform.Translate(new Vector3(xAxisValue, 0.0f, 0.0f), Space.World);
-            }
-            else if(gameObject.transform.position.x < 9 && xAxisValue < 0)
-            {
-                gameObject.transform.Translate(new Vector3(0.0f, 0.0f, 0.0f), Space.World);
-            }
-            else if (gameObject.transform.position.x > 27 && xAxisValue < 0)
-            {
-                gameObject.transform.Translate(new Vector3(xAxisValue, 0.0f, 0.0f), Space.World);
-            }
-            else if(gameObject.transform.position.x > 27 && xAxisValue >0)
-            {
-                gameObject.transform.Translate(new Vector3(0.0f, 0.0f, 0.0f), Space.World);
-            }
-            Debug.Log("XAXIS : " + xAxisValue + " Position X : " + gameObject.transform.position.x);
-            if (gameObject.transform.position.z < -8 && zAxisValue > 0)
-            {
-                gameObject.transform.Translate(new Vector3(0.0f, 0.0f, zAxisValue), Space.World);
-            }
-            else if (gameObject.transform.position.z < -8 && zAxisValue < 0)
-            {
-                gameObject.transform.Translate(new Vector3(0.0f, 0.0f,0.0f), Space.World);
-            }
-            else if (gameObject.transform.position.z > -37 && zAxisValue < 0)
-            {
-                gameObject.transform.Translate(new Vector3(0.0f, 0.0f, zAxisValue), Space.World);
-            }
-            else if (gameObject.transform.position.z > -37 && zAxisValue > 0)
-            {
-                gameObject.transform.Translate(new Vector3(0.0f, 0.0f, 0.0f), Space.World);
-            }
-            */
-            //float yPos = gameObject.transform.position.y; 
-            //gameObject.transform.Translate(new Vector3(xAxisValue, 0.0f, zAxisValue),Space.World);
-
-        
+        initPos = gameObject.transform.position;
+        initRotation = gameObject.transform.eulerAngles; 
     }
+
+    // Update is called once per frame
+    void Update () {
+        cameraPos = gameObject.transform.position;
+
+        //MoveCamera
+        MoveCamera();
+
+        //Scroll Camera
+        zoomCamera(); 
+     
+    }
+
+    #region CameraMovement
+    private void zoomCamera()
+    {
+        currentZoom -= Input.GetAxisRaw("Mouse ScrollWheel") * Time.unscaledDeltaTime * 1000 * zoomSpeed;
+
+        currentZoom = Mathf.Clamp(currentZoom, zoomRange.x, zoomRange.y);
+        transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y - (initPos.y + currentZoom)) * 0.1f, transform.position.z);
+
+        float x = transform.eulerAngles.x - (transform.eulerAngles.x - (initRotation.x + currentZoom * zoomRotation)) * 0.1f;
+        x = Mathf.Clamp(x, zoomAngleRange.x, zoomAngleRange.y);
+
+        transform.eulerAngles = new Vector3(x, transform.eulerAngles.y, transform.eulerAngles.z);
+    }
+
+    private void MoveCamera()
+    {
+        CameraRay rayScript = gameObject.GetComponent<CameraRay>(); 
+        if (rayScript != null)
+        {
+            if(rayScript.Self != null)
+            {
+                camera.transform.localPosition = new Vector3(rayScript.Self.transform.position.x, cameraPos.y, rayScript.Self.transform.position.z -15); 
+            }
+            else
+            {
+                //MOVING 
+                bool up = Input.GetKey(KeyCode.UpArrow);
+                bool down = Input.GetKey(KeyCode.DownArrow);
+                bool right = Input.GetKey(KeyCode.RightArrow);
+                bool left = Input.GetKey(KeyCode.LeftArrow);
+
+                if (up && cameraPos.z < maxY)
+                {
+                    camera.transform.Translate(Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
+                }
+                if (down && cameraPos.z > minY)
+                {
+                    camera.transform.Translate(-Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
+                }
+                if (left && cameraPos.x > minX)
+                {
+                    camera.transform.Translate(Vector3.left * Time.unscaledDeltaTime * speedCamera, Space.World);
+                }
+                if (right && cameraPos.x < maxX)
+                {
+                    camera.transform.Translate(Vector3.right * Time.unscaledDeltaTime * speedCamera, Space.World);
+                }
+            }
+        }
+        
+
+    }
+    #endregion
 }

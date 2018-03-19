@@ -37,6 +37,19 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
         }
     }
 
+    public virtual string SymbolName
+    {
+        get
+        {
+            throw new System.NotSupportedException();
+        }
+
+        set
+        {
+            throw new System.NotSupportedException();
+        }
+    }
+
     public Pin Outcome
     {
         get

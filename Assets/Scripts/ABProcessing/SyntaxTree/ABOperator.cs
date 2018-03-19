@@ -53,16 +53,25 @@ public abstract class ABOperator<T> : ABNode, IABOperator
             throw new System.NotSupportedException();
         }
     }
+    public virtual string SymbolName
+    {
+        get
+        {
+            throw new System.NotSupportedException();
+        }
+
+        set
+        {
+            throw new System.NotSupportedException();
+        }
+    }
 
     public T EvaluateOperator(ABContext context){
 		try{
 			return Evaluate( context );
 		}
-		catch( Operator_MC_Exception opEx ){
+		catch( SyntaxTree_MC_Exception opEx ){
 			throw new Operator_MC_Exception ( this, opEx );
-		}
-		catch( Param_MC_Exception paramEx ){
-			throw new Operator_MC_Exception ( this, paramEx );
 		}
 		catch( System.Exception someEx ){
 			throw new Operator_Exception ( this, context, someEx.Message );
