@@ -1,6 +1,6 @@
-﻿public class AB_BoolTab_GetRefTab_Txt_Operator : ABOperator<ABTable<ABBool>>
+﻿public class AB_BoolTab_Get_RefTab_Txt_Operator : ABOperator<ABTable<ABBool>>
 {
-    public AB_BoolTab_GetRefTab_Txt_Operator()
+    public AB_BoolTab_Get_RefTab_Txt_Operator()
     {
 
         this.Inputs = new ABNode[2];

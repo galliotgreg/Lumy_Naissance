@@ -28,4 +28,12 @@ public class ABTable<T> : IABComplexType where T : IABSimpleType
 	}
 
 	#endregion
+
+	public static System.Type getInternalIfComplexType (System.Type type, int index = 0)
+	{
+		if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof(ABTable<>) && type.GetGenericArguments ().Length > 0) {
+			return type.GetGenericArguments()[index];
+		}
+		return null;
+	}
 }

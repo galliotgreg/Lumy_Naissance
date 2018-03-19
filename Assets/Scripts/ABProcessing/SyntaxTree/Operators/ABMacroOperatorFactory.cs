@@ -79,6 +79,7 @@ public class ABMacroOperatorFactory {
         macro.ViewName = BuildViewName(returnType, name, argTypes);
         macro.ClassName = BuildClassNameFromViewName(macro.ViewName);
         macro.SymbolName = BuildSymbolName(returnType, name, argTypes);
+		macro.ArgTypes = ArgsToTypes ( argTypes );
 
         return macro;
     }
@@ -175,4 +176,45 @@ public class ABMacroOperatorFactory {
                 throw new System.NotImplementedException();
         }
     }
+
+	private static System.Type ToABType(string typeStr)
+	{
+		switch (typeStr)
+		{
+		case "bool":
+			return typeof(ABBool);
+		case "scal":
+			return typeof(ABScalar);
+		case "txt":
+			return typeof(ABText);
+		case "color":
+			return typeof(ABColor);
+		case "vec":
+			return typeof(ABVec);
+		case "ref":
+			return typeof(ABRef);
+		case "bool[]":
+			return typeof(ABTable<ABBool>);
+		case "scal[]":
+			return typeof(ABTable<ABScalar>);
+		case "txt[]":
+			return typeof(ABTable<ABText>);
+		case "color[]":
+			return typeof(ABTable<ABColor>);
+		case "vec[]":
+			return typeof(ABTable<ABVec>);
+		case "ref[]":
+			return typeof(ABTable<ABRef>);
+		default:
+			throw new System.NotImplementedException();
+		}
+	}
+
+	public static List<System.Type> ArgsToTypes( string[] argTypes ){
+		List < System.Type > result = new List<Type> ();
+		foreach( string arg in argTypes ){
+			result.Add ( ToABType( arg ) );
+		}
+		return result;
+	}
 }

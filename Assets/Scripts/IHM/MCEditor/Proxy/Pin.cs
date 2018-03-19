@@ -172,7 +172,6 @@ public class Pin : DragSelectableProxyGameObject {
             result.SetPinColor();
         }
         
-
 		return result;
 	}
 
@@ -192,10 +191,7 @@ public class Pin : DragSelectableProxyGameObject {
             ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
             int curPinIn = parent.CurPinIn;
             parent.CurPinIn++;
-            string opeParentType = parent.AbOperator.ClassName;
-            string typePinIn = opeParentType.Split('_')[3 + curPinIn];
-            this.regularColor = PinColor.GetColorPinFromType(typePinIn);
-            //Debug.Log(typePinIn + " " + curPinIn);                        
+			this.regularColor = PinColor.GetColorPinFromType( parent.AbOperator.getIncomeType(curPinIn));
         }
         else if(this.Pin_Type == Pin.PinType.Param)
         {

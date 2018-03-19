@@ -9,6 +9,8 @@ public class ABMacroOperator<T> : ABOperator<T>
     private string viewName;
     private string symbolName;
 
+	private List<System.Type> argTypes;
+
     private ABOperator<T> wrappedTree;
 
     public override string ClassName
@@ -62,6 +64,15 @@ public class ABMacroOperator<T> : ABOperator<T>
             wrappedTree = value;
         }
     }
+
+	public List<System.Type> ArgTypes {
+		get {
+			return argTypes;
+		}
+		set {
+			argTypes = value;
+		}
+	}
 
     protected override T Evaluate(ABContext context)
     {
@@ -162,4 +173,17 @@ public class ABMacroOperator<T> : ABOperator<T>
     {
         inputs = new ABNode[nbInputs];
     }
+
+	#region Implementation IABOperator
+
+	public override System.Type getIncomeType( int index ){
+		try{
+			return argTypes [index];
+		}
+		catch(System.Exception ex){}
+
+		return ABModel.ParamTypeToType( ParamType.None );
+	}
+
+	#endregion
 }

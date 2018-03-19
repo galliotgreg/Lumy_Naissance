@@ -5,7 +5,7 @@ using UnityEngine;
 public class MC_Inventory_NodeItem : MC_InventoryItem {
 
 	public enum NodeItemType{
-		State, Action, Operator, Param
+		State, Action, Operator, Param, MacroOperator
 	};
 
 	NodeItemType itemType;
@@ -36,6 +36,11 @@ public class MC_Inventory_NodeItem : MC_InventoryItem {
 	/// </summary>
 	[SerializeField]
 	protected Sprite ParamImage;
+	/// <summary>
+	/// The sprite loaded for a MacroOperator Image
+	/// </summary>
+	[SerializeField]
+	protected Sprite MacroOperatorImage;
 
 	public NodeItemType ItemType {
 		get {
@@ -60,6 +65,9 @@ public class MC_Inventory_NodeItem : MC_InventoryItem {
 			break;
 		case NodeItemType.Param:
 			NodeImage.sprite = ParamImage;
+			break;
+		case NodeItemType.MacroOperator:
+			NodeImage.sprite = MacroOperatorImage;
 			break;
 		}
 	}

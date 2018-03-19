@@ -74,7 +74,7 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		//return ((ABOperator<T>)this).GetType().GetGenericArguments () [0];
 	}
 
-	public System.Type getIncomeType( int index ){
+	public virtual System.Type getIncomeType( int index ){
 		int indexPlusStart = index + 3;
 
 		string[] terms = this.GetType ().ToString ().Split ('_');
