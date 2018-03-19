@@ -134,6 +134,24 @@ public class ABManager : MonoBehaviour
 
         DirectoryInfo info = new DirectoryInfo(MacrosFolderPath);
         FileInfo[] filesInfo = info.GetFiles();
+        int maxLoop = filesInfo.Length;
+        int nbLoop = 0;
+        bool isOK = false;
+        while (!isOK && nbLoop < maxLoop)
+        {
+            isOK = LoadMacroSinglePass(filesInfo);
+            nbLoop++;
+        }
+
+        if (!isOK)
+        {
+            Debug.LogError("Unable to load Macro Operators Library");
+        }
+    }
+
+    private bool LoadMacroSinglePass(FileInfo[] filesInfo)
+    {
+        bool isOK = true;
         foreach (FileInfo file in filesInfo)
         {
             //Skip meta
@@ -154,17 +172,33 @@ public class ABManager : MonoBehaviour
                 argTypes[i] = tokens[i + 2];
             }
 
+            string key = file.Name.Replace(AppContextManager.instance.CSV_EXT, "");
+            if (macros.ContainsKey(key))    //Skip if already registered
+            {
+                continue;
+            }
+
             //Parse wrapped tree
             ABParser parser = new ABParser();
             lines.RemoveRange(0, 2);
-            ABNode wrappedTree = parser.ParseMacroTree(lines, returnType);
-            IABOperator macro = 
-                ABMacroOperatorFactory.CreateMacro(
-                    wrappedTree,
-                    returnType, name, argTypes);
-            string key = file.Name.Replace(AppContextManager.instance.CSV_EXT, "");
-            macros.Add(key, macro);
+            try
+            {
+                ABNode wrappedTree = parser.ParseMacroTree(lines, returnType);
+                IABOperator macro =
+                    ABMacroOperatorFactory.CreateMacro(
+                        key,
+                        wrappedTree,
+                        returnType, name, argTypes);
+                macros.Add(key, macro);
+            }
+            catch (KeyNotFoundException e)
+            {
+                isOK = false;
+                continue;
+            }
         }
+
+        return isOK;
     }
 
     private void Frame()

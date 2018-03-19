@@ -7,6 +7,7 @@ public interface IABOperator {
 
     string ClassName { get; set; }
     string ViewName { get; set; }
+    string SymbolName { get; set; }
 
     System.Type getOutcomeType ();
 

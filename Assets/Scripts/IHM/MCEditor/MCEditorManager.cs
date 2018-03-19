@@ -167,7 +167,19 @@ public class MCEditorManager : MonoBehaviour {
         {
             foreach (ProxyABOperator proxy in proxyOperators)
             {
-                if (operatorDictionary[((IABOperator)proxy.AbOperator).ClassName] == nameProxy)
+                if (proxy.isMacroComposant)
+                {
+                    if(proxy.AbOperator.SymbolName == nameProxy)
+                    {
+                        if (!proxy.IsPositioned)
+                        {
+                            proxy.transform.position = new Vector3(x, y, z);
+                            proxy.IsPositioned = true;
+                            return;
+                        }
+                    }
+                }
+                else if (operatorDictionary[((IABOperator)proxy.AbOperator).ClassName] == nameProxy)
                 {
                     if (!proxy.IsPositioned)
                     {
@@ -441,32 +453,34 @@ public class MCEditorManager : MonoBehaviour {
 
             if (node is IABOperator)
             {
-                string type = operatorDictionary[((IABOperator)node).ClassName];
-                if (!operatorDictionary.ContainsKey(((IABOperator)node).ClassName))
+                string type = "";
+                if (node.GetType().ToString().Contains("Macro"))
                 {
-                    Debug.LogError(((IABOperator)node).GetType().ToString() + " n'est pas dans la le dictionnaire des opérateurs. Vérifier l'orthographe Dans le fichier ABOperatorFactory");
+                    type = ((IABOperator)node).SymbolName;
+                    syntTreeContent.AppendLine(idParentnode + ",macro{" + type + "}" + ",");
                 }
                 else
                 {
-                    //TODO : REFACTO avec une interface IABMAcroOperator
-                    if (node.GetType().ToString().Contains("Macro"))
+                    type = operatorDictionary[((IABOperator)node).ClassName];
+                    if (!operatorDictionary.ContainsKey(((IABOperator)node).ClassName))
                     {
-                        syntTreeContent.AppendLine(idParentnode + ",macro{" + type + "}" + ",");
+                        Debug.LogError(((IABOperator)node).GetType().ToString() + " n'est pas dans la le dictionnaire des opérateurs. Vérifier l'orthographe Dans le fichier ABOperatorFactory");
                     }
                     else
                     {
                         syntTreeContent.AppendLine(idNodeSyntTree + ",operator{" + type + "},");
-                    }
-                    idNodeSyntTree++;
-                    idNodeInputPin = 0;
-                    foreach (ABNode input in ((IABOperator)node).Inputs)
-                    {
-                        /**Recursive function**/
-                        Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
-                        idNodeInputPin++;
 
+                        idNodeSyntTree++;
+                        idNodeInputPin = 0;
+                        foreach (ABNode input in ((IABOperator)node).Inputs)
+                        {
+                            /**Recursive function**/
+                            Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
+                            idNodeInputPin++;
+
+                        }
                     }
-                }
+                }                    
             }
             else if (node is IABParam)
             {
@@ -495,33 +509,32 @@ public class MCEditorManager : MonoBehaviour {
         else
         {
             if (node is IABOperator)
-            {                
+            {
                 string type = "";
-                if (!operatorDictionary.ContainsKey(((IABOperator)node).ClassName))
+                if (node.GetType().ToString().Contains("Macro"))
                 {
-                    Debug.LogError(((IABOperator)node).GetType().ToString() + " n'est pas dans la le dictionnaire des opérateurs. Vérifier l'orthographe Dans le fichier ABOperatorFactory");
+                    type = ((IABOperator)node).SymbolName;
+                    syntTreeContent.AppendLine(idParentnode + ",macro{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
                 }
                 else
                 {
-                    type = operatorDictionary[((IABOperator)node).ClassName];
-
-                    //TODO : REFACTO avec une interface IABMAcroOperator
-                    if (node.GetType().ToString().Contains("Macro"))
+                    if (!operatorDictionary.ContainsKey(((IABOperator)node).ClassName))
                     {
-                        type = operatorDictionary[((IABOperator)node).ClassName];
-                        syntTreeContent.AppendLine(idParentnode + ",macro{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
+                        Debug.LogError(((IABOperator)node).GetType().ToString() + " n'est pas dans la le dictionnaire des opérateurs. Vérifier l'orthographe Dans le fichier ABOperatorFactory");
                     }
                     else
                     {
+                        type = operatorDictionary[((IABOperator)node).ClassName];
                         syntTreeContent.AppendLine(idParentnode + ",operator{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
-                    }
-                    idNodeSyntTree++;
-                    idNodeInputPin = 0;
-                    foreach (ABNode input in ((IABOperator)node).Inputs)
-                    {
-                        /**Recursive function**/
-                        Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
-                        idNodeInputPin++;
+                        
+                        idNodeSyntTree++;
+                        idNodeInputPin = 0;
+                        foreach (ABNode input in ((IABOperator)node).Inputs)
+                        {
+                            /**Recursive function**/
+                            Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
+                            idNodeInputPin++;
+                        }
                     }
                 }
             }            
@@ -577,8 +590,14 @@ public class MCEditorManager : MonoBehaviour {
         foreach (ProxyABOperator ope in proxyOperators)
         {
             string type = "";
-            type = operatorDictionary[((IABOperator)ope).ClassName];        
-
+            if (ope.AbOperator.GetType().ToString().Contains("Macro"))
+            {
+                type = ope.AbOperator.SymbolName;
+            }
+            else
+            {
+                type = operatorDictionary[((IABOperator)ope).ClassName];
+            }                
             csvcontent.AppendLine(type + ", " + ope.transform.position.x.ToString() + ", "
                                                             + ope.transform.position.y.ToString() + ", "
                                                             + ope.transform.position.z.ToString());
