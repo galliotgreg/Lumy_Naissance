@@ -9,7 +9,7 @@ public abstract class SyntaxTree_MC_Exception : MC_Exception {
 
 	public string getMessage(){
 		string trace = getTrace ( 0 );
-		return trace + '\n' + Message;
+		return trace;
 	}
 
 	public abstract string getTrace ( int level );

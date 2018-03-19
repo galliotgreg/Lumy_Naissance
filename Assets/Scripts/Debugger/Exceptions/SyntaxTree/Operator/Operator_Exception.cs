@@ -1,7 +1,7 @@
 ﻿public class Operator_Exception : Terminal_SyntaxTree_MC_Exception {
 	IABOperator operatorSource;
 
-	public Operator_Exception( IABOperator _operator, ABContext context, string msg = "" )
+	public Operator_Exception( IABOperator _operator, ABContext context, string msg )
 		: base ( context, msg ){
 		operatorSource = _operator;
 	}
