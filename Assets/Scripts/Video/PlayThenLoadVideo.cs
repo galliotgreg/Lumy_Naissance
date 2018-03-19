@@ -22,6 +22,7 @@ public class PlayThenLoadVideo : MonoBehaviour {
 		
 	}
 
+    // Change scene after waiting for an amount of time equal to the video's length
     IEnumerator WaitForLengthCo(double duration)
     {
         yield return new WaitForSeconds((float)duration);
@@ -30,6 +31,7 @@ public class PlayThenLoadVideo : MonoBehaviour {
         player.GetComponent<VideoPlayer>().Stop();
     }
 
+    // Skip video after click
     void SkipVideo()
     {
         NavigationManager.instance.ActivateFadeToBlack();

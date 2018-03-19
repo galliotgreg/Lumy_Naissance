@@ -1,7 +1,7 @@
 ﻿public class Action_Exception : Terminal_SyntaxTree_MC_Exception {
 	ABAction actionSource;
 
-	public Action_Exception( ABAction action, ABContext context, string msg = "" )
+	public Action_Exception( ABAction action, ABContext context, string msg )
 		: base( context, msg ){
 		actionSource = action;
 	}

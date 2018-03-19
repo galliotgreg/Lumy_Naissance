@@ -9,7 +9,7 @@ public class ABTraceAction : ABAction
         this.type = ActionType.Trace;
         this.parameters = new IABGateOperator[2];
         this.parameters[0] = new AB_ColorGate_Operator();
-        this.parameters[1] = new AB_VecGate_Operator();
+        this.parameters[1] = new AB_VecTabGate_Operator();
     }
 
 	#region implemented abstract members of ABAction

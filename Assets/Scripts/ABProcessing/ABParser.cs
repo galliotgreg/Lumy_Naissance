@@ -15,25 +15,8 @@ public class ABParser
     private IABGateOperator curGateOperator;
     private List<ABNode> curNodes;
 
-    private List<ABNode> macros;
-
-    public void LoadMacros()
-    {
-        //TODO Remove this debug stub (Implement Factory)
-        macros = new List<ABNode>();
-        ABMacroOperator<ABRef> macro = new ABMacroOperator<ABRef>();
-        macro.AllocInputs(1);
-        macro.ClassName = "AB_Ref_Test_RefTab_Operator";
-        macro.ViewName = "Ref_Test_RefTab";
-        macro.SymbolName = "RtestR[]";
-        macros.Add(macro);
-        //TODO end stub
-    }
-
     private void InitialiseParser()
     {
-        LoadMacros();
-
         isInStatesBlock = false;
         isInTransitionBlock = false;
         isInSyntaxTreeBlock = false;
@@ -66,12 +49,66 @@ public class ABParser
                 }
                 else if (isInNodeBlock)
                 {
-                    ParseNodeLine(tokens);
+                    ParseNodeLine(tokens, false);
                 }
             }
         }
 
         return model;
+    }
+
+    public ABNode ParseMacroTree(List<string> lines, string returnType)
+    {
+        InitialiseParser();
+        curGateOperator = CreateGateFromType(returnType);
+
+        foreach (string line in lines)
+        {
+            String[] tokens = line.Split(',');
+            if (tokens.Length > 0 && tokens[0] != "" && !DetectBlocks(tokens))
+            {
+                if (isInNodeBlock)
+                {
+                    ParseNodeLine(tokens, true);
+                }
+            }
+        }
+
+        return curGateOperator.Inputs[0];
+       
+    }
+
+    private IABGateOperator CreateGateFromType(string returnType)
+    {
+        switch (returnType)
+        {
+            case "bool":
+                return new AB_BoolGate_Operator();
+            case "scal":
+                return new AB_ScalGate_Operator();
+            case "txt":
+                return new AB_TxtGate_Operator();
+            case "color":
+                return new AB_ColorGate_Operator();
+            case "vec":
+                return new AB_VecGate_Operator();
+            case "ref":
+                return new AB_RefGate_Operator();
+            case "bool[]":
+                return new AB_BoolTabGate_Operator();
+            case "scal[]":
+                return new AB_ScalTabGate_Operator();
+            case "txt[]":
+                return new AB_TextTabGate_Operator();
+            case "color[]":
+                return new AB_ColorTabGate_Operator();
+            case "vec[]":
+                return new AB_VecTabGate_Operator(); ;
+            case "ref[]":
+                return new AB_RefTabGate_Operator();
+            default:
+                throw new System.NotImplementedException();
+        }
     }
 
     private void ParseStateLine(String[] tokens)
@@ -110,8 +147,7 @@ public class ABParser
         {
             curGateOperator = new AB_BoolGate_Operator();
             model.SetCondition(transId, (AB_BoolGate_Operator) curGateOperator);
-        } else
-        {
+        } else {
             char[] separators = { '-', '>' };
             String stateName = tokens[1].Split(separators)[0];
             String pinIdStr = tokens[1].Split(separators)[2];
@@ -120,7 +156,7 @@ public class ABParser
         }
     }
 
-    private void ParseNodeLine(String[] tokens)
+    private void ParseNodeLine(String[] tokens, bool isMacro)
     {
         String typeName = ExtractNodeType(tokens[1]);
         String typeParams = ExtractTypeParams(tokens[1]);
@@ -137,9 +173,10 @@ public class ABParser
                 node = (ABNode)ParseParam(typeParams);
                 break;
             case "macro":
-                //TODO Remove this debug stub
-                node = macros[0];
-                //TODO end stub
+                node = (ABNode)ParseMacro(typeParams);
+                break;
+            case "arg":
+                node = (ABNode)ParseArg(typeParams);
                 break;
             default:
                 throw new NotSupportedException("Node type" + typeName + " not handled !");
@@ -168,7 +205,13 @@ public class ABParser
             node.Output = (ABNode) curGateOperator;
         }
     }
-    
+
+    private IABParam ParseArg(string typeParams)
+    {
+        String[] tokens = typeParams.Split(':');
+        return ABParamFactory.CreateParam(tokens[0], tokens[1], null);
+    }
+
     public IABParam ParseParam(string typeParams)
     {
         char[] separators = { ' ', '=', ':' };
@@ -183,6 +226,16 @@ public class ABParser
         }
 
         return null;
+    }
+
+    public IABOperator ParseMacro(string typeParams)
+    {
+        if (!ABManager.instance.Macros.ContainsKey(typeParams))
+        {
+            Debug.Log("");
+        }
+
+        return ABManager.instance.Macros[typeParams];
     }
 
     public IABOperator ParseOperator(string typeParams)
