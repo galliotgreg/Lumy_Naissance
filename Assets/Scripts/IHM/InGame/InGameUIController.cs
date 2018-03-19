@@ -157,6 +157,17 @@ public class InGameUIController : MonoBehaviour
 
     private List<GameObject> queens = new List<GameObject>();
 
+    private float newAmount = 0f;
+    private float depenseLigne = 0;
+    private float gainLigne = 0;
+
+    [Header("Prysme Text")]
+    [SerializeField]
+    private Text positiveText;
+    [SerializeField]
+    private Text negativeText;
+
+
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -343,6 +354,7 @@ public class InGameUIController : MonoBehaviour
         UnitStats();
         DisplayInSight();
         unitCost();
+        displayRessource();
         getAllUnit(PlayerAuthority.Player1);
         getAllUnit(PlayerAuthority.Player2);
     }
@@ -817,6 +829,43 @@ public class InGameUIController : MonoBehaviour
         //Enjoy this incredible code ;) 
 
     }
+
+    private void displayRessource() {
+        GameObject homeP1 = GameManager.instance.P1_home;
+        float time = 2f;
+        float newTime = 0f;
+        HomeScript p1_hiveScript = homeP1.GetComponent<HomeScript>();
+        float oldAmount = p1_hiveScript.GreenResAmout + p1_hiveScript.RedResAmout + p1_hiveScript.BlueResAmout;
+        float depense = oldAmount - newAmount;
+        if (depense == 0) {
+            return;
+        }
+        if (depense < 0) {
+            Text perteText = Instantiate(negativeText, homeP1.transform.GetChild(1).transform);
+            perteText.transform.SetParent(homeP1.transform.GetChild(1).transform);
+
+            perteText.text = depense.ToString();
+            
+            if(time <= newTime) {
+                perteText.transform.position = new Vector3(perteText.transform.position.x, perteText.transform.position.y - 1, perteText.transform.position.z);
+            }
+            Debug.Log("perteText : " + perteText.text);
+            Destroy(perteText.gameObject, 1f);
+        }
+        if(depense > 0) {
+            Text gainText = Instantiate(positiveText, homeP1.transform.GetChild(1).transform);
+            gainText.transform.SetParent(homeP1.transform.GetChild(1).transform);
+
+            gainText.text = depense.ToString();
+            gainText.transform.position = new Vector3(gainText.transform.position.x, gainText.transform.position.y - 1, gainText.transform.position.z);
+            Debug.Log("gainText : " + gainText.text);
+            Destroy(gainText.gameObject, 1f);
+        }
+
+        newAmount = oldAmount;
+        newTime += Time.deltaTime;
+    }
+
 
 }
 
