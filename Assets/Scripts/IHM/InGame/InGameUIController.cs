@@ -488,10 +488,12 @@ public class InGameUIController : MonoBehaviour
     private void ExitGame()
     
     {
-        if(OperatorHelper.Instance != null)
+      
+        if (OperatorHelper.Instance != null)
         {
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
+        CheckPause();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene"); 
     }
     private void GoToCasteMenu()
@@ -500,6 +502,7 @@ public class InGameUIController : MonoBehaviour
         {
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
+        CheckPause();
         NavigationManager.instance.SwapScenesWithoutZoom("CastesScene");
     }
 
@@ -509,6 +512,7 @@ public class InGameUIController : MonoBehaviour
         {
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
+        CheckPause();
         NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
       
     }
@@ -519,6 +523,7 @@ public class InGameUIController : MonoBehaviour
         {
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
+        CheckPause();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
 
     }
@@ -531,6 +536,14 @@ public class InGameUIController : MonoBehaviour
         }
         panelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
 
+    }
+
+    private void CheckPause()
+    {
+        if(Time.timeScale == 0)
+        {
+            Time.timeScale = 1; 
+        }
     }
 
     void SwitchMenu() {
