@@ -43,126 +43,126 @@ public class SwarmEditUIController : MonoBehaviour {
 
     public void CopySwarm()
     {
-
+        Debug.Log("CopySwarm");
     }
 
     public void DeleteSwarm()
     {
-
+        Debug.Log("DeleteSwarm");
     }
 
     public void NewSwarm()
     {
-
+        Debug.Log("NewSwarm");
     }
 
     public void OpenEditSwarmDialog()
     {
-
+        Debug.Log("OpenEditSwarmDialog");
     }
 
     public void OpenImportSwarmDialog()
     {
-        
+        Debug.Log("OpenImportSwarmDialog");
     }
 
     public void OpenExportSwarmDialog()
     {
-
+        Debug.Log("OpenExportSwarmDialog");
     }
 
     public void CopyLumy()
     {
-
+        Debug.Log("CopyLumy");
     }
 
     public void DeleteLumy()
     {
-
+        Debug.Log("DeleteLumy");
     }
 
     public void NewLumy()
     {
-
+        Debug.Log("NewLumy");
     }
 
     public void IncrVitality()
     {
-
+        Debug.Log("IncrVitality");
     }
 
     public void DecrVitality()
     {
-
+        Debug.Log("DecrVitality");
     }
 
     public void IncrStamina()
     {
-
+        Debug.Log("IncrStamina");
     }
 
     public void DecrStamina()
     {
-
+        Debug.Log("DecrStamina");
     }
 
     public void IncrStrength()
     {
-
+        Debug.Log("IncrStrength");
     }
 
     public void DecrStrength()
     {
-
+        Debug.Log("DecrStrength");
     }
 
     public void IncrActSpeed()
     {
-
+        Debug.Log("IncrActSpeed");
     }
 
     public void DecrActSpeed()
     {
-
+        Debug.Log("DecrActSpeed");
     }
 
     public void IncrMoveSpeed()
     {
-
+        Debug.Log("IncrMoveSpeed");
     }
 
     public void DecrMoveSpeed()
     {
-
+        Debug.Log("DecrMoveSpeed");
     }
 
     public void IncrVisionRange()
     {
-
+        Debug.Log("IncrVisionRange");
     }
 
     public void DecrVisionRange()
     {
-
+        Debug.Log("DecrVisionRange");
     }
 
     public void IncrAtkRange()
     {
-
+        Debug.Log("IncrAtkRange");
     }
 
     public void DecrAtkRange()
     {
-
+        Debug.Log("DecrAtkRange");
     }
 
     public void IncrPickRange()
     {
-
+        Debug.Log("IncrPickRange");
     }
 
     public void DecrPickRange()
     {
-
+        Debug.Log("DecrPickRange");
     }
 }
