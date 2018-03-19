@@ -167,7 +167,19 @@ public class MCEditorManager : MonoBehaviour {
         {
             foreach (ProxyABOperator proxy in proxyOperators)
             {
-                if (operatorDictionary[((IABOperator)proxy.AbOperator).ClassName] == nameProxy)
+                if (proxy.isMacroComposant)
+                {
+                    if(proxy.AbOperator.SymbolName == nameProxy)
+                    {
+                        if (!proxy.IsPositioned)
+                        {
+                            proxy.transform.position = new Vector3(x, y, z);
+                            proxy.IsPositioned = true;
+                            return;
+                        }
+                    }
+                }
+                else if (operatorDictionary[((IABOperator)proxy.AbOperator).ClassName] == nameProxy)
                 {
                     if (!proxy.IsPositioned)
                     {
