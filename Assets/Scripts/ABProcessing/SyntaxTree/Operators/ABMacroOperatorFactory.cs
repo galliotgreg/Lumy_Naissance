@@ -7,7 +7,7 @@ public class ABMacroOperatorFactory {
     private const string CLASS_NAME_PREFFIX = "AB";
     private const string CLASS_NAME_SUFFIX = "Operator";
 
-    public static IABOperator CreateMacro(ABNode root, string returnType, string name, string[] argTypes)
+    public static IABOperator CreateMacro(string filename, ABNode root, string returnType, string name, string[] argTypes)
     {
         IABOperator macro = null;
 
@@ -28,40 +28,40 @@ public class ABMacroOperatorFactory {
         switch (returnType)
         {
             case "bool":
-                macro = CreateMacro<ABBool>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro<ABBool>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "scal":
-                macro = CreateMacro<ABScalar>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro<ABScalar>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "txt":
-                macro = CreateMacro<ABText>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro<ABText>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "color":
-                macro = CreateMacro<ABColor>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro<ABColor>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "vec":
-                macro = CreateMacro<ABVec>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro<ABVec>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "ref":
-                macro = CreateMacro<ABRef>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro<ABRef>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "bool[]":
-                macro = CreateMacro<ABTable<ABBool>>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro<ABTable<ABBool>>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "scal[]":
-                macro = CreateMacro< ABTable<ABScalar>>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro< ABTable<ABScalar>>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "txt[]":
-                macro = CreateMacro< ABTable<ABText>>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro< ABTable<ABText>>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "color[]":
-                macro = CreateMacro< ABTable<ABColor>>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro< ABTable<ABColor>>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "vec[]":
-                macro = CreateMacro<ABTable<ABVec>>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro<ABTable<ABVec>>(filename, root, returnType, name, cleanArgTypes);
                 break;
             case "ref[]":
-                macro = CreateMacro< ABTable<ABRef>>(root, returnType, name, cleanArgTypes);
+                macro = CreateMacro< ABTable<ABRef>>(filename, root, returnType, name, cleanArgTypes);
                 break;
             default:
                 throw new System.NotImplementedException();
@@ -70,7 +70,7 @@ public class ABMacroOperatorFactory {
         return macro; 
     }
 
-    private static ABMacroOperator<T> CreateMacro<T>(ABNode root, string returnType, string name, string[] argTypes)
+    private static ABMacroOperator<T> CreateMacro<T>(string filename, ABNode root, string returnType, string name, string[] argTypes)
     {
         ABMacroOperator<T> macro = new ABMacroOperator<T>();
         macro.WrappedTree =
@@ -78,7 +78,7 @@ public class ABMacroOperatorFactory {
         macro.AllocInputs(argTypes.Length);
         macro.ViewName = BuildViewName(returnType, name, argTypes);
         macro.ClassName = BuildClassNameFromViewName(macro.ViewName);
-        macro.SymbolName = BuildSymbolName(returnType, name, argTypes);
+        macro.SymbolName = filename; //BuildSymbolName(returnType, name, argTypes);
 		macro.ArgTypes = ArgsToTypes ( argTypes );
 
         return macro;

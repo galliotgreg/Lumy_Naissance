@@ -39,7 +39,7 @@ public class ABMacroOperator<T> : ABOperator<T>
         }
     }
 
-    public string SymbolName
+    public override string SymbolName
     {
         get
         {
