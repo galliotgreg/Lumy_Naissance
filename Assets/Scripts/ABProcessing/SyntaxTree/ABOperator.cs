@@ -53,6 +53,18 @@ public abstract class ABOperator<T> : ABNode, IABOperator
             throw new System.NotSupportedException();
         }
     }
+    public virtual string SymbolName
+    {
+        get
+        {
+            throw new System.NotSupportedException();
+        }
+
+        set
+        {
+            throw new System.NotSupportedException();
+        }
+    }
 
     public T EvaluateOperator(ABContext context){
 		try{
