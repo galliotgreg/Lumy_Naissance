@@ -41,6 +41,11 @@ public class SwarmEditUIController : MonoBehaviour {
         Debug.Log("RefreshView");
     }
 
+    public void SelectSwarm()
+    {
+        Debug.Log("SelectSwarm");
+    }
+
     public void CopySwarm()
     {
         Debug.Log("CopySwarm");
@@ -71,6 +76,11 @@ public class SwarmEditUIController : MonoBehaviour {
         Debug.Log("OpenExportSwarmDialog");
     }
 
+    public void SelectLumy()
+    {
+        Debug.Log("SelectLumy");
+    }
+
     public void CopyLumy()
     {
         Debug.Log("CopyLumy");
@@ -84,6 +94,16 @@ public class SwarmEditUIController : MonoBehaviour {
     public void NewLumy()
     {
         Debug.Log("NewLumy");
+    }
+
+    public void EditLumyMC()
+    {
+        Debug.Log("EditLumyMC");
+    }
+
+    public void EditPrysmMC()
+    {
+        Debug.Log("EditPrysmMC");
     }
 
     public void IncrVitality()
