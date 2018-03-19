@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour {
 
     private Specie p1_specie;
     private Specie p2_specie;
-
+    
     public GameObject P1_home
     {
         get
@@ -525,9 +525,7 @@ public class GameManager : MonoBehaviour {
         }
         return resSum;
     }
-
-
-
+    
 
     public HomeScript GetEnemyHome(PlayerAuthority authority)
     {

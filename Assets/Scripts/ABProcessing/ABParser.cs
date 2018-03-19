@@ -232,7 +232,7 @@ public class ABParser
     {
         if (!ABManager.instance.Macros.ContainsKey(typeParams))
         {
-            Debug.Log("");
+            Debug.LogError(typeParams + " not found on parsing macro");
         }
 
         return ABManager.instance.Macros[typeParams];

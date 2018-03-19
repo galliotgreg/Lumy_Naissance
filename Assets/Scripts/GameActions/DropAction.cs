@@ -34,7 +34,7 @@ public class DropAction : GameAction {
                     }
                     else if (color.Equals(new Color32(0, 0, 255, 255)))
                     {
-                        this.agentEntity.Home.BlueResAmout++;
+                        this.agentEntity.Home. BlueResAmout++;
                     }
                 }
 
