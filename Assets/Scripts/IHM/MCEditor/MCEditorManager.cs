@@ -88,7 +88,7 @@ public class MCEditorManager : MonoBehaviour {
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
 
         /**START DO NOT COMMIT**/
-        if (AppContextManager.instance.PrysmeEdit)
+        /*if (AppContextManager.instance.PrysmeEdit)
         {
             MC_OrigFilePath = AppContextManager.instance.ActiveSpecieFolderPath 
                 + AppContextManager.instance.PRYSME_FILE_NAME
@@ -98,8 +98,8 @@ public class MCEditorManager : MonoBehaviour {
         else
         {
             MC_OrigFilePath = AppContextManager.instance.ActiveBehaviorPath;
-        }
-        //MC_OrigFilePath = "Assets/Inputs/Test/GREG_TRANS_STATE_STATE_TEST.csv";
+        }*/
+        MC_OrigFilePath = "Assets/Inputs/Test/GREG_TRANS_STATE_STATE_TEST.csv";
         /**END DO NOT COMMIT**/
 
         //usefull for save function
