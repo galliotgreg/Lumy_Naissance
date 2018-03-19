@@ -53,6 +53,7 @@ public abstract class MC_Inventory : MonoBehaviour {
 	#region Drop
 	public void DropItem ( GameObject proxy, MC_InventoryItem item ){
 		if (dropArea.CanDrop) {
+			MCEditorManager.positioningProxy (proxy.GetComponent<MCEditor_Proxy>());
 			Drop ( proxy, item );
 		} else {
 			Destroy (proxy.gameObject);

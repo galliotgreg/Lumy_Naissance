@@ -901,6 +901,36 @@ public class MCEditorManager : MonoBehaviour {
 	}
 	#endregion
 
+	#region POSITIONING
+	public static void positioningProxy( MCEditor_Proxy proxy ){
+		Vector3 curPosition = proxy.transform.position;
+		//proxy.transform.position = new Vector3 ( Mathf.Round( curPosition.x ), Mathf.RoundToInt( curPosition.y ), curPosition.z );
+
+		float gridDimension = 0.5f;
+
+		float newPosX = 0;
+		float newPosY = 0;
+		// Check if the position is closer to previous or next grid point
+		float diffX = curPosition.x % gridDimension;
+		int xIt = Mathf.FloorToInt( curPosition.x / gridDimension );
+		if (Mathf.Abs (diffX) > gridDimension / 2) {
+			newPosX = gridDimension * (xIt + 1);
+		} else {
+			newPosX = gridDimension*xIt;
+		}
+
+		float diffY = curPosition.y % gridDimension;
+		int yIt = Mathf.FloorToInt( curPosition.y / gridDimension );
+		if (Mathf.Abs (diffY) > gridDimension / 2) {
+			newPosY = gridDimension * (yIt + 1);
+		} else {
+			newPosY = gridDimension*yIt;
+		}
+
+		proxy.transform.position = new Vector3 ( newPosX, newPosY, curPosition.z );
+	}
+	#endregion
+
     private void LinkGateOperator_Operator(Pin start, Pin end)
     {
         ProxyABTransition startTransitionParent;
