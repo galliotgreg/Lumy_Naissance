@@ -158,11 +158,12 @@ public class ABManager : MonoBehaviour
             ABParser parser = new ABParser();
             lines.RemoveRange(0, 2);
             ABNode wrappedTree = parser.ParseMacroTree(lines, returnType);
+            string key = file.Name.Replace(AppContextManager.instance.CSV_EXT, "");
             IABOperator macro = 
                 ABMacroOperatorFactory.CreateMacro(
+                    key,
                     wrappedTree,
                     returnType, name, argTypes);
-            string key = file.Name.Replace(AppContextManager.instance.CSV_EXT, "");
             macros.Add(key, macro);
         }
     }

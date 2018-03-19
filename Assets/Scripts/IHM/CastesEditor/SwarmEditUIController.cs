@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SwarmEditUIController : MonoBehaviour {
     /// <summary>
@@ -26,6 +28,20 @@ public class SwarmEditUIController : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// The canvas listing aull lumys from the active swarm
+    /// </summary>
+    [SerializeField]
+    private GameObject lumysScrollContent;
+
+    /// <summary>
+    /// Instancied prefab for each lumys on the lumy scroll content
+    /// </summary>
+    [SerializeField]
+    private GameObject lumyButtonPrefab;
+
+    private float lumyYMarginLayout = 35f;
+
     // Use this for initialization
     void Start () {
         RefreshView();
@@ -38,7 +54,31 @@ public class SwarmEditUIController : MonoBehaviour {
 
     private void RefreshView()
     {
-        Debug.Log("RefreshView");
+        LoadLumys();
+    }
+
+    private void LoadLumys()
+    {
+        float y = -5;
+        float scalFactor = 0.01f;
+        foreach (KeyValuePair<string, Cast> lumy 
+            in AppContextManager.instance.ActiveSpecie.Casts)
+        {
+            //Create Button
+            GameObject button = Instantiate(lumyButtonPrefab, Vector3.zero, Quaternion.identity);
+
+            //Layout Button
+            Vector3 pos = lumysScrollContent.transform.position;
+            pos += new Vector3(0f, y * scalFactor, 0f);
+            button.transform.position = pos;
+            button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
+            y -= lumyYMarginLayout;
+            button.transform.parent = lumysScrollContent.transform;
+
+            //Set Name
+            Text btnText = button.GetComponentInChildren<Text>();
+            btnText.text = lumy.Key;
+        }
     }
 
     public void SelectSwarm()
