@@ -29,6 +29,7 @@ public class MCToolManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        neverCalculated = true;
     }
 	#endregion
     
@@ -54,8 +55,14 @@ public class MCToolManager : MonoBehaviour
 	[SerializeField]
 	DropArea centerZone;
 
-	#region PROPERTIES
-	ToolType CurrentTool {
+    private bool selectionEnCours;
+
+    private Vector3 mpos;
+    private bool neverCalculated;
+    List<Vector3> DistanceList = new List<Vector3>();
+
+    #region PROPERTIES
+    ToolType CurrentTool {
 		get {
 			return currentTool;
 		}
@@ -67,14 +74,14 @@ public class MCToolManager : MonoBehaviour
 
     private void Start()
     {
-		btn_Selection.onClick.AddListener(() => {CurrentTool = ToolType.Selection; CancelInventory();} );
-		btn_Main.onClick.AddListener(() => {CurrentTool = ToolType.Hand; CancelInventory();} );
+		btn_Selection.onClick.AddListener(() => {CurrentTool = ToolType.Selection; CancelInventory(); SelectionSquare.instance.enabled = true; } );
+		btn_Main.onClick.AddListener(() => {CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; } );
     }
 
     private void Update()
     {
         //Mouse Button Press Down
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !selectionEnCours)
         {
 			RaycastHit hitInfo;
 			getTarget = ReturnClickedObject (out hitInfo);
@@ -82,51 +89,87 @@ public class MCToolManager : MonoBehaviour
 			if( centerZone.CanDrop ){
 			//if (!inventory) {
 				//Hit background
-				if (getTarget == null) {
+				if (getTarget.name == "STUBS_backgroundCollider") //getTarget == null || 
+                {
 				//if (getTarget.name == "STUBS_backgroundCollider") {
 					inventory = false;
 					//current tool activated
 					if (CurrentTool == ToolType.Selection) {
-						Debug.Log ("le current tool est selection avec hit background");
-						GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
-						SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
-						Debug.Log ("il y a " + SelectedNodes.Count + " nodes selected");
+                        //Debug.Log ("le current tool est selection avec hit background");
+                        
+                        selectionEnCours = true;
+                        SelectionSquare.instance.MultipleSelection = true;
+
+                        SelectionSquare.instance.enabled = true;
+                        
+                        SelectedNodes = SelectionSquare.instance.selectedUnits;
+                        //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
+                        //SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
+                        Debug.Log ("il y a " + SelectedNodes.Count + " nodes selected");
 					}
 					if (CurrentTool == ToolType.Hand) {
-						GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
-						isMouseDragging = false;
-					}
+                        //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
+                        SelectionSquare.instance.enabled = false;
+                        isMouseDragging = false;
+                    }
 				}
 
-				if (getTarget != null) {
+				if (getTarget.name != "STUBS_backgroundCollider") //(getTarget != null)
+                {
 					//hit something selectable (node, state, action...)
 					if (getTarget.tag == "Selectable") {
 						inventory = false;
 						//current tool activated
 						if (CurrentTool == ToolType.Selection) {
-							Debug.Log ("le current tool est selection avec hit node");
-							GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
-							SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
-						}
-						if (CurrentTool == ToolType.Hand) {
-							GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
-							isMouseDragging = true;
-						}
+
+                            
+                            //selectionEnCours = true;
+                            SelectionSquare.instance.MultipleSelection = false;
+                            SelectionSquare.instance.enabled = true;
+                            SelectedNodes = SelectionSquare.instance.selectedUnits;
+                            //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
+                            //SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
+                        }
+                        if (CurrentTool == ToolType.Hand) {
+                            //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
+                            SelectionSquare.instance.enabled = false;
+                            isMouseDragging = true;
+
+                            
+                            if (neverCalculated)
+                            {
+                                DistanceList.Clear();
+                                mpos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -GameObject.Find("Camera").GetComponent<Camera>().transform.position.z);
+                                mpos = GameObject.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(mpos);
+                                neverCalculated = false;
+                                foreach (GameObject b in SelectedNodes)
+                                {
+                                    DistanceList.Add(b.transform.position - mpos);
+                                }
+                            }
+                        }
 					}
 				}
 			} else {
-				// Disable square when inventory is selected
-				GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
-				isMouseDragging = false;
-			}
+                // Disable square when inventory is selected
+                //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
+                SelectionSquare.instance.enabled = false;
+                SelectionSquare.instance.MultipleSelection = false;
+                isMouseDragging = false;
+                selectionEnCours = false;
+            }
         }
 
         if(Input.GetMouseButtonUp(0))
         {
             isMouseDragging = false;
+            selectionEnCours = false;
         }
 
-		if (isMouseDragging && CurrentTool == ToolType.Hand) ToolMain();
+        if (isMouseDragging && CurrentTool == ToolType.Hand)
+        {
+            ToolMain();
+        }
 
     }
 
@@ -161,13 +204,19 @@ public class MCToolManager : MonoBehaviour
 
             else
             {
-                Debug.Log("il y a plusieurs nodes à bouger");
                 if (SelectedNodes != null && SelectedNodes.Contains(getTarget))
                 {
+                    int i = 0;
                     foreach (GameObject b in SelectedNodes)
                     {
-                        //update target current postion.
-                        b.transform.position = currentPosition;
+                        //update targets current postions.
+                        if(DistanceList[i].x < 0 || DistanceList[i].y < 0 )
+                        {
+                            DistanceList[i].Set(DistanceList[i].x * -1.0f, DistanceList[i].y * -1.0f, DistanceList[i].z);
+                        }
+                        b.transform.position = currentPosition + DistanceList[i];
+                        i++;
+
                     }
                 }
             }

@@ -6,6 +6,33 @@ using UnityEngine.EventSystems;
 
 public class SelectionSquare : MonoBehaviour
 {
+    #region SINGLETON
+    /// <summary>
+    /// The static instance of the Singleton for external access
+    /// </summary>
+    public static SelectionSquare instance = null;
+
+    /// <summary>
+    /// Enforce Singleton properties
+    /// </summary>
+    void Awake()
+    {
+        //Check if instance already exists and set it to this if not
+        if (instance == null)
+        {
+            instance = this;
+        }
+
+        //Enforce the unicity of the Singleton
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        selectedUnits = new List<GameObject>();
+        selectionSquareImage.gameObject.SetActive(false);
+    }
+    #endregion
     public GameObject[] allUnits;
 
     [SerializeField]
@@ -15,9 +42,11 @@ public class SelectionSquare : MonoBehaviour
     Vector3 squareEndPos;
 
     float clickTime = 0f;
-    public float clickDelay = 0.5f;
+    float clickDelay = 0.3f;
 
     bool hasCreatedSquare;
+    bool isClicking;
+    bool isHoldingDown;
 
     [System.NonSerialized]
     public List<GameObject> selectedUnits;
@@ -25,14 +54,12 @@ public class SelectionSquare : MonoBehaviour
     //The selection squares 4 corner positions
     Vector3 HG, HD, BG, BD;
 
-	void Awake(){
-		selectedUnits = new List<GameObject>();
-	}
+    public bool MultipleSelection;
 
     void Start()
     {
         //Desactivate the square selection image
-        selectionSquareImage.gameObject.SetActive(false);
+        //selectionSquareImage.gameObject.SetActive(false);
     }
 
     void Update()
@@ -44,12 +71,13 @@ public class SelectionSquare : MonoBehaviour
     void SelectUnits()
     {
         //Are we clicking with left mouse or holding down left mouse
-        bool isClicking = false;
-        bool isHoldingDown = false;
 
+        isClicking = false;
+        isHoldingDown = false;
         //Click the mouse button
-        if (Input.GetMouseButtonDown(0) ) // && !EventSystem.current.IsPointerOverGameObject()) 
+        if (Input.GetMouseButtonDown(0) )// && !EventSystem.current.IsPointerOverGameObject()) 
         {
+            Debug.Log("zizi");
             clickTime = Time.time;
 
             //We dont yet know if we are drawing a square, but we need the first coordinate in case we do draw a square
@@ -59,14 +87,18 @@ public class SelectionSquare : MonoBehaviour
             {
                 //The corner position of the square
                 squareStartPos = hit.point;
-                //Debug.Log("squarestartpos = " + squareStartPos);
+               Debug.Log("squarestartpos = " + squareStartPos);
             }
+
         }
         //Release the mouse button
         if (Input.GetMouseButtonUp(0) )//&& !EventSystem.current.IsPointerOverGameObject())
         {
-             //selectionSquareImage.gameObject.SetActive(false);
-            if (Time.time - clickTime <= clickDelay && !EventSystem.current.IsPointerOverGameObject())
+           // if (!MultipleSelection)
+           // {
+            //    isClicking = true;
+          //  }
+            if (Time.time - clickTime <= clickDelay )//&& !EventSystem.current.IsPointerOverGameObject())
             {
                 isClicking = true;
             }
@@ -82,7 +114,7 @@ public class SelectionSquare : MonoBehaviour
 
                 //Clear the list with selected unit
                 selectedUnits.Clear();
-                Debug.Log(selectedUnits);
+                //Debug.Log(selectedUnits);
 
                 //Select the units
                 for (int i = 0; i < allUnits.Length; i++)
@@ -111,6 +143,7 @@ public class SelectionSquare : MonoBehaviour
         //Holding down the mouse button
         if (Input.GetMouseButton(0))
         {
+            //isHoldingDown = true;
             if (Time.time - clickTime > clickDelay)
             {
                 isHoldingDown = true;
