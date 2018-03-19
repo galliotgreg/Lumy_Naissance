@@ -229,7 +229,15 @@ public class ABManager : MonoBehaviour
                 agent.setAction(action, actionParams.ToArray());
 			}
 			catch( SyntaxTree_MC_Exception syntaxEx ){
-				MessagesManager.instance.LogMsg("Syntax Error : \n"+syntaxEx.getMessage());
+				string cast = "";
+				IABParam selfParam = syntaxEx.ContextSource.GetParam ("self");
+				if(selfParam != null){
+					IABType castParam = ((ABRefParam)selfParam).Value.GetAttr ("cast");
+					if (castParam != null) {
+						cast = ((ABText)castParam).Value;
+					}
+				}
+				MessagesManager.instance.LogMsg("Syntax Error : "+(cast.Length>0?"[ Cast = "+cast+" ]":"")+"\n"+syntaxEx.getMessage());
 			}
 			catch (Exception e)
             {
