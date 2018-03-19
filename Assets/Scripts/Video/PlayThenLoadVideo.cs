@@ -31,6 +31,7 @@ public class PlayThenLoadVideo : MonoBehaviour {
         player.GetComponent<VideoPlayer>().Stop();
     }
 
+    // Skip video after click
     void SkipVideo()
     {
         NavigationManager.instance.ActivateFadeToBlack();
