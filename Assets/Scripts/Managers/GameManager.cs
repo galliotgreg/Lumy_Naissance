@@ -525,10 +525,7 @@ public class GameManager : MonoBehaviour {
         }
         return resSum;
     }
-
-
-		{
-
+    
 
     public HomeScript GetEnemyHome(PlayerAuthority authority)
     {

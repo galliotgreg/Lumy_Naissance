@@ -5,8 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InGameUIController : MonoBehaviour
-{
+public class InGameUIController : MonoBehaviour {
 
     /// <summary>
     /// The static instance of the Singleton for external access
@@ -14,8 +13,10 @@ public class InGameUIController : MonoBehaviour
     public static InGameUIController instance = null;
 
     private float startTime = 2.0f;
-    private bool winState = false; 
-    
+    private bool winState = false;
+
+    #region UIVariables
+    #region PlayerInfosPanel
     /// <summary>
     /// Resources 
     /// </summary>
@@ -45,6 +46,9 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text J2_PrysmeLife;
 
+    #endregion
+
+    #region MainMenu
     [Header("Main Menu")]
     [SerializeField]
     private Button Menu_MainMenu;
@@ -54,10 +58,12 @@ public class InGameUIController : MonoBehaviour
     private Button Menu_Caste;
     [SerializeField]
     private Button Menu_OptionsDebug;
+    #endregion
 
+    #region VictoryScreen
     [Header("Victory Screen")]
     [SerializeField]
-    private GameObject victoryMenu; 
+    private GameObject victoryMenu;
     [SerializeField]
     private Text victory;
     [SerializeField]
@@ -68,6 +74,8 @@ public class InGameUIController : MonoBehaviour
     private Button Caste_Menu;
     [SerializeField]
     private Button quitVictory;
+
+    #endregion
 
     [SerializeField]
     private Button Menu;
@@ -83,6 +91,7 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Text timer;
 
+    #region ExitMenu
     /// <summary>
     /// Exit Menu
     /// </summary>
@@ -96,6 +105,9 @@ public class InGameUIController : MonoBehaviour
     [SerializeField]
     private Canvas canvas;
 
+    #endregion
+
+    #region StatsLumy
     [Header("Stats Lumy")]
     [SerializeField]
     private Text vitalityText;
@@ -141,10 +153,11 @@ public class InGameUIController : MonoBehaviour
     private Text ressourcesInSightText;
     [SerializeField]
     private Text tracesInSightText;
-
+    #endregion
+    #endregion
 
     Dictionary<string, int> castsJ1;
-    Dictionary<string, int> castsJ2; 
+    Dictionary<string, int> castsJ2;
 
     /// <summary>
     /// Variables for CastUIDisplay
@@ -158,16 +171,51 @@ public class InGameUIController : MonoBehaviour
     private List<GameObject> queens = new List<GameObject>();
 
     private float newAmount = 0f;
+    private float newAmountJ2 = 0f;
+    private float[] newAmountColor = { 0, 0, 0 };
+    private float[] newAmountColorJ2 = { 0, 0, 0 };
     private float depenseLigne = 0;
     private float gainLigne = 0;
 
     [Header("Prysme Text")]
     [SerializeField]
-    private Text positiveText;
+    private Text positiveRedText;
     [SerializeField]
-    private Text negativeText;
+    private Text negativeRedText;
+    [SerializeField]
+    private Text positiveBlueText;
+    [SerializeField]
+    private Text negativeBlueText;
+    [SerializeField]
+    private Text positiveGreenText;
+    [SerializeField]
+    private Text negativeGreenText;
+    [SerializeField]
+    private Text positiveRedTextJ2;
+    [SerializeField]
+    private Text negativeRedTextJ2;
+    [SerializeField]
+    private Text positiveBlueTextJ2;
+    [SerializeField]
+    private Text negativeBlueTextJ2;
+    [SerializeField]
+    private Text positiveGreenTextJ2;
+    [SerializeField]
+    private Text negativeGreenTextJ2;
+    [SerializeField]
+    private float waitingTime = 1f;
 
 
+    private bool isDisplayingNegativeResJ1 =false;
+    private bool isDisplayingPositiveResJ1 = false;
+    private bool isDisplayingNegativeResJ2 = false;
+    private bool isDisplayingPositiveResJ2 = false;
+    private DateTime tsNegativeJ1;
+    private DateTime tsPositiveJ1;
+    private DateTime tsNegativeJ2;
+    private DateTime tsPositiveJ2;
+
+    #region Instance
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -185,6 +233,7 @@ public class InGameUIController : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    #endregion
 
     GameManager gameManager;
 
@@ -354,10 +403,12 @@ public class InGameUIController : MonoBehaviour
         UnitStats();
         DisplayInSight();
         unitCost();
-        displayRessource();
+        displayRessourceJ1();
+        displayRessourceJ2();
         getAllUnit(PlayerAuthority.Player1);
         getAllUnit(PlayerAuthority.Player2);
     }
+
 
     /// <summary>
     /// Check is Resources from GameManager is ok
@@ -843,40 +894,110 @@ public class InGameUIController : MonoBehaviour
 
     }
 
-    private void displayRessource() {
+    private void displayRessourceJ1() {
         GameObject homeP1 = GameManager.instance.P1_home;
-        float time = 2f;
-        float newTime = 0f;
+
         HomeScript p1_hiveScript = homeP1.GetComponent<HomeScript>();
-        float oldAmount = p1_hiveScript.GreenResAmout + p1_hiveScript.RedResAmout + p1_hiveScript.BlueResAmout;
-        float depense = oldAmount - newAmount;
-        if (depense == 0) {
-            return;
-        }
-        if (depense < 0) {
-            Text perteText = Instantiate(negativeText, homeP1.transform.GetChild(1).transform);
-            perteText.transform.SetParent(homeP1.transform.GetChild(1).transform);
+        float oldAmount = p1_hiveScript.RedResAmout + p1_hiveScript.BlueResAmout + p1_hiveScript.GreenResAmout;
+        float[] oldAmountColor = { p1_hiveScript.RedResAmout, p1_hiveScript.GreenResAmout, p1_hiveScript.BlueResAmout };
+        int depense = (int) (oldAmount -  newAmount);
+        int depenseB = (int)( oldAmountColor[2] - newAmountColor[2]);
+        int depenseG = (int) (oldAmountColor[1] - newAmountColor[1]);
+        int depenseR = (int) (oldAmountColor[0] - newAmountColor[0]);
 
-            perteText.text = depense.ToString();
-            
-            if(time <= newTime) {
-                perteText.transform.position = new Vector3(perteText.transform.position.x, perteText.transform.position.y - 1, perteText.transform.position.z);
+        if (isDisplayingNegativeResJ1) {
+            if (DateTime.Now > tsNegativeJ1) {
+                isDisplayingNegativeResJ1 = false;
+                negativeRedText.text = "-";
+                negativeBlueText.text = "-";
+                negativeGreenText.text = "-";
             }
-            Debug.Log("perteText : " + perteText.text);
-            Destroy(perteText.gameObject, 1f);
         }
-        if(depense > 0) {
-            Text gainText = Instantiate(positiveText, homeP1.transform.GetChild(1).transform);
-            gainText.transform.SetParent(homeP1.transform.GetChild(1).transform);
+        else if (!isDisplayingNegativeResJ1) {
+            if (depense < 0) {
+                negativeRedText.text = depenseR.ToString();
+                negativeBlueText.text = depenseB.ToString();
+                negativeGreenText.text = depenseG.ToString();
+                tsNegativeJ1 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingNegativeResJ1 = true;
+            }
 
-            gainText.text = depense.ToString();
-            gainText.transform.position = new Vector3(gainText.transform.position.x, gainText.transform.position.y - 1, gainText.transform.position.z);
-            Debug.Log("gainText : " + gainText.text);
-            Destroy(gainText.gameObject, 1f);
         }
+        if (isDisplayingPositiveResJ1) {
+            if (DateTime.Now > tsPositiveJ1) {
+                isDisplayingPositiveResJ1 = false;
+                positiveRedText.text = "-";
+                positiveBlueText.text = "-";
+                positiveGreenText.text = "-";
+            }
+        }
+        else if (!isDisplayingPositiveResJ1) {
+            if (depense > 0) {
+                positiveRedText.text = "+" + depenseR.ToString();
+                positiveBlueText.text = "+" + depenseB.ToString();
+                positiveGreenText.text = "+" + depenseG.ToString();
+                tsPositiveJ1 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingPositiveResJ1 = true;
+            }
 
+        }
         newAmount = oldAmount;
-        newTime += Time.deltaTime;
+        newAmountColor[0] = oldAmountColor[0];
+        newAmountColor[1] = oldAmountColor[1];
+        newAmountColor[2] = oldAmountColor[2];
+    }
+
+    private void displayRessourceJ2() {
+        GameObject homeP2 = GameManager.instance.P2_home;
+
+        HomeScript p2_hiveScript = homeP2.GetComponent<HomeScript>();
+        float oldAmount = p2_hiveScript.RedResAmout + p2_hiveScript.BlueResAmout + p2_hiveScript.GreenResAmout;
+        float[] oldAmountColorJ2 = { p2_hiveScript.RedResAmout, p2_hiveScript.GreenResAmout, p2_hiveScript.BlueResAmout };
+        int depense = (int)(oldAmount - newAmountJ2);
+        int depenseB = (int)(oldAmountColorJ2[2] - newAmountColorJ2[2]);
+        int depenseG = (int)(oldAmountColorJ2[1] - newAmountColorJ2[1]);
+        int depenseR = (int)(oldAmountColorJ2[0] - newAmountColorJ2[0]);
+
+        if (isDisplayingNegativeResJ2) {
+            if (DateTime.Now > tsNegativeJ2) {
+                isDisplayingNegativeResJ2 = false;
+                negativeRedTextJ2.text = "-";
+                negativeBlueTextJ2.text = "-";
+                negativeGreenTextJ2.text = "-";
+            }
+        }
+        else if (!isDisplayingNegativeResJ2) {
+            if (depense < 0) {
+                negativeRedTextJ2.text = depenseR.ToString();
+                negativeBlueTextJ2.text = depenseB.ToString();
+                negativeGreenTextJ2.text = depenseG.ToString();
+                tsNegativeJ2 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingNegativeResJ2 = true;
+            }
+
+        }
+        if (isDisplayingPositiveResJ2) {
+            if (DateTime.Now > tsPositiveJ2) {
+                isDisplayingPositiveResJ2 = false;
+                positiveRedTextJ2.text = "-";
+                positiveBlueTextJ2.text = "-";
+                positiveGreenTextJ2.text = "-";
+            }
+        }
+        else if (!isDisplayingPositiveResJ2) {
+            if (depense > 0) {
+                positiveRedTextJ2.text = "+" + depenseR.ToString();
+                positiveBlueTextJ2.text = "+" + depenseB.ToString();
+                positiveGreenTextJ2.text = "+" + depenseG.ToString();
+                tsPositiveJ2 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingPositiveResJ2 = true;
+            }
+
+        }
+        newAmountJ2 = oldAmount;
+        newAmountColorJ2[0] = oldAmountColorJ2[0];
+        newAmountColorJ2[1] = oldAmountColorJ2[1];
+        newAmountColorJ2[2] = oldAmountColorJ2[2];
     }
 
 

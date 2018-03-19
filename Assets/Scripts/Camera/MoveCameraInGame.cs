@@ -8,7 +8,8 @@ public class MoveCameraInGame : MonoBehaviour {
     private GameObject camera;
 
 
-
+    [SerializeField]
+    private float speedCamera = 10;
 
 
     [SerializeField]
@@ -35,8 +36,6 @@ public class MoveCameraInGame : MonoBehaviour {
     private Vector3 initRotation;
     private float zoomRotation = 1;
 
-    //FollowOnRayCast
-    private float offset; 
     // Use this for initialization
     void Start () {
        
@@ -56,6 +55,7 @@ public class MoveCameraInGame : MonoBehaviour {
      
     }
 
+    #region CameraMovement
     private void zoomCamera()
     {
         currentZoom -= Input.GetAxisRaw("Mouse ScrollWheel") * Time.unscaledDeltaTime * 1000 * zoomSpeed;
@@ -88,23 +88,24 @@ public class MoveCameraInGame : MonoBehaviour {
 
                 if (up && cameraPos.z < maxY)
                 {
-                    camera.transform.Translate(Vector3.forward * Time.unscaledDeltaTime * 5, Space.World);
+                    camera.transform.Translate(Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
                 }
                 if (down && cameraPos.z > minY)
                 {
-                    camera.transform.Translate(-Vector3.forward * Time.unscaledDeltaTime * 5, Space.World);
+                    camera.transform.Translate(-Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
                 }
                 if (left && cameraPos.x > minX)
                 {
-                    camera.transform.Translate(Vector3.left * Time.unscaledDeltaTime * 5, Space.World);
+                    camera.transform.Translate(Vector3.left * Time.unscaledDeltaTime * speedCamera, Space.World);
                 }
                 if (right && cameraPos.x < maxX)
                 {
-                    camera.transform.Translate(Vector3.right * Time.unscaledDeltaTime * 5, Space.World);
+                    camera.transform.Translate(Vector3.right * Time.unscaledDeltaTime * speedCamera, Space.World);
                 }
             }
         }
         
 
     }
+    #endregion
 }
