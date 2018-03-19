@@ -39,7 +39,7 @@ public class MCToolManager : MonoBehaviour
 		None
 	};
 
-    List<GameObject> SelectedNodes = new List<GameObject>();
+    public  List<GameObject> SelectedNodes = new List<GameObject>();
     public GameObject getTarget;
 	[SerializeField]
 	ToolType currentTool = ToolType.None;
