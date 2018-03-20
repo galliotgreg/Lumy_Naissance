@@ -922,31 +922,33 @@ public class MCEditorManager : MonoBehaviour {
 
 	#region POSITIONING
 	public static void positioningProxy( MCEditor_Proxy proxy ){
-		Vector3 curPosition = proxy.transform.position;
-		proxy.transform.position = new Vector3 ( Mathf.Round( curPosition.x ), Mathf.RoundToInt( curPosition.y ), curPosition.z );
+		if (proxy != null) {
+			Vector3 curPosition = proxy.transform.position;
+			proxy.transform.position = new Vector3 (Mathf.Round (curPosition.x), Mathf.RoundToInt (curPosition.y), curPosition.z);
 
-		/*float gridDimension = 0.75f;
+			/*float gridDimension = 0.75f;
 
-		float newPosX = 0;
-		float newPosY = 0;
-		// Check if the position is closer to previous or next grid point
-		float diffX = curPosition.x % gridDimension;
-		int xIt = Mathf.FloorToInt( curPosition.x / gridDimension );
-		if (Mathf.Abs (diffX) > gridDimension / 2f) {
-			newPosX = gridDimension * (xIt + 1);
-		} else {
-			newPosX = gridDimension*xIt;
+			float newPosX = 0;
+			float newPosY = 0;
+			// Check if the position is closer to previous or next grid point
+			float diffX = curPosition.x % gridDimension;
+			int xIt = Mathf.FloorToInt( curPosition.x / gridDimension );
+			if (Mathf.Abs (diffX) > gridDimension / 2f) {
+				newPosX = gridDimension * (xIt + 1);
+			} else {
+				newPosX = gridDimension*xIt;
+			}
+
+			float diffY = curPosition.y % gridDimension;
+			int yIt = Mathf.FloorToInt( curPosition.y / gridDimension );
+			if (Mathf.Abs (diffY) > gridDimension / 2f) {
+				newPosY = gridDimension * (yIt + 1);
+			} else {
+				newPosY = gridDimension*yIt;
+			}
+
+			proxy.transform.position = new Vector3 ( newPosX, newPosY, curPosition.z );*/
 		}
-
-		float diffY = curPosition.y % gridDimension;
-		int yIt = Mathf.FloorToInt( curPosition.y / gridDimension );
-		if (Mathf.Abs (diffY) > gridDimension / 2f) {
-			newPosY = gridDimension * (yIt + 1);
-		} else {
-			newPosY = gridDimension*yIt;
-		}
-
-		proxy.transform.position = new Vector3 ( newPosX, newPosY, curPosition.z );*/
 	}
 	#endregion
 
@@ -1054,12 +1056,10 @@ public class MCEditorManager : MonoBehaviour {
     #region EDITOR FUNCTIONS
     void CreateTransition(Pin start, Pin end)
 	{
-		ProxyABTransition trans = MCEditor_Proxy_Factory.instantiateTransition ( start, end, false );
-
 		ProxyABAction startActionParent;
 		ProxyABState startStateParent;
-		ProxyABAction endActionParent;
 		ProxyABState endStateParent;
+		ABTransition createdTransition = null;	// Stores the ABtransition between states
 
         // Action; State; Param; Operator; Transition
 
@@ -1077,254 +1077,225 @@ public class MCEditorManager : MonoBehaviour {
         // param	-> operator | action(gate) | transition(gate)
         // transition -> 
 
-        int transitionId = -1;
 		bool validTransition = false;
+		bool invalidTransition_HasTransition = false;
 		bool invalidTransitionType = false;
-		bool activateTypeValidation = true;
 
-        if (start.Pin_Type == Pin.PinType.Condition)
-        {
-            if (end.Pin_Type == Pin.PinType.OperatorOut)
-            {
-				// Check type
-				// Condition accepts only bool values
-				System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
-				if (!activateTypeValidation || opType == typeof(ABBool)) {
-					LinkGateOperator_Operator (start, end);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else if (end.Pin_Type == Pin.PinType.Param)
-            {
-				// Check type
-				// Condition accepts only bool values
-				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
-				if (!activateTypeValidation || paramType == typeof(ABBool)) {
-					LinkGateOperator_Param (start, end);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else
-            {
-                Debug.LogError("Un Pin Bool Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-            }
-        }
-        else if (start.Pin_Type == Pin.PinType.ActionParam)
-        {
-			System.Type actionParamType = ((ProxyABAction)start.ProxyParent).getParamOperator( start.Pin_order.OrderPosition-1 ).getOutcomeType ();
-            if (end.Pin_Type == Pin.PinType.OperatorOut)
-            {
-				// Check type
-				System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
-				if (!activateTypeValidation || actionParamType == opType) {
-					LinkAction_Operator (start, end);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else if (end.Pin_Type == Pin.PinType.Param)
-            {
-				// Check type
-				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
-				if (!activateTypeValidation || actionParamType == paramType) {
-					LinkAction_Param (start, end);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else
-            {
-                Debug.LogError("Un Pin Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-            }
-        }
-        else if (start.Pin_Type == Pin.PinType.OperatorIn)
-        {
-			// Check type
-			//System.Type opStartType = ((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType( start.Pin_order.OrderPosition-1 );
-            if (end.Pin_Type == Pin.PinType.OperatorOut)
-            {
-				// Check type
-				System.Type opEndType = ((ProxyABOperator)end.ProxyParent).getOutcomeType();
-				if ( !activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator.acceptIncome( start.Pin_order.OrderPosition-1, opEndType ) ){
-					LinkOperator_Operator (start, end);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else if (end.Pin_Type == Pin.PinType.Param)
-            {
-				System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType();
-				if (!activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator.acceptIncome( start.Pin_order.OrderPosition-1, paramType ) ) {
-					LinkOperator_Param (start, end);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else
-            {
-                Debug.LogError("Un Pin OperatorIn ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-            }
-        }
-        else if (start.Pin_Type == Pin.PinType.OperatorOut)
-        {
-			// Check type
-			System.Type opStartType = ((ProxyABOperator)start.ProxyParent).getOutcomeType();
-            if (end.Pin_Type == Pin.PinType.OperatorIn)
-            {
-				// Check type
-				if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator.acceptIncome( end.Pin_order.OrderPosition-1, opStartType )) {
-					LinkOperator_Operator (end, start);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else if (end.Pin_Type == Pin.PinType.Condition)
-            {
-				// Check type
-				// Condition accepts only bool values
-				if (!activateTypeValidation || opStartType == typeof(ABBool)) {
-					LinkGateOperator_Operator (end, start);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else if (end.Pin_Type == Pin.PinType.ActionParam)
-            {
-				System.Type actionParamType = ((ProxyABAction)end.ProxyParent).getParamOperator( end.Pin_order.OrderPosition-1 ).getOutcomeType ();
-				if (!activateTypeValidation || opStartType == actionParamType) {
-					LinkAction_Operator (end, start);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else
-            {
-                Debug.LogError("Un Pin OperatorOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-            }
-        }
-        else if (start.Pin_Type == Pin.PinType.Param)
-        {
-			System.Type paramType = ((ProxyABParam)start.ProxyParent).getOutcomeType();
-            if (end.Pin_Type == Pin.PinType.OperatorIn)
-            {
-				if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator.acceptIncome( end.Pin_order.OrderPosition-1, paramType )) {
-					LinkOperator_Param (end, start);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else if (end.Pin_Type == Pin.PinType.Condition)
-            {
-				// Check type
-				// Condition accepts only bool values
-				if (!activateTypeValidation || paramType == typeof(ABBool)) {
-					LinkGateOperator_Param (end, start);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else if (end.Pin_Type == Pin.PinType.ActionParam)
-            {
-				System.Type actionParamType = ((ProxyABAction)end.ProxyParent).getParamOperator( end.Pin_order.OrderPosition-1 ).getOutcomeType ();
-				if (!activateTypeValidation || paramType == actionParamType) {
-					LinkAction_Param (end, start);
-					validTransition = true;
-				} else {
-					invalidTransitionType = true;
-				}
-            }
-            else
-            {
-                Debug.LogError("Un Pin Param ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-            }
-        }
-        else if (start.Pin_Type == Pin.PinType.TransitionIn)
-        {
-            if (end.Pin_Type == Pin.PinType.TransitionOut)
-            {
-                startStateParent = start.GetComponentInParent<ProxyABState>();
-                // ACTION -> 
-                if (!startStateParent)
-                {
-                    startActionParent = start.GetComponentInParent<ProxyABAction>();
-                    endStateParent = end.GetComponentInParent<ProxyABState>();
-                    // ACTION -> ACTION : IMPOSSIBLE
-                    if (!endStateParent)
-                    {
-                        Debug.LogError("Action -> Action n'existe pas");
-                    }
-                    // ACTION -> STATE
-                    else
-                    {
-                        trans.Transition = LinkState_Action(end, start);
-                        ProxyABTransition.addConditionPin(trans);
+		bool activateTypeValidation = true;	// Flag used to activate TYPE VALIDATION
+
+		// Verify if Pin has already a transition (only ABStar is accepted)
+		if(
+			// Start
+			(
+				start.AssociatedTransitions.Count > 0 &&																																	// Existing Transition
+				!(start.Pin_Type == Pin.PinType.OperatorIn && ABStar<ABBool>.isStar( ((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType( start.Pin_order.OrderPosition-1 ) ) )	// ABStar
+			) ||
+			(
+				end.AssociatedTransitions.Count > 0 &&																																	// Existing Transition
+				!(end.Pin_Type == Pin.PinType.OperatorIn && ABStar<ABBool>.isStar( ((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType( end.Pin_order.OrderPosition-1 ) ) )	// ABStar
+			)
+		){
+			invalidTransition_HasTransition = true;
+		}
+
+		if (!invalidTransition_HasTransition) {
+			if (start.Pin_Type == Pin.PinType.Condition) {
+				if (end.Pin_Type == Pin.PinType.OperatorOut) {
+					// Check type
+					// Condition accepts only bool values
+					System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType ();
+					if (!activateTypeValidation || opType == typeof(ABBool)) {
+						LinkGateOperator_Operator (start, end);
 						validTransition = true;
-                    }
-                }
+					} else {
+						invalidTransitionType = true;
+					}
+				} else if (end.Pin_Type == Pin.PinType.Param) {
+					// Check type
+					// Condition accepts only bool values
+					System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType ();
+					if (!activateTypeValidation || paramType == typeof(ABBool)) {
+						LinkGateOperator_Param (start, end);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else {
+					Debug.LogError ("Un Pin Bool Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString ());
+				}
+			} else if (start.Pin_Type == Pin.PinType.ActionParam) {
+				System.Type actionParamType = ((ProxyABAction)start.ProxyParent).getParamOperator (start.Pin_order.OrderPosition - 1).getOutcomeType ();
+				if (end.Pin_Type == Pin.PinType.OperatorOut) {
+					// Check type
+					System.Type opType = ((ProxyABOperator)end.ProxyParent).getOutcomeType ();
+					if (!activateTypeValidation || actionParamType == opType) {
+						LinkAction_Operator (start, end);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else if (end.Pin_Type == Pin.PinType.Param) {
+					// Check type
+					System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType ();
+					if (!activateTypeValidation || actionParamType == paramType) {
+						LinkAction_Param (start, end);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else {
+					Debug.LogError ("Un Pin Gate Operator ne prend pas en entrée un pin de type " + end.Pin_Type.ToString ());
+				}
+			} else if (start.Pin_Type == Pin.PinType.OperatorIn) {
+				// Check type
+				//System.Type opStartType = ((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType( start.Pin_order.OrderPosition-1 );
+				if (end.Pin_Type == Pin.PinType.OperatorOut) {
+					// Check type
+					System.Type opEndType = ((ProxyABOperator)end.ProxyParent).getOutcomeType ();
+					if (!activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator.acceptIncome (start.Pin_order.OrderPosition - 1, opEndType)) {
+						LinkOperator_Operator (start, end);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else if (end.Pin_Type == Pin.PinType.Param) {
+					System.Type paramType = ((ProxyABParam)end.ProxyParent).getOutcomeType ();
+					if (!activateTypeValidation || ((ProxyABOperator)start.ProxyParent).AbOperator.acceptIncome (start.Pin_order.OrderPosition - 1, paramType)) {
+						LinkOperator_Param (start, end);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else {
+					Debug.LogError ("Un Pin OperatorIn ne prend pas en entrée un pin de type " + end.Pin_Type.ToString ());
+				}
+			} else if (start.Pin_Type == Pin.PinType.OperatorOut) {
+				// Check type
+				System.Type opStartType = ((ProxyABOperator)start.ProxyParent).getOutcomeType ();
+				if (end.Pin_Type == Pin.PinType.OperatorIn) {
+					// Check type
+					if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator.acceptIncome (end.Pin_order.OrderPosition - 1, opStartType)) {
+						LinkOperator_Operator (end, start);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else if (end.Pin_Type == Pin.PinType.Condition) {
+					// Check type
+					// Condition accepts only bool values
+					if (!activateTypeValidation || opStartType == typeof(ABBool)) {
+						LinkGateOperator_Operator (end, start);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else if (end.Pin_Type == Pin.PinType.ActionParam) {
+					System.Type actionParamType = ((ProxyABAction)end.ProxyParent).getParamOperator (end.Pin_order.OrderPosition - 1).getOutcomeType ();
+					if (!activateTypeValidation || opStartType == actionParamType) {
+						LinkAction_Operator (end, start);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else {
+					Debug.LogError ("Un Pin OperatorOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString ());
+				}
+			} else if (start.Pin_Type == Pin.PinType.Param) {
+				System.Type paramType = ((ProxyABParam)start.ProxyParent).getOutcomeType ();
+				if (end.Pin_Type == Pin.PinType.OperatorIn) {
+					if (!activateTypeValidation || ((ProxyABOperator)end.ProxyParent).AbOperator.acceptIncome (end.Pin_order.OrderPosition - 1, paramType)) {
+						LinkOperator_Param (end, start);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else if (end.Pin_Type == Pin.PinType.Condition) {
+					// Check type
+					// Condition accepts only bool values
+					if (!activateTypeValidation || paramType == typeof(ABBool)) {
+						LinkGateOperator_Param (end, start);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else if (end.Pin_Type == Pin.PinType.ActionParam) {
+					System.Type actionParamType = ((ProxyABAction)end.ProxyParent).getParamOperator (end.Pin_order.OrderPosition - 1).getOutcomeType ();
+					if (!activateTypeValidation || paramType == actionParamType) {
+						LinkAction_Param (end, start);
+						validTransition = true;
+					} else {
+						invalidTransitionType = true;
+					}
+				} else {
+					Debug.LogError ("Un Pin Param ne prend pas en entrée un pin de type " + end.Pin_Type.ToString ());
+				}
+			} else if (start.Pin_Type == Pin.PinType.TransitionIn) {
+				if (end.Pin_Type == Pin.PinType.TransitionOut) {
+					startStateParent = start.GetComponentInParent<ProxyABState> ();
+					// ACTION -> 
+					if (!startStateParent) {
+						startActionParent = start.GetComponentInParent<ProxyABAction> ();
+						endStateParent = end.GetComponentInParent<ProxyABState> ();
+						// ACTION -> ACTION : IMPOSSIBLE
+						if (!endStateParent) {
+							Debug.LogError ("Action -> Action n'existe pas");
+						}
+                    	// ACTION -> STATE
+                    	else {
+							createdTransition = LinkState_Action (end, start);
+							validTransition = true;
+						}
+					}
                 // STATE -> 
-                else
-                {
-                    endStateParent = end.GetComponentInParent<ProxyABState>();
-                    // STATE -> ACTION
-                    if (!endStateParent)
-                    {
-						Debug.LogError("State -> Action n'existe pas");
-                        /*endActionParent = end.GetComponentInParent<ProxyABAction>();
-                        trans.Transition = LinkState_Action(start, end);
-                        ProxyABTransition.addConditionPin(trans);*/
-                    }
-                    // STATE -> STATE
-                    else
-                    {
-                        trans.Transition = LinkState_State(start, end);
-                        ProxyABTransition.addConditionPin(trans);
+                else {
+						endStateParent = end.GetComponentInParent<ProxyABState> ();
+						// STATE -> ACTION
+						if (!endStateParent) {
+							Debug.LogError ("State -> Action n'existe pas");
+						}
+                    	// STATE -> STATE
+                    	else {
+							createdTransition = LinkState_State (start, end);
+							validTransition = true;
+						}
+					}
+				}
+			}
+        	// STATE ->
+        	else if (start.Pin_Type == Pin.PinType.TransitionOut) {
+				if (end.Pin_Type == Pin.PinType.TransitionIn) {
+					startStateParent = start.GetComponentInParent<ProxyABState> ();
+					endStateParent = end.GetComponentInParent<ProxyABState> ();
+					// STATE -> STATE
+					if (endStateParent) {
+						createdTransition = LinkState_State (end, start);
 						validTransition = true;
-                    }
-                }
-            }
-        }
-        // STATE ->
-        else if (start.Pin_Type == Pin.PinType.TransitionOut)
-        {
-            if(end.Pin_Type == Pin.PinType.TransitionIn)
-            {
-				startStateParent = start.GetComponentInParent<ProxyABState>();
-                endStateParent = end.GetComponentInParent<ProxyABState>();
-                // STATE -> STATE
-                if (endStateParent)
-                {
-                    trans.Transition = LinkState_State(end, start);
-                    ProxyABTransition.addConditionPin(trans);
-					validTransition = true;
-                }
+					}
                 // STATE -> ACTION
-                else
-                {
-					trans.Transition = LinkState_Action(start, end);
-                    ProxyABTransition.addConditionPin(trans);
-					validTransition = true;
-                }
-            }
-            else
-            {
-                Debug.LogError("Un Pin TransitionOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString());
-            }        			
-        }
+                else {
+						createdTransition = LinkState_Action (start, end);
+						validTransition = true;
+					}
+				} else {
+					Debug.LogError ("Un Pin TransitionOut ne prend pas en entrée un pin de type " + end.Pin_Type.ToString ());
+				}        			
+			}
+		}
 
-		if (validTransition) {
+		// Create transition
+		if (validTransition
+			&& !invalidTransitionType
+			&& !invalidTransition_HasTransition
+		) {
+			// create transition proxy
+			ProxyABTransition trans = MCEditor_Proxy_Factory.instantiateTransition ( start, end, false );
+
+			// Associate transition
+			if (createdTransition != null) {
+				trans.Transition = createdTransition;
+				ProxyABTransition.addConditionPin (trans);
+			}
+
 			// Checking pins in states
 			if (start.ProxyParent is ProxyABState) {
 				((ProxyABState)start.ProxyParent).checkPins ();
@@ -1333,11 +1304,10 @@ public class MCEditorManager : MonoBehaviour {
 				((ProxyABState)end.ProxyParent).checkPins ();
 			}
 		} else {
-
-			Destroy ( trans.gameObject );
-
 			if (invalidTransitionType) {
 				Debug.LogError ("Throw Exception : transition not authorized due the types of pins");
+			} else if (invalidTransition_HasTransition) {
+				Debug.LogError ("Throw Exception : transition not authorized : trying to add transition to a pin which already has one");
 			} else {
 				Debug.LogError ("Throw Exception : transition not authorized due the IN/OUT status of pins");
 			}

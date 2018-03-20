@@ -218,11 +218,11 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
         Vector3 direction = new Vector3();
         direction = computeDirection(startParent.transform.position, endParent.transform.position);
 
-        if (!(startPosition.Pin_Type == Pin.PinType.Condition))
+		if (!(startPosition.Pin_Type == Pin.PinType.Condition) && startPosition.AssociatedTransitions.IndexOf(this) == 0 )
         {
             computePinPositionWithParentRadius(startParent, startPosition, direction);            
         }
-        if (!(endPosition.Pin_Type == Pin.PinType.Condition))
+		if (!(endPosition.Pin_Type == Pin.PinType.Condition) && endPosition.AssociatedTransitions.IndexOf(this) == 0 )
         {
             computePinPositionWithParentRadius(endParent, endPosition, -direction);
         }

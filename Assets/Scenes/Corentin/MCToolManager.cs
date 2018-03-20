@@ -169,9 +169,13 @@ public class MCToolManager : MonoBehaviour
             selectionEnCours = false;
         }
 
-        if (isMouseDragging && CurrentTool == ToolType.Hand)
+        if (CurrentTool == ToolType.Hand)
         {
-            ToolMain();
+			if (isMouseDragging) {
+				ToolMain ();
+			} else {
+				ToolMain_ConsolidateNodes ();
+			}
         }
 
     }
@@ -225,6 +229,27 @@ public class MCToolManager : MonoBehaviour
             }
         }
     }
+
+	/// <summary>
+	/// After dropping the nodes, adjust the selected nodes to the grid
+	/// </summary>
+	private void ToolMain_ConsolidateNodes()
+	{
+		if (SelectedNodes != null && SelectedNodes.Count == 0)
+		{
+			MCEditorManager.positioningProxy( getTarget.GetComponent<MCEditor_Proxy>() );
+		}else
+		{
+			if (SelectedNodes != null && SelectedNodes.Contains(getTarget))
+			{
+				int i = 0;
+				foreach (GameObject b in SelectedNodes)
+				{
+					MCEditorManager.positioningProxy( b.GetComponent<MCEditor_Proxy>() );
+				}
+			}
+		}
+	}
 
     public void Inventory()
     {
