@@ -29,7 +29,7 @@ public class CreateAgentTest : MonoBehaviour {
 				agent = Instantiate (obj, AgentBehavior.vec2ToWorld(pos), Quaternion.identity);
 				agent.SetActive (true);
 				HomeScript home = GameManager.instance.GetHome (authority);
-				home.addUnit (agent.GetComponent<AgentEntity> ());
+				Unit_GameObj_Manager.instance.addUnit( agent.GetComponent<AgentEntity>(), home );
 				agent.name = agent.GetComponent<AgentEntity> ().CastName + "-" + home.Authority.ToString();
 				//agent.GetComponent<AgentEntity> ().Context.Model.MoveSpd = 10;
 
