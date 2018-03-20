@@ -131,7 +131,7 @@ public class HomeScript : MonoBehaviour {
 		return this.populationGameObj[ cast ];
 	}
 
-	public void addUnit( AgentEntity unit ){
+	public void addUnitToHome( AgentEntity unit ){
 		if( !this.populationGameObj.ContainsKey( unit.Context.Model.Cast ) ){
 			this.populationGameObj.Add( unit.Context.Model.Cast, new List<AgentEntity>() );
 		}
