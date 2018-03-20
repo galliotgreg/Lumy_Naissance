@@ -111,6 +111,7 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 			return true;
 		} else {
 			// Check Star Param
+			// todo change to abstar.isstar
 			if( thisType.IsGenericType && thisType.GetGenericTypeDefinition() == typeof( ABStar<> ) && thisType.GetGenericArguments().Length > 0 ){
 				System.Type argType = thisType.GetGenericArguments()[0];
 

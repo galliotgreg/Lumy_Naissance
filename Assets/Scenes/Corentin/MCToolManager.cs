@@ -85,7 +85,11 @@ public class MCToolManager : MonoBehaviour
         {
 			RaycastHit hitInfo;
 			getTarget = ReturnClickedObject (out hitInfo);
-
+            if(getTarget.name == "pin(Clone)" || getTarget.name ==  "pinOut(Clone)" || getTarget.name == "transition(Clone)")
+            {
+                SelectionSquare.instance.enabled = false;
+                isMouseDragging = false;
+            }
 			if( centerZone.CanDrop ){
 			//if (!inventory) {
 				//Hit background
@@ -105,7 +109,7 @@ public class MCToolManager : MonoBehaviour
                         SelectedNodes = SelectionSquare.instance.selectedUnits;
                         //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
                         //SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
-                        Debug.Log ("il y a " + SelectedNodes.Count + " nodes selected");
+                        //Debug.Log ("il y a " + SelectedNodes.Count + " nodes selected");
 					}
 					if (CurrentTool == ToolType.Hand) {
                         //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
@@ -121,8 +125,7 @@ public class MCToolManager : MonoBehaviour
 						inventory = false;
 						//current tool activated
 						if (CurrentTool == ToolType.Selection) {
-
-                            
+ 
                             //selectionEnCours = true;
                             SelectionSquare.instance.MultipleSelection = false;
                             SelectionSquare.instance.enabled = true;
@@ -166,11 +169,19 @@ public class MCToolManager : MonoBehaviour
             selectionEnCours = false;
         }
 
-        if (isMouseDragging && CurrentTool == ToolType.Hand)
+        if (CurrentTool == ToolType.Hand)
         {
-            ToolMain();
+			if (isMouseDragging) {
+				ToolMain ();
+			} else {
+				ToolMain_ConsolidateNodes ();
+			}
         }
 
+		// Delete selected nodes when DELETE is pressed
+		if (Input.GetKeyDown (KeyCode.Delete)) {
+			DeleteNodes ();
+		}
     }
 
     //Method to Return Clicked Object
@@ -180,12 +191,13 @@ public class MCToolManager : MonoBehaviour
         Ray ray = GameObject.Find("Camera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray.origin, ray.direction * 10, out hit))
         {
-            Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
+            //Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
             target = hit.collider.gameObject;
         }
         return target;
     }
 
+	#region TOOL : HAND
     private void ToolMain()
     {
         //Mouse moving
@@ -222,6 +234,52 @@ public class MCToolManager : MonoBehaviour
             }
         }
     }
+
+	/// <summary>
+	/// After dropping the nodes, adjust the selected nodes to the grid
+	/// </summary>
+	private void ToolMain_ConsolidateNodes()
+	{
+		if (SelectedNodes != null && SelectedNodes.Count == 0)
+		{
+			MCEditorManager.positioningProxy( getTarget.GetComponent<MCEditor_Proxy>() );
+		}else
+		{
+			if (SelectedNodes != null)
+			{
+				foreach (GameObject b in SelectedNodes)
+				{
+					MCEditorManager.positioningProxy( b.GetComponent<MCEditor_Proxy>() );
+				}
+			}
+		}
+	}
+	#endregion
+
+	#region DELETE
+	/// <summary>
+	/// Deletes the selected nodes
+	/// </summary>
+	void DeleteNodes(){
+		if (SelectedNodes != null && SelectedNodes.Count == 0)
+		{
+			MCEditorManager.instance.deleteSelectedProxies ( new List<MCEditor_Proxy>(){ getTarget.GetComponent<MCEditor_Proxy> () } );
+			getTarget = null;
+		}else
+		{
+			if (SelectedNodes != null)
+			{
+				List<MCEditor_Proxy> selectedProxies = new List<MCEditor_Proxy> ();
+				foreach (GameObject b in SelectedNodes)
+				{
+					selectedProxies.Add( b.GetComponent<MCEditor_Proxy>() );
+				}
+				MCEditorManager.instance.deleteSelectedProxies ( selectedProxies );
+				SelectedNodes.Clear ();
+			}
+		}
+	}
+	#endregion
 
     public void Inventory()
     {
