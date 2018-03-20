@@ -670,6 +670,9 @@ public class ABOperatorFactory {
                 throw new NotImplementedException("Type " + type + " not implemented");
         }
 
+		if (abOperator != null) {
+			abOperator.OpType = type;
+		}
         return abOperator;
     }
 }

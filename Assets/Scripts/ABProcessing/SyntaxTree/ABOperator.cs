@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class ABOperator<T> : ABNode, IABOperator
 {
     protected ABNode[] inputs;
+	OperatorType opType;
 
     public ABNode[] Inputs
     {
@@ -65,6 +66,15 @@ public abstract class ABOperator<T> : ABNode, IABOperator
             throw new System.NotSupportedException();
         }
     }
+
+	public OperatorType OpType {
+		get {
+			return opType;
+		}
+		set {
+			opType = value;
+		}
+	}
 
     public T EvaluateOperator(ABContext context){
 		try{
@@ -146,5 +156,10 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		else{
 			return type.ToString();
 		}
+	}
+
+	public virtual IABOperator Clone ()
+	{
+		return ABOperatorFactory.CreateOperator (this.OpType);
 	}
 }

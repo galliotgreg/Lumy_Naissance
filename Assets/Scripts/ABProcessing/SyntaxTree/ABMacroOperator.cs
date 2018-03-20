@@ -185,5 +185,17 @@ public class ABMacroOperator<T> : ABOperator<T>
 		return ABModel.ParamTypeToType( ParamType.None );
 	}
 
+	public override IABOperator Clone ()
+	{
+		ABMacroOperator<T> result = new ABMacroOperator<T>();
+		result.AllocInputs (this.inputs.Length);
+		result.ArgTypes = this.ArgTypes;
+		result.ClassName = this.ClassName;
+		result.SymbolName = this.SymbolName;
+		result.ViewName = this.ViewName;
+		result.WrappedTree = (ABOperator<T>)this.wrappedTree.Clone ();
+		return result;
+	}
+
 	#endregion
 }

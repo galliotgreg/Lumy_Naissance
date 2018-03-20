@@ -89,7 +89,8 @@ public class MC_Inventory_Operators : MC_Inventory {
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		return MCEditor_Proxy_Factory.instantiateOperator((IABOperator)item.Item, false).gameObject;
+		IABOperator oper = ((IABOperator)item.Item).Clone();
+		return MCEditor_Proxy_Factory.instantiateOperator(oper, false).gameObject;
 	}
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)
