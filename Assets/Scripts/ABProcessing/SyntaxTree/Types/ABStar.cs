@@ -52,4 +52,7 @@ public class ABStar<T> : IABComplexType where T : IABSimpleType
 		return null;
 	}
 
+	public static bool isStar( System.Type type ){
+		return (type.IsGenericType && type.GetGenericTypeDefinition () == typeof(ABStar<>));
+	}
 }
