@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TutoMC : MonoBehaviour
 {
-
+    #region Attributes
     [SerializeField]
     private Button next;
     [SerializeField]
@@ -17,127 +18,99 @@ public class TutoMC : MonoBehaviour
     [SerializeField]
     private GameObject panelInfobulles;
     [SerializeField]
-    private GameObject infobulleA;
+    private Text txt_currentInfo;
     [SerializeField]
-    private GameObject infobulleB;
-    [SerializeField]
-    private GameObject infobulleC;
-    [SerializeField]
-    private GameObject infobulleD;
-    [SerializeField]
-    private GameObject infobulleE;
+    private List<GameObject> panelList = new List<GameObject>();
 
     private int currentInfo = 0;
 
     private bool isTutoOpen;
 
-    List<GameObject> listeInfos = new List<GameObject>();
+    #endregion
 
     // Use this for initialization
     void Start()
     {
-
-        isTutoOpen = true;
-
-        listeInfos.Add(infobulleA);
-        listeInfos.Add(infobulleB);
-        listeInfos.Add(infobulleC);
-        listeInfos.Add(infobulleD);
-        listeInfos.Add(infobulleE);
-
-        Button tut = tuto.GetComponent<Button>();
-        Button nxt = next.GetComponent<Button>();
-        Button prev = previous.GetComponent<Button>();
-        Button cls = close.GetComponent<Button>();
-        /*
-        if(currentInfo != 0)
+        
+        //Check is all panel are not visible
+        foreach (GameObject info in panelList)
         {
-
-        }*/
-        nxt.onClick.AddListener(NextInfo);
-        prev.onClick.AddListener(PrevInfo);
-        cls.onClick.AddListener(CloseInfo);
-        tut.onClick.AddListener(OpenTuto);
-
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-        /*
-        if (currentInfo == 0)
-        {
-            prev.gameObject.SetActive(false);
+            info.SetActive(false);
+            //info.transform.position = panelList[0].transform.position;
         }
-        else
-        {
-            prev.gameObject.SetActive(true);
-        }*/
 
+        ButtonListener(); 
+
+        //Enable Tuto 
+        //TODO Implement PlayerPrefs
+        OpenTuto(); 
     }
 
-
-    void NextInfo()
+    private void ButtonListener()
     {
-        if (currentInfo != 4)
+        //Listener
+        next.GetComponent<Button>().onClick.AddListener(Next);
+        previous.GetComponent<Button>().onClick.AddListener(Prev);
+        close.GetComponent<Button>().onClick.AddListener(Close);
+        tuto.GetComponent<Button>().onClick.AddListener(OpenTuto);
+    }
+
+    #region NavigationTuto
+    void Next()
+    {
+        if (currentInfo < panelList.Count -1)
         {
-            listeInfos[currentInfo].SetActive(false);
-            listeInfos[currentInfo + 1].SetActive(true);
+            panelList[currentInfo].SetActive(false);
+            panelList[currentInfo + 1].SetActive(true);
             currentInfo += 1;
-           
-            Debug.Log("current" + currentInfo);
-
+            txt_currentInfo.text = (currentInfo + 1).ToString() + " / " + panelList.Count.ToString();
         }
 
         else
         {
-            listeInfos[currentInfo].SetActive(false);
+            panelList[currentInfo].SetActive(false);
             panelInfobulles.SetActive(false);
-            isTutoOpen = false;
-
+            isTutoOpen = false; 
         }
 
     }
 
-    void PrevInfo()
+    void Prev()
     {
-        if (currentInfo != 0)
+        if (currentInfo > 0)
         {
-            listeInfos[currentInfo].SetActive(false);
-            listeInfos[currentInfo - 1].SetActive(true);
+            panelList[currentInfo].SetActive(false);
+            panelList[currentInfo - 1].SetActive(true);
             currentInfo -= 1;
-            Debug.Log("current" + currentInfo);
+            txt_currentInfo.text = (currentInfo + 1).ToString() + " / " + panelList.Count.ToString();
         }
         else
         {
-            listeInfos[currentInfo].SetActive(false);
+            panelList[currentInfo].SetActive(false);
             panelInfobulles.SetActive(false);
             isTutoOpen = false;
-
         }
 
     }
 
-    void CloseInfo()
+    void Close()
     {
-        listeInfos[currentInfo].SetActive(false);
+        panelList[currentInfo].SetActive(false);
         panelInfobulles.SetActive(false);
+        
         isTutoOpen = false;
 
     }
 
     void OpenTuto()
     {
-        if (isTutoOpen == false)
-        {
-            currentInfo = 0;
-            listeInfos[currentInfo].SetActive(true);
-            panelInfobulles.SetActive(true);
-
-        }
+        
+        currentInfo = 0;
+        panelList[currentInfo].SetActive(true);
+        panelInfobulles.SetActive(true);
+        txt_currentInfo.text = (currentInfo + 1).ToString() + " / " + panelList.Count.ToString();
 
     }
+#endregion
 }
 
