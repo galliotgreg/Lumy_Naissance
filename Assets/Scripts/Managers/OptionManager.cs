@@ -21,17 +21,7 @@ public class OptionManager : MonoBehaviour {
     [SerializeField]
     private Toggle directionLumy;
     [SerializeField]
-    private Toggle lumyCost;
-    [SerializeField]
-    private Toggle lumycComponents;
-    [SerializeField]
-    private Toggle lumyAction;
-    [SerializeField]
     private Toggle trace;
-    [SerializeField]
-    private Toggle gisements;
-    [SerializeField]
-    private Toggle suiviRessources;
 
     [Header("Joueur 2")]
     [SerializeField]
@@ -47,17 +37,11 @@ public class OptionManager : MonoBehaviour {
     [SerializeField]
     private Toggle directionLumyJ2;
     [SerializeField]
-    private Toggle lumyCostJ2;
-    [SerializeField]
-    private Toggle lumycComponentsJ2;
-    [SerializeField]
-    private Toggle lumyActionJ2;
-    [SerializeField]
     private Toggle traceJ2;
+
+    [Header("General")]
     [SerializeField]
-    private Toggle gisementsJ2;
-    [SerializeField]
-    private Toggle suiviRessourcesJ2;
+    private Toggle gisements;
 
     private float rangeVision;
     private float rangePick;
