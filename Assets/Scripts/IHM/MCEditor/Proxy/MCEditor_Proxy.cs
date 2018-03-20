@@ -85,7 +85,7 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
     }
 	#endregion
 
-	public static MCEditor_Proxy clicked = null;	// TEST for delete : selected proxy
+	public static MCEditor_Proxy doubleClicked = null;
 	public abstract void deleteProxy ();
 	public abstract void doubleClick ();
 
@@ -100,7 +100,7 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 			doubleClick ();
 
 			Debug.Log ( "MCEditor : Selected proxy => "+this.GetProxyName() );
-			clicked = this;
+			doubleClicked = this;
 		}
 		lastClick = Time.time;
 	}

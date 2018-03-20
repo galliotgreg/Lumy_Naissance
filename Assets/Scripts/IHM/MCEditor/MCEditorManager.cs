@@ -125,7 +125,6 @@ public class MCEditorManager : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.Delete))
 		{
 			this.deleteSelectedTransition ();
-			this.deleteSelectedProxies ();
 		}
     }
 
@@ -1810,10 +1809,11 @@ public class MCEditorManager : MonoBehaviour {
 	#endregion
 
 	#region Delete UI Proxy
-	void deleteSelectedProxies(){
-		MCEditor_Proxy proxy = MCEditor_Proxy.clicked;
-		if (proxy != null) {
-			proxy.deleteProxy ();
+	public void deleteSelectedProxies( List<MCEditor_Proxy> selectedProxies ){
+		foreach( MCEditor_Proxy p in selectedProxies ){
+			if (p != null) {
+				p.deleteProxy ();
+			}
 		}
 	}
 	#endregion
