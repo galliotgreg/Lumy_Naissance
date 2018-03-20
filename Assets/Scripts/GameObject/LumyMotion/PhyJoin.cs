@@ -63,13 +63,19 @@ public class PhyJoin : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
+        Init();
+    }
+
+    public void Init()
+    {
         meshRenderer = GetComponent<MeshRenderer>();
         pointLight = GetComponent<Light>();
         rand = new System.Random(seed);
-        PlaceTail(); 
+        PlaceTail();
     }
-	
+
     private void PlaceTail()
     {
         if(this.gameObject.transform.parent.name == "Head")
@@ -79,7 +85,13 @@ public class PhyJoin : MonoBehaviour {
     }
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        Frame();
+    }
+
+    public void Frame()
+    {
         totalTime += Time.deltaTime;
 
         if (DstBones.Length > 0)
@@ -87,7 +99,8 @@ public class PhyJoin : MonoBehaviour {
             Vector2 pos2D = DstBones[0].Origin;
             this.transform.position = new Vector3(pos2D.x, this.transform.position.y, pos2D.y);
         }
-        else if (SrcBone != null) {
+        else if (SrcBone != null)
+        {
             Vector2 pos2D = SrcBone.End;
             this.transform.position = new Vector3(pos2D.x, this.transform.position.y, pos2D.y);
         }
@@ -98,10 +111,10 @@ public class PhyJoin : MonoBehaviour {
         }
         UpdateLight();
 
-        UpdateRotation(); 
+        UpdateRotation();
 
         LerpLight();
-	}
+    }
 
     private void UpdateRotation()
     {
