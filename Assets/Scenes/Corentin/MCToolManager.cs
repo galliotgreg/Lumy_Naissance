@@ -85,7 +85,11 @@ public class MCToolManager : MonoBehaviour
         {
 			RaycastHit hitInfo;
 			getTarget = ReturnClickedObject (out hitInfo);
-
+            if(getTarget.name == "pin(Clone)" || getTarget.name ==  "pinOut(Clone)" || getTarget.name == "transition(Clone)")
+            {
+                SelectionSquare.instance.enabled = false;
+                isMouseDragging = false;
+            }
 			if( centerZone.CanDrop ){
 			//if (!inventory) {
 				//Hit background
@@ -105,7 +109,7 @@ public class MCToolManager : MonoBehaviour
                         SelectedNodes = SelectionSquare.instance.selectedUnits;
                         //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
                         //SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
-                        Debug.Log ("il y a " + SelectedNodes.Count + " nodes selected");
+                        //Debug.Log ("il y a " + SelectedNodes.Count + " nodes selected");
 					}
 					if (CurrentTool == ToolType.Hand) {
                         //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
@@ -121,8 +125,7 @@ public class MCToolManager : MonoBehaviour
 						inventory = false;
 						//current tool activated
 						if (CurrentTool == ToolType.Selection) {
-
-                            
+ 
                             //selectionEnCours = true;
                             SelectionSquare.instance.MultipleSelection = false;
                             SelectionSquare.instance.enabled = true;
@@ -180,7 +183,7 @@ public class MCToolManager : MonoBehaviour
         Ray ray = GameObject.Find("Camera").GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray.origin, ray.direction * 10, out hit))
         {
-            Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
+            //Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
             target = hit.collider.gameObject;
         }
         return target;

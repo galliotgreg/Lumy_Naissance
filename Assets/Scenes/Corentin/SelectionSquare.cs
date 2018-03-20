@@ -75,9 +75,9 @@ public class SelectionSquare : MonoBehaviour
         isClicking = false;
         isHoldingDown = false;
         //Click the mouse button
-        if (Input.GetMouseButtonDown(0) )// && !EventSystem.current.IsPointerOverGameObject()) 
+        if (Input.GetMouseButtonDown(0)  )// && !EventSystem.current.IsPointerOverGameObject()) 
         {
-            Debug.Log("zizi");
+            //Debug.Log("zizi");
             clickTime = Time.time;
 
             //We dont yet know if we are drawing a square, but we need the first coordinate in case we do draw a square
@@ -87,7 +87,7 @@ public class SelectionSquare : MonoBehaviour
             {
                 //The corner position of the square
                 squareStartPos = hit.point;
-               Debug.Log("squarestartpos = " + squareStartPos);
+               //Debug.Log("squarestartpos = " + squareStartPos);
             }
 
         }
@@ -98,7 +98,7 @@ public class SelectionSquare : MonoBehaviour
            // {
             //    isClicking = true;
           //  }
-            if (Time.time - clickTime <= clickDelay )//&& !EventSystem.current.IsPointerOverGameObject())
+            if (Time.time - clickTime <= clickDelay)//&& !EventSystem.current.IsPointerOverGameObject())
             {
                 isClicking = true;
             }
@@ -162,7 +162,7 @@ public class SelectionSquare : MonoBehaviour
 
             //Clear the list with selected units
             selectedUnits.Clear();
-            Debug.Log("la liste est clear");
+            //Debug.Log("la liste est clear");
             
             //Try to select a new unit
             RaycastHit hit;
@@ -399,7 +399,7 @@ public class SelectionSquare : MonoBehaviour
             //sphere4.position = BR;
 
             hasCreatedSquare = true;
-            Debug.Log("has created square = " + hasCreatedSquare);
+            //Debug.Log("has created square = " + hasCreatedSquare);
         }
     }
 }
