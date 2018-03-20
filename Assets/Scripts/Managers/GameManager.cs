@@ -378,6 +378,9 @@ public class GameManager : MonoBehaviour {
         {
             p2_hiveScript.Population.Add(key, 0);
         }
+		// Set costs in Homes
+		p1_hiveScript.fillCost( new List<GameObject>( p1_unitTemplates ) );
+		p2_hiveScript.fillCost( new List<GameObject>( p2_unitTemplates ) );
         Unit_GameObj_Manager.instance.Homes = new List<HomeScript>() { p1_hiveScript, p2_hiveScript };
 
         //Queens

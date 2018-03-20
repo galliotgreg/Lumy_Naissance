@@ -22,6 +22,8 @@ public class HomeScript : MonoBehaviour {
     private float blueResAmout;
     [AttrName(Identifier = "population")]
     private Dictionary<string, int> population = new Dictionary<string, int>();
+	[AttrName(Identifier = "cost")]
+	private Dictionary<string, Dictionary<string,int>> cost = new Dictionary<string, Dictionary<string, int>> ();
 
 	[SerializeField]
 	Unit_GameObj_Manager gameObjectManager;
@@ -89,6 +91,12 @@ public class HomeScript : MonoBehaviour {
         }
     }
 
+	public Dictionary<string, Dictionary<string,int>> Cost {
+		get {
+			return cost;
+		}
+	}
+
 	public PlayerAuthority Authority {
 		get {
 			return authority;
@@ -141,6 +149,16 @@ public class HomeScript : MonoBehaviour {
 		}
 		if( this.population.ContainsKey( unit.Context.Model.Cast ) ){
 			this.population[ unit.Context.Model.Cast ]--;
+		}
+	}
+
+	public void fillCost( List<GameObject> units ){
+		cost = new Dictionary<string, Dictionary<string, int>> ();
+		foreach( GameObject unit in units ){
+			AgentEntity entity = unit.GetComponent<AgentEntity> ();
+			if (entity != null) {
+				cost.Add (entity.CastName, entity.Context.Model.ProdCost);
+			}
 		}
 	}
 

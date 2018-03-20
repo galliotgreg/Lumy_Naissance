@@ -521,6 +521,22 @@ public class ABParamFactory
             }
             type = refType;
         }
+		else if (field.FieldType == typeof(Dictionary<string, Dictionary<string, int>>))
+		{
+			Dictionary<string, Dictionary<string, int>> dict = (Dictionary<string, Dictionary<string, int>>)field.GetValue(obj);
+			ABRef refType = TypeFactory.CreateEmptyRef();
+			foreach (string key in dict.Keys)
+			{
+				ABRef refTypeInternal = TypeFactory.CreateEmptyRef ();
+				foreach (string keyInternal in dict[key].Keys) {
+					ABScalar scalVal = TypeFactory.CreateEmptyScalar();
+					scalVal.Value = dict[key][keyInternal];
+					refTypeInternal.SetAttr(keyInternal, scalVal);
+				}
+				refType.SetAttr(key, refTypeInternal);
+			}
+			type = refType;
+		}
         else if (field.FieldType == typeof(GameObject))
         {
             FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.NonPublic | BindingFlags.Instance);
