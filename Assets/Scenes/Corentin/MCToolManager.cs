@@ -178,6 +178,10 @@ public class MCToolManager : MonoBehaviour
 			}
         }
 
+		// Delete selected nodes when DELETE is pressed
+		if (Input.GetKeyDown (KeyCode.Delete)) {
+			DeleteNodes ();
+		}
     }
 
     //Method to Return Clicked Object
@@ -193,6 +197,7 @@ public class MCToolManager : MonoBehaviour
         return target;
     }
 
+	#region TOOL : HAND
     private void ToolMain()
     {
         //Mouse moving
@@ -240,9 +245,8 @@ public class MCToolManager : MonoBehaviour
 			MCEditorManager.positioningProxy( getTarget.GetComponent<MCEditor_Proxy>() );
 		}else
 		{
-			if (SelectedNodes != null && SelectedNodes.Contains(getTarget))
+			if (SelectedNodes != null)
 			{
-				int i = 0;
 				foreach (GameObject b in SelectedNodes)
 				{
 					MCEditorManager.positioningProxy( b.GetComponent<MCEditor_Proxy>() );
@@ -250,6 +254,32 @@ public class MCToolManager : MonoBehaviour
 			}
 		}
 	}
+	#endregion
+
+	#region DELETE
+	/// <summary>
+	/// Deletes the selected nodes
+	/// </summary>
+	void DeleteNodes(){
+		if (SelectedNodes != null && SelectedNodes.Count == 0)
+		{
+			MCEditorManager.instance.deleteSelectedProxies ( new List<MCEditor_Proxy>(){ getTarget.GetComponent<MCEditor_Proxy> () } );
+			getTarget = null;
+		}else
+		{
+			if (SelectedNodes != null)
+			{
+				List<MCEditor_Proxy> selectedProxies = new List<MCEditor_Proxy> ();
+				foreach (GameObject b in SelectedNodes)
+				{
+					selectedProxies.Add( b.GetComponent<MCEditor_Proxy>() );
+				}
+				MCEditorManager.instance.deleteSelectedProxies ( selectedProxies );
+				SelectedNodes.Clear ();
+			}
+		}
+	}
+	#endregion
 
     public void Inventory()
     {
