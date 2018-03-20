@@ -16,7 +16,13 @@ public class MC_Inventory_Actions : MC_Inventory {
 		if (AppContextManager.instance.PrysmeEdit) {
 			allowedActions = new List<ActionType> (){ ActionType.Lay };
 		} else {
-			allowedActions = LumyEditorManager.instance.EditedLumy.GetComponent<AgentEntity> ().getAgentActions ();
+			allowedActions = new List<ActionType> ();
+			foreach( ActionType t in System.Enum.GetValues( typeof( ActionType ) ) ){
+				if (t != ActionType.Lay) {
+					allowedActions.Add (t);
+				}
+			}
+			//allowedActions = LumyEditorManager.instance.EditedLumy.GetComponent<AgentEntity> ().getAgentActions ();
 		}
 
 		// Creating an action for each allowed one

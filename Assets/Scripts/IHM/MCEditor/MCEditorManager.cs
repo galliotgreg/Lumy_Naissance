@@ -923,16 +923,16 @@ public class MCEditorManager : MonoBehaviour {
 	#region POSITIONING
 	public static void positioningProxy( MCEditor_Proxy proxy ){
 		Vector3 curPosition = proxy.transform.position;
-		//proxy.transform.position = new Vector3 ( Mathf.Round( curPosition.x ), Mathf.RoundToInt( curPosition.y ), curPosition.z );
+		proxy.transform.position = new Vector3 ( Mathf.Round( curPosition.x ), Mathf.RoundToInt( curPosition.y ), curPosition.z );
 
-		float gridDimension = 0.5f;
+		/*float gridDimension = 0.75f;
 
 		float newPosX = 0;
 		float newPosY = 0;
 		// Check if the position is closer to previous or next grid point
 		float diffX = curPosition.x % gridDimension;
 		int xIt = Mathf.FloorToInt( curPosition.x / gridDimension );
-		if (Mathf.Abs (diffX) > gridDimension / 2) {
+		if (Mathf.Abs (diffX) > gridDimension / 2f) {
 			newPosX = gridDimension * (xIt + 1);
 		} else {
 			newPosX = gridDimension*xIt;
@@ -940,13 +940,13 @@ public class MCEditorManager : MonoBehaviour {
 
 		float diffY = curPosition.y % gridDimension;
 		int yIt = Mathf.FloorToInt( curPosition.y / gridDimension );
-		if (Mathf.Abs (diffY) > gridDimension / 2) {
+		if (Mathf.Abs (diffY) > gridDimension / 2f) {
 			newPosY = gridDimension * (yIt + 1);
 		} else {
 			newPosY = gridDimension*yIt;
 		}
 
-		proxy.transform.position = new Vector3 ( newPosX, newPosY, curPosition.z );
+		proxy.transform.position = new Vector3 ( newPosX, newPosY, curPosition.z );*/
 	}
 	#endregion
 
