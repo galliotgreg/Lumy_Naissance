@@ -467,19 +467,18 @@ public class MCEditorManager : MonoBehaviour {
                     }
                     else
                     {
-                        syntTreeContent.AppendLine(idNodeSyntTree + ",operator{" + type + "},");
-
-                        idNodeSyntTree++;
-                        idNodeInputPin = 0;
-                        foreach (ABNode input in ((IABOperator)node).Inputs)
-                        {
-                            /**Recursive function**/
-                            Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
-                            idNodeInputPin++;
-
-                        }
+                        syntTreeContent.AppendLine(idNodeSyntTree + ",operator{" + type + "},");                        
                     }
-                }                    
+                }
+                idNodeSyntTree++;
+                idNodeInputPin = 0;
+                foreach (ABNode input in ((IABOperator)node).Inputs)
+                {
+                    /**Recursive function**/
+                    Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
+                    idNodeInputPin++;
+
+                }
             }
             else if (node is IABParam)
             {
@@ -524,17 +523,16 @@ public class MCEditorManager : MonoBehaviour {
                     else
                     {
                         type = operatorDictionary[((IABOperator)node).ClassName];
-                        syntTreeContent.AppendLine(idParentnode + ",operator{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);
-                        
-                        idNodeSyntTree++;
-                        idNodeInputPin = 0;
-                        foreach (ABNode input in ((IABOperator)node).Inputs)
-                        {
-                            /**Recursive function**/
-                            Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
-                            idNodeInputPin++;
-                        }
+                        syntTreeContent.AppendLine(idParentnode + ",operator{" + type + "}" + "," + idNodeInput + "->" + idNodeInputPin);                        
                     }
+                }
+                idNodeSyntTree++;
+                idNodeInputPin = 0;
+                foreach (ABNode input in ((IABOperator)node).Inputs)
+                {
+                    /**Recursive function**/
+                    Save_Ope_Param(idParentnode, idNodeInputPin, input, syntTreeContent);
+                    idNodeInputPin++;
                 }
             }            
             else if (node is IABParam)
@@ -700,8 +698,6 @@ public class MCEditorManager : MonoBehaviour {
                 }
 
             }
-
-
         }
         csvcontent.AppendLine(",,");        
         File.WriteAllText(csvpath, csvcontent.ToString());
