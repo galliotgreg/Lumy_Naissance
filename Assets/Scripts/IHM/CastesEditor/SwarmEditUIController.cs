@@ -288,7 +288,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void OpenSelectSwarmDialog()
     {
-        Debug.Log("OpenSelectSwarmDialog");
+        RefreshView();
     }
 
     public void CopySwarm()
@@ -344,12 +344,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void EditLumyMC()
     {
-        Debug.Log("EditLumyMC");
+        NavigationManager.instance.SwapScenesWithoutZoom("EditeurMCScene");
     }
 
     public void EditPrysmMC()
     {
-        Debug.Log("EditPrysmMC");
+        AppContextManager.instance.PrysmeEdit = true;
+        NavigationManager.instance.SwapScenesWithoutZoom("EditeurMCScene");
     }
 
     public void IncrVitality()
