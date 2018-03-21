@@ -37,6 +37,19 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
         }
     }
 
+    public virtual string SymbolName
+    {
+        get
+        {
+            throw new System.NotSupportedException();
+        }
+
+        set
+        {
+            throw new System.NotSupportedException();
+        }
+    }
+
     public Pin Outcome
     {
         get
@@ -130,6 +143,15 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
             abOperator.ClassName = value;
         }
     }
+
+	public OperatorType OpType {
+		get {
+			return abOperator.OpType;
+		}
+		set {
+			abOperator.OpType = value;
+		}
+	}
     #endregion
 
     // Use this for initialization
@@ -287,5 +309,10 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 	public bool acceptIncome (int index, System.Type income)
 	{
 		return this.AbOperator.acceptIncome (index, income);
+	}
+
+	public IABOperator Clone ()
+	{
+		throw new System.NotImplementedException ();
 	}
 }

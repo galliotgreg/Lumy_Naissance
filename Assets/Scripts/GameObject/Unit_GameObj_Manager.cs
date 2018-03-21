@@ -85,7 +85,9 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 		return damageResult;
 	}
-
+	public void addUnit( AgentEntity unit, HomeScript home ){
+		home.addUnitToHome (unit);
+	}
 	public bool pickResource( ResourceScript resource ){
         if (resource.Stock >1)
         {

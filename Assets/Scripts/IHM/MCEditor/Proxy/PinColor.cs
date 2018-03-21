@@ -41,16 +41,60 @@ public class PinColor {
             return vecColor;        
     }
 
+	/// <summary>
+	/// Gets the color of the pin based on its type
+	/// </summary>
+	/// <returns>The color of the pin based on its type.</returns>
+	/// <param name="type">Type.</param>
+	public static Color GetColorPinFromType(System.Type type){
+		Color color = new Color();
+		// Check type (simple type) or internal type (complex type)
+		System.Type internalType = ABStar<ABBool>.getInternalIfComplexType(type);
+		if (type == typeof(ABBool) || internalType == typeof(ABBool) )
+		{
+			color = PinColor.GetBoolColor();
+		}
+		else if (type == typeof(ABScalar) || internalType == typeof(ABScalar))
+		{
+			// Silver
+			color = PinColor.GetScalColor();
+		}
+		else if (type == typeof(ABText) || internalType == typeof(ABText) )
+		{
+			// Turquoise
+			color = PinColor.GetTextColor();
+		}
+		else if (type == typeof(ABColor) || internalType == typeof(ABColor) )
+		{
+			// Chocolat
+			color = PinColor.GetColorColor();
+		}
+		else if (type == typeof(ABRef) || internalType == typeof(ABRef) )
+		{
+			color = PinColor.GetRefColor();
+		}
+		else if (type == typeof(ABVec) || internalType == typeof(ABVec) )
+		{
+			// Violet
+			color = PinColor.GetVecColor();
+		} else
+		{
+			Debug.LogWarning("Type non reconnu " + type);
+		}
+		return color;
+	}
+
     public static Color GetColorPinFromType(string type)
     {
         Color color = new Color();
         if (type.Contains("Bool"))
         {
+            // Blue 
             color = PinColor.GetBoolColor();
         }
         else if (type.Contains("Scal"))
         {
-            // Silver
+            // Sepia
             color = PinColor.GetScalColor();
         }
         else if (type.Contains("Text") || type.Contains("Txt"))
@@ -65,6 +109,7 @@ public class PinColor {
         }
         else if (type.Contains("Ref"))
         {
+            // Red
             color = PinColor.GetRefColor();
         }
         else if (type.Contains("Vec"))

@@ -40,7 +40,7 @@ public class LayAction : GameAction {
 		child.name = childEntity.CastName;
 		childEntity.Context.setModelValues (this.agentEntity.Authority);
         //Increment Population 
-		this.agentEntity.Home.addUnit( childEntity );
+		Unit_GameObj_Manager.instance.addUnit( childEntity, this.agentEntity.Home );
 
         //Set GameParams
 		childEntity.GameParams =

@@ -21,17 +21,7 @@ public class OptionManager : MonoBehaviour {
     [SerializeField]
     private Toggle directionLumy;
     [SerializeField]
-    private Toggle lumyCost;
-    [SerializeField]
-    private Toggle lumycComponents;
-    [SerializeField]
-    private Toggle lumyAction;
-    [SerializeField]
     private Toggle trace;
-    [SerializeField]
-    private Toggle gisements;
-    [SerializeField]
-    private Toggle suiviRessources;
 
     [Header("Joueur 2")]
     [SerializeField]
@@ -47,17 +37,11 @@ public class OptionManager : MonoBehaviour {
     [SerializeField]
     private Toggle directionLumyJ2;
     [SerializeField]
-    private Toggle lumyCostJ2;
-    [SerializeField]
-    private Toggle lumycComponentsJ2;
-    [SerializeField]
-    private Toggle lumyActionJ2;
-    [SerializeField]
     private Toggle traceJ2;
+
+    [Header("General")]
     [SerializeField]
-    private Toggle gisementsJ2;
-    [SerializeField]
-    private Toggle suiviRessourcesJ2;
+    private Toggle gisements;
 
     private float rangeVision;
     private float rangePick;
@@ -342,7 +326,7 @@ public class OptionManager : MonoBehaviour {
                     vRange.gameObject.SetActive(true);
                     rangeVision = lumy.transform.GetChild(1).GetComponent<AgentScript>().VisionRange;
 
-                    vRange.localScale = new Vector3(rangeVision * 2, 0.01f, rangeVision * 2);
+                    vRange.localScale = new Vector3(rangeVision * 2, rangeVision * 2, 1f);
                 }
             }
         }
@@ -375,7 +359,7 @@ public class OptionManager : MonoBehaviour {
                     vRange.gameObject.SetActive(true);
                     rangeVision = lumy.transform.GetChild(1).GetComponent<AgentScript>().VisionRange;
 
-                    vRange.localScale = new Vector3(rangeVision * 2, 0.01f, rangeVision * 2);
+                    vRange.localScale = new Vector3(rangeVision * 2, rangeVision * 2, 1f);
                 }
             }
         }
@@ -408,7 +392,7 @@ public class OptionManager : MonoBehaviour {
                     attackRange.gameObject.SetActive(true);
                     rangeAttack = lumy.transform.GetChild(1).GetComponent<AgentScript>().AtkRange;
 
-                    attackRange.localScale = new Vector3(rangeAttack * 2, 0.01f, rangeAttack * 2);
+                    attackRange.localScale = new Vector3(rangeAttack * 2, rangeAttack * 2, 1f);
                 }
             }
         }
@@ -440,7 +424,7 @@ public class OptionManager : MonoBehaviour {
                     attackRange.gameObject.SetActive(true);
                     rangeAttack = lumy.transform.GetChild(1).GetComponent<AgentScript>().AtkRange;
 
-                    attackRange.localScale = new Vector3(rangeAttack * 2, 0.01f, rangeAttack * 2);
+                    attackRange.localScale = new Vector3(rangeAttack * 2,rangeAttack * 2, 1f);
                 }
             }
         }
@@ -474,7 +458,7 @@ public class OptionManager : MonoBehaviour {
                     pkRange.gameObject.SetActive(true);
                     rangePick = lumy.transform.GetChild(1).GetComponent<AgentScript>().PickRange;
 
-                    pkRange.localScale = new Vector3(rangePick * 2, 0.01f, rangePick * 2);
+                    pkRange.localScale = new Vector3(rangePick * 2,rangePick * 2, 1f);
                 }
             }
         }
@@ -507,7 +491,7 @@ public class OptionManager : MonoBehaviour {
                     pkRange.gameObject.SetActive(true);
                     rangePick = lumy.transform.GetChild(1).GetComponent<AgentScript>().PickRange;
 
-                    pkRange.localScale = new Vector3(rangePick * 2, 0.01f, rangePick * 2);
+                    pkRange.localScale = new Vector3(rangePick * 2,rangePick * 2, 1f);
                 }
             }
         }

@@ -4,32 +4,37 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using Zip_Tool;
-using UnityEditor;
+using Crosstales.FB;
+
+
 public class ImportController : MonoBehaviour {
 
-    private string filePath = Directory.GetCurrentDirectory() + @"/Assets/Inputs/Species";
+    //private string filePath = Application.dataPath + @"/Inputs/Species";
 
     // Use this for initialization
     void Start()
     {
-        this.gameObject.GetComponent<Button>().onClick.AddListener(ImportSpecie);
+        //this.gameObject.GetComponent<Button>().onClick.AddListener(ImportSpecie);
     }
 
-    void ImportSpecie()
+    public static void ImportSpecie()
     {
         // TODO Remove EdiorUtility
-        /* Application.dataPath + "/" +
+        /* Application.dataPath + "/" + compoDataPath
         System.IO.StreamReader reader = new System.IO.StreamReader(path);
         return reader.ReadToEnd();*/
-        string path = EditorUtility.OpenFilePanel("Name", filePath, "");
-        if (path != null){
-            Debug.Log(path);
-            string[] path_cutted = path.Split('/');
-            string name = path_cutted[path_cutted.Length - 1];
-            //Decompress(path);
-            ZipUtil.Unzip(path, filePath);
-        }
 
+        // Debug.Log(Application.dataPath + "/");
+        string filePath = Application.dataPath + @"/Inputs/Species";
+
+        string path = FileBrowser.OpenSingleFile("Open Folder", "","zip");        
+        if (path != null){
+          
+            string name = (Path.GetFileName(path)).Split('.')[0];
+            
+            string new_folder = filePath + "\\" + name;
+            ZipUtil.Unzip(path, new_folder);
+        }
     }
 
 }

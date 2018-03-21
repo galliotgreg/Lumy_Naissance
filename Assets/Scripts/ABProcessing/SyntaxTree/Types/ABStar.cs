@@ -40,4 +40,19 @@ public class ABStar<T> : IABComplexType where T : IABSimpleType
 	}
 
 	#endregion
+
+	public static System.Type getInternalIfComplexType (System.Type type, int index = 0)
+	{
+		if (type.IsGenericType && type.GetGenericArguments ().Length > 0) {
+			List<System.Type> interfaces = new List<System.Type> (type.GetInterfaces ());
+			if (interfaces.Contains (typeof(IABComplexType))) {
+				return type.GetGenericArguments () [index];
+			}
+		}
+		return null;
+	}
+
+	public static bool isStar( System.Type type ){
+		return (type.IsGenericType && type.GetGenericTypeDefinition () == typeof(ABStar<>));
+	}
 }

@@ -32,7 +32,7 @@ public class ABOperatorFactory {
         TypeStringToString.Add("AB_BoolTab_Agg_BoolStar_Operator", "B[]aggB*");
         TypeStringToString.Add("AB_Bool_Equals_Bool_Bool_Operator", "B==BB");
         TypeStringToString.Add("AB_Bool_Get_Ref_Txt_Operator", "BgetRT");
-        TypeStringToString.Add("AB_BoolTab_GetRefTab_Txt_Operator", "B[]getR[]T");
+        TypeStringToString.Add("AB_BoolTab_Get_RefTab_Txt_Operator", "B[]getR[]T");
         TypeStringToString.Add("AB_Bool_Get_BoolTab_Scal_Operator", "BgetB[]S");
         TypeStringToString.Add("AB_Bool_IsSet_Bool_Operator", "BisSetB");
         TypeStringToString.Add("AB_Bool_NotEquals_Bool_Bool_Operator", "B!=BB");
@@ -40,7 +40,7 @@ public class ABOperatorFactory {
         TypeStringToString.Add("AB_ColorTab_Agg_ColorStar_Operator", "C[]aggC*");
         TypeStringToString.Add("AB_Bool_Equals_Color_Color_Operator", "B==CC");
         TypeStringToString.Add("AB_Color_Get_Ref_Txt_Operator", "CgetRT");
-        TypeStringToString.Add("AB_ColorTab_Get_RefTab_Txt_Operator", "C[]getR[]T");
+        TypeStringToString.Add("AB_ColorTab_Get_Ref_Tab_Txt_Operator", "C[]getR[]T");
         TypeStringToString.Add("AB_Color_Get_ColorTab_Scal_Operator", "CgetC[]S");
         TypeStringToString.Add("AB_Bool_IsSet_Color_Operator", "BisSetC");
         TypeStringToString.Add("AB_Bool_NotEquals_Color_Color_Operator", "B!=CC");
@@ -139,7 +139,7 @@ public class ABOperatorFactory {
                 type = OperatorType.Bool_Get_Ref_Txt;
                 break;
             case "B[]getR[]T":
-                type = OperatorType.BoolTab_GetRefTab_Txt;
+                type = OperatorType.BoolTab_Get_RefTab_Txt;
                 break;
             case "BgetB[]S":
                 type = OperatorType.Bool_Get_BoolTab_Scal;
@@ -414,8 +414,8 @@ public class ABOperatorFactory {
             case OperatorType.Bool_Get_Ref_Txt:
                 abOperator = new AB_Bool_Get_Ref_Txt_Operator();
                 break;
-            case OperatorType.BoolTab_GetRefTab_Txt:
-                abOperator = new AB_BoolTab_GetRefTab_Txt_Operator();
+            case OperatorType.BoolTab_Get_RefTab_Txt:
+                abOperator = new AB_BoolTab_Get_RefTab_Txt_Operator();
                 break;
             case OperatorType.Bool_Get_BoolTab_Scal:
                 abOperator = new AB_Bool_Get_BoolTab_Scal_Operator();
@@ -670,6 +670,9 @@ public class ABOperatorFactory {
                 throw new NotImplementedException("Type " + type + " not implemented");
         }
 
+		if (abOperator != null) {
+			abOperator.OpType = type;
+		}
         return abOperator;
     }
 }

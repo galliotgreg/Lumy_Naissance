@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour {
 
     private Specie p1_specie;
     private Specie p2_specie;
-
+    
     public GameObject P1_home
     {
         get
@@ -378,6 +378,9 @@ public class GameManager : MonoBehaviour {
         {
             p2_hiveScript.Population.Add(key, 0);
         }
+		// Set costs in Homes
+		p1_hiveScript.fillCost( new List<GameObject>( p1_unitTemplates ) );
+		p2_hiveScript.fillCost( new List<GameObject>( p2_unitTemplates ) );
         Unit_GameObj_Manager.instance.Homes = new List<HomeScript>() { p1_hiveScript, p2_hiveScript };
 
         //Queens
@@ -395,9 +398,8 @@ public class GameManager : MonoBehaviour {
         p2_queen.GetComponent<AgentEntity>().GameParams =
             gameParam.GetComponent<GameParamsScript>();
 
-
-        p1_hiveScript.addUnit(p1_queen.GetComponent<AgentEntity>());
-        p2_hiveScript.addUnit(p2_queen.GetComponent<AgentEntity>());
+		Unit_GameObj_Manager.instance.addUnit( p1_queen.GetComponent<AgentEntity>(), p1_hiveScript );
+		Unit_GameObj_Manager.instance.addUnit( p2_queen.GetComponent<AgentEntity>(), p2_hiveScript );
 
         InitResources();
         SetResources();
@@ -525,9 +527,7 @@ public class GameManager : MonoBehaviour {
         }
         return resSum;
     }
-
-
-
+    
 
     public HomeScript GetEnemyHome(PlayerAuthority authority)
     {

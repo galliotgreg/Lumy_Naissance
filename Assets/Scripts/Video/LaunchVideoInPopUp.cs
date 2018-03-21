@@ -30,8 +30,8 @@ public class LaunchVideoInPopUp : MonoBehaviour
 
     void OpenPopUpVideo()
     {
-        popup.SetActive(true);
         player.GetComponent<VideoPlayer>().Play();
+        popup.SetActive(true);
         playing = true;
     }
 
@@ -50,8 +50,9 @@ public class LaunchVideoInPopUp : MonoBehaviour
 
     void ClosePopUpVideo()
     {
-        popup.SetActive(false);
         player.GetComponent<VideoPlayer>().Stop();
+        popup.SetActive(false);
         playing = false;
     }
+
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class ABOperator<T> : ABNode, IABOperator
 {
     protected ABNode[] inputs;
+	OperatorType opType;
 
     public ABNode[] Inputs
     {
@@ -53,6 +54,27 @@ public abstract class ABOperator<T> : ABNode, IABOperator
             throw new System.NotSupportedException();
         }
     }
+    public virtual string SymbolName
+    {
+        get
+        {
+            throw new System.NotSupportedException();
+        }
+
+        set
+        {
+            throw new System.NotSupportedException();
+        }
+    }
+
+	public OperatorType OpType {
+		get {
+			return opType;
+		}
+		set {
+			opType = value;
+		}
+	}
 
     public T EvaluateOperator(ABContext context){
 		try{
@@ -74,7 +96,7 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		//return ((ABOperator<T>)this).GetType().GetGenericArguments () [0];
 	}
 
-	public System.Type getIncomeType( int index ){
+	public virtual System.Type getIncomeType( int index ){
 		int indexPlusStart = index + 3;
 
 		string[] terms = this.GetType ().ToString ().Split ('_');
@@ -99,6 +121,7 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 			return true;
 		} else {
 			// Check Star Param
+			// todo change to abstar.isstar
 			if( thisType.IsGenericType && thisType.GetGenericTypeDefinition() == typeof( ABStar<> ) && thisType.GetGenericArguments().Length > 0 ){
 				System.Type argType = thisType.GetGenericArguments()[0];
 
@@ -133,5 +156,10 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		else{
 			return type.ToString();
 		}
+	}
+
+	public virtual IABOperator Clone ()
+	{
+		return ABOperatorFactory.CreateOperator (this.OpType);
 	}
 }

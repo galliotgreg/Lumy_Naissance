@@ -9,7 +9,7 @@ public enum OperatorType
     BoolTab_Agg_BoolStar,
     Bool_Equals_Bool_Bool,
     Bool_Get_Ref_Txt,
-    BoolTab_GetRefTab_Txt,
+    BoolTab_Get_RefTab_Txt,
     Bool_Get_BoolTab_Scal,
     Bool_IsSet_Bool,
     Bool_NotEquals_Bool_Bool,

@@ -241,8 +241,7 @@ public class AgentContext : MonoBehaviour
 	/// <param name="agentComponents">Agent's Components</param>
 	/// <returns>The cooldown.</returns>
 	float getCooldown( AgentComponent[] agentComponents ){
-		int nbComposants = agentComponents.Length;
-		return 1.25f * nbComposants;
+        return CostManager.instance.ComputeProdTime(agentComponents);
 	}
 
 	/// <summary>

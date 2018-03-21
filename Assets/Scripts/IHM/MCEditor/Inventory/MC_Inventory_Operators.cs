@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class MC_Inventory_Operators : MC_Inventory {
 
-	List<IABOperator> allOperators;
+	protected List<IABOperator> allOperators;
 
 	[SerializeField]
-	UnityEngine.UI.Dropdown returnTypeDropdown;
+	protected UnityEngine.UI.Dropdown returnTypeDropdown;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		base.Start ();
 
 		// Load Operators
@@ -33,7 +33,7 @@ public class MC_Inventory_Operators : MC_Inventory {
 		changeReturnTypeDropdown ( returnTypeDropdown.value );
 	}
 
-	List<System.Object> listToObject<T>( List<T> list ){
+	protected List<System.Object> listToObject<T>( List<T> list ){
 		List<System.Object> result = new List<object> ();
 
 		foreach( T item in list ){
@@ -44,7 +44,7 @@ public class MC_Inventory_Operators : MC_Inventory {
 	}
 
 	#region Filter
-	void loadReturnTypeDropdown(){
+	protected void loadReturnTypeDropdown(){
 		returnTypeDropdown.ClearOptions ();
 
 		List<string> types = new List<string> ();
@@ -74,7 +74,7 @@ public class MC_Inventory_Operators : MC_Inventory {
 	#endregion
 	
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
 		base.Update ();
 	}
 
@@ -89,7 +89,8 @@ public class MC_Inventory_Operators : MC_Inventory {
 
 	public override GameObject instantiateProxy (MC_InventoryItem item)
 	{
-		return MCEditor_Proxy_Factory.instantiateOperator((IABOperator)item.Item, false).gameObject;
+		IABOperator oper = ((IABOperator)item.Item).Clone();
+		return MCEditor_Proxy_Factory.instantiateOperator(oper, false).gameObject;
 	}
 
 	protected override void Drop (GameObject proxy, MC_InventoryItem item)

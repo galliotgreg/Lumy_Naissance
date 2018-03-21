@@ -140,6 +140,11 @@ public class PhySkeleton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Frame();
+    }
+
+    public void Frame()
+    {
         if (rootBone == null)
         {
             BuildSkeleton();
