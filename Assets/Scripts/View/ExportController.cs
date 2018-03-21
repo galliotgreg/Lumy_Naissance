@@ -13,10 +13,10 @@ public class ExportController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        this.gameObject.GetComponent<Button>().onClick.AddListener(ExportSpecie);
+        //this.gameObject.GetComponent<Button>().onClick.AddListener(ExportSpecie);
     }
 
-    void ExportSpecie()
+    public static void ExportSpecie()
     {
         string path = Application.dataPath + @"/Inputs/Species";
         string folder_path = FileBrowser.OpenSingleFolder("Select your file", path);

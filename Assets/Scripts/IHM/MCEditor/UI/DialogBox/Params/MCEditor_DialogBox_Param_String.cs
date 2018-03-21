@@ -5,10 +5,10 @@ using UnityEngine;
 public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 
 	[SerializeField]
-	BlockerDropdown valueType;	// Class to list items OR string
+	BlockerDropdown_DialogBox valueType;	// Class to list items OR string
 
 	[SerializeField]
-	BlockerDropdown valueTypeItem;
+	BlockerDropdown_DialogBox valueTypeItem;
 
 	[SerializeField]
 	UnityEngine.UI.InputField valueText;
@@ -27,6 +27,8 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 	void Start () {
 		base.Start ();
 
+		valueType.DialogBox = this;
+		valueTypeItem.DialogBox = this;
 		valueType.onValueChanged.AddListener (LoadType);
 		valueTypeItem.onValueChanged.AddListener (setItem);
 

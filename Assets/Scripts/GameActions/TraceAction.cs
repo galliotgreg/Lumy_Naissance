@@ -66,6 +66,8 @@ public class TraceAction : GameAction {
 		}
 	}
 
+	protected override void activateAction_CooldownAuthorized (){}
+
 	protected override void deactivateAction (){}
 
 	#endregion
