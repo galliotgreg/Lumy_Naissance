@@ -178,8 +178,10 @@ public class SwarmEditUIController : MonoBehaviour
     {
         RefreashSwarmScroll();
         RefreashLumysScroll();
-        RefreshLumyInfo();
+
         RefreshLumyAppearence();
+        RefreshLumyInfo();
+        
         RefreashLumyStats();
     }
 
@@ -297,26 +299,24 @@ public class SwarmEditUIController : MonoBehaviour
 
     private int GetBlueCost()
     {
-        //TODO GREG
-        return (int) (UnityEngine.Random.value * 100);
+        return CostManager.instance.ComputeBlueCost(editedLumy);
     }
 
     private int GetGreenCost()
     {
-        //TODO GREG
-        return (int)(UnityEngine.Random.value * 100);
+        return CostManager.instance.ComputeGreenCost(editedLumy);
     }
 
     private int GetRedCost()
     {
-        //TODO GREG
-        return (int)(UnityEngine.Random.value * 100);
+        return CostManager.instance.ComputeRedCost(editedLumy);
     }
 
     private float GetProdTime()
     {
-        //TODO GREG
-        return UnityEngine.Random.value;
+        AgentContext agentContext = editedLumy.GetComponent<AgentContext>();
+        AgentComponent[] agentComponent = agentContext.Entity.getAgentComponents();
+        return CostManager.instance.ComputeProdTime(agentComponent);
     }
 
     private void RefreashLumysScroll()
