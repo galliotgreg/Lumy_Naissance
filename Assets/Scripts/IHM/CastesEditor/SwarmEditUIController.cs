@@ -627,8 +627,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void CopySwarm()
     {
-        
-        Debug.Log("CopySwarm");
+        int nbSpecies = AppContextManager.instance.GetSpeciesFolderNames().Length + 1;
+        string copyName = AppContextManager.instance.ActiveSpecie.Name + "(" + nbSpecies + ")";
+        copyName = Char.ToLowerInvariant(copyName[0]) + copyName.Substring(1);
+        AppContextManager.instance.CopySpecie(copyName);
+        string specieFolderName = Char.ToUpperInvariant(copyName[0]) + copyName.Substring(1);
+        SelectSwarm(specieFolderName);
+        RefreshView();
     }
 
     public void DeleteSwarm()

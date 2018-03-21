@@ -15,6 +15,10 @@ public class ComponentInfo {
 
     //Passive Buffs
     [SerializeField]
+    private float pickRangeBuff;
+    [SerializeField]
+    private float atkRangeBuff;
+    [SerializeField]
     private float moveSpeedBuff;
     [SerializeField]
     private float actionSpeedBuff;
@@ -117,6 +121,31 @@ public class ComponentInfo {
 
     #region PASSIVES
 
+    public float PickRangeBuff
+    {
+        get
+        {
+            return pickRangeBuff;
+        }
+
+        set
+        {
+            pickRangeBuff = value;
+        }
+    }
+
+    public float AtkRangeBuff
+    {
+        get
+        {
+            return atkRangeBuff;
+        }
+
+        set
+        {
+            atkRangeBuff = value;
+        }
+    } 
     public float MoveSpeedBuff
     {
         get
@@ -396,6 +425,8 @@ public class ComponentInfo {
             notHandledTokens = value;
         }
     }
+
+
     #endregion
 
     public void init()

@@ -16,6 +16,10 @@ public class AgentComponent : MonoBehaviour {
 
     //Passive Buffs
     [SerializeField]
+    private float pickRangeBuff;
+    [SerializeField]
+    private float atkRangeBuff; 
+    [SerializeField]
 	private float moveSpeedBuff;
     [SerializeField]
 	private float actionSpeedBuff;
@@ -53,7 +57,7 @@ public class AgentComponent : MonoBehaviour {
     [SerializeField]
     private bool enableTraceSpread;
 
-    //Sensors
+    //Sensors TODO REmove ? 
     [SerializeField]
 	private float visionRange;
     [SerializeField]
@@ -104,9 +108,34 @@ public class AgentComponent : MonoBehaviour {
 		}
 	}
 
-	#region PASSIVES
+    #region PASSIVES
 
-	public float MoveSpeedBuff {
+    public float AtkRangeBuff
+    {
+        get
+        {
+            return atkRangeBuff;
+        }
+
+        set
+        {
+            atkRangeBuff = value;
+        }
+    }
+
+    public float PickRangeBuff
+    {
+        get
+        {
+            return pickRangeBuff;
+        }
+
+        set
+        {
+            pickRangeBuff = value;
+        }
+    }
+    public float MoveSpeedBuff {
 		get {
 			return moveSpeedBuff;
 		}
@@ -324,9 +353,11 @@ public class AgentComponent : MonoBehaviour {
 			notHandledTokens = value;
 		}
 	}
-	#endregion
 
-	public void init(){
+
+    #endregion
+
+    public void init(){
 		this.notHandledTokens = new List<string>();
 	}
 
