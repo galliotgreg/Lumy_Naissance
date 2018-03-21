@@ -166,6 +166,7 @@ public class AgentContext : MonoBehaviour
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
 
+        //TODO REMOVE INITIALIZATION (MAKE IN COMPONENTS) 
 		// vitality
 		this.model.VitalityMax = 20;
 		// strength
@@ -176,12 +177,9 @@ public class AgentContext : MonoBehaviour
 		this.model.ActSpd = 5;
 		// moveSpeed
 		this.model.MoveSpd = 10;
-		// nbItemMax
-		this.model.NbItemMax = 20;
 		// atkRange
 		this.model.AtkRange = 0;
 		// pickRange
-		Debug.LogWarning( "TODO : pickRange = visionRange" );
 		this.model.PickRange = 0;
 
         // ProdCost
@@ -214,6 +212,7 @@ public class AgentContext : MonoBehaviour
             this.model.PickRange += comp.PickRangeBuff;
             this.model.AtkRange += comp.AtkRangeBuff;
             this.model.VisionRange += comp.VisionRangeBuff;
+            this.model.NbItemMax += (int) comp.StaminaBuff * 3;
         }
 
         this.model.Vitality = this.model.VitalityMax;
