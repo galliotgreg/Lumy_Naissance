@@ -45,6 +45,9 @@ public abstract class GameAction : MonoBehaviour {
 		}
 	}
 
+	private bool CoolDownAuthorized = true;		// Indicates if the cooldown authorizes the execution of the action
+	private bool firstExecution = true;			// Indicates the first execution of the action
+
 	/// <summary>
 	/// The agent entity.
 	/// </summary>
@@ -70,6 +73,9 @@ public abstract class GameAction : MonoBehaviour {
 
 		if (coolDownElapsed && coolDownTime > 0)
 		{
+			CoolDownAuthorized = !firstExecution; // As the action is executed on ActivateAction, and the authorization is given by ExecuteAction (which is executed by default), it avoids the incorrect authorization during the first execution
+			firstExecution = false;
+
 			executeAction();
 			coolDownElapsed = false;
 			if( coolDownActivate ){
@@ -88,6 +94,10 @@ public abstract class GameAction : MonoBehaviour {
 	public void activate(){
 		if (!activated) {
 			activateAction ();
+			if (CoolDownAuthorized) {
+				this.CoolDownAuthorized = false;
+				activateAction_CooldownAuthorized ();
+			}
 			activated = true;
 		}
 	}
@@ -110,9 +120,14 @@ public abstract class GameAction : MonoBehaviour {
 	protected abstract void executeAction();
 
 	/// <summary>
-	/// Called when an action is activated.
+	/// Called when an action is activated (at the start of each frame that the action is activated)
 	/// </summary>
 	protected abstract void activateAction();
+
+	/// <summary>
+	/// Called when an action is activated (at the start of each frame that the action is activated) IF the cooldown authorizes it
+	/// </summary>
+	protected abstract void activateAction_CooldownAuthorized();
 
 	/// <summary>
 	/// Called when an action is deactivated.
