@@ -196,7 +196,7 @@ public class SwarmEditUIController : MonoBehaviour
         RefreashLumysScroll();
         RefreshLumyAppearenceFromData();
         RefreshLumyInfo();
-        RefreashLumyStats();
+        RefreashLumyStats();        
     }
 
     /// <summary>
@@ -655,6 +655,7 @@ public class SwarmEditUIController : MonoBehaviour
     public void OpenImportSwarmDialog()
     {
         ImportController.ImportSpecie();
+        RefreshView();
         Debug.Log("OpenImportSwarmDialog");
     }
 
