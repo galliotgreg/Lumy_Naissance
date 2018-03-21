@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using Zip_Tool;
-using UnityEditor;
+using Crosstales.FB;
 
 public class ExportController : MonoBehaviour {
 
-    private string filePath = Directory.GetCurrentDirectory() + "\\Assets\\Inputs\\Species";
+    //private string filePath = Directory.GetCurrentDirectory() + @"/Inputs/Species";
 
     // Use this for initialization
     void Start()
@@ -18,13 +18,17 @@ public class ExportController : MonoBehaviour {
 
     void ExportSpecie()
     {
-        Debug.Log("Select your folder");
-        string folder_path = EditorUtility.OpenFolderPanel("Name", filePath, "");
-        string[] filesName = Directory.GetFiles(folder_path, "*.csv",SearchOption.TopDirectoryOnly);
-        Debug.Log("Select your destination folder");
-        string destination_path = EditorUtility.OpenFolderPanel("Name", filePath, "");
-        ZipUtil.Zip(folder_path, folder_path, filesName);
-
+        string path = Application.dataPath + @"/Inputs/Species";
+        string folder_path = FileBrowser.OpenSingleFolder("Select your file", path);
         
+        string[] path_cutted = folder_path.Split('\\');
+        string name_folder = path_cutted[path_cutted.Length - 1];
+
+        string relative_folder_path = Application.dataPath + @"/Inputs/Species/" + name_folder;
+        string[] filesName = Directory.GetFiles(folder_path, "*.csv",SearchOption.TopDirectoryOnly);
+        string destination_path = FileBrowser.OpenSingleFolder("Choose your destination folder");
+
+        ZipUtil.Zip(relative_folder_path, destination_path, filesName);
+
     }
 }
