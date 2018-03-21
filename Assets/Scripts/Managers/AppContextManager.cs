@@ -473,15 +473,10 @@ public class AppContextManager : MonoBehaviour
 
     public void DeleteCast()
     {
-        //Remove Behaviod files
-        Cast child1 = activeCast.Childs[0];
-        
-        File.Delete(ActiveSpecieFolderPath + child1.BehaviorModelIdentifier + CSV_EXT);        
+        File.Delete(ActiveSpecieFolderPath + activeCast.BehaviorModelIdentifier + CSV_EXT);        
 
         //Remove childs from specie
-        activeSpecie.Casts.Remove(child1.Name);
-
-        activeCast.Childs.Clear();
+        activeSpecie.Casts.Remove(activeCast.Name);
 
         //Alter Specie file
         SaveSpecie();

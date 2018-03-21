@@ -657,14 +657,20 @@ public class SwarmEditUIController : MonoBehaviour
     public void CopyLumy()
     {
         AppContextManager.instance.CloneCast();
-        RefreashSwarmScroll();
-        Debug.Log("CopyLumy");
+        RefreshView();
     }
 
     public void DeleteLumy()
     {
-        //AppContextManager.instance.DeleteCast();
-        Debug.Log("DeleteLumy");
+        AppContextManager.instance.DeleteCast();
+        Cast firstCast = null;
+        foreach (Cast cast in AppContextManager.instance.ActiveSpecie.Casts.Values)
+        {
+            firstCast = cast;
+            break;
+        }
+        AppContextManager.instance.SwitchActiveCast(firstCast.Name);
+        RefreshView();
     }
 
     public void NewLumy()
