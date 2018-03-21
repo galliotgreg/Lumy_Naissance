@@ -52,6 +52,8 @@ public class LumyUIController : MonoBehaviour {
     private Text strengthBuffText;
     private Text vitalityBuffText;
     private Text staminaBuffText;
+    private Text atkRangeBuffText;
+    private Text pickRangeBuffText;
     private Text visionRangeBuffText;
     private Text vibrationRangeBuffText;
     private Text heatRangeBuffText;
@@ -68,6 +70,7 @@ public class LumyUIController : MonoBehaviour {
     private Text vibrationRangeText;
     private Text heatRangeText;
     private Text smellRangeText;
+    
     
     private Text txt_Cost_Red;
     private Text txt_Cost_Green;
@@ -140,6 +143,8 @@ public class LumyUIController : MonoBehaviour {
         int redCost=0;
         int greenCost = 0;
         int blueCost = 0;
+        float atkRangeBuff = 0;
+        float pickRangeBuff = 0;
         float moveSpeedBuff =0;
         float actionSpeedBuff=0;
         float strengthBuff=0;
@@ -168,6 +173,8 @@ public class LumyUIController : MonoBehaviour {
         foreach (AgentComponent compo in LumyEditorManager.instance.EditedLumy.GetComponentsInChildren<AgentComponent>()) {
 
             //cost += compo.ProdCost;
+            atkRangeBuff += compo.AtkRangeBuff;
+            pickRangeBuff += compo.PickRangeBuff; 
             moveSpeedBuff += compo.MoveSpeedBuff;
             actionSpeedBuff += compo.ActionSpeedBuff;
             strengthBuff += compo.StrengthBuff;
@@ -215,6 +222,10 @@ public class LumyUIController : MonoBehaviour {
         txt_Cost_Green.text = "Green Cost : " + greenCost.ToString();
         txt_Cost_Blue = stats.transform.Find("txt_Cost_Blue").gameObject.GetComponent<Text>();
         txt_Cost_Blue.text = "Blue Cost : " + blueCost.ToString();
+        atkRangeBuffText = stats.transform.Find("atkRangeBuffatText").gameObject.GetComponent<Text>();
+        atkRangeBuffText.text = "Atk Range : " + atkRangeBuff.ToString();
+        pickRangeBuffText = stats.transform.Find("pickRangeBuffatText").gameObject.GetComponent<Text>();
+        pickRangeBuffText.text = "Pick Range : " + pickRangeBuff.ToString();
         moveSpeedBuffStatText = stats.transform.Find("moveSpeedBuffStatText").gameObject.GetComponent<Text>();
         moveSpeedBuffStatText.text = "Move Speed : " + moveSpeedBuff.ToString();
         actionSpeedBuffStatText = stats.transform.Find("actionSpeedBuffStatText").gameObject.GetComponent<Text>();
@@ -280,6 +291,12 @@ public class LumyUIController : MonoBehaviour {
   
             prodCostText = infobulle.transform.Find("prodCostText").gameObject.GetComponent<Text>();
             prodCostText.text = "Cost : " + LumyEditorManager.instance.HoveredLumyCompo.ProdCost.ToString();
+
+            atkRangeBuffText = infobulle.transform.Find("atkRangeBuffText").gameObject.GetComponent<Text>();
+            atkRangeBuffText.text = "Atk Range : " + LumyEditorManager.instance.HoveredLumyCompo.AtkRangeBuff.ToString();
+
+            pickRangeBuffText = infobulle.transform.Find("atkRangeBuffText").gameObject.GetComponent<Text>();
+            pickRangeBuffText.text = "Pick Range : " + LumyEditorManager.instance.HoveredLumyCompo.PickRangeBuff.ToString();
 
             moveSpeedBuffText = infobulle.transform.Find("moveSpeedBuffText").gameObject.GetComponent<Text>();
             moveSpeedBuffText.text = "Speed : + " + LumyEditorManager.instance.HoveredLumyCompo.MoveSpeedBuff.ToString();           
@@ -351,6 +368,12 @@ public class LumyUIController : MonoBehaviour {
 
             listeTextes.Add(infobulle.transform.Find("prodCostText").gameObject);
             listeStats.Add(LumyEditorManager.instance.HoveredLumyCompo.ProdCost.ToString());
+
+            listeTextes.Add(infobulle.transform.Find("atkRangeBuffText").gameObject);
+            listeStats.Add(LumyEditorManager.instance.HoveredLumyCompo.AtkRangeBuff.ToString());
+
+            listeTextes.Add(infobulle.transform.Find("PickRangeBuffText").gameObject);
+            listeStats.Add(LumyEditorManager.instance.HoveredLumyCompo.PickRangeBuff.ToString());
 
             listeTextes.Add(infobulle.transform.Find("moveSpeedBuffText").gameObject);
             listeStats.Add(LumyEditorManager.instance.HoveredLumyCompo.MoveSpeedBuff.ToString());

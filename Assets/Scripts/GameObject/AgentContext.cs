@@ -203,36 +203,20 @@ public class AgentContext : MonoBehaviour
 		this.model.LayTimeCost = getCooldown( agentComponents );
 		// visionRange
 		this.model.VisionRange = 0;
-        
-        foreach ( AgentComponent comp in agentComponents ){
-			this.model.VitalityMax += comp.VitalityBuff;
-			this.model.Strength += comp.StrengthBuff;
-			this.model.Stamina += comp.StaminaBuff;
-			this.model.ActSpd += comp.ActionSpeedBuff;
-			this.model.MoveSpd += comp.MoveSpeedBuff;
-			Debug.LogWarning( "TODO : atkRange = visionRange" );
-			Debug.LogWarning( "TODO : difference between visionRange and visionRangeBuff" );
-			//this.model.AtkRange += comp.VisionRange;
-			Debug.LogWarning( "TODO : pickRange = visionRange" );
-			//this.model.PickRange += comp.VisionRange;
 
-			this.model.VisionRange += comp.VisionRange;
-		}
-        this.model.PickRange = 2;
-        this.model.AtkRange = 4;
+        foreach (AgentComponent comp in agentComponents)
+        {
+            this.model.VitalityMax += comp.VitalityBuff;
+            this.model.Strength += comp.StrengthBuff;
+            this.model.Stamina += comp.StaminaBuff;
+            this.model.ActSpd += comp.ActionSpeedBuff;
+            this.model.MoveSpd += comp.MoveSpeedBuff;
+            this.model.PickRange += comp.PickRangeBuff;
+            this.model.AtkRange += comp.AtkRangeBuff;
+            this.model.VisionRange += comp.VisionRangeBuff;
+        }
 
         this.model.Vitality = this.model.VitalityMax;
-
-		// TODO test : remove
-		/*if (this.model.LayTimeCost<= 0) {
-			this.model.LayTimeCost = 1;
-		}
-		if (this.model.VisionRange<= 0) {
-			this.model.VisionRange = 1;
-		}
-		if (this.model.AtkRange<= 0) {
-			this.model.AtkRange = 1;
-		}*/
 	}
 
 	GameObject[] extractGameObj( MonoBehaviour[] list ){
