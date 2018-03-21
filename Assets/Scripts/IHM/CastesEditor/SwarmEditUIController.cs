@@ -30,6 +30,11 @@ public class SwarmEditUIController : MonoBehaviour
     }
 
     /// <summary>
+    /// Active Lumy Stats
+    /// </summary>
+    private LumyStatsInfo lumyStats = new LumyStatsInfo();
+
+    /// <summary>
     /// The swarm scroll selection content
     /// </summary>
     [Header("Lumy Appearence")]
@@ -69,6 +74,30 @@ public class SwarmEditUIController : MonoBehaviour
     private Text mainPanelLumyName;
 
     /// <summary>
+    /// The red resources cost of the active lumy
+    /// </summary>
+    [SerializeField]
+    private int redCost;
+
+    /// <summary>
+    /// The green resources cost of the active lumy
+    /// </summary>
+    [SerializeField]
+    private int greenCost;
+
+    /// <summary>
+    /// The blue resources cost of the active lumy
+    /// </summary>
+    [SerializeField]
+    private int blueCost;
+
+    /// <summary>
+    /// The prodution time of the active lumy
+    /// </summary>
+    [SerializeField]
+    private float prodTime;
+
+    /// <summary>
     /// The canvas listing aull lumys from the active swarm
     /// </summary>
     [Header("Select Lumy Scroll")]
@@ -87,6 +116,71 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private float lumyYMarginLayout = 35f;
 
+    public int RedCost
+    {
+        get
+        {
+            return redCost;
+        }
+
+        set
+        {
+            redCost = value;
+        }
+    }
+
+    public int GreenCost
+    {
+        get
+        {
+            return greenCost;
+        }
+
+        set
+        {
+            greenCost = value;
+        }
+    }
+
+    public int BlueCost
+    {
+        get
+        {
+            return blueCost;
+        }
+
+        set
+        {
+            blueCost = value;
+        }
+    }
+
+    public float ProdTime
+    {
+        get
+        {
+            return prodTime;
+        }
+
+        set
+        {
+            prodTime = value;
+        }
+    }
+
+    public LumyStatsInfo LumyStats
+    {
+        get
+        {
+            return lumyStats;
+        }
+
+        set
+        {
+            lumyStats = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -97,8 +191,72 @@ public class SwarmEditUIController : MonoBehaviour
     {
         RefreashSwarmScroll();
         RefreashLumysScroll();
-        RefreshLumyInfo();
+
         RefreshLumyAppearence();
+        RefreshLumyInfo();
+        
+        RefreashLumyStats();
+    }
+
+    /// <summary>
+    /// Use the lumy appearence to update states
+    /// </summary>
+    private void RefreashLumyStats()
+    {
+        //Retreive buff components
+        GameObject head = editedLumy.transform.Find("Head").gameObject;
+        GameObject tail = editedLumy.transform.Find("Tail").gameObject;
+        AgentComponent[] headCompos =
+            head.GetComponentsInChildren<AgentComponent>();
+        AgentComponent[] tailCompos =
+            tail.GetComponentsInChildren<AgentComponent>();
+        IList<AgentComponent> compos = new List<AgentComponent>();
+        for (int i = 0; i < headCompos.Length; i++)
+        {
+            if (headCompos[i].Name != "Base Actions"
+                && headCompos[i].Name != "Base Stats")
+            {
+                compos.Add(headCompos[i]);
+            }
+        }
+        for (int i = 0; i < tailCompos.Length; i++)
+        {
+            if (tailCompos[i].Name != "Base Actions"
+               && tailCompos[i].Name != "Base Stats")
+            {
+                compos.Add(tailCompos[i]);
+            }
+        }
+
+        //Create Stats Info
+        int vitality = 0;
+        int stamina = 0;
+        int strength = 0;
+        int actSpeed = 0;
+        int moveSpeed = 0;
+        int visionRange = 0;
+        int pickRange = 0;
+        int atkRange = 0;
+        foreach (AgentComponent compo in compos)
+        {
+            vitality += (int) compo.VitalityBuff;
+            stamina += (int)compo.StaminaBuff;
+            strength += (int)compo.StrengthBuff;
+            actSpeed += (int)compo.ActionSpeedBuff;
+            moveSpeed += (int)compo.MoveSpeedBuff;
+            visionRange += (int)compo.VisionRangeBuff;
+            //TODO manage atkRange & pick range
+            pickRange = -1;
+            atkRange = -1;
+        }
+        LumyStats.Vitality = vitality;
+        LumyStats.Stamina = stamina;
+        LumyStats.Strength = strength;
+        LumyStats.ActSpeed = actSpeed;
+        LumyStats.MoveSpeed = moveSpeed;
+        LumyStats.VisionRange = visionRange;
+        LumyStats.PickRange = pickRange;
+        LumyStats.AtkRange = atkRange;
     }
 
     private void RefreshLumyAppearence()
@@ -146,6 +304,32 @@ public class SwarmEditUIController : MonoBehaviour
     private void RefreshLumyInfo()
     {
         mainPanelLumyName.text = AppContextManager.instance.ActiveCast.Name;
+        prodTime = GetProdTime();
+        redCost = GetRedCost();
+        greenCost = GetGreenCost();
+        blueCost = GetBlueCost();
+    }
+
+    private int GetBlueCost()
+    {
+        return CostManager.instance.ComputeBlueCost(editedLumy);
+    }
+
+    private int GetGreenCost()
+    {
+        return CostManager.instance.ComputeGreenCost(editedLumy);
+    }
+
+    private int GetRedCost()
+    {
+        return CostManager.instance.ComputeRedCost(editedLumy);
+    }
+
+    private float GetProdTime()
+    {
+        AgentContext agentContext = editedLumy.GetComponent<AgentContext>();
+        AgentComponent[] agentComponent = agentContext.Entity.getAgentComponents();
+        return CostManager.instance.ComputeProdTime(agentComponent);
     }
 
     private void RefreashLumysScroll()
@@ -353,83 +537,213 @@ public class SwarmEditUIController : MonoBehaviour
         NavigationManager.instance.SwapScenesWithoutZoom("EditeurMCScene");
     }
 
+    //Max number of points per Lumy attribute
+    public int statLimit = 3;
+
     public void IncrVitality()
     {
-        Debug.Log("IncrVitality");
+        if (CanIncrVitality()) {
+            LumyStats.Vitality++;
+        } 
+    }
+
+    private bool CanIncrVitality()
+    {
+        return LumyStats.PointsLeft > 0 && LumyStats.Vitality < statLimit;
     }
 
     public void DecrVitality()
     {
-        Debug.Log("DecrVitality");
+        if (CanDecrVitality())
+        {
+            LumyStats.Vitality--;
+        }
+    }
+
+    private bool CanDecrVitality()
+    {
+        return LumyStats.Vitality > 0;
     }
 
     public void IncrStamina()
     {
-        Debug.Log("IncrStamina");
+        if (CanIncrStamina())
+        {
+            LumyStats.Stamina++;
+        }
+    }
+
+    private bool CanIncrStamina()
+    {
+        return LumyStats.PointsLeft > 0 && LumyStats.Stamina < statLimit;
     }
 
     public void DecrStamina()
     {
-        Debug.Log("DecrStamina");
+        if (CanDecrStamina())
+        {
+            LumyStats.Stamina--;
+        }
+    }
+
+    private bool CanDecrStamina()
+    {
+        return LumyStats.Stamina > 0;
     }
 
     public void IncrStrength()
     {
-        Debug.Log("IncrStrength");
+        if (CanIncrStrength())
+        {
+            LumyStats.Strength++;
+        }
+    }
+
+    private bool CanIncrStrength()
+    {
+        return LumyStats.PointsLeft > 0 && LumyStats.Strength < statLimit;
     }
 
     public void DecrStrength()
     {
-        Debug.Log("DecrStrength");
+        if (CanDecrStrength())
+        {
+            LumyStats.Strength--;
+        }
+    }
+
+    private bool CanDecrStrength()
+    {
+        return LumyStats.Strength > 0;
     }
 
     public void IncrActSpeed()
     {
-        Debug.Log("IncrActSpeed");
+        if (CanIncrActSpeed())
+        {
+            LumyStats.ActSpeed++;
+        }
+    }
+
+    private bool CanIncrActSpeed()
+    {
+        return LumyStats.PointsLeft > 0 && LumyStats.ActSpeed < statLimit;
     }
 
     public void DecrActSpeed()
     {
-        Debug.Log("DecrActSpeed");
+        if (CanDecrActSpeed())
+        {
+            LumyStats.ActSpeed--;
+        }
+    }
+
+    private bool CanDecrActSpeed()
+    {
+        return LumyStats.ActSpeed > 0;
     }
 
     public void IncrMoveSpeed()
     {
-        Debug.Log("IncrMoveSpeed");
+        if (CanIncrMoveSpeed())
+        {
+            LumyStats.MoveSpeed++;
+        }
+    }
+
+    private bool CanIncrMoveSpeed()
+    {
+        return LumyStats.PointsLeft > 0 && LumyStats.MoveSpeed < statLimit;
     }
 
     public void DecrMoveSpeed()
     {
-        Debug.Log("DecrMoveSpeed");
+        if (CanDecrMoveSpeed())
+        {
+            LumyStats.MoveSpeed--;
+        }
+    }
+
+    private bool CanDecrMoveSpeed()
+    {
+        return LumyStats.MoveSpeed > 0;
     }
 
     public void IncrVisionRange()
     {
-        Debug.Log("IncrVisionRange");
+        if (CanIncrVisionRange())
+        {
+            LumyStats.VisionRange++;
+        }
+    }
+
+    private bool CanIncrVisionRange()
+    {
+        return LumyStats.PointsLeft > 0 && LumyStats.VisionRange < statLimit;
     }
 
     public void DecrVisionRange()
     {
-        Debug.Log("DecrVisionRange");
+        if (CanDecrVisionRange())
+        {
+            LumyStats.VisionRange--;
+        }
+    }
+
+    private bool CanDecrVisionRange()
+    {
+        return LumyStats.VisionRange > 0;
     }
 
     public void IncrAtkRange()
     {
-        Debug.Log("IncrAtkRange");
+        if (CanIncrAtkRange())
+        {
+            LumyStats.AtkRange++;
+        }
+    }
+
+    private bool CanIncrAtkRange()
+    {
+        return LumyStats.PointsLeft > 0 && LumyStats.AtkRange < statLimit;
     }
 
     public void DecrAtkRange()
     {
-        Debug.Log("DecrAtkRange");
+        if (CanDecrAtkRange())
+        {
+            LumyStats.AtkRange--;
+        }
+    }
+
+    private bool CanDecrAtkRange()
+    {
+        return LumyStats.AtkRange > 0;
     }
 
     public void IncrPickRange()
     {
-        Debug.Log("IncrPickRange");
+        if (CanIncrPickRange())
+        {
+            LumyStats.PickRange++;
+        }
+    }
+
+    private bool CanIncrPickRange()
+    {
+        return LumyStats.PointsLeft > 0 && LumyStats.PickRange < statLimit;
     }
 
     public void DecrPickRange()
     {
-        Debug.Log("DecrPickRange");
+        if (CanDecrPickRange())
+        {
+            LumyStats.PickRange--;
+        }
+    }
+
+    private bool CanDecrPickRange()
+    {
+        return LumyStats.PickRange > 0;
     }
 }

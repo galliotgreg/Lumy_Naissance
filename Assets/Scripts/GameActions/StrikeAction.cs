@@ -34,7 +34,6 @@ public class StrikeAction : GameAction {
 			AgentEntity targetAgent = target.GetComponent<AgentEntity>();
 
             //add vfx
-            //DISOCIATE TWO PREFAB FOR EACH AUTHORITY
             GameObject projectile;
 
             if (this.agentEntity.Authority == PlayerAuthority.Player2)
@@ -47,7 +46,7 @@ public class StrikeAction : GameAction {
                 projectile = Instantiate(Projectile_J1, this.transform.position, Quaternion.identity);
                 projectile.transform.SetParent(GameManager.instance.transform);
             }
-                projectile.GetComponent<Rigidbody>().velocity = this.transform.forward * 5.0f;
+            projectile.GetComponent<Rigidbody>().velocity = this.transform.forward * 5.0f;
             projectile.GetComponent<Rigidbody>().MovePosition(targetAgent.Context.Model.transform.position);
             Destroy(projectile, projectile.GetComponentInChildren<ParticleSystem>().duration);
             //add vfx end

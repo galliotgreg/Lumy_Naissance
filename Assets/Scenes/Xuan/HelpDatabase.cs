@@ -29,16 +29,14 @@ public class Help
 public class HelpDatabase : MonoBehaviour
 {
     private List<Help> database = new List<Help>();
-
     // Use this for initialization
     private void Start()
     {
-        this.gameObject.GetComponent<Button>().onClick.AddListener(LoadDatabase);
-
+        LoadDatabase();
     }
 
     //Goes through the database and returns pointer on specified item
-    public Help FetchItemByID(int id)
+    public Help FetchHelpByID(int id)
    {
        for(int i=0; i< database.Count; i++)
        {
@@ -48,7 +46,7 @@ public class HelpDatabase : MonoBehaviour
        return null;
    }
 
-    void LoadDatabase()
+    public void LoadDatabase()
     {
         string path = Application.dataPath + "//Scenes//Xuan//Help.json";
         using (StreamReader stream = new StreamReader(path))
