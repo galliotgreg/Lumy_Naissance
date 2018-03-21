@@ -29,6 +29,9 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    //Max number of points per Lumy attribute
+    private int statLimit = 3;
+
     /// <summary>
     /// Active Lumy Stats
     /// </summary>
@@ -191,8 +194,8 @@ public class SwarmEditUIController : MonoBehaviour
     {
         RefreashSwarmScroll();
         RefreashLumysScroll();
-        RefreshLumyInfo();
         RefreshLumyAppearenceFromData();
+        RefreshLumyInfo();
         RefreashLumyStats();
     }
 
@@ -310,26 +313,24 @@ public class SwarmEditUIController : MonoBehaviour
 
     private int GetBlueCost()
     {
-        //TODO GREG
-        return (int) (UnityEngine.Random.value * 100);
+        return CostManager.instance.ComputeBlueCost(editedLumy);
     }
 
     private int GetGreenCost()
     {
-        //TODO GREG
-        return (int)(UnityEngine.Random.value * 100);
+        return CostManager.instance.ComputeGreenCost(editedLumy);
     }
 
     private int GetRedCost()
     {
-        //TODO GREG
-        return (int)(UnityEngine.Random.value * 100);
+        return CostManager.instance.ComputeRedCost(editedLumy);
     }
 
     private float GetProdTime()
     {
-        //TODO GREG
-        return UnityEngine.Random.value;
+        AgentContext agentContext = editedLumy.GetComponent<AgentContext>();
+        AgentComponent[] agentComponent = agentContext.Entity.getAgentComponents();
+        return CostManager.instance.ComputeProdTime(agentComponent);
     }
 
     private void RefreashLumysScroll()
@@ -820,7 +821,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanIncrVitality()
     {
-        return LumyStats.PointsLeft > 0 && LumyStats.Vitality < 3;
+        return LumyStats.PointsLeft > 0 && LumyStats.Vitality < statLimit;
     }
 
     public void DecrVitality()
@@ -834,7 +835,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanDecrVitality()
     {
-        return LumyStats.PointsLeft > 0 && LumyStats.Vitality > 0;
+        return LumyStats.Vitality > 0;
     }
 
     public void IncrStamina()
@@ -848,7 +849,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanIncrStamina()
     {
-        return true;
+        return LumyStats.PointsLeft > 0 && LumyStats.Stamina < statLimit;
     }
 
     public void DecrStamina()
@@ -862,7 +863,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanDecrStamina()
     {
-        return true;
+        return LumyStats.Stamina > 0;
     }
 
     public void IncrStrength()
@@ -876,7 +877,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanIncrStrength()
     {
-        return true;
+        return LumyStats.PointsLeft > 0 && LumyStats.Strength < statLimit;
     }
 
     public void DecrStrength()
@@ -890,7 +891,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanDecrStrength()
     {
-        return true;
+        return LumyStats.Strength > 0;
     }
 
     public void IncrActSpeed()
@@ -904,7 +905,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanIncrActSpeed()
     {
-        return true;
+        return LumyStats.PointsLeft > 0 && LumyStats.ActSpeed < statLimit;
     }
 
     public void DecrActSpeed()
@@ -918,7 +919,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanDecrActSpeed()
     {
-        return true;
+        return LumyStats.ActSpeed > 0;
     }
 
     public void IncrMoveSpeed()
@@ -932,7 +933,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanIncrMoveSpeed()
     {
-        return true;
+        return LumyStats.PointsLeft > 0 && LumyStats.MoveSpeed < statLimit;
     }
 
     public void DecrMoveSpeed()
@@ -946,7 +947,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanDecrMoveSpeed()
     {
-        return true;
+        return LumyStats.MoveSpeed > 0;
     }
 
     public void IncrVisionRange()
@@ -960,7 +961,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanIncrVisionRange()
     {
-        return true;
+        return LumyStats.PointsLeft > 0 && LumyStats.VisionRange < statLimit;
     }
 
     public void DecrVisionRange()
@@ -974,7 +975,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanDecrVisionRange()
     {
-        return true;
+        return LumyStats.VisionRange > 0;
     }
 
     public void IncrAtkRange()
@@ -988,7 +989,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanIncrAtkRange()
     {
-        return true;
+        return LumyStats.PointsLeft > 0 && LumyStats.AtkRange < statLimit;
     }
 
     public void DecrAtkRange()
@@ -1002,7 +1003,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanDecrAtkRange()
     {
-        return true;
+        return LumyStats.AtkRange > 0;
     }
 
     public void IncrPickRange()
@@ -1016,7 +1017,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanIncrPickRange()
     {
-        return true;
+        return LumyStats.PointsLeft > 0 && LumyStats.PickRange < statLimit;
     }
 
     public void DecrPickRange()
@@ -1030,6 +1031,6 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool CanDecrPickRange()
     {
-        return true;
+        return LumyStats.PickRange > 0;
     }
 }
