@@ -192,7 +192,7 @@ public class SwarmEditUIController : MonoBehaviour
         RefreashSwarmScroll();
         RefreashLumysScroll();
         RefreshLumyInfo();
-        RefreshLumyAppearence();
+        RefreshLumyAppearenceFromData();
         RefreashLumyStats();
     }
 
@@ -257,7 +257,7 @@ public class SwarmEditUIController : MonoBehaviour
         LumyStats.AtkRange = atkRange;
     }
 
-    private void RefreshLumyAppearence()
+    private void RefreshLumyAppearenceFromData()
     {
         LoadLumy(AppContextManager.instance.ActiveCast.Name);
     }
@@ -368,6 +368,93 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private void RefreshLumyAppearenceFromStats()
+    {
+        //Destroy last Lumy
+        if (editedLumy != null)
+        {
+            Destroy(editedLumy);
+        }
+
+        //Create empty
+        Cast lumyCast = AppContextManager.instance.ActiveCast;
+        editedLumy = Instantiate(emptyAgentPrefab);
+        editedLumy.transform.parent = this.transform;
+        AgentEntity agentEntity = editedLumy.GetComponent<AgentEntity>();
+        agentEntity.BehaviorModelIdentifier = lumyCast.BehaviorModelIdentifier;
+        GameObject head = editedLumy.transform.Find("Head").gameObject;
+        GameObject tail = editedLumy.transform.Find("Tail").gameObject;
+
+        //Add sefault components
+        //TODO Extract ID constants
+        //All Actions
+        GameObject componentObject = GameObject.Instantiate(emptyComponentPrefab);
+        componentObject.transform.parent = head.transform;
+        ComponentInfo compoInfo = ComponentFactory.instance.CreateComponent(1);
+        UnitTemplateInitializer.CopyComponentValues(compoInfo, componentObject.GetComponent<AgentComponent>());
+        //Default Stats
+        componentObject = GameObject.Instantiate(emptyComponentPrefab);
+        componentObject.transform.parent = tail.transform;
+        compoInfo = ComponentFactory.instance.CreateComponent(2);
+        UnitTemplateInitializer.CopyComponentValues(compoInfo, componentObject.GetComponent<AgentComponent>());
+
+        //Add bonus components
+        //TODO Extract ID constants
+        //Head compos
+        PushStrengthComp();
+        PushAtkRangeComp();
+        PushVisionRangeComp();
+        PushPickRangeComp();
+
+        //Tail compos
+        PushVitalityComp();
+        PushMoveSpeedComp();
+        PushActionSpeedComp();
+        PushStaminaComp();
+
+        //Disable InGame Logics
+        AgentBehavior agentBehavior = editedLumy.GetComponent<AgentBehavior>();
+        agentBehavior.enabled = false;
+        AgentContext agentContext = editedLumy.GetComponent<AgentContext>();
+        agentContext.enabled = false;
+        agentEntity.enabled = false;
+        GameObject self = editedLumy.transform.Find("Self").gameObject;
+        self.SetActive(false);
+
+        //Set lumy to Forward Kinematic
+        GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
+        PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
+        skeletonScript.IsIK = false;
+        skeletonScript.Frame();
+        PhyJoin[] headJoins = head.GetComponentsInChildren<PhyJoin>();
+        PhyJoin[] tailJoins = tail.GetComponentsInChildren<PhyJoin>();
+        for (int i = 0; i < headJoins.Length; i++)
+        {
+            headJoins[i].Init();
+            headJoins[i].Frame();
+        }
+        for (int i = 0; i < tailJoins.Length; i++)
+        {
+            tailJoins[i].Init();
+            tailJoins[i].Frame();
+        }
+
+        //Disable physic
+        skeletonScript.gameObject.SetActive(false);
+        for (int i = 0; i < headJoins.Length; i++)
+        {
+            headJoins[i].enabled = false;
+        }
+        for (int i = 0; i < tailJoins.Length; i++)
+        {
+            tailJoins[i].enabled = false;
+        }
+
+        //Layout
+        editedLumy.transform.position = new Vector3(-1.5f, -3f, 0f);
+        editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+    }
+
     /// <summary>
     /// Load the selected lumy given its cast name
     /// </summary>
@@ -470,6 +557,57 @@ public class SwarmEditUIController : MonoBehaviour
         AppContextManager.instance.SaveCast();
     }
 
+    /// <summary>
+    /// Push the composant on top of the selected lumy's head
+    /// </summary>
+    /// <param name="compoId">The id of the component on the component referencial</param>
+    public void PushHead(int compoId)
+    {
+        //Add Component
+        ComponentInfo compoInfo = ComponentFactory.instance.CreateComponent(compoId);
+        GameObject compo = Instantiate(emptyComponentPrefab);
+        AgentComponent compoScript = compo.GetComponent<AgentComponent>();
+        UnitTemplateInitializer.CopyComponentValues(compoInfo, compoScript);
+        GameObject head = editedLumy.transform.Find("Head").gameObject;
+        compo.transform.parent = head.transform;
+        compo.transform.SetAsFirstSibling();
+
+        //Update bone links
+        GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
+        PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
+        skeletonScript.BuildSkeleton();
+
+        compo.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right);
+    }
+
+    /// <summary>
+    /// Push the composant on top of the selected lumy's Tail
+    /// </summary>
+    /// <param name="compoId">The id of the component on the component referencial</param>
+    public void PushTail(int compoId)
+    {
+        //Reopen tail
+        GameObject tail = editedLumy.transform.Find("Tail").gameObject;
+        GameObject lastCompo = tail.transform.GetChild(tail.transform.childCount - 1).gameObject;
+        PhyJoin lastJoin = lastCompo.GetComponent<PhyJoin>();
+        lastJoin.DstBones = new PhyBone[1];
+
+
+        ComponentInfo compoInfo = ComponentFactory.instance.CreateComponent(compoId);
+        GameObject compo = Instantiate(emptyComponentPrefab);
+        AgentComponent compoScript = compo.GetComponent<AgentComponent>();
+        UnitTemplateInitializer.CopyComponentValues(compoInfo, compoScript);
+        compo.transform.parent = tail.transform;
+        compo.transform.SetAsLastSibling();
+
+        //Update bone links
+        GameObject skeleton = editedLumy.transform.Find("Skeleton").gameObject;
+        PhySkeleton skeletonScript = skeleton.GetComponent<PhySkeleton>();
+        skeletonScript.BuildSkeleton();
+
+        compo.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right);
+    }
+
     public void OpenSelectSwarmDialog()
     {
         RefreshView();
@@ -537,10 +675,146 @@ public class SwarmEditUIController : MonoBehaviour
         NavigationManager.instance.SwapScenesWithoutZoom("EditeurMCScene");
     }
 
+    private void PersistStatChange()
+    {
+        RefreshLumyAppearenceFromStats();
+        SaveLumy();
+        RefreshView();
+    }
+
+    private void PushStrengthComp()
+    {
+        if (lumyStats.Strength == 1)
+        {
+            PushHead(9);
+        }
+        else if (lumyStats.Strength == 2)
+        {
+            PushHead(10);
+        }
+        else if (lumyStats.Strength == 3)
+        {
+            PushHead(11);
+        }
+    }
+
+    private void PushAtkRangeComp()
+    {
+        if (lumyStats.AtkRange == 1)
+        {
+            PushHead(21);
+        }
+        else if (lumyStats.AtkRange == 2)
+        {
+            PushHead(22);
+        }
+        else if (lumyStats.AtkRange == 3)
+        {
+            PushHead(23);
+        }
+    }
+
+    private void PushVisionRangeComp()
+    {
+        if (lumyStats.VisionRange == 1)
+        {
+            PushHead(18);
+        }
+        else if (lumyStats.VisionRange == 2)
+        {
+            PushHead(19);
+        }
+        else if (lumyStats.VisionRange == 3)
+        {
+            PushHead(20);
+        }
+    }
+
+    private void PushPickRangeComp()
+    {
+        if (lumyStats.PickRange == 1)
+        {
+            PushHead(24);
+        }
+        else if (lumyStats.PickRange == 2)
+        {
+            PushHead(25);
+        }
+        else if (lumyStats.PickRange == 3)
+        {
+            PushHead(26);
+        }
+    }
+
+    private void PushVitalityComp()
+    {
+        if (lumyStats.Vitality == 1)
+        {
+            PushTail(3);
+        }
+        else if (lumyStats.Vitality == 2)
+        {
+            PushTail(4);
+        }
+        else if (lumyStats.Vitality == 3)
+        {
+            PushTail(5);
+        }
+    }
+
+    private void PushMoveSpeedComp()
+    {
+        if (lumyStats.MoveSpeed == 1)
+        {
+            PushTail(15);
+        }
+        else if (lumyStats.MoveSpeed == 2)
+        {
+            PushTail(16);
+        }
+        else if (lumyStats.MoveSpeed == 3)
+        {
+            PushTail(17);
+        }
+    }
+
+    private void PushActionSpeedComp()
+    {
+        if (lumyStats.ActSpeed == 1)
+        {
+            PushTail(12);
+        }
+        else if (lumyStats.ActSpeed == 2)
+        {
+            PushTail(13);
+        }
+        else if (lumyStats.ActSpeed == 3)
+        {
+            PushTail(14);
+        }
+    }
+
+    private void PushStaminaComp()
+    {
+        if (lumyStats.Stamina == 1)
+        {
+            PushTail(6);
+        }
+        else if (lumyStats.Stamina == 2)
+        {
+            PushTail(7);
+        }
+        else if (lumyStats.Stamina == 3)
+        {
+            PushTail(8);
+        }
+    }
+
     public void IncrVitality()
     {
         if (CanIncrVitality()) {
             LumyStats.Vitality++;
+            PersistStatChange();
         } 
     }
 
@@ -554,6 +828,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanDecrVitality())
         {
             LumyStats.Vitality--;
+            PersistStatChange();
         }
     }
 
@@ -567,6 +842,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanIncrStamina())
         {
             LumyStats.Stamina++;
+            PersistStatChange();
         }
     }
 
@@ -580,6 +856,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanDecrStamina())
         {
             LumyStats.Stamina--;
+            PersistStatChange();
         }
     }
 
@@ -593,6 +870,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanIncrStrength())
         {
             LumyStats.Strength++;
+            PersistStatChange();
         }
     }
 
@@ -606,6 +884,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanDecrStrength())
         {
             LumyStats.Strength--;
+            PersistStatChange();
         }
     }
 
@@ -619,6 +898,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanIncrActSpeed())
         {
             LumyStats.ActSpeed++;
+            PersistStatChange();
         }
     }
 
@@ -632,6 +912,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanDecrActSpeed())
         {
             LumyStats.ActSpeed--;
+            PersistStatChange();
         }
     }
 
@@ -645,6 +926,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanIncrMoveSpeed())
         {
             LumyStats.MoveSpeed++;
+            PersistStatChange();
         }
     }
 
@@ -658,6 +940,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanDecrMoveSpeed())
         {
             LumyStats.MoveSpeed--;
+            PersistStatChange();
         }
     }
 
@@ -671,6 +954,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanIncrVisionRange())
         {
             LumyStats.VisionRange++;
+            PersistStatChange();
         }
     }
 
@@ -684,6 +968,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanDecrVisionRange())
         {
             LumyStats.VisionRange--;
+            PersistStatChange();
         }
     }
 
@@ -697,6 +982,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanIncrAtkRange())
         {
             LumyStats.AtkRange++;
+            PersistStatChange();
         }
     }
 
@@ -710,6 +996,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanDecrAtkRange())
         {
             LumyStats.AtkRange--;
+            PersistStatChange();
         }
     }
 
@@ -723,6 +1010,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanIncrPickRange())
         {
             LumyStats.PickRange++;
+            PersistStatChange();
         }
     }
 
@@ -736,6 +1024,7 @@ public class SwarmEditUIController : MonoBehaviour
         if (CanDecrPickRange())
         {
             LumyStats.PickRange--;
+            PersistStatChange();
         }
     }
 
