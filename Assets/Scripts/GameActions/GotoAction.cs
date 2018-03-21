@@ -78,6 +78,11 @@ public class GotoAction : GameAction {
 		return;
 	}
 
+	protected override void activateAction_CooldownAuthorized ()
+	{
+		return;
+	}
+
 	protected override void deactivateAction ()
 	{
 		if (movingAgent != null) {
@@ -87,6 +92,7 @@ public class GotoAction : GameAction {
 	}
 
 	#endregion
+
 	const float closeFactor = 0.1f;
 	public Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
         // Use Unity A* to move

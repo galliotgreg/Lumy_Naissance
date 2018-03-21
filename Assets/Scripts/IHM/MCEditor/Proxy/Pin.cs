@@ -184,7 +184,13 @@ public class Pin : DragSelectableProxyGameObject {
             ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
             string opeParentType = parent.AbOperator.ClassName;
             string typePinOut = opeParentType.Split('_')[1];
-            this.regularColor = PinColor.GetColorPinFromType(typePinOut);                       
+            this.regularColor = PinColor.GetColorPinFromType(typePinOut);
+
+            if (parent.getOutcomeType().ToString().Contains("Tab"))
+            {
+                SetTableColor();
+            }
+            //((ProxyABAction)start.ProxyParent).getParamOperator(start.Pin_order.OrderPosition - 1).getOutcomeType();
         }
         else if (this.Pin_Type == Pin.PinType.OperatorIn)
         {
@@ -192,6 +198,10 @@ public class Pin : DragSelectableProxyGameObject {
             int curPinIn = parent.CurPinIn;
             parent.CurPinIn++;
 			this.regularColor = PinColor.GetColorPinFromType( parent.AbOperator.getIncomeType(curPinIn));
+            if (parent.getIncomeType(pin_order.OrderPosition).ToString().Contains("Tab"))
+            {
+                SetTableColor();
+            }
         }
         else if(this.Pin_Type == Pin.PinType.Param)
         {
@@ -218,8 +228,30 @@ public class Pin : DragSelectableProxyGameObject {
         }
     }
 
-	// Pin : Action : fixed number of pins
-	public static Vector3 calculatePinPosition( ProxyABAction action, Pin.PinType pinType, ProxyABAction parent ){
+    public void SetTableColor()
+    {
+        /*Renderer rend = this.GetComponent<Renderer>();
+        rend.material.shader = Shader.Find("Specular");
+        //Gold reflection
+        rend.material.SetColor("_SpecColor", new Color(0.85f, 0.65f, 0.12f));
+        float shininess = Mathf.PingPong(Time.time, 1.0F);
+        rend.material.SetFloat("_Shininess", shininess);*/
+    }
+    public void FixedUpdate()
+    {
+        if(this.AssociatedTransitions.Count != 0)
+        {
+            Renderer rend = this.GetComponent<Renderer>();
+            rend.material.shader = Shader.Find("Specular");
+            //Gold reflection
+            rend.material.SetColor("_SpecColor", new Color(0.85f, 0.65f, 0.12f));
+            float shininess = Mathf.PingPong(Time.time * 2f, 1F);
+            rend.material.SetFloat("_Shininess", shininess);
+        }        
+    }
+
+    // Pin : Action : fixed number of pins
+    public static Vector3 calculatePinPosition( ProxyABAction action, Pin.PinType pinType, ProxyABAction parent ){
 		float radius = parent.transform.localScale.y / 2;
 		if (pinType == Pin.PinType.TransitionIn) {
 			// Income

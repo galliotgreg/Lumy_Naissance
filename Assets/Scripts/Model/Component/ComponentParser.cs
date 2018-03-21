@@ -187,29 +187,34 @@ public class ComponentParser {
 		if( attribute.Length > 0 ){
 			string[] attrValues = attribute.Split( new char[]{' '} );
 			if( attrValues.Length > 1 ){
-				switch( attrValues[0] ){
-				case "move_spd.": component.MoveSpeedBuff = float.Parse(attrValues[1]); return;
-				case "act._spd": component.ActionSpeedBuff = float.Parse(attrValues[1]); return;
-				case "strength": component.StrengthBuff = float.Parse(attrValues[1]); return;
-				case "vitality": component.VitalityBuff = float.Parse(attrValues[1]); return;
-				case "stamina": component.StaminaBuff = float.Parse(attrValues[1]); return;
-				default: component.NotHandledTokens.Add( attribute ); return;
-				}
+                switch (attrValues[0]) {
+                    case "atk._range": component.AtkRangeBuff = float.Parse(attrValues[1]); return;
+                    case "pick_range": component.PickRangeBuff = float.Parse(attrValues[1]); return;
+                    case "vision_range": component.VisionRangeBuff = float.Parse(attrValues[1]); return;
+                    case "move_spd.": component.MoveSpeedBuff = float.Parse(attrValues[1]); return;
+                    case "act._spd": component.ActionSpeedBuff = float.Parse(attrValues[1]); return;
+                    case "strength": component.StrengthBuff = float.Parse(attrValues[1]); return;
+                    case "vitality": component.VitalityBuff = float.Parse(attrValues[1]); return;
+                    case "stamina": component.StaminaBuff = float.Parse(attrValues[1]); return;
+                    default: component.NotHandledTokens.Add(attribute); return;
+                }
 			}
 			// default action
 			component.NotHandledTokens.Add( attribute );
 		}
 	}
+    //TODO Remove ? Never Called 
 	private static void parseEffect( string effect, ComponentInfo component ){
 		if( effect.Length > 0 ){
 			string[] attrValues = effect.Split( new char[]{' '} );
 			if( attrValues.Length > 2 ){
-				// Vision range
-				if( attrValues[0] == "Vision" && attrValues[1] == "range" ){
-					component.VisionRangeBuff = float.Parse(attrValues[2].Split( new char[]{'%'} )[0]) / 100f;
-				}
-				// Vibration range
-				if( attrValues[0] == "Vibration" && attrValues[1] == "range" ){
+                // Vision range
+                if (attrValues[0] == "Vision" && attrValues[1] == "range")
+                {
+                    component.VisionRangeBuff = float.Parse(attrValues[2].Split(new char[] { '%' })[0]) / 100f;
+                }
+                // Vibration range
+                if ( attrValues[0] == "Vibration" && attrValues[1] == "range" ){
 					component.VibrationRange = float.Parse(attrValues[2].Split( new char[]{'%'} )[0]) / 100f;
 				}
 				// Heat range

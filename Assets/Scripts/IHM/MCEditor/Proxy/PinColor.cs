@@ -89,11 +89,12 @@ public class PinColor {
         Color color = new Color();
         if (type.Contains("Bool"))
         {
+            // Blue 
             color = PinColor.GetBoolColor();
         }
         else if (type.Contains("Scal"))
         {
-            // Silver
+            // Sepia
             color = PinColor.GetScalColor();
         }
         else if (type.Contains("Text") || type.Contains("Txt"))
@@ -108,6 +109,7 @@ public class PinColor {
         }
         else if (type.Contains("Ref"))
         {
+            // Red
             color = PinColor.GetRefColor();
         }
         else if (type.Contains("Vec"))

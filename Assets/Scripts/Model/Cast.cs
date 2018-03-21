@@ -9,7 +9,7 @@ public class Cast {
     private List<ComponentInfo> head = new List<ComponentInfo>();
     private List<ComponentInfo> tail = new List<ComponentInfo>();
     private Cast parent;
-    private IList<Cast> childs = new List<Cast>();
+    private IList<Cast> childs = new List<Cast>();    
 
     public string BehaviorModelIdentifier
     {

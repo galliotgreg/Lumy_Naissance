@@ -13,6 +13,8 @@ public class UnitTemplateInitializer {
     private static readonly float PRYSME_ACTSPD = 5f;
     private static readonly float PRYSME_VITALITY = 100f;
     private static readonly float PRYSME_STAMINA = 0f;
+    private static readonly float PRYSME_PICK_RANGE_BUFF = 0f;
+    private static readonly float PRYSME_ATK_RANGE_BUFF = 0f; 
     private static readonly float PRYSME_VISION_RANGE_BUFF = 0f;
     private static readonly float PRYSME_VIBRATION_RANGE_BUFF = 0f;
     private static readonly float PRYSME_HEAT_RANGE_BUFF = 0f;
@@ -78,11 +80,14 @@ public class UnitTemplateInitializer {
         prysmeComponent.ProdCost = PRYSME_COMPO_PRODCOST;
 
         //Passive Buff
+
         prysmeComponent.MoveSpeedBuff = PRYSME_MOVESPD;
         prysmeComponent.ActionSpeedBuff = PRYSME_ACTSPD;
         prysmeComponent.StrengthBuff = PRYSME_MOVESPD;
         prysmeComponent.VitalityBuff = PRYSME_VITALITY;
         prysmeComponent.StaminaBuff = PRYSME_STAMINA;
+        prysmeComponent.PickRangeBuff = PRYSME_PICK_RANGE_BUFF;
+        prysmeComponent.AtkRangeBuff = PRYSME_ATK_RANGE_BUFF;
         prysmeComponent.VisionRangeBuff = PRYSME_VISION_RANGE_BUFF;
         prysmeComponent.VibrationRangeBuff = PRYSME_VIBRATION_RANGE_BUFF;
         prysmeComponent.HeatRangeBuff = PRYSME_HEAT_RANGE_BUFF;
@@ -115,6 +120,8 @@ public class UnitTemplateInitializer {
         dst.ProdCost = src.ProdCost;
 
         //Passive Buff
+        dst.AtkRangeBuff = src.AtkRangeBuff;
+        dst.PickRangeBuff = src.PickRangeBuff; 
         dst.MoveSpeedBuff = src.MoveSpeedBuff;
         dst.ActionSpeedBuff = src.ActionSpeedBuff;
         dst.StrengthBuff = src.StrengthBuff;
