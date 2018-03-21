@@ -192,6 +192,11 @@ public class CostManager : MonoBehaviour
         return (int)cost.Blue;
     }
 
+    public float ComputeProdTime(AgentComponent[] agentComponent)
+    {        
+        int nbComposants = agentComponent.Length;
+        return 1.25f * nbComposants;
+    }
 
     private FloatResourceCost ComputeCompoCost(AgentComponent[] agentComponents)
     {
