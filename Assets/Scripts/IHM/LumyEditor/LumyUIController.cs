@@ -131,7 +131,7 @@ public class LumyUIController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        DrawInfobulle();
+        DrawInfobulleEditedLumy();
         SetStats();
 
     }
@@ -261,12 +261,12 @@ public class LumyUIController : MonoBehaviour {
         smellRangeStatText.text = "Smell Range : " + smellRange.ToString();
     }
 
-    void DrawInfobulle()
+    void DrawInfobulleEditedLumy()
     {
         List<GameObject> listeTextes = new List<GameObject>();
         List<string> listeStats = new List<string>();
-
-        //infobulles composants
+        
+        //infobulles composants edited Lumy
         if (LumyEditorManager.instance.HoveredLumyCompo != null && LumyEditorManager.instance.SelectedLumyCompo == null)
         {
             //set infobulle
@@ -441,9 +441,8 @@ public class LumyUIController : MonoBehaviour {
 
 
     }
-        
 
- 
+
 
     void OnDestroy()
     {
