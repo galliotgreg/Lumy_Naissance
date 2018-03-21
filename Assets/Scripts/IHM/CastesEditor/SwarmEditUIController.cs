@@ -267,6 +267,17 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void RefreashSwarmScroll()
     {
+        //Remove odl buttons
+        IList<GameObject> childs = new List<GameObject>();
+        for (int i = 0; i < swarmScrollContent.transform.childCount; i++)
+        {
+            childs.Add(swarmScrollContent.transform.GetChild(i).gameObject);
+        }
+        foreach (GameObject child in childs)
+        {
+            Destroy(child);
+        }
+
         string[] speciesNames = AppContextManager.instance.GetSpeciesFolderNames();
 
         // Set ScrollRect sizes
@@ -628,7 +639,12 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void NewSwarm()
     {
-        Debug.Log("NewSwarm");
+        int nbSpecies = AppContextManager.instance.GetSpeciesFolderNames().Length + 1;
+        string defaultName = AppContextManager.instance.DEFAULT_SPECIE_NAME + nbSpecies;
+        AppContextManager.instance.CreateSpecie(defaultName);
+        string specieFolderName = Char.ToUpperInvariant(defaultName[0]) + defaultName.Substring(1);
+        SelectSwarm(specieFolderName);
+        RefreshView();
     }
 
     public void OpenEditSwarmDialog()
