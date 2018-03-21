@@ -477,11 +477,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void CopySwarm()
     {
+        
         Debug.Log("CopySwarm");
     }
 
     public void DeleteSwarm()
     {
+
         Debug.Log("DeleteSwarm");
     }
 
@@ -497,11 +499,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void OpenImportSwarmDialog()
     {
+        ImportController.ImportSpecie();
         Debug.Log("OpenImportSwarmDialog");
     }
 
     public void OpenExportSwarmDialog()
     {
+        ExportController.ExportSpecie();
         Debug.Log("OpenExportSwarmDialog");
     }
 
@@ -513,11 +517,14 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void CopyLumy()
     {
+        AppContextManager.instance.CloneCast();
+        RefreashSwarmScroll();
         Debug.Log("CopyLumy");
     }
 
     public void DeleteLumy()
     {
+        //AppContextManager.instance.DeleteCast();
         Debug.Log("DeleteLumy");
     }
 

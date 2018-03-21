@@ -471,6 +471,25 @@ public class AppContextManager : MonoBehaviour
         CastesUIController.instance.SelectActiveSwarm(specieFolderName);
     }
 
+    public void DeleteCast()
+    {
+        //Remove Behaviod files
+        Cast child1 = activeCast.Childs[0];
+        
+        File.Delete(ActiveSpecieFolderPath + child1.BehaviorModelIdentifier + CSV_EXT);        
+
+        //Remove childs from specie
+        activeSpecie.Casts.Remove(child1.Name);
+
+        activeCast.Childs.Clear();
+
+        //Alter Specie file
+        SaveSpecie();
+    }
+
+    /* No more used since Lumy/Nuee Screen refacto
+    */
+    [Obsolete("UnforkCast is deprecated, please use DeleteCast instead.")]
     public void UnforkCast()
     {
         //Remove Behaviod files
@@ -488,6 +507,32 @@ public class AppContextManager : MonoBehaviour
         SaveSpecie();
     }
 
+    public void CloneCast()
+    {
+        //Create childs
+        Cast clone = activeCast.Clone();
+        activeCast.NbClone++;
+        clone.Name = activeCast.Name +"("+ activeCast.NbClone + ")";
+
+        clone.BehaviorModelIdentifier =
+            activeCast.BehaviorModelIdentifier.Replace(CAST_FILES_SUFFIX, "")
+            + "(" + activeCast.NbClone + ")" + CAST_FILES_SUFFIX;    
+
+        //Add childs to specie
+        activeSpecie.Casts.Add(clone.Name, clone);       
+
+        //Copy Behavior files
+        File.Copy(
+            ActiveSpecieFolderPath + activeCast.BehaviorModelIdentifier + CSV_EXT,
+            ActiveSpecieFolderPath + clone.BehaviorModelIdentifier + CSV_EXT);
+
+        //Alter Specie file
+        SaveSpecie();
+    }
+
+    /* No more used since Lumy/Nuee Screen refacto
+     */
+    [Obsolete("ForkCast is deprecated, please use CloneCast instead.")]
     public void ForkCast()
     {
         //Create childs

@@ -14,10 +14,10 @@ public class ImportController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        this.gameObject.GetComponent<Button>().onClick.AddListener(ImportSpecie);
+        //this.gameObject.GetComponent<Button>().onClick.AddListener(ImportSpecie);
     }
 
-    void ImportSpecie()
+    public static void ImportSpecie()
     {
         // TODO Remove EdiorUtility
         /* Application.dataPath + "/" + compoDataPath
