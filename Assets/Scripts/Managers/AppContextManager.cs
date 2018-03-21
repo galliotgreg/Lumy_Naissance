@@ -506,12 +506,16 @@ public class AppContextManager : MonoBehaviour
     {
         //Create childs
         Cast clone = activeCast.Clone();
-        activeCast.NbClone++;
-        clone.Name = activeCast.Name +"("+ activeCast.NbClone + ")";
+        int iterator = 0;
+        foreach(string key in  activeSpecie.Casts.Keys){
+            iterator++;
+        }
+        iterator++;
+        clone.Name = activeCast.Name +"("+ iterator + ")";
 
         clone.BehaviorModelIdentifier =
             activeCast.BehaviorModelIdentifier.Replace(CAST_FILES_SUFFIX, "")
-            + "(" + activeCast.NbClone + ")" + CAST_FILES_SUFFIX;    
+            + "(" + iterator + ")" + CAST_FILES_SUFFIX;    
 
         //Add childs to specie
         activeSpecie.Casts.Add(clone.Name, clone);       
@@ -521,6 +525,43 @@ public class AppContextManager : MonoBehaviour
             ActiveSpecieFolderPath + activeCast.BehaviorModelIdentifier + CSV_EXT,
             ActiveSpecieFolderPath + clone.BehaviorModelIdentifier + CSV_EXT);
 
+        //Alter Specie file
+        SaveSpecie();
+    }
+
+    public void CreateCast()
+    {
+        //Create childs
+        Cast newCast = new Cast();
+        int iterator = 0;
+        newCast.Name = "Lumy" + '('+ iterator + ')';
+        bool isAdd = false;
+        while (!isAdd)
+        {
+            if (activeSpecie.Casts.ContainsKey(newCast.Name))
+            {
+                iterator++;
+                newCast.Name = "Lumy" + '(' + iterator + ')';
+            } else
+            {
+                isAdd = true;
+            }            
+        }
+        newCast.Head = new List<ComponentInfo>();
+        newCast.Tail = new List<ComponentInfo>();
+
+        newCast.Head.Add(ComponentFactory.instance.CreateComponent(1));
+        newCast.Tail.Add(ComponentFactory.instance.CreateComponent(2));
+
+        newCast.BehaviorModelIdentifier = "Lumy"
+            + "(" + iterator + ")" + CAST_FILES_SUFFIX;
+
+        //Add childs to specie
+        activeSpecie.Casts.Add(newCast.Name, newCast);
+
+        //Copy Behavior files
+        File.Create(ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
+        
         //Alter Specie file
         SaveSpecie();
     }
