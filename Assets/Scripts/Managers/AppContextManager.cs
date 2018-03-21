@@ -467,8 +467,8 @@ public class AppContextManager : MonoBehaviour
             GetFolderPathFromSpecieName(specieFolderName) + specieName + SPECIE_FILES_SUFFIX + CSV_EXT);
 
         // Set created as active
-        CastesUIController.instance.CreateSwarmSelectionButons();
-        CastesUIController.instance.SelectActiveSwarm(specieFolderName);
+        //CastesUIController.instance.CreateSwarmSelectionButons();
+        //CastesUIController.instance.SelectActiveSwarm(specieFolderName);
     }
 
     public void DeleteCast()
