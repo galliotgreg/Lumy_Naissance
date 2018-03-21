@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TutoMC : MonoBehaviour
+public class Tutoriel : MonoBehaviour
 {
     #region Attributes
     [SerializeField]
