@@ -436,6 +436,37 @@ public class AppContextManager : MonoBehaviour
         return castsFileNames;
     }
 
+    public void CopySpecie(string specieName)
+    {
+        string specieFolderName = Char.ToUpperInvariant(specieName[0]) + specieName.Substring(1);
+
+        //Check is specie already exists
+        foreach (string curFolderName in speciesFolderNames)
+        {
+            if (specieFolderName == curFolderName)
+            {
+                Debug.LogError("Cannot create " + specieName + " because this name is already used !");
+            }
+        }
+
+        // Create Folder
+        Directory.CreateDirectory(GetFolderPathFromSpecieName(specieFolderName));
+
+        //Update Data
+        UpdateSpeciesFoldersNames();
+
+        //Create Files 
+        DirectoryInfo di = new DirectoryInfo(ActiveSpecieFolderPath);
+        foreach (FileInfo file in di.GetFiles())
+        {
+            File.Copy(
+            file.FullName,
+            GetFolderPathFromSpecieName(specieFolderName) + file.Name);
+        }
+        File.Move(GetFolderPathFromSpecieName(specieFolderName) + ActiveSpecie.Name + SPECIE_FILES_SUFFIX + CSV_EXT,
+            GetFolderPathFromSpecieName(specieFolderName) + specieName + SPECIE_FILES_SUFFIX + CSV_EXT);
+    }
+
     public void CreateSpecie(string specieName)
     {
         string specieFolderName = Char.ToUpperInvariant(specieName[0]) + specieName.Substring(1);
