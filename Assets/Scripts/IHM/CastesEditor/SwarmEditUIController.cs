@@ -168,6 +168,19 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    public LumyStatsInfo LumyStats
+    {
+        get
+        {
+            return lumyStats;
+        }
+
+        set
+        {
+            lumyStats = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -236,14 +249,14 @@ public class SwarmEditUIController : MonoBehaviour
             pickRange = -1;
             atkRange = -1;
         }
-        lumyStats.Vitality = vitality;
-        lumyStats.Stamina = stamina;
-        lumyStats.Strength = strength;
-        lumyStats.ActSpeed = actSpeed;
-        lumyStats.MoveSpeed = moveSpeed;
-        lumyStats.VisionRange = visionRange;
-        lumyStats.PickRange = pickRange;
-        lumyStats.AtkRange = atkRange;
+        LumyStats.Vitality = vitality;
+        LumyStats.Stamina = stamina;
+        LumyStats.Strength = strength;
+        LumyStats.ActSpeed = actSpeed;
+        LumyStats.MoveSpeed = moveSpeed;
+        LumyStats.VisionRange = visionRange;
+        LumyStats.PickRange = pickRange;
+        LumyStats.AtkRange = atkRange;
     }
 
     private void RefreshLumyAppearence()
@@ -527,33 +540,33 @@ public class SwarmEditUIController : MonoBehaviour
     public void IncrVitality()
     {
         if (CanIncrVitality()) {
-            lumyStats.Vitality++;
+            LumyStats.Vitality++;
         } 
     }
 
     private bool CanIncrVitality()
     {
-        return lumyStats.PointsLeft > 0 && lumyStats.Vitality < 3;
+        return LumyStats.PointsLeft > 0 && LumyStats.Vitality < 3;
     }
 
     public void DecrVitality()
     {
         if (CanDecrVitality())
         {
-            lumyStats.Vitality--;
+            LumyStats.Vitality--;
         }
     }
 
     private bool CanDecrVitality()
     {
-        return lumyStats.PointsLeft > 0 && lumyStats.Vitality > 0;
+        return LumyStats.PointsLeft > 0 && LumyStats.Vitality > 0;
     }
 
     public void IncrStamina()
     {
         if (CanIncrStamina())
         {
-            lumyStats.Stamina++;
+            LumyStats.Stamina++;
         }
     }
 
@@ -566,7 +579,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanDecrStamina())
         {
-            lumyStats.Stamina--;
+            LumyStats.Stamina--;
         }
     }
 
@@ -579,7 +592,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanIncrStrength())
         {
-            lumyStats.Strength++;
+            LumyStats.Strength++;
         }
     }
 
@@ -592,7 +605,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanDecrStrength())
         {
-            lumyStats.Strength--;
+            LumyStats.Strength--;
         }
     }
 
@@ -605,7 +618,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanIncrActSpeed())
         {
-            lumyStats.ActSpeed++;
+            LumyStats.ActSpeed++;
         }
     }
 
@@ -618,7 +631,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanDecrActSpeed())
         {
-            lumyStats.ActSpeed--;
+            LumyStats.ActSpeed--;
         }
     }
 
@@ -631,7 +644,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanIncrMoveSpeed())
         {
-            lumyStats.MoveSpeed++;
+            LumyStats.MoveSpeed++;
         }
     }
 
@@ -644,7 +657,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanDecrMoveSpeed())
         {
-            lumyStats.MoveSpeed--;
+            LumyStats.MoveSpeed--;
         }
     }
 
@@ -657,7 +670,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanIncrVisionRange())
         {
-            lumyStats.VisionRange++;
+            LumyStats.VisionRange++;
         }
     }
 
@@ -670,7 +683,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanDecrVisionRange())
         {
-            lumyStats.VisionRange--;
+            LumyStats.VisionRange--;
         }
     }
 
@@ -683,7 +696,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanIncrAtkRange())
         {
-            lumyStats.AtkRange++;
+            LumyStats.AtkRange++;
         }
     }
 
@@ -696,7 +709,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanDecrAtkRange())
         {
-            lumyStats.AtkRange--;
+            LumyStats.AtkRange--;
         }
     }
 
@@ -709,7 +722,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanIncrPickRange())
         {
-            lumyStats.PickRange++;
+            LumyStats.PickRange++;
         }
     }
 
@@ -722,7 +735,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         if (CanDecrPickRange())
         {
-            lumyStats.PickRange--;
+            LumyStats.PickRange--;
         }
     }
 
