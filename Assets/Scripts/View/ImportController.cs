@@ -14,10 +14,10 @@ public class ImportController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        this.gameObject.GetComponent<Button>().onClick.AddListener(ImportSpecie);
+        //this.gameObject.GetComponent<Button>().onClick.AddListener(ImportSpecie);
     }
 
-    void ImportSpecie()
+    public static void ImportSpecie()
     {
         // TODO Remove EdiorUtility
         /* Application.dataPath + "/" + compoDataPath
@@ -28,13 +28,13 @@ public class ImportController : MonoBehaviour {
         string filePath = Application.dataPath + @"/Inputs/Species";
 
         string path = FileBrowser.OpenSingleFile("Open Folder", "","zip");        
-        if (path != null){
+        if (path != null && path!= ""){
           
             string name = (Path.GetFileName(path)).Split('.')[0];
             
             string new_folder = filePath + "\\" + name;
-            ZipUtil.Unzip(path, new_folder);
-        }
+            ZipUtil.Unzip(path, new_folder);            
+        }        
     }
 
 }

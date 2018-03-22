@@ -13,22 +13,27 @@ public class ExportController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        this.gameObject.GetComponent<Button>().onClick.AddListener(ExportSpecie);
+        //this.gameObject.GetComponent<Button>().onClick.AddListener(ExportSpecie);
     }
 
-    void ExportSpecie()
+    public static void ExportSpecie()
     {
         string path = Application.dataPath + @"/Inputs/Species";
         string folder_path = FileBrowser.OpenSingleFolder("Select your file", path);
-        
-        string[] path_cutted = folder_path.Split('\\');
-        string name_folder = path_cutted[path_cutted.Length - 1];
+        if (folder_path!="")
+        {       
+            string[] path_cutted = folder_path.Split('\\');
+            string name_folder = path_cutted[path_cutted.Length - 1];
 
-        string relative_folder_path = Application.dataPath + @"/Inputs/Species/" + name_folder;
-        string[] filesName = Directory.GetFiles(folder_path, "*.csv",SearchOption.TopDirectoryOnly);
-        string destination_path = FileBrowser.OpenSingleFolder("Choose your destination folder");
+            string relative_folder_path = Application.dataPath + @"/Inputs/Species/" + name_folder;
+            string[] filesName = Directory.GetFiles(folder_path, "*.csv", SearchOption.TopDirectoryOnly);
+            string destination_path = FileBrowser.OpenSingleFolder("Choose your destination folder");
+            if (destination_path == "")
+            {
+                destination_path = path;
+            }
 
-        ZipUtil.Zip(relative_folder_path, destination_path, filesName);
-
+            ZipUtil.Zip(relative_folder_path, destination_path, filesName);
+        }
     }
 }

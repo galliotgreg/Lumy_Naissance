@@ -5,11 +5,13 @@ using UnityEngine;
 public class MCEditor_DialogBox_Param_Color : MCEditor_DialogBox_Param {
 
 	[SerializeField]
-	BlockerDropdown value;
+	BlockerDropdown_DialogBox value;
 
 	// Use this for initialization
 	void Start () {
 		base.Start ();
+
+		value.DialogBox = this;
 	}
 
 	// Update is called once per frame

@@ -7,6 +7,24 @@ public abstract class MCEditor_DialogBox : MonoBehaviour, IPointerEnterHandler, 
 
 	bool hover = false;
 
+	bool enableCloseOnOutClick = true;
+
+	#region PROPERTIES
+	protected bool EnableCloseOnOutClick {
+		get {
+			return enableCloseOnOutClick;
+		}
+		set {
+			enableCloseOnOutClick = value;
+		}
+	}
+	private bool DropdownOpened{
+		set{
+			this.EnableCloseOnOutClick = !value;
+		}
+	}
+	#endregion
+
 	// Use this for initialization
 	protected void Start () {
 		
@@ -17,9 +35,13 @@ public abstract class MCEditor_DialogBox : MonoBehaviour, IPointerEnterHandler, 
 	protected void Update () {
 		if (clickReleased) {
 			if (Input.GetMouseButtonDown (0)) {
-				if (!hover) {
-					// Deactivate
-					close ();
+				if (!hover){
+					if (EnableCloseOnOutClick) {
+						// Deactivate
+						close ();
+					} else {
+						EnableCloseOnOutClick = true;
+					}
 				}
 			}
 		} else {
@@ -60,6 +82,15 @@ public abstract class MCEditor_DialogBox : MonoBehaviour, IPointerEnterHandler, 
 		MCEditor_DialogBox result = Instantiate<MCEditor_DialogBox>(prefab, parent);
 		result.transform.position = position;
 		return result;
+	}
+	#endregion
+
+	#region Dropdown
+	public void Dropdown_Opened(){
+		DropdownOpened = true;
+	}
+	public void Dropdown_Closed(){
+		DropdownOpened = false;
 	}
 	#endregion
 }
