@@ -125,16 +125,29 @@ public class SelectionSquare : MonoBehaviour
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
                         //Debug.Log("is within polygon");
-                        if (currentUnit.GetComponent<MeshRenderer>() != null)
+                        if (currentUnit.GetComponent<MeshRenderer>() != null) {
+                            //Shader caca = Shader.(currentUnit.GetComponent<MeshRenderer>().material.shader , Shader.Find("Outlined/Silhouetted Bumped Diffuse") );
+                            //currentUnit.GetComponent<MeshRenderer>().material.shader.= Shader.Find("Outlined/Silhouetted Bumped Diffuse");
                             currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
-
+                        }
                         selectedUnits.Add(currentUnit);
                     }
                     //Otherwise deselect the unit if it's not in the square
                     else
                     {
                         if (currentUnit.GetComponent<MeshRenderer>() != null)
-                            currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                        {
+                            if (currentUnit.GetComponent<ProxyABOperator>())//if(currentUnit.GetType().ToString().Contains("Macro"))
+                            {
+                                if (currentUnit.GetComponent<ProxyABOperator>().isMacroComposant)
+                                {
+                                    currentUnit.GetComponent<Renderer>().material.shader = Shader.Find("Specular");
+                                    currentUnit.GetComponent<Renderer>().material.SetColor("_SpecColor", Color.red);
+                                }
+                                else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                            }
+                            else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                        }
                     }
                 }
             }
@@ -157,7 +170,18 @@ public class SelectionSquare : MonoBehaviour
             for (int i = 0; i < selectedUnits.Count; i++)
             {
                 if (selectedUnits[i].GetComponent<MeshRenderer>() != null)
-                    selectedUnits[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                {
+                    if (selectedUnits[i].GetComponent<ProxyABOperator>()) //if (selectedUnits[i].GetType().ToString().Contains("Macro"))
+                    {
+                        if (selectedUnits[i].GetComponent<ProxyABOperator>().isMacroComposant)
+                        {
+                            selectedUnits[i].GetComponent<Renderer>().material.shader = Shader.Find("Specular");
+                            selectedUnits[i].GetComponent<Renderer>().material.SetColor("_SpecColor", Color.red);
+                        }
+                        else selectedUnits[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                    }
+                    else selectedUnits[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                }
             }
 
             //Clear the list with selected units
@@ -215,7 +239,18 @@ public class SelectionSquare : MonoBehaviour
                     else
                     {
                         if (currentUnit.GetComponent<MeshRenderer>() != null)
-                            currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                        {
+                            if (currentUnit.GetComponent<ProxyABOperator>())
+                            {
+                                if (currentUnit.GetComponent<ProxyABOperator>().isMacroComposant) //if (currentUnit.GetType().ToString().Contains("Macro"))
+                                {
+                                    currentUnit.GetComponent<Renderer>().material.shader = Shader.Find("Specular");
+                                    currentUnit.GetComponent<Renderer>().material.SetColor("_SpecColor", Color.red);
+                                }
+                                else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                            }
+                            else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                        }
                     }
                 }
             }
