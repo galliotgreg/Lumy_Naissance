@@ -166,23 +166,6 @@ public class AgentContext : MonoBehaviour
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
 
-        //TODO REMOVE INITIALIZATION (MAKE IN COMPONENTS) 
-		// vitality
-		this.model.VitalityMax = 20;
-		// strength
-		this.model.Strength = 5;
-		// stamina
-		this.model.Stamina = 5;
-		// actSpeed
-		this.model.ActSpd = 5;
-		// moveSpeed
-		this.model.MoveSpd = 10;
-		// atkRange
-		this.model.AtkRange = 0;
-		// pickRange
-		this.model.PickRange = 0;
-
-        // ProdCost
        // ABModel behaviorModel = ABManager.instance.FindABModel(entity.BehaviorModelIdentifier);
         string playerFolder = GameManager.instance.PLAYER1_SPECIE_FOLDER;
         if (authority == PlayerAuthority.Player2)
