@@ -1,0 +1,8 @@
+Return,name,Arg*,
+bool,resourceLower,scal,txt
+Nodes,Type,output (Node -> Input)
+0,operator{B>SS},
+1,arg{scal:0},0->0
+2,operator{SgetRT},0->1
+3,param{ref:home},2->0
+4,arg{txt:1},2->1

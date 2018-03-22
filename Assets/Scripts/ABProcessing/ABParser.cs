@@ -191,6 +191,10 @@ public class ABParser
             String pinIdStr = tokens[2].Split(separators)[2];
             int nodeId = int.Parse(nodeIdStr);
             int pinId = int.Parse(pinIdStr);
+            if (nodeId < 0 || nodeId >= curNodes.Count)
+            {
+                Debug.Log("TODO Remove this debug stub");
+            }
             IABOperator outputNode = (IABOperator)curNodes[nodeId];
 
             outputNode.Inputs[pinId] = node;
@@ -235,7 +239,7 @@ public class ABParser
             Debug.LogError(typeParams + " not found on parsing macro");
         }
 
-        return ABManager.instance.Macros[typeParams];
+        return ABManager.instance.Macros[typeParams].Clone();
     }
 
     public IABOperator ParseOperator(string typeParams)
@@ -248,6 +252,10 @@ public class ABParser
         Regex rgx = new Regex(@"\{.+\}");
         Match match = rgx.Match(typeString);
         String matchVal = match.Value;
+        if (matchVal.Length - 2 < 0)
+        {
+            Debug.Log("TODO Remove this debug stub");
+        }
         return matchVal.Substring(1, matchVal.Length - 2);
     }
 
