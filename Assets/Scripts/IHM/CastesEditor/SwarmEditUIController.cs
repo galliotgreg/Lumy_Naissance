@@ -697,6 +697,8 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void NewLumy()
     {
+        AppContextManager.instance.CreateCast();
+        RefreshView();
         Debug.Log("NewLumy");
     }
 
