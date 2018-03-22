@@ -1,0 +1,13 @@
+Return,name,Arg*,
+ref,getAnyClosestResource,,
+Nodes,Type,output (Node -> Input)
+0,operator{RgetR[]S},
+1,param{ref[]:resources},0->0
+2,operator{SminIdS[]},0->1
+3,operator{S[]distV[]V},2->0
+4,operator{V[]getR[]T},3->0
+5,operator{VgetRT},3->1
+6,param{ref[]:resources},4->0
+7,param{const txt=pos},4->1
+8,param{ref:self},5->0
+9,param{const txt=curPos},5->1
