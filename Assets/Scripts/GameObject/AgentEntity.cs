@@ -112,6 +112,7 @@ public class AgentEntity : MonoBehaviour
         AgentComponent[] headCompos = head.GetComponentsInChildren<AgentComponent>();
         AgentComponent[] tailCompos = tail.GetComponentsInChildren<AgentComponent>();
         AgentComponent[] agentCompos = new AgentComponent[headCompos.Length + tailCompos.Length];
+        
         int i = 0;
         foreach (AgentComponent compo in headCompos)
         {

@@ -224,6 +224,7 @@ public class AgentScript : MonoBehaviour {
         set
         {
             pickRange = value;
+
         }
     }
 

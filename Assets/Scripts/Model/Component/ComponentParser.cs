@@ -172,7 +172,7 @@ public class ComponentParser {
 			string[] sensorValues = sensor.Split( new char[]{' '} );
 			if( sensorValues.Length > 1 ){
 				switch( sensorValues[0] ){
-				case "vision": component.VisionRange = float.Parse(sensorValues[1]); return;
+				//case "vision": component.VisionRange = float.Parse(sensorValues[1]); return;
 				case "vibration": component.VibrationRange = float.Parse(sensorValues[1]); return;
 				case "heat": component.HeatRange = float.Parse(sensorValues[1]); return;
 				case "smell": component.SmellRange = float.Parse(sensorValues[1]); return;
@@ -192,7 +192,7 @@ public class ComponentParser {
                     case "pick_range": component.PickRangeBuff = float.Parse(attrValues[1]); return;
                     case "vision_range": component.VisionRangeBuff = float.Parse(attrValues[1]); return;
                     case "move_spd.": component.MoveSpeedBuff = float.Parse(attrValues[1]); return;
-                    case "act._spd": component.ActionSpeedBuff = float.Parse(attrValues[1]); return;
+                    case "act._spd.": component.ActionSpeedBuff = float.Parse(attrValues[1]); return;
                     case "strength": component.StrengthBuff = float.Parse(attrValues[1]); return;
                     case "vitality": component.VitalityBuff = float.Parse(attrValues[1]); return;
                     case "stamina": component.StaminaBuff = float.Parse(attrValues[1]); return;
@@ -211,7 +211,7 @@ public class ComponentParser {
                 // Vision range
                 if (attrValues[0] == "Vision" && attrValues[1] == "range")
                 {
-                    component.VisionRangeBuff = float.Parse(attrValues[2].Split(new char[] { '%' })[0]) / 100f;
+                  //  component.VisionRangeBuff = float.Parse(attrValues[2].Split(new char[] { '%' })[0]) / 100f;
                 }
                 // Vibration range
                 if ( attrValues[0] == "Vibration" && attrValues[1] == "range" ){
