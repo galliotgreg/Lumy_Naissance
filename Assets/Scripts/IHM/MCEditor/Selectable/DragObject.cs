@@ -26,6 +26,11 @@ public class DragObject : MonoBehaviour {
 	// Update is called once per frame
 	protected void Update () {
 		if (dragging) {
+			// break dragging
+			if (Input.GetMouseButtonDown (1) || Input.GetMouseButtonDown (2)) {
+				mouseUp ();
+			}
+			// Drag
 			updatePosition ( objectToDrag );
 		}
 	}
@@ -50,8 +55,10 @@ public class DragObject : MonoBehaviour {
 	}
 	public void mouseUp(){
 		dragging = false;
-		this.objectToDrag.transform.position = new Vector3( this.objectToDrag.transform.position.x, this.objectToDrag.transform.position.y, startZposition );
-		dragActivator.endDrag ( this.objectToDrag );
+		if( this.objectToDrag != null && this.dragActivator != null ){
+			this.objectToDrag.transform.position = new Vector3( this.objectToDrag.transform.position.x, this.objectToDrag.transform.position.y, startZposition );
+			dragActivator.endDrag ( this.objectToDrag );
+		}
 		this.objectToDrag = null;
 		this.dragActivator = null;
 	}
