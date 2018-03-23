@@ -37,6 +37,7 @@ public class LayAction : GameAction {
 		child.name = childEntity.CastName;
         
 		//childEntity.Context.setModelValues (this.agentEntity.Authority);
+        
         //Increment Population 
 		Unit_GameObj_Manager.instance.addUnit( childEntity, this.agentEntity.Home );
 
