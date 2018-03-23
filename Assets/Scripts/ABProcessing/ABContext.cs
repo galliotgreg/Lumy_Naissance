@@ -34,7 +34,11 @@ public class ABContext {
         ABContext copy = new ABContext();
         foreach (IABParam param in parameters)
         {
-            copy.SetParam(param);
+            int n;
+            if (!int.TryParse(param.Identifier, out n))
+            {
+                copy.SetParam(param);
+            }
         }
         return copy;
     }

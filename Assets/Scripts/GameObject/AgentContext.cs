@@ -166,23 +166,6 @@ public class AgentContext : MonoBehaviour
 		// Set Model Values based on AgentComponents
 		AgentComponent[] agentComponents = this.entity.getAgentComponents();
 
-        //TODO REMOVE INITIALIZATION (MAKE IN COMPONENTS) 
-		// vitality
-		this.model.VitalityMax = 20;
-		// strength
-		this.model.Strength = 5;
-		// stamina
-		this.model.Stamina = 5;
-		// actSpeed
-		this.model.ActSpd = 5;
-		// moveSpeed
-		this.model.MoveSpd = 10;
-		// atkRange
-		this.model.AtkRange = 0;
-		// pickRange
-		this.model.PickRange = 0;
-
-        // ProdCost
        // ABModel behaviorModel = ABManager.instance.FindABModel(entity.BehaviorModelIdentifier);
         string playerFolder = GameManager.instance.PLAYER1_SPECIE_FOLDER;
         if (authority == PlayerAuthority.Player2)
@@ -199,20 +182,32 @@ public class AgentContext : MonoBehaviour
 		this.model.ProdCost = cost.Resources;
 		// layTimeCost
 		this.model.LayTimeCost = getCooldown( agentComponents );
-		// visionRange
-		this.model.VisionRange = 0;
+        // visionRange
+
+        this.model.PickRange = 0;
+        this.model.Vitality = 0;
+        this.model.VitalityMax = 0;
+        this.model.VisionRange = 0;
+        this.model.Stamina = 0;
+        this.model.ActSpd = 0;
+        this.model.Strength = 0;
+        this.model.MoveSpd = 0;
+        this.model.AtkRange = 0;
+        this.model.NbItemMax = 0; 
 
         foreach (AgentComponent comp in agentComponents)
         {
-            this.model.VitalityMax += comp.VitalityBuff;
-            this.model.Strength += comp.StrengthBuff;
-            this.model.Stamina += comp.StaminaBuff;
-            this.model.ActSpd += comp.ActionSpeedBuff;
-            this.model.MoveSpd += comp.MoveSpeedBuff;
-            this.model.PickRange += comp.PickRangeBuff;
-            this.model.AtkRange += comp.AtkRangeBuff;
-            this.model.VisionRange += comp.VisionRangeBuff;
+
+            this.model.VitalityMax += (int) comp.VitalityBuff;
+            this.model.Strength += (int) comp.StrengthBuff;
+            this.model.Stamina += (int) comp.StaminaBuff;
+            this.model.ActSpd += (int) comp.ActionSpeedBuff;
+            this.model.MoveSpd += (int) comp.MoveSpeedBuff;
+            this.model.PickRange += (int) comp.PickRangeBuff;
+            this.model.AtkRange += (int) comp.AtkRangeBuff;
+            this.model.VisionRange += (int) comp.VisionRangeBuff;
             this.model.NbItemMax += (int) comp.StaminaBuff * 3;
+            
         }
 
         this.model.Vitality = this.model.VitalityMax;

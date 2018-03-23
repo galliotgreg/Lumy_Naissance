@@ -246,9 +246,8 @@ public class SwarmEditUIController : MonoBehaviour
             actSpeed += (int)compo.ActionSpeedBuff;
             moveSpeed += (int)compo.MoveSpeedBuff;
             visionRange += (int)compo.VisionRangeBuff;
-            //TODO manage atkRange & pick range
-            pickRange = -1;
-            atkRange = -1;
+            pickRange += (int)compo.PickRangeBuff; 
+            atkRange += (int)compo.AtkRangeBuff ;
         }
         LumyStats.Vitality = vitality;
         LumyStats.Stamina = stamina;
