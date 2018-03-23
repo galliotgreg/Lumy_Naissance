@@ -65,6 +65,7 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 				List<string> newItems = itemsFromType (selectedType);
 				valueTypeItem.AddOptions (newItems);
 			}
+			valueTypeItem.value = 0;
 		}
 	}
 
