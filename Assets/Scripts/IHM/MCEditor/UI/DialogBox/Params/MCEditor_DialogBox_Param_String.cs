@@ -73,7 +73,7 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 		result.Add ("--");
 		foreach (System.Reflection.MemberInfo field in type.GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)) {
 			if (field.Name != "key" && field.GetCustomAttributes (typeof(AttrName), false).Length > 0) {
-				result.Add (field.Name);
+				result.Add (((AttrName)field.GetCustomAttributes(typeof(AttrName), false)[0]).Identifier);
 			}
 		}
 		return result;
