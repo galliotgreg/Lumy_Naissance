@@ -36,6 +36,7 @@ public class MCToolManager : MonoBehaviour
 	public enum ToolType{
 		Selection,
 		Hand,
+        Undo,
 		None
 	};
 
@@ -51,8 +52,10 @@ public class MCToolManager : MonoBehaviour
     private Button btn_Selection;
     [SerializeField]
     private Button btn_Main;
+    [SerializeField]
+    private Button btn_Undo;
 
-	[SerializeField]
+    [SerializeField]
 	DropArea centerZone;
 
     private bool selectionEnCours;
@@ -76,6 +79,7 @@ public class MCToolManager : MonoBehaviour
     {
 		btn_Selection.onClick.AddListener(() => {CurrentTool = ToolType.Selection; CancelInventory(); SelectionSquare.instance.enabled = true; } );
 		btn_Main.onClick.AddListener(() => {CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; } );
+        btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); });
     }
 
     private void Update()
@@ -279,7 +283,14 @@ public class MCToolManager : MonoBehaviour
 			}
 		}
 	}
-	#endregion
+    #endregion
+
+    #region UNDO
+    private void ToolUndo()
+    {
+
+    }
+    #endregion
 
     public void Inventory()
     {
