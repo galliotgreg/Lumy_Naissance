@@ -10,7 +10,7 @@ public class SwapManager : MonoBehaviour {
     private string keyTimer = "TimerKey";
     private string keyPlayer1Name = "Player1NameKey";
     private string keyPlayer2Name = "Player2NameKey";
-
+    
 
     // The static instance of the Singleton for external access
     public static SwapManager instance = null;
@@ -30,7 +30,6 @@ public class SwapManager : MonoBehaviour {
             Destroy(gameObject);
         }
     }
-
 
     /// <summary>
     /// Set an Int in playerPrefs from a bool received in parameters with the associate Key

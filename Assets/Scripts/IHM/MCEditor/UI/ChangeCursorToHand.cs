@@ -10,7 +10,7 @@ public class ChangeCursorToHand : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        hotSpot = new Vector2(cursorTextureHand.texelSize.x / 2, cursorTextureHand.texelSize.y / 2);
+        hotSpot = new Vector2(cursorTextureHand.width / 2, cursorTextureHand.height / 2);
     }
 
     // Update is called once per frame
