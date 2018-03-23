@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Tutoriel : MonoBehaviour
 {
     #region Attributes
+
     [SerializeField]
     private Button next;
     [SerializeField]
@@ -21,6 +22,10 @@ public class Tutoriel : MonoBehaviour
     private Text txt_currentInfo;
     [SerializeField]
     private List<GameObject> panelList = new List<GameObject>();
+    [SerializeField]
+    private string keyTuto;
+    [SerializeField]
+    private Toggle dontShowAgain;
 
     private int currentInfo = 0;
 
@@ -31,33 +36,86 @@ public class Tutoriel : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
-        //Check is all panel are not visible
+         //Set key to initial value (for test)
+         SwapManager.instance.SetTutorielKey(false, keyTuto);
+         Debug.Log(SwapManager.instance.getTutorielState(keyTuto));
+
+        //Check if all panel are not visible
+        panelInfobulles.SetActive(false);
         foreach (GameObject info in panelList)
         {
             info.SetActive(false);
-            //info.transform.position = panelList[0].transform.position;
+           
         }
 
         ButtonListener(); 
 
+        if(keyTuto.Length == 0)
+        {
+            Debug.LogError("Error : KeyTuto Not Initialized");
+            return; 
+        } 
         //Enable Tuto 
-        //TODO Implement PlayerPrefs
-        OpenTuto(); 
+        if (!SwapManager.instance.getTutorielState(keyTuto)) {
+
+            OpenTuto();
+            Debug.Log("ok");
+        }
+  
     }
 
+    /// <summary>
+    /// Create all button listener for the GameObject 
+    /// </summary>
     private void ButtonListener()
     {
         //Listener
-        next.GetComponent<Button>().onClick.AddListener(Next);
-        previous.GetComponent<Button>().onClick.AddListener(Prev);
-        close.GetComponent<Button>().onClick.AddListener(Close);
-        tuto.GetComponent<Button>().onClick.AddListener(OpenTuto);
+        CheckButton();
+        next.onClick.AddListener(Next);
+        previous.onClick.AddListener(Prev);
+        close.onClick.AddListener(Close);
+        dontShowAgain.onValueChanged.AddListener(delegate{ToggleKey(dontShowAgain);});
+        tuto.onClick.AddListener(OpenTuto);
+   
     }
+  
+
+    private void CheckButton()
+    {
+        if (next == null)
+        {
+            Debug.LogError("NextButton not initialized"); 
+        }
+        if (previous == null)
+        {
+            Debug.LogError("previousButton not initialized");
+        }
+        if (close == null)
+        {
+            Debug.LogError("closeButton not initialized");
+        }
+        if (tuto == null)
+        {
+            Debug.LogError("TutoButton not initialized");
+        }
+       
+    }
+
+    /// <summary>
+    /// Toggle keyTuto Value
+    /// </summary>
+    private void ToggleKey(Toggle dontShowAgain)
+    {
+        SwapManager.instance.SetTutorielKey(!SwapManager.instance.getTutorielState(keyTuto), keyTuto);
+
+    }
+
 
     #region NavigationTuto
     void Next()
     {
+        previous.GetComponent<Button>().gameObject.SetActive(true);
+
         if (currentInfo < panelList.Count -1)
         {
             panelList[currentInfo].SetActive(false);
@@ -77,12 +135,17 @@ public class Tutoriel : MonoBehaviour
 
     void Prev()
     {
+       
         if (currentInfo > 0)
         {
             panelList[currentInfo].SetActive(false);
             panelList[currentInfo - 1].SetActive(true);
             currentInfo -= 1;
             txt_currentInfo.text = (currentInfo + 1).ToString() + " / " + panelList.Count.ToString();
+            if(currentInfo == 0)
+            {
+                previous.GetComponent<Button>().gameObject.SetActive(false);
+            }
         }
         else
         {
@@ -102,15 +165,16 @@ public class Tutoriel : MonoBehaviour
 
     }
 
-    void OpenTuto()
+    public void OpenTuto()
     {
-        
-        currentInfo = 0;
-        panelList[currentInfo].SetActive(true);
         panelInfobulles.SetActive(true);
+        previous.GetComponent<Button>().gameObject.SetActive(false);
+        currentInfo = 0;
+        panelList[currentInfo].SetActive(true);    
         txt_currentInfo.text = (currentInfo + 1).ToString() + " / " + panelList.Count.ToString();
 
     }
 #endregion
+
 }
 
