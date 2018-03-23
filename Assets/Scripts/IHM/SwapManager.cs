@@ -11,6 +11,7 @@ public class SwapManager : MonoBehaviour {
     private string keyPlayer1Name = "Player1NameKey";
     private string keyPlayer2Name = "Player2NameKey";
 
+
     // The static instance of the Singleton for external access
     public static SwapManager instance = null;
 
@@ -28,6 +29,37 @@ public class SwapManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+    }
+
+
+    /// <summary>
+    /// Set an Int in playerPrefs from a bool received in parameters with the associate Key
+    /// For this function a key is needed in parameters to create custom Activator for tutorials
+    /// </summary>
+    /// <param name="state"></param>
+    /// <param name="keyTutoriel"></param>
+    public void SetTutorielKey (bool state, string keyTutoriel)
+    {
+        PlayerPrefs.SetInt(keyTutoriel, state ? 0 : 1);
+    }
+
+    /// <summary>
+    /// Get the State of a tutorial with the given key in parameters 
+    /// </summary>
+    /// <param name="keyTutoriel"></param>
+    /// <returns></returns>
+    public bool getTutorielState (string keyTutoriel)
+    {
+        int value = PlayerPrefs.GetInt(keyTutoriel);
+        if (value == 0)
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+       
+           
     }
 
 
