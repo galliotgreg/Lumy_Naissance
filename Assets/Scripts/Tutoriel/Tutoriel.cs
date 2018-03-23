@@ -37,7 +37,7 @@ public class Tutoriel : MonoBehaviour
     void Start()
     {
          //Set key to initial value (for test)
-         //SwapManager.instance.SetTutorielKey(false, keyTuto);
+         //SwapManager.instance.SetTutorielKey(true, keyTuto);
          Debug.Log(SwapManager.instance.getTutorielState(keyTuto));
 
         //Check if all panel are not visible
@@ -56,7 +56,7 @@ public class Tutoriel : MonoBehaviour
             return; 
         } 
         //Enable Tuto 
-        if (!SwapManager.instance.getTutorielState(keyTuto)) {
+        if (SwapManager.instance.getTutorielState(keyTuto)) {
 
             OpenTuto();
             Debug.Log("ok");
