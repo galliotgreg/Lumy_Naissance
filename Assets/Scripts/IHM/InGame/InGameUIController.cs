@@ -566,7 +566,7 @@ public class InGameUIController : MonoBehaviour {
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
         CheckPause();
-        NavigationManager.instance.SwapScenesWithoutZoom("CastesScene");
+        NavigationManager.instance.SwapScenesWithoutZoom("EditeurCastesScene");
     }
 
     private void GoToMainMenu()
