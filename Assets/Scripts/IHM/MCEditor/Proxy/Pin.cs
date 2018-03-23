@@ -237,7 +237,7 @@ public class Pin : DragSelectableProxyGameObject {
         float shininess = Mathf.PingPong(Time.time, 1.0F);
         rend.material.SetFloat("_Shininess", shininess);*/
     }
-    public void FixedUpdate()
+    /*public void FixedUpdate()
     {
         if(this.AssociatedTransitions.Count != 0)
         {
@@ -248,7 +248,7 @@ public class Pin : DragSelectableProxyGameObject {
             float shininess = Mathf.PingPong(Time.time * 2f, 1F);
             rend.material.SetFloat("_Shininess", shininess);
         }        
-    }
+    }*/
 
     // Pin : Action : fixed number of pins
     public static Vector3 calculatePinPosition( ProxyABAction action, Pin.PinType pinType, ProxyABAction parent ){
