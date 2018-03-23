@@ -513,6 +513,12 @@ public class AppContextManager : MonoBehaviour
         SaveSpecie();
     }
 
+    public void DeleteSpecie()
+    {
+        Directory.Delete(ActiveSpecieFolderPath, true);
+        UpdateSpeciesFoldersNames();
+    }
+
     /* No more used since Lumy/Nuee Screen refacto
     */
     [Obsolete("UnforkCast is deprecated, please use DeleteCast instead.")]

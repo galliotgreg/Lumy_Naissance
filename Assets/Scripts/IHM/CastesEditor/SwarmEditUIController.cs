@@ -637,8 +637,8 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void DeleteSwarm()
     {
-
-        Debug.Log("DeleteSwarm");
+        AppContextManager.instance.DeleteSpecie();
+        RefreshView();
     }
 
     public void NewSwarm()
@@ -660,13 +660,11 @@ public class SwarmEditUIController : MonoBehaviour
     {
         ImportController.ImportSpecie();
         RefreshView();
-        Debug.Log("OpenImportSwarmDialog");
     }
 
     public void OpenExportSwarmDialog()
     {
         ExportController.ExportSpecie();
-        Debug.Log("OpenExportSwarmDialog");
     }
 
     public void SelectLumy(string lumyName)
