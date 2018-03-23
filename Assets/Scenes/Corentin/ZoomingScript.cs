@@ -22,7 +22,7 @@ public class ZoomingScript : MonoBehaviour
         if (isZoomable)
         {
             float prev_size = GameObject.Find("Camera").GetComponent<Camera>().orthographicSize;
-            float new_size = prev_size + Input.GetAxis("Mouse ScrollWheel") * sensitivity;
+            float new_size = prev_size - Input.GetAxis("Mouse ScrollWheel") * sensitivity;
             new_size = Mathf.Clamp(new_size, minSize, maxSize);
             GameObject.Find("Camera").GetComponent<Camera>().orthographicSize = new_size;
         }

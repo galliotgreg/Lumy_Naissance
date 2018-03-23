@@ -371,7 +371,7 @@ public class SwarmEditUIController : MonoBehaviour
             button.transform.position = pos;
             button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
             y -= lumyYMarginLayout;
-            button.transform.parent = lumysScrollContent.transform;
+            button.transform.SetParent(lumysScrollContent.transform);
 
             //Set Name
             Text btnText = button.GetComponentInChildren<Text>();
