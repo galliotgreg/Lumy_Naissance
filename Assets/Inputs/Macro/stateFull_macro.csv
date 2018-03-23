@@ -1,0 +1,10 @@
+Return,name,Arg*,
+bool,stateFull,txt,txt
+Nodes,Type,output (Node -> Input)
+0,operator{B==SS},
+1,operator{SgetRT},0->0
+2,operator{SgetRT},0->1
+3,param{ref:self},1->0
+4,arg{txt:0},1->1
+3,param{ref:self},2->0
+4,arg{txt:1},2->1

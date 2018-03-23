@@ -193,8 +193,9 @@ public class ABMacroOperator<T> : ABOperator<T>
 		result.ClassName = this.ClassName;
 		result.SymbolName = this.SymbolName;
 		result.ViewName = this.ViewName;
-		result.WrappedTree = (ABOperator<T>)this.wrappedTree.Clone (); // ATTENTION : actually this clone the root operator (it must clone the whole tree)
-		return result;
+        /*result.WrappedTree = (ABOperator<T>)this.wrappedTree.Clone ();*/ // ATTENTION : actually this clone the root operator (it must clone the whole tree)
+        result.WrappedTree = this.wrappedTree;
+        return result;
 	}
 
 	#endregion

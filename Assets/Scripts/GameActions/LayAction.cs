@@ -22,9 +22,6 @@ public class LayAction : GameAction {
 	private GameObject currentTemplate;
 	private AgentScript.ResourceCost currentCost;
 
-	private bool CoolDownAuthorized = true;		// Indicates if the cooldown authorizes the execution of the action
-	private bool firstExecution = true;			// Indicates the first execution of the action
-
 	/// <summary>
 	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
 	/// </summary>
@@ -38,7 +35,8 @@ public class LayAction : GameAction {
         child.transform.parent = GameManager.instance.transform; 
 		AgentEntity childEntity = child.GetComponent<AgentEntity> ();
 		child.name = childEntity.CastName;
-		childEntity.Context.setModelValues (this.agentEntity.Authority);
+        
+		//childEntity.Context.setModelValues (this.agentEntity.Authority);
         //Increment Population 
 		Unit_GameObj_Manager.instance.addUnit( childEntity, this.agentEntity.Home );
 
@@ -95,43 +93,33 @@ public class LayAction : GameAction {
 
 	protected override void executeAction ()
 	{
-		CoolDownAuthorized = !firstExecution; // As the action is executed on ActivateAction, and the authorization is given by ExecuteAction (which is executed by default), it avoids the incorrect authorization during the first execution
-		firstExecution = false;
+		
 	}
 
 	protected override void activateAction ()
 	{
-		// this action is evaluated on activation. And it is executed if the cooldown is elapsed
-		if( !CoolDownAuthorized ) {
-			// Debug.LogError ( "===== NOT" );
-		}
-		if ( CoolDownAuthorized ) {
-			this.CoolDownAuthorized = false;
-			// Debug.LogError ( "* AUTH" );
-			currentTemplate = GameManager.instance.GetUnitTemplate (agentEntity.Authority, castName);
-			AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
-
-			currentCost = new AgentScript.ResourceCost (unitEntity.Context.Model.ProdCost);
-			if (!CheckResources (currentTemplate, currentCost))
-				return;
-			if (this.agentEntity.Home.getPopulation ().Count >= SwapManager.instance.GetPlayerNbLumy ())
-				return; 
-
-			DecreaseResources (currentCost);
-
-			this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
-
-			// wait for cooldownTime
-			Invoke ("Lay", this.CoolDownTime);
-		}
-
-		return;
+		
 	}
 
-	protected override void deactivateAction ()
+	protected override void activateAction_CooldownAuthorized ()
 	{
-		// ATTENTION : TODO
-		// CoolDownAuthorized = true;	// if the action is deactivated and executeAction is not called
+		currentTemplate = GameManager.instance.GetUnitTemplate (agentEntity.Authority, castName);
+		AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
+
+		currentCost = new AgentScript.ResourceCost (unitEntity.Context.Model.ProdCost);
+		if (!CheckResources (currentTemplate, currentCost))
+			return;
+		if (this.agentEntity.Home.getPopulation ().Count >= SwapManager.instance.GetPlayerNbLumy ())
+			return; 
+
+		DecreaseResources (currentCost);
+
+		this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
+
+		// wait for cooldownTime
+		Invoke ("Lay", this.CoolDownTime);
 	}
+
+	protected override void deactivateAction (){}
 	#endregion
 }

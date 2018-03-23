@@ -185,6 +185,10 @@ public class ABModel {
 
 		if (state != null) {
 			foreach (ABTransition transition in state.Outcomes) {
+                if (transition.Start.Name == "spawn scoot" && transition.End.Name == "lay scoot")
+                {
+                    Debug.Log("TODO Remove this debug stub");
+                }
 				if (transition.Condition == null) {
 					return transition.End.Id;
 				} else {

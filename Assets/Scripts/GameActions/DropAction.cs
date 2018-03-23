@@ -70,6 +70,11 @@ public class DropAction : GameAction {
 		Drop();
 	}
 
+	protected override void activateAction_CooldownAuthorized ()
+	{
+		return;
+	}
+
 	protected override void deactivateAction ()
 	{
 		return;
