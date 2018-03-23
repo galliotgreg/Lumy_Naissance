@@ -638,6 +638,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void DeleteSwarm()
     {
+        //Prevent removing last
+        if (AppContextManager.instance.GetSpeciesFolderNames().Length < 2)
+        {
+            Debug.Log("You cannot remove the last specie");
+            return;
+        }
+
         AppContextManager.instance.DeleteSpecie();
         string defaultSpecie = AppContextManager.instance.GetSpeciesFolderNames()[0];
         SelectSwarm(defaultSpecie);
@@ -684,6 +691,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void DeleteLumy()
     {
+        //Prevent removing last
+        if (AppContextManager.instance.ActiveSpecie.Casts.Count < 2)
+        {
+            Debug.Log("You cannot remove the last lumy");
+            return;
+        }
+
         AppContextManager.instance.DeleteCast();
         Cast firstCast = null;
         foreach (Cast cast in AppContextManager.instance.ActiveSpecie.Casts.Values)
