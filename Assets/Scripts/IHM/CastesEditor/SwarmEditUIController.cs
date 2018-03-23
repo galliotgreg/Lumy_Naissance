@@ -482,6 +482,7 @@ public class SwarmEditUIController : MonoBehaviour
         Cast lumyCast = AppContextManager.instance.ActiveCast;
         editedLumy = Instantiate(emptyAgentPrefab);
         editedLumy.transform.parent = this.transform;
+        
         //editedLumy.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             lumyCast, editedLumy, emptyComponentPrefab);
