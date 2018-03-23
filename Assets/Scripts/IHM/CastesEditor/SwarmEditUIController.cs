@@ -638,6 +638,8 @@ public class SwarmEditUIController : MonoBehaviour
     public void DeleteSwarm()
     {
         AppContextManager.instance.DeleteSpecie();
+        string defaultSpecie = AppContextManager.instance.GetSpeciesFolderNames()[0];
+        SelectSwarm(defaultSpecie);
         RefreshView();
     }
 

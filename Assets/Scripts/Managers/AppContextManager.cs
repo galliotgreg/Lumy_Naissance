@@ -597,7 +597,10 @@ public class AppContextManager : MonoBehaviour
         activeSpecie.Casts.Add(newCast.Name, newCast);
 
         //Copy Behavior files
-        File.Create(ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
+        File.Copy(
+            TemplateFolderPath + TEMPLATE_SPECIE_FILE_NAME + CSV_EXT,
+            ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
+        //File.Create(ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
         
         //Alter Specie file
         SaveSpecie();
