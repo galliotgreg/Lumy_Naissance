@@ -367,20 +367,20 @@ public class AppContextManager : MonoBehaviour
             content += "\n";
         }
         //Write cast hierarchy
-        content += "Cast, Parent,\n";
-        foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
-        {
-            Cast curCast = entry.Value;
+        //content += "Cast, Parent,\n";
+        //foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
+        //{
+        //    Cast curCast = entry.Value;
 
-            if (curCast.Parent != null)
-            {
-                content += curCast.Name + "," + curCast.Parent.Name + ",";
-            } else
-            {
-                content += curCast.Name + ",,";
-            }
-            content += "\n";
-        }
+        //    if (curCast.Parent != null)
+        //    {
+        //        content += curCast.Name + "," + curCast.Parent.Name + ",";
+        //    } else
+        //    {
+        //        content += curCast.Name + ",,";
+        //    }
+        //    content += "\n";
+        //}
 
         //Replace file
         File.Delete(activeSpecieFilePath);
@@ -597,7 +597,10 @@ public class AppContextManager : MonoBehaviour
         activeSpecie.Casts.Add(newCast.Name, newCast);
 
         //Copy Behavior files
-        File.Create(ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
+        File.Copy(
+            TemplateFolderPath + TEMPLATE_SPECIE_FILE_NAME + CSV_EXT,
+            ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
+        //File.Create(ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
         
         //Alter Specie file
         SaveSpecie();

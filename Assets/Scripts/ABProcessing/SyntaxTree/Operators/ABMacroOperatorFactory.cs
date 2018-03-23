@@ -171,7 +171,7 @@ public class ABMacroOperatorFactory {
             case "vec[]":
                 return "VecTab";
             case "ref[]":
-                return "VecTab";
+                return "RefTab";
             default:
                 throw new System.NotImplementedException();
         }
