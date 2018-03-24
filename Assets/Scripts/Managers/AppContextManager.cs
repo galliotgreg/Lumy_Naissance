@@ -71,10 +71,16 @@ public class AppContextManager : MonoBehaviour
     private string templateFolderPath = "Inputs/SpecieTemplate/";
 
     /// <summary>
-    /// Path to the folder hosting the specie template
+    /// Filename of the specie file template
     /// </summary>
     [SerializeField]
     private string TEMPLATE_SPECIE_FILE_NAME = "XXX_specie";
+
+    /// <summary>
+    /// Filename of the default cast behavior file template
+    /// </summary>
+    [SerializeField]
+    private string TEMPLATE_ORIGIN_FILE_NAME = "origin_behavior";
 
     /// <summary>
     /// Casts files suffix
@@ -598,7 +604,7 @@ public class AppContextManager : MonoBehaviour
 
         //Copy Behavior files
         File.Copy(
-            TemplateFolderPath + TEMPLATE_SPECIE_FILE_NAME + CSV_EXT,
+            TemplateFolderPath + TEMPLATE_ORIGIN_FILE_NAME + CSV_EXT,
             ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
         //File.Create(ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
         
