@@ -131,17 +131,6 @@ public class SwapManager : MonoBehaviour
             PlayerPrefs.SetInt(keyPlayerVisionRange + "Player2", state ? 0 : 1);
         }
     }
-    public void setPlayerDirectionKey(PlayerAuthority player, bool state)
-    {
-        if (player == PlayerAuthority.Player1)
-        {
-            PlayerPrefs.SetInt(keyPlayerDirectionLumy + "Player1", state ? 0 : 1);
-        }
-        else if (player == PlayerAuthority.Player2)
-        {
-            PlayerPrefs.SetInt(keyPlayerDirectionLumy + "Player2", state ? 0 : 1);
-        }
-    }
     public void setPlayerAtkKey(PlayerAuthority player, bool state)
     {
         if (player == PlayerAuthority.Player1)
