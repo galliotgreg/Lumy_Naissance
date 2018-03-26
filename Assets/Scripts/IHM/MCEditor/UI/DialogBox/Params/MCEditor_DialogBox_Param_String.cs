@@ -81,7 +81,12 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 	}
 
 	List<string> itemsFromCasts(){
-		return new List<string> (AppContextManager.instance.GetSpeciesFolderNames());
+		List<string> result = new List<string> ();
+		result.Add ("--");
+		foreach(string cast in AppContextManager.instance.GetCastFileNames()){
+			result.Add (cast);
+		}
+		return result;
 	}
 
 	// Change valueTypeItem

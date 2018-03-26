@@ -277,7 +277,9 @@ public class InGameUIController : MonoBehaviour {
         Menu.onClick.AddListener(SwitchMenu);
 
         valider.onClick.AddListener(OptionManager.instance.setPlayerPreferencesDebug);
-        playPause.onClick.AddListener(GameManager.instance.PauseGame);
+
+
+        playPause.onClick.AddListener(PauseGame);
 
         //Player Species 
         J1_Species.text = SwapManager.instance.GetPlayer1Name();
@@ -290,6 +292,11 @@ public class InGameUIController : MonoBehaviour {
                 queens.Add(lumy);
             }
         }
+    }
+
+    private void PauseGame()
+    {
+        GameManager.instance.PauseGame(); 
     }
 
 
