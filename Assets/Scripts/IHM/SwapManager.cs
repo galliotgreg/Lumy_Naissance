@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwapManager : MonoBehaviour {
+public class SwapManager : MonoBehaviour
+{
 
     private string keyRes = "ResourceKey";
     private string keyStock = "StockKey";
@@ -10,7 +11,16 @@ public class SwapManager : MonoBehaviour {
     private string keyTimer = "TimerKey";
     private string keyPlayer1Name = "Player1NameKey";
     private string keyPlayer2Name = "Player2NameKey";
-    
+
+    //player preferences debuger
+    private string keyPlayerVisionRange = "VisionRangeKey";
+    private string keyPlayerAtkRange = "AtkRangeKey";
+    private string keyPlayerPickRange = "PickRangeKey";
+    private string keyPlayerLifeBar = "LifeBarKey";
+    private string keyPlayerLumyName = "LumyNameKey";
+    private string keyPlayerDirectionLumy = "DirectionLumyKey";
+    private string keyPlayerTrace = "TraceKey";
+    private string KeyPlayerGisement = "GisementKey";
 
     // The static instance of the Singleton for external access
     public static SwapManager instance = null;
@@ -37,7 +47,7 @@ public class SwapManager : MonoBehaviour {
     /// </summary>
     /// <param name="state"></param>
     /// <param name="keyTutoriel"></param>
-    public void SetTutorielKey (bool state, string keyTutoriel)
+    public void SetTutorielKey(bool state, string keyTutoriel)
     {
         PlayerPrefs.SetInt(keyTutoriel, state ? 0 : 1);
     }
@@ -47,18 +57,19 @@ public class SwapManager : MonoBehaviour {
     /// </summary>
     /// <param name="keyTutoriel"></param>
     /// <returns></returns>
-    public bool getTutorielState (string keyTutoriel)
+    public bool getTutorielState(string keyTutoriel)
     {
         int value = PlayerPrefs.GetInt(keyTutoriel);
         if (value == 0)
         {
             return true;
         }
-        else {
+        else
+        {
             return false;
         }
-       
-           
+
+
     }
 
 
@@ -69,7 +80,7 @@ public class SwapManager : MonoBehaviour {
     /// <param name="res">The resources the player will have at the start of the game</param>
     public void SetPlayerResources(int res)
     {
-        PlayerPrefs.SetInt(keyRes, res); 
+        PlayerPrefs.SetInt(keyRes, res);
     }
 
     /// <summary>
@@ -94,17 +105,119 @@ public class SwapManager : MonoBehaviour {
     /// Set the timer at the start of the game
     /// </summary>
     /// <param name="timer">the timer at the start of the game</param>
-    public void SetPlayerTimer (float timer)
+    public void SetPlayerTimer(float timer)
     {
-        PlayerPrefs.SetFloat(keyTimer, timer); 
+        PlayerPrefs.SetFloat(keyTimer, timer);
     }
 
-    public void SetPlayer1Name(string playerName) {
+    public void SetPlayer1Name(string playerName)
+    {
         PlayerPrefs.SetString(keyPlayer1Name, playerName);
     }
-    public void SetPlayer2Name(string playerName) {
+    public void SetPlayer2Name(string playerName)
+    {
         PlayerPrefs.SetString(keyPlayer2Name, playerName);
     }
+
+    #region set Player preferences Debugger
+    public void setPlayerVisionKey(PlayerAuthority player, bool state)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            PlayerPrefs.SetInt(keyPlayerVisionRange + "Player1", state ? 0 : 1);
+        }
+        else if (player == PlayerAuthority.Player2)
+        {
+            PlayerPrefs.SetInt(keyPlayerVisionRange + "Player2", state ? 0 : 1);
+        }
+    }
+    public void setPlayerDirectionKey(PlayerAuthority player, bool state)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            PlayerPrefs.SetInt(keyPlayerDirectionLumy + "Player1", state ? 0 : 1);
+        }
+        else if (player == PlayerAuthority.Player2)
+        {
+            PlayerPrefs.SetInt(keyPlayerDirectionLumy + "Player2", state ? 0 : 1);
+        }
+    }
+    public void setPlayerAtkKey(PlayerAuthority player, bool state)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            PlayerPrefs.SetInt(keyPlayerAtkRange + "Player1", state ? 0 : 1);
+        }
+        else if (player == PlayerAuthority.Player2)
+        {
+            PlayerPrefs.SetInt(keyPlayerAtkRange + "Player2", state ? 0 : 1);
+        }
+    }
+    public void setPlayerPickKey(PlayerAuthority player, bool state)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            PlayerPrefs.SetInt(keyPlayerPickRange + "Player1", state ? 0 : 1);
+        }
+        else if (player == PlayerAuthority.Player2)
+        {
+            PlayerPrefs.SetInt(keyPlayerPickRange + "Player2", state ? 0 : 1);
+        }
+    }
+
+    public void setPlayerLifeBarKey(PlayerAuthority player, bool state)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            PlayerPrefs.SetInt(keyPlayerLifeBar + "Player1", state ? 0 : 1);
+        }
+        else if (player == PlayerAuthority.Player2)
+        {
+            PlayerPrefs.SetInt(keyPlayerLifeBar + "Player2", state ? 0 : 1);
+        }
+    }
+    public void setPlayerLumyNameKey(PlayerAuthority player, bool state)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            PlayerPrefs.SetInt(keyPlayerLumyName + "Player1", state ? 0 : 1);
+        }
+        else if (player == PlayerAuthority.Player2)
+        {
+            PlayerPrefs.SetInt(keyPlayerLumyName + "Player2", state ? 0 : 1);
+        }
+    }
+
+    public void setPlayerDirectionLumyKey(PlayerAuthority player, bool state)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            PlayerPrefs.SetInt(keyPlayerDirectionLumy + "Player1", state ? 0 : 1);
+        }
+        else if (player == PlayerAuthority.Player2)
+        {
+            PlayerPrefs.SetInt(keyPlayerDirectionLumy + "Player2", state ? 0 : 1);
+        }
+    }
+
+    public void setPlayerTraceKey(PlayerAuthority player, bool state)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            PlayerPrefs.SetInt(keyPlayerTrace + "Player1", state ? 0 : 1);
+        }
+        else if (player == PlayerAuthority.Player2)
+        {
+            PlayerPrefs.SetInt(keyPlayerTrace + "Player2", state ? 0 : 1);
+        }
+    }
+
+    public void setPlayerGisementKey( bool state)
+    {
+        PlayerPrefs.SetInt(KeyPlayerGisement, state ? 0 : 1);
+    }
+
+    #endregion
 
 
     /// <summary>
@@ -113,7 +226,7 @@ public class SwapManager : MonoBehaviour {
     /// <returns>The player resources (int)</returns>
     public int GetPlayerResources()
     {
-        return PlayerPrefs.GetInt(keyRes); 
+        return PlayerPrefs.GetInt(keyRes);
     }
 
     /// <summary>
@@ -129,9 +242,9 @@ public class SwapManager : MonoBehaviour {
     /// Get the number of lumy that each player can have (max)
     /// </summary>
     /// <returns>Number of Lumy that a player can have (max)</returns>
-    public int GetPlayerNbLumy ()
+    public int GetPlayerNbLumy()
     {
-        return PlayerPrefs.GetInt(keyNbLumy); 
+        return PlayerPrefs.GetInt(keyNbLumy);
     }
 
     /// <summary>
@@ -140,16 +253,222 @@ public class SwapManager : MonoBehaviour {
     /// <returns>the timer of the game</returns>
     public float GetPlayerTimer()
     {
-        return PlayerPrefs.GetFloat(keyTimer); 
+        return PlayerPrefs.GetFloat(keyTimer);
     }
 
-    public string GetPlayer1Name() {
+    public string GetPlayer1Name()
+    {
         return PlayerPrefs.GetString(keyPlayer1Name);
     }
 
-    public string GetPlayer2Name() {
+    public string GetPlayer2Name()
+    {
         return PlayerPrefs.GetString(keyPlayer2Name);
     }
 
-
+    #region Get player preferences Debugger
+    public bool getPlayerDirectionLumyKey(PlayerAuthority player)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerDirectionLumy + "Player1");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerDirectionLumy + "Player2");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool getPlayerVisionKey(PlayerAuthority player)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerVisionRange + "Player1");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerVisionRange + "Player2");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool getPlayerAtkKey(PlayerAuthority player)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerAtkRange + "Player1");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerAtkRange + "Player2");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool getPlayerPickKey(PlayerAuthority player)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerPickRange + "Player1");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerPickRange + "Player2");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool getPlayerLifeBarKey(PlayerAuthority player)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerLifeBar + "Player1");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerLifeBar + "Player2");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool getPlayerLumyNameKey(PlayerAuthority player)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerLumyName + "Player1");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerLumyName + "Player2");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool getPlayerTraceKey(PlayerAuthority player)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerTrace + "Player1");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            int value = PlayerPrefs.GetInt(keyPlayerTrace + "Player2");
+            if (value == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public bool getPlayerGisementKey()
+    {
+        int value = PlayerPrefs.GetInt(KeyPlayerGisement);
+        if (value == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    #endregion
 }
+
+
