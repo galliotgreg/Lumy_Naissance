@@ -589,7 +589,7 @@ public class OptionManager : MonoBehaviour {
     {
         if(toutDesactiver.isOn == true)
         {
-            toutActiver.isOn = false;
+            //toutActiver.isOn = false;
             visionRange.isOn = false;
             atkRange.isOn = false;
             pickRange.isOn = false;
@@ -616,7 +616,7 @@ public class OptionManager : MonoBehaviour {
     {
         if (toutActiver.isOn == true)
         {
-            toutDesactiver.isOn = false;
+            //toutDesactiver.isOn = false;
             visionRange.isOn = true;
             atkRange.isOn = true;
             pickRange.isOn = true;
