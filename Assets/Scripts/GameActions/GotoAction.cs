@@ -8,6 +8,10 @@ public class GotoAction : GameAction {
     [SerializeField]
     private Vector3[] path;
 
+	private Vector2 previousPosition;
+	private Vector2 curDirection;
+
+	#region PROPERTIES
     public Vector3[] Path
     {
         get
@@ -20,6 +24,14 @@ public class GotoAction : GameAction {
 			path = value;
         }
     }
+
+	public Vector2 CurDirection {
+		get {
+			return curDirection;
+		}
+	}
+	#endregion
+
 	UnityEngine.AI.NavMeshAgent movingAgent;
 
 	[SerializeField]
@@ -36,6 +48,13 @@ public class GotoAction : GameAction {
 	protected override void executeAction ()
 	{
 		Vector2 curPos = worldToVec2 (agentAttr.transform.position);
+
+		// Calculating direction : necessary to roamingAction
+		Vector2 dir = curPos - previousPosition;
+		if (dir.magnitude > 0.01f) {
+			curDirection = dir.normalized;
+		}
+		previousPosition = curPos;
 
 		// On a point
 		if (isClose (curPos, worldToVec2 (path [currentPathIndex]))) {

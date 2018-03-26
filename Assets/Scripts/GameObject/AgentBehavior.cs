@@ -221,8 +221,7 @@ public class AgentBehavior : MonoBehaviour
 		case ActionType.Roaming:
 				ABScalar angle = ((ABScalar)curActionParams [0]);
 				ABScalar dist = ((ABScalar)curActionParams [1]);
-				roamingAction.Angle = angle.Value;
-				roamingAction.Dist = dist.Value;
+				roamingAction.setParams( angle.Value, dist.Value );
 
 				roamingAction.activate();
 				roamingAction.frameBegin ();

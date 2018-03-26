@@ -93,14 +93,12 @@ public abstract class GameAction : MonoBehaviour {
 
 	public void activate(){
 		if (!activated) {
-			Debug.LogError ("ACTIVATE = "+this.name);
 			activated = true;
 			activateAction ();
 		}
 	}
 	public void deactivate(){
 		if (activated) {
-			Debug.LogError ("DeACTIVATE = "+this.name);
 			activated = false;
 			deactivateAction ();
 		}
