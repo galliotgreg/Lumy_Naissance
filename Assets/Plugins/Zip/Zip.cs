@@ -23,9 +23,6 @@ namespace Zip_Tool
         {
             using (ZipFile zip = new ZipFile())
             {
-                
-                Debug.Log("NAME : " + folder_name);
-                Debug.Log(destination_path + "\\" + folder_name + ".zip");
                 foreach (string file in files)
                 {
                     zip.AddFile(file, "");

@@ -32,7 +32,6 @@ public class ExportController : MonoBehaviour {
             {
                 destination_path = path;
             }
-            Debug.Log(folder_name);
             ZipUtil.Zip(folder_name, destination_path, filesName);
         }
     }
