@@ -42,6 +42,10 @@ public class OptionManager : MonoBehaviour {
     [Header("General")]
     [SerializeField]
     private Toggle gisements;
+    [SerializeField]
+    private Toggle toutDesactiver;
+    [SerializeField]
+    private Toggle toutActiver;
 
 
     private float rangeVision;
@@ -117,7 +121,10 @@ public class OptionManager : MonoBehaviour {
         DebugDirectionJ2();
         DebugTraceJ1();
         DebugTraceJ2();
-        
+        allDesactivate();
+        showAll();
+
+
     }
 
 
@@ -192,14 +199,19 @@ public class OptionManager : MonoBehaviour {
         {
             foreach (GameObject lumy in lumys)
             {
-                if(lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
 
+                if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
+
+                    Material mLifeBar;
                     lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
                     maxHealth = lumy.transform.GetChild(1).GetComponent<AgentScript>().VitalityMax;
                     healthbar = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
                     lifeSteps = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<Image>();
                     health = lumy.transform.GetChild(1).GetComponent<AgentScript>().Vitality;
-                    lifeSteps.material.SetFloat("_Steps", maxHealth / healthBarStepLength);
+                    mLifeBar = lifeSteps.material;
+                    mLifeBar.SetFloat("_Steps", maxHealth / healthBarStepLength);
+                    lifeSteps.material = new Material(mLifeBar);
+
                     healthbar.fillAmount = health / maxHealth;
                 }
 
@@ -223,6 +235,7 @@ public class OptionManager : MonoBehaviour {
         float healthBarStepLength = 5;
         Image healthbar;
         Image lifeSteps;
+        Material mLifeBar;
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha2)) {
@@ -239,7 +252,9 @@ public class OptionManager : MonoBehaviour {
                     healthbar = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
                     lifeSteps = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<Image>();
                     health = lumy.transform.GetChild(1).GetComponent<AgentScript>().Vitality;
-                    lifeSteps.material.SetFloat("_Steps", maxHealth / healthBarStepLength);
+                    mLifeBar = lifeSteps.material;
+                    mLifeBar.SetFloat("_Steps", maxHealth / healthBarStepLength);
+                    lifeSteps.material = new Material(mLifeBar);
                     healthbar.fillAmount = health / maxHealth;
                 }
 
@@ -457,7 +472,7 @@ public class OptionManager : MonoBehaviour {
     {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.Alpha1)) {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha1)) {
             pickRange.isOn = !pickRange.isOn;
         }
 
@@ -493,7 +508,7 @@ public class OptionManager : MonoBehaviour {
     private void DebugPickRangeJ2() {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.Alpha2)) {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha2)) {
             pickRangeJ2.isOn = !pickRangeJ2.isOn;
         }
 
@@ -568,6 +583,59 @@ public class OptionManager : MonoBehaviour {
         directionLumyJ2.isOn = SwapManager.instance.getPlayerDirectionLumyKey(PlayerAuthority.Player2);
         traceJ2.isOn = SwapManager.instance.getPlayerTraceKey(PlayerAuthority.Player2);
         #endregion
+    }
+
+    private void allDesactivate()
+    {
+        if(toutDesactiver.isOn == true)
+        {
+            //toutActiver.isOn = false;
+            visionRange.isOn = false;
+            atkRange.isOn = false;
+            pickRange.isOn = false;
+            lifeBar.isOn = false;
+            lumyName.isOn = false;
+            directionLumy.isOn = false;
+            trace.isOn = false;
+
+            visionRangeJ2.isOn = false;
+            atkRangeJ2.isOn = false;
+            pickRangeJ2.isOn = false;
+            lifeBarJ2.isOn = false;
+            lumyNameJ2.isOn = false;
+            directionLumyJ2.isOn = false;
+            traceJ2.isOn = false;
+
+            gisements.isOn = false;
+
+        }
+       
+    }
+
+    private void showAll()
+    {
+        if (toutActiver.isOn == true)
+        {
+            //toutDesactiver.isOn = false;
+            visionRange.isOn = true;
+            atkRange.isOn = true;
+            pickRange.isOn = true;
+            lifeBar.isOn = true;
+            lumyName.isOn = true;
+            directionLumy.isOn = true;
+            trace.isOn = true;
+
+            visionRangeJ2.isOn = true;
+            atkRangeJ2.isOn = true;
+            pickRangeJ2.isOn = true;
+            lifeBarJ2.isOn = true;
+            lumyNameJ2.isOn = true;
+            directionLumyJ2.isOn = true;
+            traceJ2.isOn = true;
+
+            gisements.isOn = true;
+
+        }
     }
 
 }

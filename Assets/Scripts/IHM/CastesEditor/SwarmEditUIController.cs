@@ -82,6 +82,13 @@ public class SwarmEditUIController : MonoBehaviour
     [Header("Main Panel")]
     [SerializeField]
     private Text mainPanelLumyName;
+    
+    /// <summary>
+    /// The name of the current lumy on the main panel
+    /// </summary>
+    [Header("Swarm Panel")]
+    [SerializeField]
+    private Text swarmPanelSwarmName;
 
     /// <summary>
     /// The rename lumy panel
@@ -215,6 +222,7 @@ public class SwarmEditUIController : MonoBehaviour
         RefreashLumysScroll();
         RefreshLumyAppearenceFromData();
         RefreshLumyInfo();
+        RefreshSwarmInfo();
         RefreashLumyStats();        
     }
 
@@ -338,6 +346,12 @@ public class SwarmEditUIController : MonoBehaviour
         redCost = GetRedCost();
         greenCost = GetGreenCost();
         blueCost = GetBlueCost();
+    }
+
+    private void RefreshSwarmInfo()
+    {
+        swarmPanelSwarmName.text = AppContextManager.instance.ActiveSpecie.Name;
+       
     }
 
     private int GetBlueCost()
