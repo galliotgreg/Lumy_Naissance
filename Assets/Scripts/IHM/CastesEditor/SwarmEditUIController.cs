@@ -190,7 +190,7 @@ public class SwarmEditUIController : MonoBehaviour
         RefreshView();
     }
 
-    private void RefreshView()
+    public void RefreshView()
     {
         RefreashSwarmScroll();
         RefreashLumysScroll();
@@ -306,7 +306,7 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
-    private void SelectSwarm(string swarmName)
+    public void SelectSwarm(string swarmName)
     {
         AppContextManager.instance.SwitchActiveSpecie(swarmName);
         RefreshView();
