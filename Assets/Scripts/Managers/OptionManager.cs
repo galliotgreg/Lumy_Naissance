@@ -179,7 +179,9 @@ public class OptionManager : MonoBehaviour {
     {
         float health;
         float maxHealth;
+        float healthBarStepLength = 5;
         Image healthbar;
+        Image lifeSteps;
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha1)) {
@@ -195,7 +197,9 @@ public class OptionManager : MonoBehaviour {
                     lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
                     maxHealth = lumy.transform.GetChild(1).GetComponent<AgentScript>().VitalityMax;
                     healthbar = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
+                    lifeSteps = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<Image>();
                     health = lumy.transform.GetChild(1).GetComponent<AgentScript>().Vitality;
+                    lifeSteps.material.SetFloat("_Steps", maxHealth / healthBarStepLength);
                     healthbar.fillAmount = health / maxHealth;
                 }
 
@@ -216,7 +220,9 @@ public class OptionManager : MonoBehaviour {
     private void DebugLifebarJ2() {
         float health;
         float maxHealth;
+        float healthBarStepLength = 5;
         Image healthbar;
+        Image lifeSteps;
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha2)) {
@@ -231,7 +237,9 @@ public class OptionManager : MonoBehaviour {
                     lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
                     maxHealth = lumy.transform.GetChild(1).GetComponent<AgentScript>().VitalityMax;
                     healthbar = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
+                    lifeSteps = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<Image>();
                     health = lumy.transform.GetChild(1).GetComponent<AgentScript>().Vitality;
+                    lifeSteps.material.SetFloat("_Steps", maxHealth / healthBarStepLength);
                     healthbar.fillAmount = health / maxHealth;
                 }
 
