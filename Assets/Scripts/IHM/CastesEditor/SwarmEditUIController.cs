@@ -64,6 +64,12 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private GameObject swarmScrollContent;
 
+    [SerializeField]
+    private Text swarmNameInput;
+
+    [SerializeField]
+    private GameObject editSwarmDialog;
+
     /// <summary>
     /// The btn prefab for swarm selection 
     /// </summary>
@@ -676,7 +682,42 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void OpenEditSwarmDialog()
     {
-        Debug.Log("OpenEditSwarmDialog");
+        editSwarmDialog.SetActive(!editSwarmDialog.activeSelf);
+    }
+
+    public void ApplySwarmUpdates()
+    {
+        //Validate data
+        string newName = swarmNameInput.text;
+        if (!ValidateSwarmInfo(newName))
+        {
+            Debug.Log("Swarm info are not valide !");
+            return;
+        }
+
+        //Apply changes
+        string folderName = Char.ToUpperInvariant(newName[0]) + newName.Substring(1);
+        string specieFileName = Char.ToLowerInvariant(newName[0]) + newName.Substring(1);
+        string src = AppContextManager.instance.ActiveSpecieFilePath;
+        string dst = AppContextManager.instance.ActiveSpecieFolderPath
+            + specieFileName + AppContextManager.instance.SPECIE_FILES_SUFFIX
+            + AppContextManager.instance.CSV_EXT;
+        File.Move(src, dst);
+        src = AppContextManager.instance.ActiveSpecieFolderPath;
+        dst = AppContextManager.instance.SpeciesFolderPath
+            + folderName;
+        Directory.Move(src, dst);
+
+        SelectSwarm(folderName);
+
+        //Update IHM
+        RefreshView();
+        OpenEditSwarmDialog();
+    }
+
+    private bool ValidateSwarmInfo(string newName)
+    {
+        return true;
     }
 
     public void OpenImportSwarmDialog()
@@ -726,7 +767,6 @@ public class SwarmEditUIController : MonoBehaviour
     {
         AppContextManager.instance.CreateCast();
         RefreshView();
-        Debug.Log("NewLumy");
     }
 
     public void OpenRenameDialog()
