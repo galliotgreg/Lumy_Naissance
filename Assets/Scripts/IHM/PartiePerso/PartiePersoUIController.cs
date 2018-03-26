@@ -99,7 +99,7 @@ public class PartiePersoUIController : MonoBehaviour {
     [SerializeField]
     private int maxLumy = 250;
 
-    private string sceneTxtField = "MapPersonnalise"; 
+    private string sceneTxtField = "MapTutoInte"; 
 
     // Use this for initialization
     void Start () {
