@@ -41,6 +41,16 @@ public class TraceAction : GameAction {
 
 	protected override void executeAction (){}
 
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
 	protected override void frameBeginAction ()
 	{
 		// TraceScript

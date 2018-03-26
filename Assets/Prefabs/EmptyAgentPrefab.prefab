@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 114368823567724644}
   - component: {fileID: 114107907229580660}
   - component: {fileID: 114662239543177926}
+  - component: {fileID: 114988961927564190}
   - component: {fileID: 195848833984645618}
   - component: {fileID: 114797667755122866}
   m_Layer: 8
@@ -1518,6 +1519,25 @@ MonoBehaviour:
   coolDownTime: 0.1
   path: []
   currentPathIndex: 0
+--- !u!114 &114988961927564190
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1618866709941296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad28d71c9fd32541a7be0f7a9b85d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolDownActivate: 1
+  coolDownTime: 1
+  path: []
+  currentPathIndex: 0
+  angle: 0
+  dist: 0
+  currentTarget: {x: 0, y: 0, z: 0}
+  targetConsumed: 0
 --- !u!119 &119588536036002848
 Projector:
   m_ObjectHideFlags: 1

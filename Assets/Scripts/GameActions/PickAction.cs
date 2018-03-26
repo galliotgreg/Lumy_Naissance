@@ -72,6 +72,16 @@ public class PickAction : GameAction {
 		Pick ();
 	}
 
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
 	protected override void frameBeginAction ()
 	{
 		return;

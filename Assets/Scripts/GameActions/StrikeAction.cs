@@ -77,6 +77,16 @@ public class StrikeAction : GameAction {
 		Strike ();
 	}
 
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
 	protected override void frameBeginAction ()
 	{
 		return;

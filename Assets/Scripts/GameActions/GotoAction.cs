@@ -39,6 +39,7 @@ public class GotoAction : GameAction {
 
 		// On a point
 		if (isClose (curPos, worldToVec2 (path [currentPathIndex]))) {
+			targetReached (currentPathIndex);
 			currentPathIndex = (currentPathIndex == path.Length - 1 ? currentPathIndex : (currentPathIndex + 1));
 		}
 
@@ -47,6 +48,16 @@ public class GotoAction : GameAction {
 		// Use Unity A* to move
 		moveTo (agentAttr, movingAgent);
     }
+
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
 
 	protected override void frameBeginAction ()
 	{
@@ -254,4 +265,10 @@ public class GotoAction : GameAction {
 	private static Vector3 vec2ToWorld( Vector2 point ){
 		return AgentBehavior.vec2ToWorld(point);
 	}
+
+	/// <summary>
+	/// Called when one point in the path is reached.
+	/// </summary>
+	/// <param name="index">Index of the reached point in the path</param>
+	protected virtual void targetReached( int index ){}
 }

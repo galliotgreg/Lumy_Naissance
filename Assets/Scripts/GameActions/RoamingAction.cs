@@ -2,7 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoamingAction : GameAction {
+public class RoamingAction : GotoAction {
+
+	// Params
+	[SerializeField]
+	private float angle;
+	[SerializeField]
+	private float dist;
+
+	[SerializeField]
+	private Vector3 currentTarget;
+	[SerializeField]
+	private bool targetConsumed;
+
+	#region PROPERTIES
+	public float Angle {
+		get {
+			return angle;
+		}
+		set {
+			angle = value;
+		}
+	}
+
+	public float Dist {
+		get {
+			return dist;
+		}
+		set {
+			dist = value;
+		}
+	}
+	#endregion
 
 	// Use this for initialization
 	void Start () {
@@ -18,28 +49,39 @@ public class RoamingAction : GameAction {
 
 	protected override void initAction ()
 	{
-		throw new System.NotImplementedException ();
+		targetConsumed = true;
+		base.initAction ();
 	}
 
-	protected override void executeAction ()
+	protected override void activateAction ()
 	{
-		throw new System.NotImplementedException ();
+		newTarget ();
+		base.activateAction ();
 	}
 
 	protected override void frameBeginAction ()
 	{
-		throw new System.NotImplementedException ();
-	}
-
-	protected override void frameBeginAction_CooldownAuthorized ()
-	{
-		throw new System.NotImplementedException ();
-	}
-
-	protected override void frameEndAction ()
-	{
-		throw new System.NotImplementedException ();
+		if (targetConsumed) {
+			newTarget ();
+		}
+		base.frameBeginAction ();
 	}
 
 	#endregion
+
+	#region GOTOaction
+	/// <summary>
+	/// Called when one point in the path is reached.
+	/// </summary>
+	/// <param name="index">Index of the reached point in the path</param>
+	protected override void targetReached( int index ){
+		// Generate new point
+		newTarget();
+	}
+	#endregion
+
+	protected void newTarget(){
+		this.Path = new Vector3[1]{ new Vector3() };
+		targetConsumed = false;
+	}
 }

@@ -17,6 +17,9 @@ public class AgentBehavior : MonoBehaviour
 	private StrikeAction strikeAction;
 	private PickAction pickAction;
 	private DropAction dropAction;
+	private RoamingAction roamingAction;
+
+	private ABAction previousAction = null;
 
     /// <summary>
     /// The current Atomic Action being presseced by the agent
@@ -24,7 +27,7 @@ public class AgentBehavior : MonoBehaviour
     private ABAction curAction;
 
 	#region Properties
-    public ABAction CurAction
+	protected ABAction CurAction
     {
         get
         {
@@ -33,18 +36,31 @@ public class AgentBehavior : MonoBehaviour
 
         set
         {
-			DisableActions();
-
             curAction = value;
 			if (curAction == null) {
 				curActionType = ActionType.None;
 			} else {
 				curActionType = value.Type;
 			}
+
+			// Disable/Enable
+			// this != previous : disable
+			if( previousAction == null || value == null || previousAction.Type != value.Type ){
+				GameAction previous = getGameAction (previousAction);
+				GameAction current = getGameAction (value);
+
+				if( previous != null ){
+					previous.deactivate ();
+				}
+				if( current != null ){
+					current.activate ();
+				}
+			}
+			previousAction = value;
         }
     }
 
-    public IABType[] CurActionParams
+	protected IABType[] CurActionParams
     {
         get
         {
@@ -64,7 +80,20 @@ public class AgentBehavior : MonoBehaviour
             return curActionType;
         }
     }
+
+	protected GameAction CurrentGameAction{
+		get{
+			return getGameAction (curAction);
+		}
+	}
 	#endregion
+
+	public void setFrame( ABAction action, IABType[] actionParams ){
+		FrameEnd ();
+
+		this.CurAction = action;
+		this.CurActionParams = actionParams;
+	}
 
     // Use this for initialization
     void Start()
@@ -75,6 +104,7 @@ public class AgentBehavior : MonoBehaviour
 		strikeAction = GetComponent<StrikeAction>();
 		pickAction = GetComponent<PickAction>();
 		dropAction = GetComponent<DropAction>();
+		roamingAction = GetComponent<RoamingAction> ();
     }
 
     // Update is called once per frame
@@ -83,7 +113,7 @@ public class AgentBehavior : MonoBehaviour
 		executeAction();
     }
 
-    private void DisableActions()
+    private void FrameEnd()
     {
 		gotoAction.frameEnd ();
 		traceAction.frameEnd ();
@@ -91,6 +121,7 @@ public class AgentBehavior : MonoBehaviour
 		strikeAction.frameEnd ();
 		pickAction.frameEnd ();
 		dropAction.frameEnd ();
+		roamingAction.frameEnd ();
     }
 
 	private void executeAction(){
@@ -111,6 +142,7 @@ public class AgentBehavior : MonoBehaviour
 		switch (curActionType)
 		{
 		case ActionType.Drop:
+			dropAction.activate();
 			dropAction.frameBegin ();
 			break;
 		case ActionType.Goto:
@@ -122,7 +154,8 @@ public class AgentBehavior : MonoBehaviour
 				Vector3 vec3 = vec2ToWorld( new Vector2( abVec.X, abVec.Y ) );
 				gotoAction.Path[i] = vec3;
 			}
-
+			
+			gotoAction.activate();
 			gotoAction.frameBegin ();
 			break;
 		case ActionType.Hit:
@@ -134,13 +167,15 @@ public class AgentBehavior : MonoBehaviour
 		case ActionType.Lay:
 			ABText castName = ((ABText)curActionParams[0]);
 			layAction.CastName = castName.Value;
-
+			
+			layAction.activate();
 			layAction.frameBegin ();
 			break;
 		case ActionType.Pick:
 			ABRef item = ((ABRef)curActionParams[0]);
 			pickAction.Item = Unit_GameObj_Manager.instance.getResource( Mathf.FloorToInt( ((ABScalar)item.GetAttr( "key" )).Value ) );
 
+			pickAction.activate();
 			pickAction.frameBegin ();
 			break;
 		case ActionType.Spread:
@@ -171,6 +206,7 @@ public class AgentBehavior : MonoBehaviour
 				traceAction.Path[i] = vec3;
 			}
 
+			traceAction.activate();
 			traceAction.frameBegin ();
 			break;
 		case ActionType.Strike:
@@ -179,7 +215,17 @@ public class AgentBehavior : MonoBehaviour
 				strikeAction.Target = Unit_GameObj_Manager.instance.getUnit (Mathf.FloorToInt (((ABScalar)target.GetAttr ("key")).Value));
 			}
 
+			strikeAction.activate();
 			strikeAction.frameBegin ();
+			break;
+		case ActionType.Roaming:
+				ABScalar angle = ((ABScalar)curActionParams [0]);
+				ABScalar dist = ((ABScalar)curActionParams [1]);
+				roamingAction.Angle = angle.Value;
+				roamingAction.Dist = dist.Value;
+
+				roamingAction.activate();
+				roamingAction.frameBegin ();
 			break;
 		case ActionType.None:
 			break;
@@ -196,5 +242,27 @@ public class AgentBehavior : MonoBehaviour
 	}
 	public static Vector3 vec2ToWorld( Vector2 point ){
 		return new Vector3 ( point.x, 0, point.y );
+	}
+
+	protected GameAction getGameAction( ABAction action ){
+		if (action != null) {
+			switch (action.Type) {
+			case ActionType.Goto:
+				return gotoAction;
+			case ActionType.Trace:
+				return traceAction;
+			case ActionType.Lay:
+				return layAction;
+			case ActionType.Strike:
+				return strikeAction;
+			case ActionType.Pick:
+				return pickAction;
+			case ActionType.Drop:
+				return dropAction;
+			case ActionType.Roaming:
+				return roamingAction;
+			}
+		}
+		return null;
 	}
 }

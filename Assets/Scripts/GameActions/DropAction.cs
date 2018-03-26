@@ -65,6 +65,16 @@ public class DropAction : GameAction {
 		return;
 	}
 
+	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
 	protected override void frameBeginAction ()
 	{
 		Drop();

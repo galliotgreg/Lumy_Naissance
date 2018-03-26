@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class GameAction : MonoBehaviour {
 	
 	// a value indicating whether this <see cref="GameAction"/> is activated.
-	protected bool activated;
+	protected bool activated = false;
 
 	private bool coolDownElapsed = true;
 
@@ -91,21 +91,34 @@ public abstract class GameAction : MonoBehaviour {
 		coolDownElapsed = true;
 	}
 
-	public void frameBegin(){
+	public void activate(){
 		if (!activated) {
+			Debug.LogError ("ACTIVATE = "+this.name);
+			activated = true;
+			activateAction ();
+		}
+	}
+	public void deactivate(){
+		if (activated) {
+			Debug.LogError ("DeACTIVATE = "+this.name);
+			activated = false;
+			deactivateAction ();
+		}
+	}
+
+	public void frameBegin(){
+		if (activated) {
 			frameBeginAction ();
 			if (CoolDownAuthorized) {
 				this.CoolDownAuthorized = false;
 				frameBeginAction_CooldownAuthorized ();
 			}
-			activated = true;
 		}
 	}
 
 	public void frameEnd(){
 		if (activated) {
 			frameEndAction ();
-			activated = false;
 		}
 	}
 
@@ -118,6 +131,16 @@ public abstract class GameAction : MonoBehaviour {
 	/// Executes the action during Update method (Considers the cooldownTime and activated attributes)
 	/// </summary>
 	protected abstract void executeAction();
+
+	/// <summary>
+	/// Called at the activation of an activity (when it is reached in the behavior tree)
+	/// </summary>
+	protected abstract void activateAction();
+
+	/// <summary>
+	/// Called at the deactivation of an activity (when it is no more reached in the behavior tree)
+	/// </summary>
+	protected abstract void deactivateAction();
 
 	/// <summary>
 	/// Called at the start of each frame that the action is activated
