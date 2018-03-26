@@ -161,13 +161,13 @@ public class NavigationManager : MonoBehaviour {
         }
 
         //Switch the Active Scene if it's InGame To apply New Lighting settings 
-        if(nextScene == "MapTutoInte")
+        if (nextScene == "MapTutoInte")
         {
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene)); 
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
         }
         else
         {
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("BasicLayer")); 
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("BasicLayer"));
         }
 
 
