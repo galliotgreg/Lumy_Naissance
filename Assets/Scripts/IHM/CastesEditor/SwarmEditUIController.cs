@@ -822,7 +822,6 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool ValidateName(string newName)
     {
-        ///TODO name validation
         return true;
     }
 
