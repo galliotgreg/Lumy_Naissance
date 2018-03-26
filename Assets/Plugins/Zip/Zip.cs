@@ -19,18 +19,18 @@ namespace Zip_Tool
             }
         }
 
-        public static void Zip(string path, string destination_path, params string[] files)
+        public static void Zip(string folder_name, string destination_path, params string[] files)
         {
             using (ZipFile zip = new ZipFile())
             {
-                string[] path_cutted = path.Split('/');
-                string name = path_cutted[path_cutted.Length - 1];
-
+                
+                Debug.Log("NAME : " + folder_name);
+                Debug.Log(destination_path + "\\" + folder_name + ".zip");
                 foreach (string file in files)
                 {
                     zip.AddFile(file, "");
                 }
-                zip.Save(destination_path + "\\" + name + ".zip");
+                zip.Save(destination_path + "\\" + folder_name + ".zip");
 
 
             }

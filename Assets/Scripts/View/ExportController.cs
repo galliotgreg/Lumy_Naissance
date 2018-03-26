@@ -19,21 +19,21 @@ public class ExportController : MonoBehaviour {
     public static void ExportSpecie()
     {
         string path = Application.dataPath + @"/Inputs/Species";
-        string folder_path = FileBrowser.OpenSingleFolder("Select your file", path);
+        string folder_path = AppContextManager.instance.ActiveSpecieFolderPath;
         if (folder_path!="")
         {       
-            string[] path_cutted = folder_path.Split('\\');
-            string name_folder = path_cutted[path_cutted.Length - 1];
+            string[] path_cutted = folder_path.Split('/');
+            string folder_name = path_cutted[path_cutted.Length - 2];
 
-            string relative_folder_path = Application.dataPath + @"/Inputs/Species/" + name_folder;
+            string relative_folder_path = Application.dataPath + @"/Inputs/Species/" + folder_name;
             string[] filesName = Directory.GetFiles(folder_path, "*.csv", SearchOption.TopDirectoryOnly);
             string destination_path = FileBrowser.OpenSingleFolder("Choose your destination folder");
             if (destination_path == "")
             {
                 destination_path = path;
             }
-
-            ZipUtil.Zip(relative_folder_path, destination_path, filesName);
+            Debug.Log(folder_name);
+            ZipUtil.Zip(folder_name, destination_path, filesName);
         }
     }
 }
