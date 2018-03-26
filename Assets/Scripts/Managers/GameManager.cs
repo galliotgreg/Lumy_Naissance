@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour {
         }
 
         //Pause Method
-	    if(Input.GetKeyDown(KeyCode.Space))
+	    if(Input.GetKeyDown(KeyCode.P))
         {
             PauseGame(); 
         }       
@@ -545,6 +545,7 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public void PauseGame()
     {
+        Debug.Log(Time.timeScale); 
         if (Time.timeScale == 1)
         {
             Time.timeScale = 0;

@@ -768,7 +768,7 @@ public class AppContextManager : MonoBehaviour
         return true;
     }
 
-    private void UpdateSpeciesFoldersNames()
+    public void UpdateSpeciesFoldersNames()
     {
         DirectoryInfo info = new DirectoryInfo(SpeciesFolderPath);
         DirectoryInfo[] dirsInfo = info.GetDirectories();
