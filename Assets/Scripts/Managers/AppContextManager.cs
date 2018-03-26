@@ -304,6 +304,8 @@ public class AppContextManager : MonoBehaviour
 
     public void SwitchActiveSpecie(string specieName)
     {
+        UpdateSpeciesFoldersNames();
+
         //Check if specie existe
         bool found = false;
         foreach (string name in speciesFolderNames)
