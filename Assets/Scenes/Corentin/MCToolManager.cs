@@ -40,6 +40,18 @@ public class MCToolManager : MonoBehaviour
 		None
 	};
 
+    public class UndoableAction
+    {
+        public List<GameObject> impactedNodes;
+        public Vector3 transform;
+
+        public UndoableAction(List<GameObject> impactedNodes, Vector3 transform)
+        {
+            this.impactedNodes = impactedNodes;
+            this.transform = transform;
+        }
+    }
+
     public  List<GameObject> SelectedNodes = new List<GameObject>();
     public GameObject getTarget;
 	[SerializeField]
@@ -64,6 +76,9 @@ public class MCToolManager : MonoBehaviour
     private bool neverCalculated;
     List<Vector3> DistanceList = new List<Vector3>();
 
+
+    List<UndoableAction> undoableActions = new List<UndoableAction>();
+
     #region PROPERTIES
     ToolType CurrentTool {
 		get {
@@ -79,7 +94,7 @@ public class MCToolManager : MonoBehaviour
     {
 		btn_Selection.onClick.AddListener(() => {CurrentTool = ToolType.Selection; CancelInventory(); SelectionSquare.instance.enabled = true; } );
 		btn_Main.onClick.AddListener(() => {CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; } );
-        btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); });
+        btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); ToolUndo();  });
     }
 
     private void Update()
@@ -204,6 +219,7 @@ public class MCToolManager : MonoBehaviour
 	#region TOOL : HAND
     private void ToolMain()
     {
+        Vector3 transformUndoable = new Vector3();
         //Mouse moving
         if (isMouseDragging)
         {
@@ -216,6 +232,7 @@ public class MCToolManager : MonoBehaviour
             if (SelectedNodes != null && SelectedNodes.Count == 0)
             {
                 getTarget.transform.position = currentPosition;
+                transformUndoable = currentPosition;
             }
 
             else
@@ -231,12 +248,17 @@ public class MCToolManager : MonoBehaviour
                             DistanceList[i].Set(DistanceList[i].x * -1.0f, DistanceList[i].y * -1.0f, DistanceList[i].z);
                         }
                         b.transform.position = currentPosition + DistanceList[i];
+                        transformUndoable = currentPosition + DistanceList[i];
                         i++;
 
                     }
                 }
             }
         }
+        
+        UndoableAction currentUndoableAction = new UndoableAction(SelectedNodes, transformUndoable);
+        undoableActions.Add(currentUndoableAction);
+        Debug.Log("liste = " + undoableActions.Count);
     }
 
 	/// <summary>
@@ -288,7 +310,13 @@ public class MCToolManager : MonoBehaviour
     #region UNDO
     private void ToolUndo()
     {
-
+        List<GameObject> currentImpactedNodes = undoableActions[0].impactedNodes;
+        Debug.Log(undoableActions[0].impactedNodes);
+        foreach(GameObject b in currentImpactedNodes)
+        {
+            b.transform.position = undoableActions[0].transform;
+        }
+        undoableActions.RemoveAt(0);
     }
     #endregion
 
