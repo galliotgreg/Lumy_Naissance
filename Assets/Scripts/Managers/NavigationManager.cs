@@ -153,11 +153,23 @@ public class NavigationManager : MonoBehaviour {
         }
 
         // Attendre la fin du chargement de la scène de destination
+        
         AsyncOperation load = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
         while (!load.isDone)
         {
             yield return null;
         }
+
+        //Switch the Active Scene if it's InGame To apply New Lighting settings 
+        if (nextScene == "MapTutoInte")
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
+        }
+        else
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("BasicLayer"));
+        }
+
 
         canvas = GameObject.Find(nextScene + "Canvas");
         canvas.SetActive(false);
@@ -258,7 +270,7 @@ public class NavigationManager : MonoBehaviour {
         {
             yield return null;
         }
-
+        
         // Mettre à jour la strate courante
         currentLayer = newLayer;
 
