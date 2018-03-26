@@ -90,6 +90,8 @@ public class InGameUIController : MonoBehaviour {
     [Header("Timer")]
     [SerializeField]
     private Text timer;
+    [SerializeField]
+    private Button playPause;
 
     #region ExitMenu
     /// <summary>
@@ -154,7 +156,7 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private Text tracesInSightText;
     #endregion
-    #endregion
+
 
     Dictionary<string, int> castsJ1;
     Dictionary<string, int> castsJ2;
@@ -205,6 +207,9 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private float waitingTime = 1f;
 
+    //button valid debugg params
+    [SerializeField]
+    private Button valider;
 
     private bool isDisplayingNegativeResJ1 =false;
     private bool isDisplayingPositiveResJ1 = false;
@@ -234,7 +239,7 @@ public class InGameUIController : MonoBehaviour {
         }
     }
     #endregion
-
+    #endregion
     GameManager gameManager;
 
     // Use this for initialization
@@ -270,6 +275,9 @@ public class InGameUIController : MonoBehaviour {
         Menu_OptionsDebug.onClick.AddListener(OpenOptionsDebug);
 
         Menu.onClick.AddListener(SwitchMenu);
+
+        valider.onClick.AddListener(OptionManager.instance.setPlayerPreferencesDebug);
+        playPause.onClick.AddListener(GameManager.instance.PauseGame);
 
         //Player Species 
         J1_Species.text = SwapManager.instance.GetPlayer1Name();
@@ -999,6 +1007,8 @@ public class InGameUIController : MonoBehaviour {
         newAmountColorJ2[1] = oldAmountColorJ2[1];
         newAmountColorJ2[2] = oldAmountColorJ2[2];
     }
+
+
 
 
 }
