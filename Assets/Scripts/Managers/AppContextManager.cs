@@ -399,6 +399,9 @@ public class AppContextManager : MonoBehaviour
         //Replace file
         File.Delete(activeSpecieFilePath);
         File.AppendAllText(activeSpecieFilePath, content);
+
+        UpdateSpeciesFoldersNames();
+        UpdateCastsFilesNames();
     }
 
     public void SaveCast(Cast trgCast)
@@ -443,6 +446,9 @@ public class AppContextManager : MonoBehaviour
         //Replace file
         File.Delete(activeSpecieFilePath);
         File.AppendAllText(activeSpecieFilePath, content);
+
+        UpdateSpeciesFoldersNames();
+        UpdateCastsFilesNames();
     }
 
     public string[] GetSpeciesFolderNames()
@@ -484,6 +490,8 @@ public class AppContextManager : MonoBehaviour
         }
         File.Move(GetFolderPathFromSpecieName(specieFolderName) + ActiveSpecie.Name + SPECIE_FILES_SUFFIX + CSV_EXT,
             GetFolderPathFromSpecieName(specieFolderName) + specieName + SPECIE_FILES_SUFFIX + CSV_EXT);
+
+        UpdateCastsFilesNames();
     }
 
     public void CreateSpecie(string specieName)
@@ -527,6 +535,8 @@ public class AppContextManager : MonoBehaviour
 
         //Remove childs from specie
         activeSpecie.Casts.Remove(activeCast.Name);
+
+        UpdateCastsFilesNames();
 
         //Alter Specie file
         SaveSpecie();
@@ -620,7 +630,10 @@ public class AppContextManager : MonoBehaviour
             TemplateFolderPath + TEMPLATE_ORIGIN_FILE_NAME + CSV_EXT,
             ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
         //File.Create(ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
-        
+
+        UpdateSpeciesFoldersNames();
+        UpdateCastsFilesNames();
+
         //Alter Specie file
         SaveSpecie();
     }
