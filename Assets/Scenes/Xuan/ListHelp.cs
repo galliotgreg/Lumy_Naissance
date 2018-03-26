@@ -5,12 +5,11 @@ using UnityEngine;
 public class ListHelp : MonoBehaviour {
 
     HelpDatabase helpdatabase = new HelpDatabase(); 
-    public List<Help> helps = new List<Help>();
+    //public List<Help> helps = new List<Help>();
     
 	// Use this for initialization
 	void Start () {
         helpdatabase.LoadDatabase();
-        Debug.Log(helpdatabase.FetchHelpByID(1));
     }
 	
 	// Update is called once per frame

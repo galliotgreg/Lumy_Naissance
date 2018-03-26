@@ -26,15 +26,17 @@ public class ImportController : MonoBehaviour {
 
         // Debug.Log(Application.dataPath + "/");
         string filePath = Application.dataPath + @"/Inputs/Species";
-
+        string name = "";
         string path = FileBrowser.OpenSingleFile("Open Folder", "","zip");        
         if (path != null && path!= ""){
           
-            string name = (Path.GetFileName(path)).Split('.')[0];
+            name = (Path.GetFileName(path)).Split('.')[0];
             
             string new_folder = filePath + "\\" + name;
             ZipUtil.Unzip(path, new_folder);            
-        }        
+        }
+        AppContextManager.instance.UpdateSpeciesFoldersNames();
+        SwarmEditUIController.instance.SelectSwarm(name);
     }
 
 }
