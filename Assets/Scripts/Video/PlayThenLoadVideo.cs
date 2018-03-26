@@ -10,17 +10,26 @@ public class PlayThenLoadVideo : MonoBehaviour {
     public GameObject player;
     //public Button skip;
 
+    private bool alreadyClick = false;
+
     // Use this for initialization
     void Start () {
         player.GetComponent<VideoPlayer>().Play();
+        Debug.Log(player.GetComponent<VideoPlayer>()); 
         StartCoroutine(WaitForLengthCo(player.GetComponent<VideoPlayer>().clip.length));
         //skip.onClick.AddListener(SkipVideo);
     }
 	
 	// Update is called once per frame
 	void Update () {
+        
+        if(alreadyClick)
+        {
+            return; 
+        }
         if (Input.GetMouseButtonDown(0))
         {
+            alreadyClick = true; 
             SkipVideo();
         }
     }

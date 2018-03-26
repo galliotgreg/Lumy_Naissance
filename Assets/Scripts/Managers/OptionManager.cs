@@ -42,6 +42,11 @@ public class OptionManager : MonoBehaviour {
     [Header("General")]
     [SerializeField]
     private Toggle gisements;
+    [SerializeField]
+    private Toggle toutDesactiver;
+    [SerializeField]
+    private Toggle toutActiver;
+
 
     private float rangeVision;
     private float rangePick;
@@ -94,6 +99,7 @@ public class OptionManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        OptionManager.instance.getPlayerPreferencesDebug();
     }
 	
 	// Update is called once per frame
@@ -115,7 +121,10 @@ public class OptionManager : MonoBehaviour {
         DebugDirectionJ2();
         DebugTraceJ1();
         DebugTraceJ2();
-        
+        allDesactivate();
+        showAll();
+
+
     }
 
 
@@ -177,7 +186,9 @@ public class OptionManager : MonoBehaviour {
     {
         float health;
         float maxHealth;
+        float healthBarStepLength = 5;
         Image healthbar;
+        Image lifeSteps;
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha1)) {
@@ -188,12 +199,19 @@ public class OptionManager : MonoBehaviour {
         {
             foreach (GameObject lumy in lumys)
             {
-                if(lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
 
+                if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
+
+                    Material mLifeBar;
                     lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
                     maxHealth = lumy.transform.GetChild(1).GetComponent<AgentScript>().VitalityMax;
                     healthbar = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
+                    lifeSteps = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<Image>();
                     health = lumy.transform.GetChild(1).GetComponent<AgentScript>().Vitality;
+                    mLifeBar = lifeSteps.material;
+                    mLifeBar.SetFloat("_Steps", maxHealth / healthBarStepLength);
+                    lifeSteps.material = new Material(mLifeBar);
+
                     healthbar.fillAmount = health / maxHealth;
                 }
 
@@ -214,7 +232,10 @@ public class OptionManager : MonoBehaviour {
     private void DebugLifebarJ2() {
         float health;
         float maxHealth;
+        float healthBarStepLength = 5;
         Image healthbar;
+        Image lifeSteps;
+        Material mLifeBar;
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha2)) {
@@ -229,7 +250,11 @@ public class OptionManager : MonoBehaviour {
                     lumy.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.SetActive(true);
                     maxHealth = lumy.transform.GetChild(1).GetComponent<AgentScript>().VitalityMax;
                     healthbar = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
+                    lifeSteps = lumy.transform.GetChild(1).transform.GetChild(1).GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<Image>();
                     health = lumy.transform.GetChild(1).GetComponent<AgentScript>().Vitality;
+                    mLifeBar = lifeSteps.material;
+                    mLifeBar.SetFloat("_Steps", maxHealth / healthBarStepLength);
+                    lifeSteps.material = new Material(mLifeBar);
                     healthbar.fillAmount = health / maxHealth;
                 }
 
@@ -447,7 +472,7 @@ public class OptionManager : MonoBehaviour {
     {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.Alpha1)) {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha1)) {
             pickRange.isOn = !pickRange.isOn;
         }
 
@@ -483,7 +508,7 @@ public class OptionManager : MonoBehaviour {
     private void DebugPickRangeJ2() {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.Alpha2)) {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha2)) {
             pickRangeJ2.isOn = !pickRangeJ2.isOn;
         }
 
@@ -511,4 +536,106 @@ public class OptionManager : MonoBehaviour {
             }
         }
     }
+
+    //Getter/setters Player preferences debug
+    public void setPlayerPreferencesDebug()
+    {
+        SwapManager.instance.setPlayerGisementKey(gisements.isOn);
+        #region set Player J1 preference Debug
+        SwapManager.instance.setPlayerAtkKey(PlayerAuthority.Player1, atkRange.isOn);
+        SwapManager.instance.setPlayerVisionKey(PlayerAuthority.Player1, visionRange.isOn);
+        SwapManager.instance.setPlayerPickKey(PlayerAuthority.Player1, pickRange.isOn);
+        SwapManager.instance.setPlayerLifeBarKey(PlayerAuthority.Player1, lifeBar.isOn);
+        SwapManager.instance.setPlayerLumyNameKey(PlayerAuthority.Player1, lumyName.isOn);
+        SwapManager.instance.setPlayerDirectionLumyKey(PlayerAuthority.Player1, directionLumy.isOn);
+        SwapManager.instance.setPlayerTraceKey(PlayerAuthority.Player1, trace.isOn);
+        #endregion
+        #region set Player J2 preference Debug
+        SwapManager.instance.setPlayerAtkKey(PlayerAuthority.Player2, OptionManager.instance.atkRangeJ2);
+        SwapManager.instance.setPlayerVisionKey(PlayerAuthority.Player2, OptionManager.instance.visionRangeJ2);
+        SwapManager.instance.setPlayerPickKey(PlayerAuthority.Player2, OptionManager.instance.pickRangeJ2);
+        SwapManager.instance.setPlayerLifeBarKey(PlayerAuthority.Player2, OptionManager.instance.lifeBarJ2);
+        SwapManager.instance.setPlayerLumyNameKey(PlayerAuthority.Player2, OptionManager.instance.lumyNameJ2);
+        SwapManager.instance.setPlayerDirectionLumyKey(PlayerAuthority.Player2, OptionManager.instance.directionLumyJ2);
+        SwapManager.instance.setPlayerTraceKey(PlayerAuthority.Player2, OptionManager.instance.traceJ2);
+        #endregion
+        
+    }
+
+    public void getPlayerPreferencesDebug()
+    {
+        gisements.isOn = SwapManager.instance.getPlayerGisementKey();
+        #region set Player J1 preference Debug
+        atkRange.isOn = SwapManager.instance.getPlayerAtkKey(PlayerAuthority.Player1);
+        visionRange.isOn = SwapManager.instance.getPlayerVisionKey(PlayerAuthority.Player1);
+        pickRange.isOn= SwapManager.instance.getPlayerPickKey(PlayerAuthority.Player1);
+        lifeBar.isOn = SwapManager.instance.getPlayerLifeBarKey(PlayerAuthority.Player1);
+        lumyName.isOn = SwapManager.instance.getPlayerLumyNameKey(PlayerAuthority.Player1);
+        directionLumy.isOn = SwapManager.instance.getPlayerDirectionLumyKey(PlayerAuthority.Player1);
+        trace.isOn = SwapManager.instance.getPlayerTraceKey(PlayerAuthority.Player1);
+        #endregion
+        #region set Player J2 preference Debug
+        atkRangeJ2.isOn = SwapManager.instance.getPlayerAtkKey(PlayerAuthority.Player2);
+        visionRangeJ2.isOn = SwapManager.instance.getPlayerVisionKey(PlayerAuthority.Player2);
+        pickRangeJ2.isOn = SwapManager.instance.getPlayerPickKey(PlayerAuthority.Player2);
+        lifeBarJ2.isOn = SwapManager.instance.getPlayerLifeBarKey(PlayerAuthority.Player2);
+        lumyNameJ2.isOn = SwapManager.instance.getPlayerLumyNameKey(PlayerAuthority.Player2);
+        directionLumyJ2.isOn = SwapManager.instance.getPlayerDirectionLumyKey(PlayerAuthority.Player2);
+        traceJ2.isOn = SwapManager.instance.getPlayerTraceKey(PlayerAuthority.Player2);
+        #endregion
+    }
+
+    private void allDesactivate()
+    {
+        if(toutDesactiver.isOn == true)
+        {
+            //toutActiver.isOn = false;
+            visionRange.isOn = false;
+            atkRange.isOn = false;
+            pickRange.isOn = false;
+            lifeBar.isOn = false;
+            lumyName.isOn = false;
+            directionLumy.isOn = false;
+            trace.isOn = false;
+
+            visionRangeJ2.isOn = false;
+            atkRangeJ2.isOn = false;
+            pickRangeJ2.isOn = false;
+            lifeBarJ2.isOn = false;
+            lumyNameJ2.isOn = false;
+            directionLumyJ2.isOn = false;
+            traceJ2.isOn = false;
+
+            gisements.isOn = false;
+
+        }
+       
+    }
+
+    private void showAll()
+    {
+        if (toutActiver.isOn == true)
+        {
+            //toutDesactiver.isOn = false;
+            visionRange.isOn = true;
+            atkRange.isOn = true;
+            pickRange.isOn = true;
+            lifeBar.isOn = true;
+            lumyName.isOn = true;
+            directionLumy.isOn = true;
+            trace.isOn = true;
+
+            visionRangeJ2.isOn = true;
+            atkRangeJ2.isOn = true;
+            pickRangeJ2.isOn = true;
+            lifeBarJ2.isOn = true;
+            lumyNameJ2.isOn = true;
+            directionLumyJ2.isOn = true;
+            traceJ2.isOn = true;
+
+            gisements.isOn = true;
+
+        }
+    }
+
 }

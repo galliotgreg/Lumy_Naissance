@@ -291,7 +291,7 @@ public class LumyEditorManager : MonoBehaviour
         cast.Tail.AddRange(tailCompos);
 
         //Persist changes
-        AppContextManager.instance.SaveCast();
+        AppContextManager.instance.SaveCast(null);
     }
 
     /// <summary>

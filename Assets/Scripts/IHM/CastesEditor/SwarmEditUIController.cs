@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -63,6 +64,12 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private GameObject swarmScrollContent;
 
+    [SerializeField]
+    private Text swarmNameInput;
+
+    [SerializeField]
+    private GameObject editSwarmDialog;
+
     /// <summary>
     /// The btn prefab for swarm selection 
     /// </summary>
@@ -75,6 +82,25 @@ public class SwarmEditUIController : MonoBehaviour
     [Header("Main Panel")]
     [SerializeField]
     private Text mainPanelLumyName;
+    
+    /// <summary>
+    /// The name of the current lumy on the main panel
+    /// </summary>
+    [Header("Swarm Panel")]
+    [SerializeField]
+    private Text swarmPanelSwarmName;
+
+    /// <summary>
+    /// The rename lumy panel
+    /// </summary>
+    [SerializeField]
+    private GameObject renameLumyDialog;
+
+    /// <summary>
+    /// The new name of the lumy
+    /// </summary>
+    [SerializeField]
+    private GameObject renameLumyInput;
 
     /// <summary>
     /// The red resources cost of the active lumy
@@ -190,12 +216,13 @@ public class SwarmEditUIController : MonoBehaviour
         RefreshView();
     }
 
-    private void RefreshView()
+    public void RefreshView()
     {
         RefreashSwarmScroll();
         RefreashLumysScroll();
         RefreshLumyAppearenceFromData();
         RefreshLumyInfo();
+        RefreshSwarmInfo();
         RefreashLumyStats();        
     }
 
@@ -306,7 +333,7 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
-    private void SelectSwarm(string swarmName)
+    public void SelectSwarm(string swarmName)
     {
         AppContextManager.instance.SwitchActiveSpecie(swarmName);
         RefreshView();
@@ -319,6 +346,12 @@ public class SwarmEditUIController : MonoBehaviour
         redCost = GetRedCost();
         greenCost = GetGreenCost();
         blueCost = GetBlueCost();
+    }
+
+    private void RefreshSwarmInfo()
+    {
+        swarmPanelSwarmName.text = AppContextManager.instance.ActiveSpecie.Name;
+       
     }
 
     private int GetBlueCost()
@@ -536,7 +569,7 @@ public class SwarmEditUIController : MonoBehaviour
     /// <summary>
     /// Persist the changes on the selected lumy
     /// </summary>
-    public void SaveLumy()
+    public void SaveLumy(Cast lumyCast)
     {
         //Sync cast
         //Retreive Components Infos
@@ -566,7 +599,7 @@ public class SwarmEditUIController : MonoBehaviour
         cast.Tail.AddRange(tailCompos);
 
         //Persist changes
-        AppContextManager.instance.SaveCast();
+        AppContextManager.instance.SaveCast(lumyCast);
     }
 
     /// <summary>
@@ -663,7 +696,42 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void OpenEditSwarmDialog()
     {
-        Debug.Log("OpenEditSwarmDialog");
+        editSwarmDialog.SetActive(!editSwarmDialog.activeSelf);
+    }
+
+    public void ApplySwarmUpdates()
+    {
+        //Validate data
+        string newName = swarmNameInput.text;
+        if (!ValidateSwarmInfo(newName))
+        {
+            Debug.Log("Swarm info are not valide !");
+            return;
+        }
+
+        //Apply changes
+        string folderName = Char.ToUpperInvariant(newName[0]) + newName.Substring(1);
+        string specieFileName = Char.ToLowerInvariant(newName[0]) + newName.Substring(1);
+        string src = AppContextManager.instance.ActiveSpecieFilePath;
+        string dst = AppContextManager.instance.ActiveSpecieFolderPath
+            + specieFileName + AppContextManager.instance.SPECIE_FILES_SUFFIX
+            + AppContextManager.instance.CSV_EXT;
+        File.Move(src, dst);
+        src = AppContextManager.instance.ActiveSpecieFolderPath;
+        dst = AppContextManager.instance.SpeciesFolderPath
+            + folderName;
+        Directory.Move(src, dst);
+
+        SelectSwarm(folderName);
+
+        //Update IHM
+        RefreshView();
+        OpenEditSwarmDialog();
+    }
+
+    private bool ValidateSwarmInfo(string newName)
+    {
+        return true;
     }
 
     public void OpenImportSwarmDialog()
@@ -713,7 +781,62 @@ public class SwarmEditUIController : MonoBehaviour
     {
         AppContextManager.instance.CreateCast();
         RefreshView();
-        Debug.Log("NewLumy");
+    }
+
+    public void OpenRenameDialog()
+    {
+        renameLumyDialog.SetActive(!renameLumyDialog.activeSelf);
+    }
+
+    public void RenameLumy()
+    {
+        //Validate name
+        string newName = renameLumyInput.GetComponent<Text>().text;
+        if (!ValidateName(newName))
+        {
+            Debug.Log("The new name is not valide !");
+            return;
+        }
+
+        //Rename behavior file
+        string src = AppContextManager.instance.ActiveBehaviorPath;
+        string dst = AppContextManager.instance.ActiveSpecieFolderPath +
+            newName + AppContextManager.instance.CAST_FILES_SUFFIX +
+            AppContextManager.instance.CSV_EXT;
+        File.Move(src, dst);
+        Cast trgCast = AppContextManager.instance.ActiveCast.Clone();
+        Cast activeCast = AppContextManager.instance.ActiveCast;
+        string curName = activeCast.Name;
+        AppContextManager.instance.ActiveSpecie.Casts.Remove(curName);
+        activeCast.Name = newName;
+        activeCast.BehaviorModelIdentifier = 
+            newName + AppContextManager.instance.CAST_FILES_SUFFIX;
+        AppContextManager.instance.ActiveSpecie.Casts.Add(newName, activeCast);
+        AppContextManager.instance.SwitchActiveCast(newName);
+
+        //Rename position file if any
+        string posFilePath = AppContextManager.instance.ActiveSpecieFolderPath +
+            curName + AppContextManager.instance.POSITION_FILES_SUFFIX +
+            AppContextManager.instance.CSV_EXT;
+        if (File.Exists(posFilePath))
+        {
+            src = posFilePath;
+            dst = AppContextManager.instance.ActiveSpecieFolderPath +
+            newName + AppContextManager.instance.POSITION_FILES_SUFFIX +
+            AppContextManager.instance.CSV_EXT;
+
+            File.Move(src, dst);
+        }
+
+        //Update specie file
+        SaveLumy(trgCast);
+        RefreshView();
+        OpenRenameDialog();
+    }
+
+    private bool ValidateName(string newName)
+    {
+        return true;
     }
 
     public void EditLumyMC()
@@ -730,7 +853,7 @@ public class SwarmEditUIController : MonoBehaviour
     private void PersistStatChange()
     {
         RefreshLumyAppearenceFromStats();
-        SaveLumy();
+        SaveLumy(AppContextManager.instance.ActiveCast);
         RefreshView();
     }
 

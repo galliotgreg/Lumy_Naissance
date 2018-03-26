@@ -46,13 +46,17 @@ public class HelpDatabase : MonoBehaviour
        return null;
    }
 
-    public void LoadDatabase()
+    public void LoadDatabase(string namefile = "parametres")
     {
-        string path = Application.dataPath + "//Scenes//Xuan//Help.json";
+        string path = Application.dataPath + "//Scenes//Xuan//"+ namefile +".json";
         using (StreamReader stream = new StreamReader(path))
         {
             string json = stream.ReadToEnd();
             database = JsonConvert.DeserializeObject<List<Help>>(json);
         }
+    }
+    public int GetLength()
+    {
+        return database.Count;
     }
 }

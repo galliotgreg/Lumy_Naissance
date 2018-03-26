@@ -89,6 +89,12 @@ public class AppContextManager : MonoBehaviour
     public string CAST_FILES_SUFFIX = "_behavior";
 
     /// <summary>
+    /// Casts positions files suffix
+    /// </summary>
+    [SerializeField]
+    public string POSITION_FILES_SUFFIX = "_behavior_POSITION";
+
+    /// <summary>
     /// Casts files suffix
     /// </summary>
     [SerializeField]
@@ -298,6 +304,8 @@ public class AppContextManager : MonoBehaviour
 
     public void SwitchActiveSpecie(string specieName)
     {
+        UpdateSpeciesFoldersNames();
+
         //Check if specie existe
         bool found = false;
         foreach (string name in speciesFolderNames)
@@ -391,10 +399,18 @@ public class AppContextManager : MonoBehaviour
         //Replace file
         File.Delete(activeSpecieFilePath);
         File.AppendAllText(activeSpecieFilePath, content);
+
+        UpdateSpeciesFoldersNames();
+        UpdateCastsFilesNames();
     }
 
-    public void SaveCast()
+    public void SaveCast(Cast trgCast)
     {
+        if (trgCast == null)
+        {
+            trgCast = activeCast;
+        }
+
         //Read old file
         StreamReader reader = new StreamReader(activeSpecieFilePath);
         List<string> lines = new List<string>();
@@ -409,7 +425,7 @@ public class AppContextManager : MonoBehaviour
         foreach (string line in lines)
         {
             string[] tokens = line.Split(',');
-            if (tokens[0] == activeCast.Name && tokens[1] == activeCast.BehaviorModelIdentifier)
+            if (tokens[0] == trgCast.Name && tokens[1] == trgCast.BehaviorModelIdentifier)
             {
                 content += activeCast.Name + "," + activeCast.BehaviorModelIdentifier + "," + activeCast.Head.Count + ",";
                 foreach (ComponentInfo compoInfo in activeCast.Head)
@@ -430,6 +446,9 @@ public class AppContextManager : MonoBehaviour
         //Replace file
         File.Delete(activeSpecieFilePath);
         File.AppendAllText(activeSpecieFilePath, content);
+
+        UpdateSpeciesFoldersNames();
+        UpdateCastsFilesNames();
     }
 
     public string[] GetSpeciesFolderNames()
@@ -471,6 +490,8 @@ public class AppContextManager : MonoBehaviour
         }
         File.Move(GetFolderPathFromSpecieName(specieFolderName) + ActiveSpecie.Name + SPECIE_FILES_SUFFIX + CSV_EXT,
             GetFolderPathFromSpecieName(specieFolderName) + specieName + SPECIE_FILES_SUFFIX + CSV_EXT);
+
+        UpdateCastsFilesNames();
     }
 
     public void CreateSpecie(string specieName)
@@ -514,6 +535,8 @@ public class AppContextManager : MonoBehaviour
 
         //Remove childs from specie
         activeSpecie.Casts.Remove(activeCast.Name);
+
+        UpdateCastsFilesNames();
 
         //Alter Specie file
         SaveSpecie();
@@ -607,7 +630,10 @@ public class AppContextManager : MonoBehaviour
             TemplateFolderPath + TEMPLATE_ORIGIN_FILE_NAME + CSV_EXT,
             ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
         //File.Create(ActiveSpecieFolderPath + newCast.BehaviorModelIdentifier + CSV_EXT);
-        
+
+        UpdateSpeciesFoldersNames();
+        UpdateCastsFilesNames();
+
         //Alter Specie file
         SaveSpecie();
     }
@@ -755,7 +781,7 @@ public class AppContextManager : MonoBehaviour
         return true;
     }
 
-    private void UpdateSpeciesFoldersNames()
+    public void UpdateSpeciesFoldersNames()
     {
         DirectoryInfo info = new DirectoryInfo(SpeciesFolderPath);
         DirectoryInfo[] dirsInfo = info.GetDirectories();
