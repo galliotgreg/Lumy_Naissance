@@ -85,12 +85,12 @@ public class AgentBehavior : MonoBehaviour
 
     private void DisableActions()
     {
-		gotoAction.deactivate ();
-		traceAction.deactivate ();
-		layAction.deactivate ();
-		strikeAction.deactivate ();
-		pickAction.deactivate ();
-		dropAction.deactivate ();
+		gotoAction.frameEnd ();
+		traceAction.frameEnd ();
+		layAction.frameEnd ();
+		strikeAction.frameEnd ();
+		pickAction.frameEnd ();
+		dropAction.frameEnd ();
     }
 
 	private void executeAction(){
@@ -111,7 +111,7 @@ public class AgentBehavior : MonoBehaviour
 		switch (curActionType)
 		{
 		case ActionType.Drop:
-			dropAction.activate ();
+			dropAction.frameBegin ();
 			break;
 		case ActionType.Goto:
 			ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams [0]);
@@ -123,7 +123,7 @@ public class AgentBehavior : MonoBehaviour
 				gotoAction.Path[i] = vec3;
 			}
 
-			gotoAction.activate ();
+			gotoAction.frameBegin ();
 			break;
 		case ActionType.Hit:
 			throw new System.NotImplementedException();
@@ -135,13 +135,13 @@ public class AgentBehavior : MonoBehaviour
 			ABText castName = ((ABText)curActionParams[0]);
 			layAction.CastName = castName.Value;
 
-			layAction.activate ();
+			layAction.frameBegin ();
 			break;
 		case ActionType.Pick:
 			ABRef item = ((ABRef)curActionParams[0]);
 			pickAction.Item = Unit_GameObj_Manager.instance.getResource( Mathf.FloorToInt( ((ABScalar)item.GetAttr( "key" )).Value ) );
 
-			pickAction.activate ();
+			pickAction.frameBegin ();
 			break;
 		case ActionType.Spread:
 			throw new System.NotImplementedException();
@@ -171,7 +171,7 @@ public class AgentBehavior : MonoBehaviour
 				traceAction.Path[i] = vec3;
 			}
 
-			traceAction.activate ();
+			traceAction.frameBegin ();
 			break;
 		case ActionType.Strike:
 			ABRef target = ((ABRef)curActionParams [0]);
@@ -179,7 +179,7 @@ public class AgentBehavior : MonoBehaviour
 				strikeAction.Target = Unit_GameObj_Manager.instance.getUnit (Mathf.FloorToInt (((ABScalar)target.GetAttr ("key")).Value));
 			}
 
-			strikeAction.activate ();
+			strikeAction.frameBegin ();
 			break;
 		case ActionType.None:
 			break;

@@ -41,7 +41,7 @@ public class TraceAction : GameAction {
 
 	protected override void executeAction (){}
 
-	protected override void activateAction ()
+	protected override void frameBeginAction ()
 	{
 		// TraceScript
 		if( tracePrefab != null ){
@@ -66,9 +66,9 @@ public class TraceAction : GameAction {
 		}
 	}
 
-	protected override void activateAction_CooldownAuthorized (){}
+	protected override void frameBeginAction_CooldownAuthorized (){}
 
-	protected override void deactivateAction (){}
+	protected override void frameEndAction (){}
 
 	#endregion
 }

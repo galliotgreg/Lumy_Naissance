@@ -97,12 +97,12 @@ public class LayAction : GameAction {
 		
 	}
 
-	protected override void activateAction ()
+	protected override void frameBeginAction ()
 	{
 		
 	}
 
-	protected override void activateAction_CooldownAuthorized ()
+	protected override void frameBeginAction_CooldownAuthorized ()
 	{
 		currentTemplate = GameManager.instance.GetUnitTemplate (agentEntity.Authority, castName);
 		AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
@@ -121,6 +121,6 @@ public class LayAction : GameAction {
 		Invoke ("Lay", this.CoolDownTime);
 	}
 
-	protected override void deactivateAction (){}
+	protected override void frameEndAction (){}
 	#endregion
 }

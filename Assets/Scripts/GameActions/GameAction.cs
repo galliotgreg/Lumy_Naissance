@@ -91,20 +91,20 @@ public abstract class GameAction : MonoBehaviour {
 		coolDownElapsed = true;
 	}
 
-	public void activate(){
+	public void frameBegin(){
 		if (!activated) {
-			activateAction ();
+			frameBeginAction ();
 			if (CoolDownAuthorized) {
 				this.CoolDownAuthorized = false;
-				activateAction_CooldownAuthorized ();
+				frameBeginAction_CooldownAuthorized ();
 			}
 			activated = true;
 		}
 	}
 
-	public void deactivate(){
+	public void frameEnd(){
 		if (activated) {
-			deactivateAction ();
+			frameEndAction ();
 			activated = false;
 		}
 	}
@@ -120,17 +120,17 @@ public abstract class GameAction : MonoBehaviour {
 	protected abstract void executeAction();
 
 	/// <summary>
-	/// Called when an action is activated (at the start of each frame that the action is activated)
+	/// Called at the start of each frame that the action is activated
 	/// </summary>
-	protected abstract void activateAction();
+	protected abstract void frameBeginAction();
 
 	/// <summary>
-	/// Called when an action is activated (at the start of each frame that the action is activated) IF the cooldown authorizes it
+	/// Called at the start of each frame that the action is activated IF the cooldown authorizes it
 	/// </summary>
-	protected abstract void activateAction_CooldownAuthorized();
+	protected abstract void frameBeginAction_CooldownAuthorized();
 
 	/// <summary>
 	/// Called when an action is deactivated.
 	/// </summary>
-	protected abstract void deactivateAction();
+	protected abstract void frameEndAction();
 }

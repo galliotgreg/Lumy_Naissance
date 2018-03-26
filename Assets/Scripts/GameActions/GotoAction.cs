@@ -48,7 +48,7 @@ public class GotoAction : GameAction {
 		moveTo (agentAttr, movingAgent);
     }
 
-	protected override void activateAction ()
+	protected override void frameBeginAction ()
 	{
 		if (movingAgent != null) {
 			movingAgent.isStopped = false;
@@ -78,12 +78,12 @@ public class GotoAction : GameAction {
 		return;
 	}
 
-	protected override void activateAction_CooldownAuthorized ()
+	protected override void frameBeginAction_CooldownAuthorized ()
 	{
 		return;
 	}
 
-	protected override void deactivateAction ()
+	protected override void frameEndAction ()
 	{
 		if (movingAgent != null) {
 			movingAgent.isStopped = true;
