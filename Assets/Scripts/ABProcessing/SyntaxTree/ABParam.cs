@@ -31,11 +31,7 @@ public abstract class ABParam<T> : ABNode, IABParam
 
     public T Evaluate(ABContext context)
     {
-		try{
-	        if (identifier == "0") {
-	            Debug.Log("erer");
-	        }
-
+		try {
 	        if (identifier == "const")
 	        {
 	            return value;

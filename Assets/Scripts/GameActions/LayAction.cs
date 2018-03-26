@@ -35,7 +35,9 @@ public class LayAction : GameAction {
         child.transform.parent = GameManager.instance.transform; 
 		AgentEntity childEntity = child.GetComponent<AgentEntity> ();
 		child.name = childEntity.CastName;
-		childEntity.Context.setModelValues (this.agentEntity.Authority);
+        
+		//childEntity.Context.setModelValues (this.agentEntity.Authority);
+        
         //Increment Population 
 		Unit_GameObj_Manager.instance.addUnit( childEntity, this.agentEntity.Home );
 

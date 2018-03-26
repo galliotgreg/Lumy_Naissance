@@ -246,9 +246,8 @@ public class SwarmEditUIController : MonoBehaviour
             actSpeed += (int)compo.ActionSpeedBuff;
             moveSpeed += (int)compo.MoveSpeedBuff;
             visionRange += (int)compo.VisionRangeBuff;
-            //TODO manage atkRange & pick range
-            pickRange = -1;
-            atkRange = -1;
+            pickRange += (int)compo.PickRangeBuff; 
+            atkRange += (int)compo.AtkRangeBuff ;
         }
         LumyStats.Vitality = vitality;
         LumyStats.Stamina = stamina;
@@ -372,7 +371,7 @@ public class SwarmEditUIController : MonoBehaviour
             button.transform.position = pos;
             button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
             y -= lumyYMarginLayout;
-            button.transform.parent = lumysScrollContent.transform;
+            button.transform.SetParent(lumysScrollContent.transform);
 
             //Set Name
             Text btnText = button.GetComponentInChildren<Text>();
@@ -483,6 +482,7 @@ public class SwarmEditUIController : MonoBehaviour
         Cast lumyCast = AppContextManager.instance.ActiveCast;
         editedLumy = Instantiate(emptyAgentPrefab);
         editedLumy.transform.parent = this.transform;
+        
         //editedLumy.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             lumyCast, editedLumy, emptyComponentPrefab);
@@ -638,8 +638,17 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void DeleteSwarm()
     {
+        //Prevent removing last
+        if (AppContextManager.instance.GetSpeciesFolderNames().Length < 2)
+        {
+            Debug.Log("You cannot remove the last specie");
+            return;
+        }
 
-        Debug.Log("DeleteSwarm");
+        AppContextManager.instance.DeleteSpecie();
+        string defaultSpecie = AppContextManager.instance.GetSpeciesFolderNames()[0];
+        SelectSwarm(defaultSpecie);
+        RefreshView();
     }
 
     public void NewSwarm()
@@ -661,13 +670,11 @@ public class SwarmEditUIController : MonoBehaviour
     {
         ImportController.ImportSpecie();
         RefreshView();
-        Debug.Log("OpenImportSwarmDialog");
     }
 
     public void OpenExportSwarmDialog()
     {
         ExportController.ExportSpecie();
-        Debug.Log("OpenExportSwarmDialog");
     }
 
     public void SelectLumy(string lumyName)
@@ -684,6 +691,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void DeleteLumy()
     {
+        //Prevent removing last
+        if (AppContextManager.instance.ActiveSpecie.Casts.Count < 2)
+        {
+            Debug.Log("You cannot remove the last lumy");
+            return;
+        }
+
         AppContextManager.instance.DeleteCast();
         Cast firstCast = null;
         foreach (Cast cast in AppContextManager.instance.ActiveSpecie.Casts.Values)
