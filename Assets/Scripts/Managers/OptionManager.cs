@@ -472,7 +472,7 @@ public class OptionManager : MonoBehaviour {
     {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.Alpha1)) {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha1)) {
             pickRange.isOn = !pickRange.isOn;
         }
 
@@ -508,7 +508,7 @@ public class OptionManager : MonoBehaviour {
     private void DebugPickRangeJ2() {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.Alpha2)) {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha2)) {
             pickRangeJ2.isOn = !pickRangeJ2.isOn;
         }
 
