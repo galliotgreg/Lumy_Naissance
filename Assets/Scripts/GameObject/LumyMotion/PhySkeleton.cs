@@ -182,7 +182,8 @@ public class PhySkeleton : MonoBehaviour
 
         //HierarchyIKForwardPass(rootLimb, upTarget);
         //HierarchyIKBackardPass(rootLimb, downTarget);
-        IKForwardPass(upTarget, bones);
+        //IKForwardPass(upTarget, bones);
+        IKBackwardPass(downTarget, bones);
 
         //COMPUTE ANGLES FROM POINTS
         //Compute world teta
