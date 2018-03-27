@@ -631,10 +631,10 @@ public class InGameUIController : MonoBehaviour {
 
     private void UnitStats()
     {
-        AgentScript self = getUnitSelf(); 
+        AgentScript self = getUnitSelf();
+        GameObject[] allUnits = GameObject.FindGameObjectsWithTag("Agent");
 
-
-        if(self == null)
+        if (self == null)
         {
             vitalityText.color = Color.white;
             strenghtText.color = Color.white;
@@ -659,8 +659,25 @@ public class InGameUIController : MonoBehaviour {
             item.text = "-";
             LayTimeText.text = "-";
             castText.text = "-";
-            
+
+            foreach (GameObject agent in allUnits)
+            {
+                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            }
+
             return; 
+        }
+
+        foreach (GameObject agent in allUnits)
+        {
+            if(agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>() != self)
+            {
+                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else if(agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>() == self)
+            {
+                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            }
         }
 
         string vitality = self.Vitality.ToString();
