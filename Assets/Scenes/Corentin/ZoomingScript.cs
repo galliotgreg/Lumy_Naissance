@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ZoomingScript : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class ZoomingScript : MonoBehaviour
     private float sensitivity = 10f;
     private GameObject dialogBox;
     private bool isZoomable = true;
+    private int fingerID = -1;
 
     void Update()
     {
@@ -19,7 +21,7 @@ public class ZoomingScript : MonoBehaviour
         }
         else isZoomable = true;
 
-        if (isZoomable)
+        if (isZoomable )//&& (!EventSystem.current.IsPointerOverGameObject(fingerID)))
         {
             float prev_size = GameObject.Find("Camera").GetComponent<Camera>().orthographicSize;
             float new_size = prev_size - Input.GetAxis("Mouse ScrollWheel") * sensitivity;
