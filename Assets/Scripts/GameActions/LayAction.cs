@@ -30,7 +30,6 @@ public class LayAction : GameAction {
 	/// <param name="cost">Cost</param>
 	private void Lay( GameObject childTemplate, AgentScript.ResourceCost cost )
     {
-		Debug.LogError ("LAY");
         GameObject child = Instantiate(
             childTemplate, this.transform.position, this.transform.rotation);
         child.SetActive(true);
