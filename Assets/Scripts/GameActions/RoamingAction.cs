@@ -10,10 +10,6 @@ public class RoamingAction : GotoAction {
 	[SerializeField]
 	private float dist;
 
-	// Storage for previous params
-	private float previous_angle = -1;
-	private float previous_dist = -1;
-
 	[SerializeField]
 	private bool changeTargetDemand = true;
 
@@ -49,19 +45,10 @@ public class RoamingAction : GotoAction {
 	}
 	#endregion
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 	#region implemented abstract members of GameAction
 	protected override void activateAction ()
 	{
+		Debug.LogError ("ACTIVATE");
 		newTarget ();
 		base.activateAction ();
 	}
@@ -70,6 +57,7 @@ public class RoamingAction : GotoAction {
 	{
 		// Check if params were changed
 		if (changeTargetDemand) {
+			Debug.LogError ("FRAME");
 			newTarget ();
 		}
 		base.frameBeginAction ();
@@ -84,33 +72,61 @@ public class RoamingAction : GotoAction {
 	/// <param name="index">Index of the reached point in the path</param>
 	protected override void targetReached( int index ){
 		// Generate new point
+		Debug.LogError ("TARGET");
+		newTarget();
+	}
+
+	/// <summary>
+	/// Called when the path is unreachable
+	/// </summary>
+	protected override void targetUnreachable(){
+		Debug.LogError ("UNREACHABLE");
 		newTarget();
 	}
 	#endregion
 
 	protected void newTarget(){
 		Vector3 newtarget = Vector3.zero;
+		Vector2 baseVector = new Vector2(1,0);
 
 		// If params are valid, calculate target
 		if (Angle > 0 && Dist > 0) {
-			float newAngle = 0;
+			/*float newAngle = 0;
 
 			// Check current Direction : if direction exists, use angle to calculate. Else, create a random target
 			if (this.CurDirection != null) {
 				int roundedAngle = Mathf.RoundToInt( Mathf.Abs( Angle ) );
 				newAngle = Random.Range ( - roundedAngle/2, roundedAngle/2 );
-				newAngle += Vector2.Angle (this.CurDirection, Vector3.zero);
+				newAngle += Vector2.Angle (this.CurDirection, baseVector);
 			} else {
 				newAngle = Random.Range ( 1, 360 );
 			}
 
 			newtarget = AgentBehavior.vec2ToWorld( new Vector2( Mathf.Cos( newAngle*Mathf.Deg2Rad ), Mathf.Sin( newAngle*Mathf.Deg2Rad ) )).normalized * Dist;
+			newtarget += this.transform.position;*/
+			float newAngle = 0;
+			Vector3 dir = Vector3.zero;
+
+			// Check current Direction : if direction exists, use angle to calculate. Else, create a random target
+			if (this.CurDirection != null) {
+				int roundedAngle = Mathf.RoundToInt( Mathf.Abs( Angle ) );
+				newAngle = Random.Range ( - roundedAngle/2, roundedAngle/2 );
+				//newAngle += Vector2.Angle (this.CurDirection, baseVector);
+				dir = (Quaternion.Euler(0,newAngle,0) * this.CurDirection).normalized;
+			} else {
+				newAngle = Random.Range ( 1, 360 );
+				dir = AgentBehavior.vec2ToWorld (new Vector2 (Mathf.Cos (newAngle * Mathf.Deg2Rad), Mathf.Sin (newAngle * Mathf.Deg2Rad))).normalized;
+			}
+			newtarget += this.transform.position + (dir*Dist);
 		}else{
 			// If params are not valid, keep the unit stopped
+			newtarget += this.transform.position;
 		}
-
-		newtarget += this.transform.position;
+			
 		this.Path = new Vector3[1]{ newtarget };
 		changeTargetDemand = false;
+
+		//Debug.LogError ("---------BEFORE : "+transform.position.ToString());
+		//Debug.LogError ("---------AFTER : "+newtarget.ToString());
 	}
 }

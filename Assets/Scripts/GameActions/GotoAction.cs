@@ -165,12 +165,13 @@ public class GotoAction : GameAction {
             {
                 agentAttr.TrgPos = agentAttr.CurPos;
                 destination = vec2ToWorld(agentAttr.TrgPos); 
-               
+				targetUnreachable ();
             }
             else if (path.status == NavMeshPathStatus.PathInvalid)
             {
                 agentAttr.TrgPos = agentAttr.CurPos;
                 destination = vec2ToWorld(agentAttr.TrgPos);
+				targetUnreachable ();
             }
             position = vec2ToWorld(agentAttr.CurPos);
             position.y = agentAttr.transform.position.y;
@@ -290,4 +291,9 @@ public class GotoAction : GameAction {
 	/// </summary>
 	/// <param name="index">Index of the reached point in the path</param>
 	protected virtual void targetReached( int index ){}
+
+	/// <summary>
+	/// Called when the path is unreachable
+	/// </summary>
+	protected virtual void targetUnreachable(){}
 }
