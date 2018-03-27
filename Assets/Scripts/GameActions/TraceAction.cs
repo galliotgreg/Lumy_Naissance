@@ -80,5 +80,6 @@ public class TraceAction : GameAction {
 
 	protected override void frameEndAction (){}
 
+	protected override void cooldownFinishAction (){}
 	#endregion
 }

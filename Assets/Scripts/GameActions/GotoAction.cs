@@ -47,7 +47,7 @@ public class GotoAction : GameAction {
 
 	protected override void executeAction ()
 	{
-		Vector2 curPos = worldToVec2 (agentAttr.transform.position);
+		Vector2 curPos = agentAttr.CurPos;
 
 		// Calculating direction : necessary to roamingAction
 		Vector2 dir = curPos - previousPosition;
@@ -88,7 +88,7 @@ public class GotoAction : GameAction {
 				if (path.Length == 1) {
 					currentPathIndex = 0;
 				} else {
-					Vector2 curPos = worldToVec2 (agentAttr.transform.position);
+					Vector2 curPos = agentAttr.CurPos;
 
 					// selectNext Point
 					int closestIndex = indexClosest (curPos, path);
@@ -121,18 +121,21 @@ public class GotoAction : GameAction {
 		return;
 	}
 
+	protected override void cooldownFinishAction ()
+	{
+		return;
+	}
+
 	#endregion
 
-	const float closeFactor = 0.1f;
+	const float closeFactor = 0.3f;
 	public Vector3 moveTo( AgentScript agentAttr, UnityEngine.AI.NavMeshAgent navMeshAgent ){
         // Use Unity A* to move
 
         NavMeshPath navMeshpath = new NavMeshPath(); 
 		if( navMeshAgent != null ){
-
-            NavMeshHit hit;
             
-                Vector3 destination = vec2ToWorld(agentAttr.TrgPos);
+            Vector3 destination = vec2ToWorld(agentAttr.TrgPos);
             destination.y = agentAttr.transform.position.y;
 
             NavMeshPath path = new NavMeshPath();
@@ -160,32 +163,31 @@ public class GotoAction : GameAction {
                 }
             }
 
-
-            if (path.status == NavMeshPathStatus.PathPartial)
+			if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
             {
-                agentAttr.TrgPos = agentAttr.CurPos;
-                destination = vec2ToWorld(agentAttr.TrgPos); 
+				// Does it depends on the MC? : it works only when the MC has a test comparing the curPos and the TrgPos
+                /*agentAttr.TrgPos = agentAttr.CurPos;
+                destination = vec2ToWorld(agentAttr.TrgPos);*/
+				agentAttr.TrgPosValid = false;
 				targetUnreachable ();
-            }
+            }/*
             else if (path.status == NavMeshPathStatus.PathInvalid)
             {
                 agentAttr.TrgPos = agentAttr.CurPos;
                 destination = vec2ToWorld(agentAttr.TrgPos);
 				targetUnreachable ();
-            }
-            position = vec2ToWorld(agentAttr.CurPos);
+            }*/
+            /*position = vec2ToWorld(agentAttr.CurPos);
             position.y = agentAttr.transform.position.y;
 
             dest = vec2ToWorld(agentAttr.TrgPos);
-            dest.y = agentAttr.transform.position.y;
+            dest.y = agentAttr.transform.position.y;*/
            
-
-            navMeshAgent.acceleration = 1000;
+			navMeshAgent.acceleration = 1000;
 			navMeshAgent.speed = agentAttr.MoveSpd;
 			navMeshAgent.autoBraking = true;
 			navMeshAgent.destination = destination;
-			navMeshAgent.stoppingDistance = 0.1f;
-
+			navMeshAgent.stoppingDistance = closeFactor;
 
             /*//navMeshAgent.updatePosition = false;
 			UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
@@ -200,7 +202,8 @@ public class GotoAction : GameAction {
 				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (auxpath.corners [1] - agentAttr.transform.position).normalized;
 			}*/
         }
-        return agentAttr.transform.position;
+		//agentAttr.transform.position = navMeshAgent.nextPosition;
+		return agentAttr.transform.position;
 	}
 
     void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
@@ -290,10 +293,14 @@ public class GotoAction : GameAction {
 	/// Called when one point in the path is reached.
 	/// </summary>
 	/// <param name="index">Index of the reached point in the path</param>
-	protected virtual void targetReached( int index ){}
+	protected virtual void targetReached( int index ){
+		Debug.LogError ("OPAAAAAAAAAAAAAAAAAAAA");
+	}
 
 	/// <summary>
 	/// Called when the path is unreachable
 	/// </summary>
-	protected virtual void targetUnreachable(){}
+	protected virtual void targetUnreachable(){
+		Debug.LogError ("OPEEEEEEEEEEEEEEEE");
+	}
 }

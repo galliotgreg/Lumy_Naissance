@@ -90,5 +90,7 @@ public class DropAction : GameAction {
 		return;
 	}
 
+	protected override void cooldownFinishAction (){}
+
 	#endregion
 }

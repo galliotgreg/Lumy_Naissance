@@ -102,5 +102,7 @@ public class StrikeAction : GameAction {
 		return;
 	}
 
+	protected override void cooldownFinishAction (){}
+
 	#endregion
 }

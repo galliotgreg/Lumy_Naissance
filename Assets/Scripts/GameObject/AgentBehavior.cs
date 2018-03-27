@@ -52,9 +52,10 @@ public class AgentBehavior : MonoBehaviour
 				if( previous != null ){
 					previous.deactivate ();
 				}
-				if( current != null ){
+				//activation is done when loading params
+				/*if( current != null ){
 					current.activate ();
-				}
+				}*/
 			}
 			previousAction = value;
         }
@@ -93,6 +94,11 @@ public class AgentBehavior : MonoBehaviour
 
 		this.CurAction = action;
 		this.CurActionParams = actionParams;
+
+		GameAction currentGameAction = getGameAction (this.curAction);
+		if (currentGameAction != null) {
+			currentGameAction.frameBegin ();
+		}
 	}
 
     // Use this for initialization
@@ -143,7 +149,6 @@ public class AgentBehavior : MonoBehaviour
 		{
 		case ActionType.Drop:
 			dropAction.activate();
-			dropAction.frameBegin ();
 			break;
 		case ActionType.Goto:
 			ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams [0]);
@@ -156,7 +161,6 @@ public class AgentBehavior : MonoBehaviour
 			}
 			
 			gotoAction.activate();
-			gotoAction.frameBegin ();
 			break;
 		case ActionType.Hit:
 			throw new System.NotImplementedException();
@@ -169,14 +173,12 @@ public class AgentBehavior : MonoBehaviour
 			layAction.CastName = castName.Value;
 			
 			layAction.activate();
-			layAction.frameBegin ();
 			break;
 		case ActionType.Pick:
 			ABRef item = ((ABRef)curActionParams[0]);
 			pickAction.Item = Unit_GameObj_Manager.instance.getResource( Mathf.FloorToInt( ((ABScalar)item.GetAttr( "key" )).Value ) );
 
 			pickAction.activate();
-			pickAction.frameBegin ();
 			break;
 		case ActionType.Spread:
 			throw new System.NotImplementedException();
@@ -207,7 +209,6 @@ public class AgentBehavior : MonoBehaviour
 			}
 
 			traceAction.activate();
-			traceAction.frameBegin ();
 			break;
 		case ActionType.Strike:
 			ABRef target = ((ABRef)curActionParams [0]);
@@ -216,7 +217,6 @@ public class AgentBehavior : MonoBehaviour
 			}
 
 			strikeAction.activate();
-			strikeAction.frameBegin ();
 			break;
 		case ActionType.Roaming:
 				ABScalar angle = ((ABScalar)curActionParams [0]);
@@ -224,7 +224,6 @@ public class AgentBehavior : MonoBehaviour
 				roamingAction.setParams( angle.Value, dist.Value );
 
 				roamingAction.activate();
-				roamingAction.frameBegin ();
 			break;
 		case ActionType.None:
 			break;

@@ -21,6 +21,7 @@ public class LayAction : GameAction {
 
 	private GameObject currentTemplate;
 	private AgentScript.ResourceCost currentCost;
+	private bool layDemand = false;
 
 	/// <summary>
 	/// Lay a unit associated to the specified childTemplate and decrease the cost from the home.
@@ -29,6 +30,7 @@ public class LayAction : GameAction {
 	/// <param name="cost">Cost</param>
 	private void Lay( GameObject childTemplate, AgentScript.ResourceCost cost )
     {
+		Debug.LogError ("LAY");
         GameObject child = Instantiate(
             childTemplate, this.transform.position, this.transform.rotation);
         child.SetActive(true);
@@ -47,13 +49,6 @@ public class LayAction : GameAction {
     }
 
 	private void preLay( GameObject childTemplate, AgentScript.ResourceCost cost ){
-	}
-
-    /// <summary>
-    /// TODO check if used. Remove if not
-    /// </summary>
-	private void Lay(){
-		Lay (currentTemplate, currentCost);
 	}
 
 	/// <summary>
@@ -84,33 +79,20 @@ public class LayAction : GameAction {
 			&& cost.getResourceByColor( ABColor.Color.Green ) <= home.GreenResAmout
 			&& cost.getResourceByColor( ABColor.Color.Blue ) <= home.BlueResAmout);
 	}
-    // activate
-	// execute
+
 	#region implemented abstract members of GameAction
 	protected override void initAction ()
 	{
 		this.CoolDownActivate = true;
 	}
 
-	protected override void executeAction ()
-	{
-		
-	}
+	protected override void executeAction (){}
 
-	protected override void activateAction ()
-	{
-		return;
-	}
+	protected override void activateAction (){}
 
-	protected override void deactivateAction ()
-	{
-		return;
-	}
+	protected override void deactivateAction (){}
 
-	protected override void frameBeginAction ()
-	{
-		
-	}
+	protected override void frameBeginAction (){}
 
 	protected override void frameBeginAction_CooldownAuthorized ()
 	{
@@ -128,7 +110,15 @@ public class LayAction : GameAction {
 		this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
 
 		// wait for cooldownTime
-		Invoke ("Lay", this.CoolDownTime);
+		layDemand = true;
+	}
+
+	protected override void cooldownFinishAction ()
+	{
+		if (layDemand) {
+			Lay (currentTemplate, currentCost);
+			layDemand = false;
+		}
 	}
 
 	protected override void frameEndAction (){}

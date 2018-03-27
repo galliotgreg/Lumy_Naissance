@@ -96,5 +96,8 @@ public class PickAction : GameAction {
 	{
 		return;
 	}
+
+	protected override void cooldownFinishAction (){}
+
 	#endregion
 }

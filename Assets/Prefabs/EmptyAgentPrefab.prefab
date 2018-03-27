@@ -302,6 +302,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4805403469943082}
+  - component: {fileID: 114988961927564190}
   - component: {fileID: 114743776689603538}
   - component: {fileID: 114557014208587398}
   - component: {fileID: 114238049092781280}
@@ -313,9 +314,7 @@ GameObject:
   - component: {fileID: 114368823567724644}
   - component: {fileID: 114107907229580660}
   - component: {fileID: 114662239543177926}
-  - component: {fileID: 114988961927564190}
   - component: {fileID: 195848833984645618}
-  - component: {fileID: 114797667755122866}
   m_Layer: 8
   m_Name: EmptyAgentPrefab
   m_TagString: Agent
@@ -1424,34 +1423,6 @@ MonoBehaviour:
   behaviour: {fileID: 0}
   context: {fileID: 0}
   behaviorModelIdentifier: 
---- !u!114 &114797667755122866
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1618866709941296}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82aa6bfea7d13f44ca2087917e38dbf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  key: 0
-  cast: 
-  curPos: {x: 0, y: 0}
-  trgPos: {x: 0, y: 0}
-  vitalityMax: 0
-  vitality: 0
-  strength: 0
-  stamina: 0
-  actSpd: 0
-  moveSpd: 0
-  nbItemMax: 0
-  nbItem: 0
-  atkRange: 0
-  pickRange: 0
-  layTimeCost: 0
-  visionRange: 0
-  mineral: {fileID: 1868858291506348, guid: 30547fb3e77a0ce43bbd8cb5d03c423e, type: 2}
 --- !u!114 &114850887274006616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1527,6 +1498,7 @@ MonoBehaviour:
   layTimeCost: 0
   visionRange: 0
   mineral: {fileID: 1344960057193070, guid: c85a7e8a0441be84dbb28a9859a87c52, type: 2}
+  lumyTransform: {fileID: 4805403469943082}
 --- !u!114 &114954285268622200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1580,8 +1552,7 @@ MonoBehaviour:
   currentPathIndex: 0
   angle: 0
   dist: 0
-  currentTarget: {x: 0, y: 0, z: 0}
-  targetConsumed: 0
+  changeTargetDemand: 1
 --- !u!119 &119588536036002848
 Projector:
   m_ObjectHideFlags: 1
