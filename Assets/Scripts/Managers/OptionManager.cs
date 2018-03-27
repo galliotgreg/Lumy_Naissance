@@ -430,7 +430,7 @@ public class OptionManager : MonoBehaviour {
                     rangeVision = lumy.transform.GetChild(1).GetComponent<AgentScript>().VisionRange;
 
                     //vRange.localScale = new Vector3(rangeVision * 2, rangeVision * 2, 1f);
-                    vRange.localScale = new Vector3(rangeVision * 2,0.01f, rangeVision * 2);
+                    vRange.localScale = new Vector3(rangeVision * 2, 0.01f, rangeVision * 2);
                 }
             }
         }

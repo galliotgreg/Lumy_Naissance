@@ -142,6 +142,10 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private GameObject unitGoJ2;
     [SerializeField]
+    private GameObject contentParentJ1;
+    [SerializeField]
+    private GameObject contentParentJ2;
+    [SerializeField]
     private Text unitCostRedText;
     [SerializeField]
     private Text unitCostGreenText;
@@ -818,7 +822,8 @@ public class InGameUIController : MonoBehaviour {
                 go.transform.GetChild(1).GetComponent<Text>().color = Color.blue;
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
-                go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
+                //go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
+                go.transform.SetParent(contentParentJ1.transform);
             }
         }
     }
@@ -841,7 +846,8 @@ public class InGameUIController : MonoBehaviour {
                 go.transform.GetChild(1).GetComponent<Text>().color = Color.red;
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
-                go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
+                //go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
+                go.transform.SetParent(contentParentJ2.transform);
             }
         }
     }
