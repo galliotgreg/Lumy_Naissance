@@ -13,6 +13,7 @@
 			"Queue" = "Transparent"
 			"RenderType" = "Transparent"
 		}
+		ZWrite Off
 		Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass

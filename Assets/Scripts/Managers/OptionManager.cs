@@ -100,6 +100,9 @@ public class OptionManager : MonoBehaviour {
     void Start () {
 
         OptionManager.instance.getPlayerPreferencesDebug();
+        toutDesactiver.onValueChanged.AddListener((on) => {allDesactivate();});
+
+        toutActiver.onValueChanged.AddListener((on) => {showAll();});
     }
 	
 	// Update is called once per frame
@@ -121,17 +124,18 @@ public class OptionManager : MonoBehaviour {
         DebugDirectionJ2();
         DebugTraceJ1();
         DebugTraceJ2();
-        allDesactivate();
-        showAll();
-
-
     }
-
-
-
     private void DebugDirectionJ1() {
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha1)) {
             directionLumy.isOn = !directionLumy.isOn;
+        }
+        if (directionLumy.isOn)
+        {
+            toutDesactiver.isOn = false;
+        }
+        else
+        {
+            toutActiver.isOn = false;
         }
     }
 
@@ -139,17 +143,41 @@ public class OptionManager : MonoBehaviour {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha2)) {
             directionLumyJ2.isOn = !directionLumyJ2.isOn;
         }
+        if (directionLumyJ2.isOn)
+        {
+            toutDesactiver.isOn = false;
+        }
+        else
+        {
+            toutActiver.isOn = false;
+        }
     }
 
     private void DebugTraceJ1() {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.T) && Input.GetKeyDown(KeyCode.Alpha1)) {
             trace.isOn = !trace.isOn;
         }
+        if (Trace.isOn)
+        {
+            toutDesactiver.isOn = false;
+        }
+        else
+        {
+            toutActiver.isOn = false;
+        }
     }
 
     private void DebugTraceJ2() {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.T) && Input.GetKeyDown(KeyCode.Alpha2)) {
             traceJ2.isOn = !traceJ2.isOn;
+        }
+        if (TraceJ2.isOn)
+        {
+            toutDesactiver.isOn = false;
+        }
+        else
+        {
+            toutActiver.isOn = false;
         }
     }
 
@@ -164,6 +192,7 @@ public class OptionManager : MonoBehaviour {
 
         if (gisements.isOn == true)
         {
+            toutDesactiver.isOn = false;
             foreach (GameObject ressource in minerais)
             {
                 ressource.transform.GetChild(0).gameObject.SetActive(true);
@@ -174,6 +203,7 @@ public class OptionManager : MonoBehaviour {
         }
         else
         {
+            toutActiver.isOn = false;
             foreach (GameObject ressource in minerais)
             {
                 ressource.transform.GetChild(0).gameObject.SetActive(false);
@@ -197,6 +227,7 @@ public class OptionManager : MonoBehaviour {
 
         if (lifeBar.isOn == true)
         {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys)
             {
 
@@ -219,6 +250,7 @@ public class OptionManager : MonoBehaviour {
         }
         else
         {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys)
             {
 
@@ -243,6 +275,7 @@ public class OptionManager : MonoBehaviour {
         }
 
         if (lifeBarJ2.isOn == true) {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -260,7 +293,9 @@ public class OptionManager : MonoBehaviour {
 
             }
         }
-        else {
+        else
+        {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -279,6 +314,7 @@ public class OptionManager : MonoBehaviour {
         }
 
         if (lumyName.isOn == true) {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
 
@@ -291,7 +327,9 @@ public class OptionManager : MonoBehaviour {
                 }
             }
         }
-        else {
+        else
+        {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
@@ -310,6 +348,7 @@ public class OptionManager : MonoBehaviour {
         }
 
         if (lumyNameJ2.isOn == true) {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -321,7 +360,9 @@ public class OptionManager : MonoBehaviour {
 
             }
         }
-        else {
+        else
+        {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -343,7 +384,8 @@ public class OptionManager : MonoBehaviour {
 
         if (visionRange.isOn == true)
         {
-            foreach(GameObject lumy in lumys)
+            toutDesactiver.isOn = false;
+            foreach (GameObject lumy in lumys)
             {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
@@ -358,6 +400,7 @@ public class OptionManager : MonoBehaviour {
         }
         else
         {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys)
             {
 
@@ -378,6 +421,7 @@ public class OptionManager : MonoBehaviour {
 
 
         if (visionRangeJ2.isOn == true) {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -386,11 +430,13 @@ public class OptionManager : MonoBehaviour {
                     rangeVision = lumy.transform.GetChild(1).GetComponent<AgentScript>().VisionRange;
 
                     //vRange.localScale = new Vector3(rangeVision * 2, rangeVision * 2, 1f);
-                    vRange.localScale = new Vector3(rangeVision * 2,0.01f, rangeVision * 2);
+                    vRange.localScale = new Vector3(rangeVision * 2, 0.01f, rangeVision * 2);
                 }
             }
         }
-        else {
+        else
+        {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -407,10 +453,12 @@ public class OptionManager : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1)) {
             atkRange.isOn = !atkRange.isOn;
+            
         }
 
         if (atkRange.isOn == true)
         {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys)
             {
 
@@ -426,6 +474,7 @@ public class OptionManager : MonoBehaviour {
         }
         else
         {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys)
             {
 
@@ -445,6 +494,7 @@ public class OptionManager : MonoBehaviour {
         }
 
         if (atkRangeJ2.isOn == true) {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -457,7 +507,9 @@ public class OptionManager : MonoBehaviour {
                 }
             }
         }
-        else {
+        else
+        {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -479,6 +531,7 @@ public class OptionManager : MonoBehaviour {
 
         if (pickRange.isOn == true)
         {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys)
             {
 
@@ -494,6 +547,7 @@ public class OptionManager : MonoBehaviour {
         }
         else
         {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys)
             {
 
@@ -514,6 +568,7 @@ public class OptionManager : MonoBehaviour {
 
 
         if (pickRangeJ2.isOn == true) {
+            toutDesactiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -527,6 +582,7 @@ public class OptionManager : MonoBehaviour {
             }
         }
         else {
+            toutActiver.isOn = false;
             foreach (GameObject lumy in lumys) {
 
                 if (lumy.GetComponent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
@@ -589,7 +645,6 @@ public class OptionManager : MonoBehaviour {
     {
         if(toutDesactiver.isOn == true)
         {
-            //toutActiver.isOn = false;
             visionRange.isOn = false;
             atkRange.isOn = false;
             pickRange.isOn = false;
@@ -616,7 +671,6 @@ public class OptionManager : MonoBehaviour {
     {
         if (toutActiver.isOn == true)
         {
-            //toutDesactiver.isOn = false;
             visionRange.isOn = true;
             atkRange.isOn = true;
             pickRange.isOn = true;
