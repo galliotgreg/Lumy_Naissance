@@ -17,6 +17,9 @@ public class AgentScript : MonoBehaviour {
     [AttrName(Identifier = "trgPos")]
     [SerializeField]
     private Vector2 trgPos;
+	[AttrName(Identifier = "trgPosValid")]
+	[SerializeField]
+	private bool trgPosValid;
     [AttrName(Identifier = "vitalityMax")]
     [SerializeField]
     private float vitalityMax;
@@ -67,6 +70,8 @@ public class AgentScript : MonoBehaviour {
     private GameObject mineralBlue;
 
     private List<GameObject> carryingResources = new List<GameObject>();
+	[SerializeField]
+	Transform lumyTransform;
 
 	#region Properties
     public string Cast
@@ -103,8 +108,18 @@ public class AgentScript : MonoBehaviour {
         set
         {
             trgPos = value;
+			TrgPosValid = true;
         }
     }
+
+	public bool TrgPosValid {
+		get {
+			return trgPosValid;
+		}
+		set {
+			trgPosValid = value;
+		}
+	}
 
     public float VitalityMax
     {
@@ -329,6 +344,7 @@ public class AgentScript : MonoBehaviour {
     void Start () {
 		this.CurPos = positionFromTransform ();
         TrgPos = CurPos;
+		TrgPosValid = true;
     }
 	
 	// Update is called once per frame
@@ -337,7 +353,8 @@ public class AgentScript : MonoBehaviour {
 	}
 
 	Vector2 positionFromTransform(){
-		return new Vector2(transform.position.x, transform.position.z);
+		//return new Vector2(transform.position.x, transform.position.z);
+		return AgentBehavior.worldToVec2( lumyTransform.position );
 	}
 
 	public class ResourceCost{

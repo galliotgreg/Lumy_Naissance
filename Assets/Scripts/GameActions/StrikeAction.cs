@@ -82,15 +82,27 @@ public class StrikeAction : GameAction {
 		return;
 	}
 
-	protected override void activateAction_CooldownAuthorized ()
-	{
-		return;
-	}
-
 	protected override void deactivateAction ()
 	{
 		return;
 	}
+
+	protected override void frameBeginAction ()
+	{
+		return;
+	}
+
+	protected override void frameBeginAction_CooldownAuthorized ()
+	{
+		return;
+	}
+
+	protected override void frameEndAction ()
+	{
+		return;
+	}
+
+	protected override void cooldownFinishAction (){}
 
 	#endregion
 }

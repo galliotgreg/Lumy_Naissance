@@ -43,6 +43,16 @@ public class TraceAction : GameAction {
 
 	protected override void activateAction ()
 	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
+	protected override void frameBeginAction ()
+	{
 		// TraceScript
 		if( tracePrefab != null ){
 			GameObject traceObject = Instantiate( tracePrefab, this.transform.position, this.transform.rotation );
@@ -66,9 +76,10 @@ public class TraceAction : GameAction {
 		}
 	}
 
-	protected override void activateAction_CooldownAuthorized (){}
+	protected override void frameBeginAction_CooldownAuthorized (){}
 
-	protected override void deactivateAction (){}
+	protected override void frameEndAction (){}
 
+	protected override void cooldownFinishAction (){}
 	#endregion
 }

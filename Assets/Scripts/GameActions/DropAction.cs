@@ -67,11 +67,6 @@ public class DropAction : GameAction {
 
 	protected override void activateAction ()
 	{
-		Drop();
-	}
-
-	protected override void activateAction_CooldownAuthorized ()
-	{
 		return;
 	}
 
@@ -79,6 +74,23 @@ public class DropAction : GameAction {
 	{
 		return;
 	}
+
+	protected override void frameBeginAction ()
+	{
+		Drop();
+	}
+
+	protected override void frameBeginAction_CooldownAuthorized ()
+	{
+		return;
+	}
+
+	protected override void frameEndAction ()
+	{
+		return;
+	}
+
+	protected override void cooldownFinishAction (){}
 
 	#endregion
 }

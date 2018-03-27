@@ -7,7 +7,9 @@ public class AB_ScalGate_Operator : ABGateOperator<ABScalar>
 {
 	protected override ABScalar Evaluate(ABContext context)
     {
-		// TODO NOTIMPLEMENTED
-        throw new NotImplementedException();
+		ABScalar s = null;
+		ABNode input = Inputs[0];
+		s = OperatorHelper.Instance.getScalarParam(context, input);
+		return s;
     }
 }
