@@ -545,7 +545,6 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public void PauseGame()
     {
-        Debug.Log(Time.timeScale); 
         if (Time.timeScale == 1)
         {
             Time.timeScale = 0;
