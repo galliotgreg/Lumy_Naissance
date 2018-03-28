@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,10 +15,50 @@ public class ABColorParam : ABParam<ABColor>
 
 	protected override IABParam CloneParam ()
 	{
-		int red = this.value.Value == ABColor.Color.Red ? 1 : 0;
-		int green = this.value.Value == ABColor.Color.Green ? 1 : 0;
-		int blue = this.value.Value == ABColor.Color.Blue ? 1 : 0;
-		return ABParamFactory.CreateColorParam ( this.identifier, red, green, blue );
+		int red = 0;
+		int green = 0;
+		int blue = 0;
+        if (this.value.Value == ABColor.Color.Red)
+        {
+            red = 255;
+            green = 0;
+            blue = 0;
+        }
+        else if (this.value.Value == ABColor.Color.Green)
+        {
+            red = 0;
+            green = 255;
+            blue = 0;
+        }
+        else if (this.value.Value == ABColor.Color.Blue)
+        {
+            red = 0;
+            green = 0;
+            blue = 255;
+        }
+        else if (this.value.Value == ABColor.Color.Yellow)
+        {
+            red = 255;
+            green = 255;
+            blue = 0;
+        }
+        else if (this.value.Value == ABColor.Color.Magenta)
+        {
+            red = 255;
+            green = 0;
+            blue = 255;
+        }
+        else if (this.value.Value == ABColor.Color.Cyan)
+        {
+            red = 0;
+            green = 255;
+            blue = 255;
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
+        return ABParamFactory.CreateColorParam ( this.identifier, red, green, blue );
 	}
 
 	#endregion

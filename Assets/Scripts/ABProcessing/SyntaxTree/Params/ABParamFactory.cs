@@ -129,6 +129,15 @@ public class ABParamFactory
                         case "blue":
                             colorVal.Value = ABColor.Color.Blue;
                             break;
+                        case "yellow":
+                            colorVal.Value = ABColor.Color.Yellow;
+                            break;
+                        case "magenta":
+                            colorVal.Value = ABColor.Color.Magenta;
+                            break;
+                        case "cyan":
+                            colorVal.Value = ABColor.Color.Cyan;
+                            break;
                     }
                 }
                 param = new ABColorParam(identifier, colorVal);
@@ -312,13 +321,34 @@ public class ABParamFactory
     public static IABParam CreateColorParam(String identifier, int r, int g, int b)
     {
         ABColor colorVal = TypeFactory.CreateEmptyColor();
-        ABColor.Color color = ABColor.Color.Red;
-        if (g > r && g > b)
+        ABColor.Color color = ABColor.Color.None;
+        if (r == 255 && g == 0 && b == 0)
+        {
+            color = ABColor.Color.Red;
+        }
+        else if (r == 0 && g == 255 && b == 0)
         {
             color = ABColor.Color.Green;
-        } else if (b > r && b > g)
+        }
+        else if (r == 0 && g == 0 && b == 255)
         {
             color = ABColor.Color.Blue;
+        }
+        else if (r == 255 && g == 255 && b == 0)
+        {
+            color = ABColor.Color.Yellow;
+        }
+        else if (r == 255 && g == 0 && b == 255)
+        {
+            color = ABColor.Color.Magenta;
+        }
+        else if (r == 0 && g == 255 && b == 255)
+        {
+            color = ABColor.Color.Cyan;
+        }
+        else
+        {
+            throw new NotImplementedException();
         }
         colorVal.Value = color;
 

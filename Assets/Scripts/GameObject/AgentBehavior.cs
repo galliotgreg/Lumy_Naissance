@@ -14,16 +14,16 @@ public class AgentBehavior : MonoBehaviour
     private GotoAction gotoAction;
     private TraceAction traceAction;
     private LayAction layAction;
-	private StrikeAction strikeAction;
-	private PickAction pickAction;
-	private DropAction dropAction;
+    private StrikeAction strikeAction;
+    private PickAction pickAction;
+    private DropAction dropAction;
 
     /// <summary>
     /// The current Atomic Action being presseced by the agent
     /// </summary>
     private ABAction curAction;
 
-	#region Properties
+    #region Properties
     public ABAction CurAction
     {
         get
@@ -33,14 +33,17 @@ public class AgentBehavior : MonoBehaviour
 
         set
         {
-			DisableActions();
+            DisableActions();
 
             curAction = value;
-			if (curAction == null) {
-				curActionType = ActionType.None;
-			} else {
-				curActionType = value.Type;
-			}
+            if (curAction == null)
+            {
+                curActionType = ActionType.None;
+            }
+            else
+            {
+                curActionType = value.Type;
+            }
         }
     }
 
@@ -64,7 +67,7 @@ public class AgentBehavior : MonoBehaviour
             return curActionType;
         }
     }
-	#endregion
+    #endregion
 
     // Use this for initialization
     void Start()
@@ -72,129 +75,145 @@ public class AgentBehavior : MonoBehaviour
         gotoAction = GetComponent<GotoAction>();
         traceAction = GetComponent<TraceAction>();
         layAction = GetComponent<LayAction>();
-		strikeAction = GetComponent<StrikeAction>();
-		pickAction = GetComponent<PickAction>();
-		dropAction = GetComponent<DropAction>();
+        strikeAction = GetComponent<StrikeAction>();
+        pickAction = GetComponent<PickAction>();
+        dropAction = GetComponent<DropAction>();
     }
 
     // Update is called once per frame
     void Update()
     {
-		executeAction();
+        executeAction();
     }
 
     private void DisableActions()
     {
-		gotoAction.deactivate ();
-		traceAction.deactivate ();
-		layAction.deactivate ();
-		strikeAction.deactivate ();
-		pickAction.deactivate ();
-		dropAction.deactivate ();
+        gotoAction.deactivate();
+        traceAction.deactivate();
+        layAction.deactivate();
+        strikeAction.deactivate();
+        pickAction.deactivate();
+        dropAction.deactivate();
     }
 
-	private void executeAction(){
-		try{
+    private void executeAction()
+    {
+        try
+        {
 
-		//We arre between 2 IA frames
-		/*if (curActionParams == null)
-		{
-			return;
-		}*/
-		// no Action
-		if (curAction == null)
-		{
-			return;
-		}
+            //We arre between 2 IA frames
+            /*if (curActionParams == null)
+            {
+                return;
+            }*/
+            // no Action
+            if (curAction == null)
+            {
+                return;
+            }
 
-		// Inject Param on corresponding Action Script then enable it
-		switch (curActionType)
-		{
-		case ActionType.Drop:
-			dropAction.activate ();
-			break;
-		case ActionType.Goto:
-			ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams [0]);
-			gotoAction.Path = new Vector3[path.Values.Length];
-			for (int i = 0; i < path.Values.Length; i++)
-			{
-				ABVec abVec = path.Values[i];
-				Vector3 vec3 = vec2ToWorld( new Vector2( abVec.X, abVec.Y ) );
-				gotoAction.Path[i] = vec3;
-			}
+            // Inject Param on corresponding Action Script then enable it
+            switch (curActionType)
+            {
+                case ActionType.Drop:
+                    dropAction.activate();
+                    break;
+                case ActionType.Goto:
+                    ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams[0]);
+                    gotoAction.Path = new Vector3[path.Values.Length];
+                    for (int i = 0; i < path.Values.Length; i++)
+                    {
+                        ABVec abVec = path.Values[i];
+                        Vector3 vec3 = vec2ToWorld(new Vector2(abVec.X, abVec.Y));
+                        gotoAction.Path[i] = vec3;
+                    }
 
-			gotoAction.activate ();
-			break;
-		case ActionType.Hit:
-			throw new System.NotImplementedException();
-			break;
-		case ActionType.Hold:
-			throw new System.NotImplementedException();
-			break;
-		case ActionType.Lay:
-			ABText castName = ((ABText)curActionParams[0]);
-			layAction.CastName = castName.Value;
+                    gotoAction.activate();
+                    break;
+                case ActionType.Hit:
+                    throw new System.NotImplementedException();
+                    break;
+                case ActionType.Hold:
+                    throw new System.NotImplementedException();
+                    break;
+                case ActionType.Lay:
+                    ABText castName = ((ABText)curActionParams[0]);
+                    layAction.CastName = castName.Value;
 
-			layAction.activate ();
-			break;
-		case ActionType.Pick:
-			ABRef item = ((ABRef)curActionParams[0]);
-			pickAction.Item = Unit_GameObj_Manager.instance.getResource( Mathf.FloorToInt( ((ABScalar)item.GetAttr( "key" )).Value ) );
+                    layAction.activate();
+                    break;
+                case ActionType.Pick:
+                    ABRef item = ((ABRef)curActionParams[0]);
+                    pickAction.Item = Unit_GameObj_Manager.instance.getResource(Mathf.FloorToInt(((ABScalar)item.GetAttr("key")).Value));
 
-			pickAction.activate ();
-			break;
-		case ActionType.Spread:
-			throw new System.NotImplementedException();
-			break;
-		case ActionType.Trace:
-			// color
-			ABColor traceColor = ((ABColor)CurActionParams[0]);
-			switch( traceColor.Value ){
-				case ABColor.Color.Red:
-					traceAction.Color = Color.red;
-					break;
-				case ABColor.Color.Green:
-					traceAction.Color = Color.green;
-					break;
-				case ABColor.Color.Blue:
-					traceAction.Color = Color.blue;
-					break;
-			}
+                    pickAction.activate();
+                    break;
+                case ActionType.Spread:
+                    throw new System.NotImplementedException();
+                    break;
+                case ActionType.Trace:
+                    // color
+                    ABColor traceColor = ((ABColor)CurActionParams[0]);
+                    switch (traceColor.Value)
+                    {
+                        case ABColor.Color.Red:
+                            traceAction.Color = Color.red;
+                            break;
+                        case ABColor.Color.Green:
+                            traceAction.Color = Color.green;
+                            break;
+                        case ABColor.Color.Blue:
+                            traceAction.Color = Color.blue;
+                            break;
+                        case ABColor.Color.Yellow:
+                            traceAction.Color = Color.yellow;
+                            break;
+                        case ABColor.Color.Magenta:
+                            traceAction.Color = Color.magenta;
+                            break;
+                        case ABColor.Color.Cyan:
+                            traceAction.Color = Color.cyan;
+                            break;
+                    }
 
-			// path
-			ABTable<ABVec> tracePath = ((ABTable<ABVec>)curActionParams[1]);
-			traceAction.Path = new Vector3[tracePath.Values.Length];
-			for (int i = 0; i < tracePath.Values.Length; i++)
-			{
-				ABVec abVec = tracePath.Values[i];
-				Vector3 vec3 = vec2ToWorld( new Vector2( abVec.X, abVec.Y ) );
-				traceAction.Path[i] = vec3;
-			}
+                    // path
+                    ABTable<ABVec> tracePath = ((ABTable<ABVec>)curActionParams[1]);
+                    traceAction.Path = new Vector3[tracePath.Values.Length];
+                    for (int i = 0; i < tracePath.Values.Length; i++)
+                    {
+                        ABVec abVec = tracePath.Values[i];
+                        Vector3 vec3 = vec2ToWorld(new Vector2(abVec.X, abVec.Y));
+                        traceAction.Path[i] = vec3;
+                    }
 
-			traceAction.activate ();
-			break;
-		case ActionType.Strike:
-			ABRef target = ((ABRef)curActionParams [0]);
-			if (target != null) {
-				strikeAction.Target = Unit_GameObj_Manager.instance.getUnit (Mathf.FloorToInt (((ABScalar)target.GetAttr ("key")).Value));
-			}
+                    traceAction.activate();
+                    break;
+                case ActionType.Strike:
+                    ABRef target = ((ABRef)curActionParams[0]);
+                    if (target != null)
+                    {
+                        strikeAction.Target = Unit_GameObj_Manager.instance.getUnit(Mathf.FloorToInt(((ABScalar)target.GetAttr("key")).Value));
+                    }
 
-			strikeAction.activate ();
-			break;
-		case ActionType.None:
-			break;
-		}
-		
-		}
-		catch( System.Exception ex ){
-			throw new Action_Exception ( curAction, null, ex.Message );
-		}
-	}
+                    strikeAction.activate();
+                    break;
+                case ActionType.None:
+                    break;
+            }
 
-	public static Vector2 worldToVec2( Vector3 point ){
-		return new Vector2 ( point.x, point.z );
-	}
-	public static Vector3 vec2ToWorld( Vector2 point ){
-		return new Vector3 ( point.x, 0, point.y );
-	}
+        }
+        catch (System.Exception ex)
+        {
+            throw new Action_Exception(curAction, null, ex.Message);
+        }
+    }
+
+    public static Vector2 worldToVec2(Vector3 point)
+    {
+        return new Vector2(point.x, point.z);
+    }
+    public static Vector3 vec2ToWorld(Vector2 point)
+    {
+        return new Vector3(point.x, 0, point.y);
+    }
 }
