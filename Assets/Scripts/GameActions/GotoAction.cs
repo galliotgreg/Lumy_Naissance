@@ -147,8 +147,8 @@ public class GotoAction : GameAction {
             Vector3 position = vec2ToWorld(agentAttr.CurPos);
             position.y = agentAttr.transform.position.y;
 
-            Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
-            dest.y = agentAttr.transform.position.y;
+            //Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
+            //dest.y = agentAttr.transform.position.y;
 
             // Debug.DrawLine(position, dest, Color.blue);
             //Draw Line
@@ -156,7 +156,7 @@ public class GotoAction : GameAction {
             {
                 if (OptionManager.instance.DirectionLumy.isOn)
                 {
-                    DrawLine(position, dest, Color.blue, 0.2f);
+					DrawLine(position, destination, Color.blue, 0.2f);
                 }
             }
 
@@ -164,31 +164,16 @@ public class GotoAction : GameAction {
             {
                 if (OptionManager.instance.DirectionLumyJ2.isOn)
                 {
-                    DrawLine(position, dest, Color.blue, 0.2f);
+					DrawLine(position, destination, Color.blue, 0.2f);
                 }
             }
 
-			if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
+			/*if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
+			//if(!isValidPosition(destination))
             {
-				// Does it depends on the MC? : it works only when the MC has a test comparing the curPos and the TrgPos
-                /*
-				agentAttr.TrgPos = agentAttr.CurPos;
-                destination = vec2ToWorld(agentAttr.TrgPos);
-				*/
 				agentAttr.TrgPosValid = false;
 				destination = targetUnreachable (destination);
-            }/*
-            else if (path.status == NavMeshPathStatus.PathInvalid)
-            {
-                agentAttr.TrgPos = agentAttr.CurPos;
-                destination = vec2ToWorld(agentAttr.TrgPos);
-				targetUnreachable ();
             }*/
-            /*position = vec2ToWorld(agentAttr.CurPos);
-            position.y = agentAttr.transform.position.y;
-
-            dest = vec2ToWorld(agentAttr.TrgPos);
-            dest.y = agentAttr.transform.position.y;*/
            
 			navMeshAgent.acceleration = 1000;
 			navMeshAgent.speed = agentAttr.MoveSpd;
@@ -313,4 +298,34 @@ public class GotoAction : GameAction {
 		result.y = agentAttr.transform.position.y;
 		return result;
 	}
+
+	#region VALID POSITION
+	bool isNavMeshPosition( Vector3 target ){
+		// Test if there is a navmesh at the point
+		NavMeshHit hit = new NavMeshHit ();
+		if (NavMesh.SamplePosition (target, out hit, 0.5f, NavMesh.AllAreas)) {
+			return true;
+		}
+		return false;
+	}
+
+	Vector3 getValidTarget(Vector3 origin, Vector3 target){
+		// Test if there is a path to this 
+		NavMeshPath path = new NavMeshPath();
+		NavMesh.CalculatePath(origin, target, NavMesh.AllAreas, path);
+
+		if (path.status == NavMeshPathStatus.PathComplete) {
+			// if the path is complete, the target remains
+			return target;
+		} else {
+			// if the path is incomplete, the target is the last point in the path
+			if (path.corners.Length > 0) {
+				Vector3 lastPoint = path.corners [path.corners.Length - 1];
+				return lastPoint;
+			} else {
+				return origin;
+			}
+		}
+	}
+	#endregion
 }
