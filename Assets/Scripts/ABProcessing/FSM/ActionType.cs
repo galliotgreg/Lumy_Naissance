@@ -13,5 +13,6 @@ public enum ActionType
     Spread,
     Trace,
 	Strike,
+	Roaming,
     None
 }

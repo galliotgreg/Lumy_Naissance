@@ -705,7 +705,7 @@ public class SwarmEditUIController : MonoBehaviour
         string newName = swarmNameInput.text;
         if (!ValidateSwarmInfo(newName))
         {
-            MessagesManager.instance.LogMsg("Swarm info are not valide !");
+            Debug.Log("Swarm info are not valide !");
             return;
         }
 
@@ -731,15 +731,6 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool ValidateSwarmInfo(string newName)
     {
-        foreach (string swarmName in AppContextManager.instance.GetSpeciesFolderNames())
-        {
-            string lowerSwarmName = swarmName.ToLower();
-            string lowerNewName = newName.ToLower();
-            if (lowerNewName == lowerSwarmName)
-            {
-                return false;
-            }
-        }
         return true;
     }
 
@@ -771,7 +762,7 @@ public class SwarmEditUIController : MonoBehaviour
         //Prevent removing last
         if (AppContextManager.instance.ActiveSpecie.Casts.Count < 2)
         {
-            MessagesManager.instance.LogMsg("You cannot remove the last lumy");
+            Debug.Log("You cannot remove the last lumy");
             return;
         }
 
@@ -803,7 +794,7 @@ public class SwarmEditUIController : MonoBehaviour
         string newName = renameLumyInput.GetComponent<Text>().text;
         if (!ValidateName(newName))
         {
-            MessagesManager.instance.LogMsg("The new name is not valide !");
+            Debug.Log("The new name is not valide !");
             return;
         }
 
@@ -845,15 +836,6 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool ValidateName(string newName)
     {
-        foreach (string swarmName in AppContextManager.instance.ActiveSpecie.Casts.Keys)
-        {
-            string lowerSwarmName = swarmName.ToLower();
-            string lowerNewName = newName.ToLower();
-            if (lowerNewName == lowerSwarmName)
-            {
-                return false;
-            }
-        }
         return true;
     }
 
