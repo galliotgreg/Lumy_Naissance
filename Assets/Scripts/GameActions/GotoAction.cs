@@ -115,8 +115,8 @@ public class GotoAction : GameAction {
             dest.y = agentAttr.transform.position.y;
 
             // Debug.DrawLine(position, dest, Color.blue);
-            //Draw Line 
-            if(OptionManager.instance.DirectionLumy != null)
+            //Draw Line
+            if (OptionManager.instance.DirectionLumy != null)
             {
                 if (OptionManager.instance.DirectionLumy.isOn)
                 {
@@ -124,8 +124,10 @@ public class GotoAction : GameAction {
                 }
             }
 
-            if (OptionManager.instance.DirectionLumyJ2 != null) {
-                if (OptionManager.instance.DirectionLumyJ2.isOn) {
+            if (OptionManager.instance.DirectionLumyJ2 != null)
+            {
+                if (OptionManager.instance.DirectionLumyJ2.isOn)
+                {
                     DrawLine(position, dest, Color.blue, 0.2f);
                 }
             }
