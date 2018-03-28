@@ -152,7 +152,7 @@ public class GotoAction : GameAction {
 
             // Debug.DrawLine(position, dest, Color.blue);
             //Draw Line
-            if (OptionManager.instance.DirectionLumy != null)
+            if (OptionManager.instance.DirectionLumy != null && Time.timeScale == 1)
             {
                 if (OptionManager.instance.DirectionLumy.isOn)
                 {
@@ -160,7 +160,7 @@ public class GotoAction : GameAction {
                 }
             }
 
-            if (OptionManager.instance.DirectionLumyJ2 != null)
+            if (OptionManager.instance.DirectionLumyJ2 != null && Time.timeScale == 1)
             {
                 if (OptionManager.instance.DirectionLumyJ2.isOn)
                 {
