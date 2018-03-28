@@ -1,4 +1,16 @@
 States,Name,Type
 0,INIT,Init
+1,goto elsewhere,trigger{goto}
 ,,
 Transitions,Start State,End State
+0,INIT,goto elsewhere
+,,
+Syntax Tree,output,
+1,goto elsewhere->0,
+Nodes,Type,output (Node -> Input)
+0,operator{V[]aggV*},
+1,operator{VrandCircleVS},0->0
+2,operator{VgetRT},1->0
+3,param{ref:self},2->0
+4,param{const txt=curPos},2->1
+5,param{const scal=5},1->1

@@ -9,6 +9,10 @@ public class ABColor : IABSimpleType
         Red,
         Green,
         Blue,
+        Yellow,
+        Magenta,
+        Cyan,
+        None
     }
 
     private Color value;

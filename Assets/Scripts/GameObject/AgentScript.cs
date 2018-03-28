@@ -355,10 +355,10 @@ public class AgentScript : MonoBehaviour {
 
 		public ResourceCost(){
 			resources = new Dictionary<string, int>();
-			foreach( ABColor.Color color in System.Enum.GetValues( typeof( ABColor.Color ) ) ){
-				resources.Add( color.ToString(), 0 );
-			}
-		}
+			resources.Add( ABColor.Color.Red.ToString(), 0 );
+            resources.Add(ABColor.Color.Green.ToString(), 0);
+            resources.Add(ABColor.Color.Blue.ToString(), 0);
+        }
 		public ResourceCost( Dictionary<string, int> newResources ){
 			this.resources = newResources;
 		}

@@ -31,7 +31,7 @@ public class ABManager : MonoBehaviour
     }
 
     //[SerializeField]
-    private float fps = 1f;
+    private float fps = 5f;
     private float cooldown = -1f;
     [SerializeField]
     private string inputsFolderPath = "Inputs/";

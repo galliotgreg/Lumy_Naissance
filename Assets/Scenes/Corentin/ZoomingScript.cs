@@ -12,6 +12,8 @@ public class ZoomingScript : MonoBehaviour
     private GameObject dialogBox;
     private bool isZoomable = true;
     private int fingerID = -1;
+    [SerializeField]
+    private DropArea zommingZone;
 
     void Update()
     {
@@ -21,7 +23,7 @@ public class ZoomingScript : MonoBehaviour
         }
         else isZoomable = true;
 
-        if (isZoomable )//&& (!EventSystem.current.IsPointerOverGameObject(fingerID)))
+        if (isZoomable && zommingZone.CanDrop)
         {
             float prev_size = GameObject.Find("Camera").GetComponent<Camera>().orthographicSize;
             float new_size = prev_size - Input.GetAxis("Mouse ScrollWheel") * sensitivity;
