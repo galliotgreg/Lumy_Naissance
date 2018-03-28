@@ -73,12 +73,12 @@ public abstract class GameAction : MonoBehaviour {
 
 		if (coolDownElapsed && coolDownTime > 0)
 		{
-			executeAction();
+			bool activeCooldown = executeAction ();
 			coolDownElapsed = false;
-			if( coolDownActivate ){
-				Invoke("EndCooldown", coolDownTime*actionStepTime);
+			if ( coolDownActivate && activeCooldown ) {
+				Invoke ("EndCooldown", coolDownTime * actionStepTime);
 			} else {
-				EndCooldown();
+				EndCooldown ();
 			}
 		}
 	}
@@ -130,7 +130,8 @@ public abstract class GameAction : MonoBehaviour {
 	/// <summary>
 	/// Executes the action during Update method (Considers the cooldownTime and activated attributes)
 	/// </summary>
-	protected abstract void executeAction();
+	/// <returns>if the cooldown must be activated</returns>
+	protected abstract bool executeAction();
 
 	/// <summary>
 	/// Called at the activation of an activity (when it is reached in the behavior tree)

@@ -45,7 +45,7 @@ public class GotoAction : GameAction {
 		movingAgent = GetComponent<UnityEngine.AI.NavMeshAgent> ();
 	}
 
-	protected override void executeAction ()
+	protected override bool executeAction ()
 	{
 		Vector2 curPos = agentAttr.CurPos;
 
@@ -66,6 +66,9 @@ public class GotoAction : GameAction {
 
 		// Use Unity A* to move
 		moveTo (agentAttr, movingAgent);
+
+		// reset cooldown : in the case cooldownactivate is false, it does not matter
+		return this.CoolDownActivate;
     }
 
 	protected override void activateAction ()
@@ -166,10 +169,12 @@ public class GotoAction : GameAction {
 			if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
             {
 				// Does it depends on the MC? : it works only when the MC has a test comparing the curPos and the TrgPos
-                /*agentAttr.TrgPos = agentAttr.CurPos;
-                destination = vec2ToWorld(agentAttr.TrgPos);*/
+                /*
+				agentAttr.TrgPos = agentAttr.CurPos;
+                destination = vec2ToWorld(agentAttr.TrgPos);
+				*/
 				agentAttr.TrgPosValid = false;
-				targetUnreachable ();
+				destination = targetUnreachable (destination);
             }/*
             else if (path.status == NavMeshPathStatus.PathInvalid)
             {
@@ -294,13 +299,16 @@ public class GotoAction : GameAction {
 	/// </summary>
 	/// <param name="index">Index of the reached point in the path</param>
 	protected virtual void targetReached( int index ){
-		Debug.LogError ("OPAAAAAAAAAAAAAAAAAAAA");
 	}
 
 	/// <summary>
 	/// Called when the path is unreachable
 	/// </summary>
-	protected virtual void targetUnreachable(){
-		Debug.LogError ("OPEEEEEEEEEEEEEEEE");
+	/// <returns>A new destination</returns>
+	protected virtual Vector3 targetUnreachable( Vector3 currentDestination ){
+		agentAttr.TrgPos = agentAttr.CurPos;
+		Vector3 result = vec2ToWorld (agentAttr.TrgPos);
+		result.y = agentAttr.transform.position.y;
+		return result;
 	}
 }

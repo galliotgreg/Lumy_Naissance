@@ -85,11 +85,18 @@ public class LayAction : GameAction {
 		this.CoolDownActivate = true;
 	}
 
-	protected override void executeAction (){}
+	protected override bool executeAction (){
+		if (!this.layDemand) {
+			this.CoolDownTime = 0.01f;
+		}
+		return true; // consider new cooldown when reset
+	}
 
 	protected override void activateAction (){}
 
-	protected override void deactivateAction (){}
+	protected override void deactivateAction (){
+		this.CoolDownTime = 0.01f;
+	}
 
 	protected override void frameBeginAction (){}
 

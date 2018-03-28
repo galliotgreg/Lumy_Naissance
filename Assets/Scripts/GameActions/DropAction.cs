@@ -60,9 +60,10 @@ public class DropAction : GameAction {
 		this.CoolDownActivate = false;
 	}
 
-	protected override void executeAction ()
+	protected override bool executeAction ()
 	{
-		return;
+		// reset cooldown : in the case cooldownactivate is false, it does not matter
+		return this.CoolDownActivate;
 	}
 
 	protected override void activateAction ()

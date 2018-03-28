@@ -39,7 +39,10 @@ public class TraceAction : GameAction {
 		this.CoolDownActivate = false;
 	}
 
-	protected override void executeAction (){}
+	protected override bool executeAction (){
+		// reset cooldown : in the case cooldownactivate is false, it does not matter
+		return this.CoolDownActivate;
+	}
 
 	protected override void activateAction ()
 	{

@@ -63,13 +63,14 @@ public class PickAction : GameAction {
 	}
 
 	//float lastPick = 0; // TEST : store time of last pick
-	protected override void executeAction ()
+	protected override bool executeAction ()
 	{
 		/*Debug.LogError ( "***********SPEED = "+this.agentAttr.ActSpd );
 		Debug.LogError ( "COOLDOWN = "+this.CoolDownTime );
 		Debug.LogError ( Time.time - lastPick );
 		lastPick = Time.time;*/
 		Pick ();
+		return true;
 	}
 
 	protected override void activateAction ()

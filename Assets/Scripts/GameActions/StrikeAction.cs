@@ -65,7 +65,7 @@ public class StrikeAction : GameAction {
 	}
 
 	//float lastAction = 0; // TEST : store time of last action
-	protected override void executeAction ()
+	protected override bool executeAction ()
 	{
 		/*
 		// TEST
@@ -75,6 +75,7 @@ public class StrikeAction : GameAction {
 		lastAction = Time.time;*/
 
 		Strike ();
+		return true;
 	}
 
 	protected override void activateAction ()

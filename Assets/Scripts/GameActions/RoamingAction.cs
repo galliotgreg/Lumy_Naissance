@@ -76,8 +76,10 @@ public class RoamingAction : GotoAction {
 	/// <summary>
 	/// Called when the path is unreachable
 	/// </summary>
-	protected override void targetUnreachable(){
+	/// <returns>A new destination</returns>
+	protected override Vector3 targetUnreachable( Vector3 currentDestination ){
 		newTarget();
+		return currentDestination;
 	}
 	#endregion
 
