@@ -14,6 +14,7 @@ public class InGameUIController : MonoBehaviour {
 
     private float startTime = 2.0f;
     private bool winState = false;
+    private bool alreadyClosed = false; 
 
     #region UIVariables
     #region PlayerInfosPanel
@@ -141,6 +142,10 @@ public class InGameUIController : MonoBehaviour {
     private GameObject unitGoJ1;
     [SerializeField]
     private GameObject unitGoJ2;
+    [SerializeField]
+    private GameObject contentParentJ1;
+    [SerializeField]
+    private GameObject contentParentJ2;
     [SerializeField]
     private Text unitCostRedText;
     [SerializeField]
@@ -566,44 +571,62 @@ public class InGameUIController : MonoBehaviour {
     private void ExitGame()
     
     {
-      
-        if (OperatorHelper.Instance != null)
+       if(alreadyClosed)
         {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+            return; 
         }
-        CheckPause();
-        NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene"); 
-    }
-    private void GoToCasteMenu()
-    {
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.SwapScenesWithoutZoom("EditeurCastesScene");
-    }
-
-    private void GoToMainMenu()
-    {
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
-      
-    }
-
-    private void GoToPersonnalizedMap()
-    {
         if (OperatorHelper.Instance != null)
         {
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
         CheckPause();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
+        alreadyClosed = true; 
+    }
+    private void GoToCasteMenu()
+    {
+        if(alreadyClosed)
+        {
+            return; 
+        }
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        CheckPause();
+        NavigationManager.instance.SwapScenesWithoutZoom("EditeurCastesScene");
+        alreadyClosed = true;
+    }
 
+
+    private void GoToMainMenu()
+    {
+        if(alreadyClosed)
+        {
+            return; 
+        }
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        CheckPause();
+        NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
+        alreadyClosed = true; 
+    }
+
+    private void GoToPersonnalizedMap()
+    {
+        if(alreadyClosed)
+        {
+            return; 
+        }
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        CheckPause();
+        NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
+        alreadyClosed = true; 
     }
 
     private void OpenOptionsDebug() {
@@ -818,7 +841,8 @@ public class InGameUIController : MonoBehaviour {
                 go.transform.GetChild(1).GetComponent<Text>().color = Color.blue;
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
-                go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
+                //go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
+                go.transform.SetParent(contentParentJ1.transform);
             }
         }
     }
@@ -841,7 +865,8 @@ public class InGameUIController : MonoBehaviour {
                 go.transform.GetChild(1).GetComponent<Text>().color = Color.red;
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
-                go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
+                //go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
+                go.transform.SetParent(contentParentJ2.transform);
             }
         }
     }

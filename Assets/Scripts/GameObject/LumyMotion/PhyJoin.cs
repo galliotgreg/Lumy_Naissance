@@ -118,11 +118,25 @@ public class PhyJoin : MonoBehaviour {
 
     private void UpdateRotation()
     {
-        if (SrcBone != null)
+        //if (SrcBone != null)
+        //{
+        //    gameObject.transform.Rotate(new Vector3(0, SrcBone.transform.rotation.y /2, 0));  
+        //}
+
+        if (DstBones != null && DstBones.Length == 1)
         {
-            gameObject.transform.Rotate(new Vector3(0, SrcBone.transform.rotation.y /2, 0));
+            PhyJoin nextJoin = DstBones[0].HeadJoin;
+            Vector3 dir = (nextJoin.transform.position - transform.position).normalized;
+            float angle = Vector3.SignedAngle(Vector3.right, dir, Vector3.up);
+            if (transform.parent.name == "Head") {
+                angle += 90f;
+            } else
+            {
+                angle -= 90f;
+            }
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
         }
-       
+
     }
 
     private void LerpLight()

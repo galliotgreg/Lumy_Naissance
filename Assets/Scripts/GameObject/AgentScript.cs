@@ -60,8 +60,11 @@ public class AgentScript : MonoBehaviour {
 	private float visionRange;
 
     [SerializeField]
-    private GameObject mineral;  
-
+    private GameObject mineralRed;
+    [SerializeField]
+    private GameObject mineralGreen;
+    [SerializeField]
+    private GameObject mineralBlue;
 
     private List<GameObject> carryingResources = new List<GameObject>();
 
@@ -267,10 +270,22 @@ public class AgentScript : MonoBehaviour {
         ResourceScript resource = resourceGO.GetComponent<ResourceScript>(); 
         resource.Stock -= 1;
         //ResourceMineral 
+        GameObject res = new GameObject();
+        if (resource.Color == Color.red)
+        {
+            res = Instantiate(mineralRed);
+        }
+        else if(resource.Color == Color.blue)
+        {
+            res = Instantiate(mineralBlue);
 
-       
-        GameObject res  = Instantiate(mineral);
-        
+        }
+        else if (resource.Color == Color.green)
+        {
+            res = Instantiate(mineralGreen);
+
+        }
+
 
         res.transform.SetParent(this.transform);
         res.transform.position = res.transform.parent.position;
