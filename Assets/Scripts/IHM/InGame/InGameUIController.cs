@@ -14,6 +14,7 @@ public class InGameUIController : MonoBehaviour {
 
     private float startTime = 2.0f;
     private bool winState = false;
+    private bool alreadyClosed = false; 
 
     #region UIVariables
     #region PlayerInfosPanel
@@ -570,44 +571,62 @@ public class InGameUIController : MonoBehaviour {
     private void ExitGame()
     
     {
-      
-        if (OperatorHelper.Instance != null)
+       if(alreadyClosed)
         {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+            return; 
         }
-        CheckPause();
-        NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene"); 
-    }
-    private void GoToCasteMenu()
-    {
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.SwapScenesWithoutZoom("EditeurCastesScene");
-    }
-
-    private void GoToMainMenu()
-    {
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
-      
-    }
-
-    private void GoToPersonnalizedMap()
-    {
         if (OperatorHelper.Instance != null)
         {
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
         CheckPause();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
+        alreadyClosed = true; 
+    }
+    private void GoToCasteMenu()
+    {
+        if(alreadyClosed)
+        {
+            return; 
+        }
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        CheckPause();
+        NavigationManager.instance.SwapScenesWithoutZoom("EditeurCastesScene");
+        alreadyClosed = true;
+    }
 
+
+    private void GoToMainMenu()
+    {
+        if(alreadyClosed)
+        {
+            return; 
+        }
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        CheckPause();
+        NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
+        alreadyClosed = true; 
+    }
+
+    private void GoToPersonnalizedMap()
+    {
+        if(alreadyClosed)
+        {
+            return; 
+        }
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        CheckPause();
+        NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
+        alreadyClosed = true; 
     }
 
     private void OpenOptionsDebug() {
