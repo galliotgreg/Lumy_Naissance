@@ -29,6 +29,8 @@ public class ABActionFactory {
                 return ActionType.Trace;
 			case "strike":
 				return ActionType.Strike;
+			case "roaming":
+				return ActionType.Roaming;
         }
         return ActionType.None;
     }
@@ -64,6 +66,9 @@ public class ABActionFactory {
                 break;
 			case ActionType.Strike:
 				action = new ABStrikeAction();
+				break;
+			case ActionType.Roaming:
+				action = new ABRoamingAction();
 				break;
         }
 

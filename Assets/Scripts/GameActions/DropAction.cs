@@ -60,17 +60,13 @@ public class DropAction : GameAction {
 		this.CoolDownActivate = false;
 	}
 
-	protected override void executeAction ()
+	protected override bool executeAction ()
 	{
-		return;
+		// reset cooldown : in the case cooldownactivate is false, it does not matter
+		return this.CoolDownActivate;
 	}
 
 	protected override void activateAction ()
-	{
-		Drop();
-	}
-
-	protected override void activateAction_CooldownAuthorized ()
 	{
 		return;
 	}
@@ -79,6 +75,23 @@ public class DropAction : GameAction {
 	{
 		return;
 	}
+
+	protected override void frameBeginAction ()
+	{
+		Drop();
+	}
+
+	protected override void frameBeginAction_CooldownAuthorized ()
+	{
+		return;
+	}
+
+	protected override void frameEndAction ()
+	{
+		return;
+	}
+
+	protected override void cooldownFinishAction (){}
 
 	#endregion
 }

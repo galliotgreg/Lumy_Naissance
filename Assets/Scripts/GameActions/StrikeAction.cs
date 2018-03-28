@@ -65,7 +65,7 @@ public class StrikeAction : GameAction {
 	}
 
 	//float lastAction = 0; // TEST : store time of last action
-	protected override void executeAction ()
+	protected override bool executeAction ()
 	{
 		/*
 		// TEST
@@ -75,14 +75,10 @@ public class StrikeAction : GameAction {
 		lastAction = Time.time;*/
 
 		Strike ();
+		return true;
 	}
 
 	protected override void activateAction ()
-	{
-		return;
-	}
-
-	protected override void activateAction_CooldownAuthorized ()
 	{
 		return;
 	}
@@ -91,6 +87,23 @@ public class StrikeAction : GameAction {
 	{
 		return;
 	}
+
+	protected override void frameBeginAction ()
+	{
+		return;
+	}
+
+	protected override void frameBeginAction_CooldownAuthorized ()
+	{
+		return;
+	}
+
+	protected override void frameEndAction ()
+	{
+		return;
+	}
+
+	protected override void cooldownFinishAction (){}
 
 	#endregion
 }

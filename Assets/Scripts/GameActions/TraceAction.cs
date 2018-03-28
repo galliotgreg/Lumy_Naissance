@@ -39,9 +39,22 @@ public class TraceAction : GameAction {
 		this.CoolDownActivate = false;
 	}
 
-	protected override void executeAction (){}
+	protected override bool executeAction (){
+		// reset cooldown : in the case cooldownactivate is false, it does not matter
+		return this.CoolDownActivate;
+	}
 
 	protected override void activateAction ()
+	{
+		return;
+	}
+
+	protected override void deactivateAction ()
+	{
+		return;
+	}
+
+	protected override void frameBeginAction ()
 	{
 		// TraceScript
 		if( tracePrefab != null ){
@@ -66,9 +79,10 @@ public class TraceAction : GameAction {
 		}
 	}
 
-	protected override void activateAction_CooldownAuthorized (){}
+	protected override void frameBeginAction_CooldownAuthorized (){}
 
-	protected override void deactivateAction (){}
+	protected override void frameEndAction (){}
 
+	protected override void cooldownFinishAction (){}
 	#endregion
 }
