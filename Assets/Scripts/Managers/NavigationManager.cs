@@ -174,6 +174,9 @@ public class NavigationManager : MonoBehaviour {
         canvas = GameObject.Find(nextScene + "Canvas");
         canvas.SetActive(false);
 
+        // Désactiver l'interactabilité du nouveau canvas
+        canvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
         // Attendre la fin du déchargement de la scène initiale
         AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
         while (!unload.isDone)
@@ -236,6 +239,9 @@ public class NavigationManager : MonoBehaviour {
             canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
             yield return true;
         }
+
+        // Réactiver l'interactabilité du nouveau canvas
+        canvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
 
         // Mettre à jour la caméra du canvas
         canvas.GetComponent<Canvas>().worldCamera = camera;
