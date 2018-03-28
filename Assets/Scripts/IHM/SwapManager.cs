@@ -21,6 +21,8 @@ public class SwapManager : MonoBehaviour
     private string keyPlayerDirectionLumy = "DirectionLumyKey";
     private string keyPlayerTrace = "TraceKey";
     private string KeyPlayerGisement = "GisementKey";
+    private string KeyPlayerToutAfficher = "ToutAfficherKey";
+    private string KeyPlayerToutDesactiver = "ToutDesactiverKey";
 
     // The static instance of the Singleton for external access
     public static SwapManager instance = null;
@@ -206,6 +208,14 @@ public class SwapManager : MonoBehaviour
         PlayerPrefs.SetInt(KeyPlayerGisement, state ? 0 : 1);
     }
 
+    public void setPlayerToutDesactiverKey(bool state)
+    {
+        PlayerPrefs.SetInt(KeyPlayerToutDesactiver, state ? 0 : 1);
+    }
+    public void setPlayerToutAfficherKey(bool state)
+    {
+        PlayerPrefs.SetInt(KeyPlayerToutAfficher, state ? 0 : 1);
+    }
     #endregion
 
 
@@ -448,6 +458,31 @@ public class SwapManager : MonoBehaviour
     public bool getPlayerGisementKey()
     {
         int value = PlayerPrefs.GetInt(KeyPlayerGisement);
+        if (value == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool getPlayerToutAfficherKey()
+    {
+        int value = PlayerPrefs.GetInt(KeyPlayerToutAfficher);
+        if (value == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool getPlayerToutDesactiverKey()
+    {
+        int value = PlayerPrefs.GetInt(KeyPlayerToutDesactiver);
         if (value == 0)
         {
             return true;

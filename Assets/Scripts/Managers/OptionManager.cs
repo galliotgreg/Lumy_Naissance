@@ -596,7 +596,11 @@ public class OptionManager : MonoBehaviour {
     //Getter/setters Player preferences debug
     public void setPlayerPreferencesDebug()
     {
+        #region set player preference general 
         SwapManager.instance.setPlayerGisementKey(gisements.isOn);
+        SwapManager.instance.setPlayerToutAfficherKey(toutActiver.isOn);
+        SwapManager.instance.setPlayerToutDesactiverKey(toutDesactiver.isOn);
+        #endregion
         #region set Player J1 preference Debug
         SwapManager.instance.setPlayerAtkKey(PlayerAuthority.Player1, atkRange.isOn);
         SwapManager.instance.setPlayerVisionKey(PlayerAuthority.Player1, visionRange.isOn);
@@ -607,20 +611,24 @@ public class OptionManager : MonoBehaviour {
         SwapManager.instance.setPlayerTraceKey(PlayerAuthority.Player1, trace.isOn);
         #endregion
         #region set Player J2 preference Debug
-        SwapManager.instance.setPlayerAtkKey(PlayerAuthority.Player2, OptionManager.instance.atkRangeJ2);
-        SwapManager.instance.setPlayerVisionKey(PlayerAuthority.Player2, OptionManager.instance.visionRangeJ2);
-        SwapManager.instance.setPlayerPickKey(PlayerAuthority.Player2, OptionManager.instance.pickRangeJ2);
-        SwapManager.instance.setPlayerLifeBarKey(PlayerAuthority.Player2, OptionManager.instance.lifeBarJ2);
-        SwapManager.instance.setPlayerLumyNameKey(PlayerAuthority.Player2, OptionManager.instance.lumyNameJ2);
-        SwapManager.instance.setPlayerDirectionLumyKey(PlayerAuthority.Player2, OptionManager.instance.directionLumyJ2);
-        SwapManager.instance.setPlayerTraceKey(PlayerAuthority.Player2, OptionManager.instance.traceJ2);
+        SwapManager.instance.setPlayerAtkKey(PlayerAuthority.Player2, atkRangeJ2.isOn);
+        SwapManager.instance.setPlayerVisionKey(PlayerAuthority.Player2, visionRangeJ2.isOn);
+        SwapManager.instance.setPlayerPickKey(PlayerAuthority.Player2, pickRangeJ2.isOn);
+        SwapManager.instance.setPlayerLifeBarKey(PlayerAuthority.Player2, lifeBarJ2.isOn);
+        SwapManager.instance.setPlayerLumyNameKey(PlayerAuthority.Player2,lumyNameJ2.isOn);
+        SwapManager.instance.setPlayerDirectionLumyKey(PlayerAuthority.Player2,directionLumyJ2.isOn);
+        SwapManager.instance.setPlayerTraceKey(PlayerAuthority.Player2,traceJ2.isOn);
         #endregion
         
     }
 
     public void getPlayerPreferencesDebug()
     {
+        #region set Player preference General
         gisements.isOn = SwapManager.instance.getPlayerGisementKey();
+        toutDesactiver.isOn = SwapManager.instance.getPlayerToutDesactiverKey();
+        toutActiver.isOn = SwapManager.instance.getPlayerToutAfficherKey();
+        #endregion
         #region set Player J1 preference Debug
         atkRange.isOn = SwapManager.instance.getPlayerAtkKey(PlayerAuthority.Player1);
         visionRange.isOn = SwapManager.instance.getPlayerVisionKey(PlayerAuthority.Player1);
