@@ -31,7 +31,7 @@ public class ABManager : MonoBehaviour
     }
 
     //[SerializeField]
-    private float fps = 1f;
+    private float fps = 5f;
     private float cooldown = -1f;
     [SerializeField]
     private string inputsFolderPath = "Inputs/";
@@ -230,6 +230,12 @@ public class ABManager : MonoBehaviour
 									((AB_TxtGate_Operator)action.Parameters[i]).EvaluateOperator(context);
 	                            actionParams.Add(param);
 	                        }
+							if (action.Parameters[i] is AB_ScalGate_Operator)
+							{
+								IABType param =
+									((AB_ScalGate_Operator)action.Parameters[i]).EvaluateOperator(context);
+								actionParams.Add(param);
+							}
 	                        else if (action.Parameters[i] is AB_VecTabGate_Operator)
 	                        {
 	                            IABType param =
@@ -260,7 +266,7 @@ public class ABManager : MonoBehaviour
 					throw new Action_Exception ( action, context, someEx.Message );
 				}
 
-                agent.setAction(action, actionParams.ToArray());
+				agent.setFrame(action, actionParams.ToArray());
 			}
 			catch( SyntaxTree_MC_Exception syntaxEx ){
 				string cast = "";

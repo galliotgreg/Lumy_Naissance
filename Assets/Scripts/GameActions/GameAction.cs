@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class GameAction : MonoBehaviour {
 	
 	// a value indicating whether this <see cref="GameAction"/> is activated.
-	protected bool activated;
+	protected bool activated = false;
 
 	private bool coolDownElapsed = true;
 
@@ -45,8 +45,8 @@ public abstract class GameAction : MonoBehaviour {
 		}
 	}
 
-	private bool CoolDownAuthorized = true;		// Indicates if the cooldown authorizes the execution of the action
-	private bool firstExecution = true;			// Indicates the first execution of the action
+	//private bool CoolDownAuthorized = true;		// Indicates if the cooldown authorizes the execution of the action
+	//private bool firstExecution = true;			// Indicates the first execution of the action
 
 	/// <summary>
 	/// The agent entity.
@@ -73,15 +73,12 @@ public abstract class GameAction : MonoBehaviour {
 
 		if (coolDownElapsed && coolDownTime > 0)
 		{
-			CoolDownAuthorized = !firstExecution; // As the action is executed on ActivateAction, and the authorization is given by ExecuteAction (which is executed by default), it avoids the incorrect authorization during the first execution
-			firstExecution = false;
-
-			executeAction();
+			bool activeCooldown = executeAction ();
 			coolDownElapsed = false;
-			if( coolDownActivate ){
-				Invoke("EndCooldown", coolDownTime*actionStepTime);
+			if ( coolDownActivate && activeCooldown ) {
+				Invoke ("EndCooldown", coolDownTime * actionStepTime);
 			} else {
-				EndCooldown();
+				EndCooldown ();
 			}
 		}
 	}
@@ -89,23 +86,39 @@ public abstract class GameAction : MonoBehaviour {
 	private void EndCooldown()
 	{
 		coolDownElapsed = true;
+		cooldownFinishAction ();
+
+		//CoolDownAuthorized = true;
+		//CoolDownAuthorized = !firstExecution; // As the action is executed on FrameBeginAction, and the authorization is given by ExecuteAction (which is executed by default), it avoids the incorrect authorization during the first execution
+		//firstExecution = false;
 	}
 
 	public void activate(){
 		if (!activated) {
-			activateAction ();
-			if (CoolDownAuthorized) {
-				this.CoolDownAuthorized = false;
-				activateAction_CooldownAuthorized ();
-			}
 			activated = true;
+			activateAction ();
+		}
+	}
+	public void deactivate(){
+		if (activated) {
+			activated = false;
+			deactivateAction ();
 		}
 	}
 
-	public void deactivate(){
+	public void frameBegin(){
 		if (activated) {
-			deactivateAction ();
-			activated = false;
+			frameBeginAction ();
+			if (coolDownElapsed) {
+				//this.CoolDownAuthorized = false;
+				frameBeginAction_CooldownAuthorized ();
+			}
+		}
+	}
+
+	public void frameEnd(){
+		if (activated) {
+			frameEndAction ();
 		}
 	}
 
@@ -117,20 +130,36 @@ public abstract class GameAction : MonoBehaviour {
 	/// <summary>
 	/// Executes the action during Update method (Considers the cooldownTime and activated attributes)
 	/// </summary>
-	protected abstract void executeAction();
+	/// <returns>if the cooldown must be activated</returns>
+	protected abstract bool executeAction();
 
 	/// <summary>
-	/// Called when an action is activated (at the start of each frame that the action is activated)
+	/// Called at the activation of an activity (when it is reached in the behavior tree)
 	/// </summary>
 	protected abstract void activateAction();
 
 	/// <summary>
-	/// Called when an action is activated (at the start of each frame that the action is activated) IF the cooldown authorizes it
+	/// Called at the deactivation of an activity (when it is no more reached in the behavior tree)
 	/// </summary>
-	protected abstract void activateAction_CooldownAuthorized();
+	protected abstract void deactivateAction();
+
+	/// <summary>
+	/// Called at the moment where a the cooldown is finished
+	/// </summary>
+	protected abstract void cooldownFinishAction();
+
+	/// <summary>
+	/// Called at the start of each frame that the action is activated
+	/// </summary>
+	protected abstract void frameBeginAction();
+
+	/// <summary>
+	/// Called at the start of each frame that the action is activated IF the cooldown authorizes it
+	/// </summary>
+	protected abstract void frameBeginAction_CooldownAuthorized();
 
 	/// <summary>
 	/// Called when an action is deactivated.
 	/// </summary>
-	protected abstract void deactivateAction();
+	protected abstract void frameEndAction();
 }
