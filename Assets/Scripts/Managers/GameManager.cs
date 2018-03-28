@@ -398,8 +398,8 @@ public class GameManager : MonoBehaviour {
         p2_queen.GetComponent<AgentEntity>().GameParams =
             gameParam.GetComponent<GameParamsScript>();
 
-		Unit_GameObj_Manager.instance.addUnit( p1_queen.GetComponent<AgentEntity>(), p1_hiveScript );
-		Unit_GameObj_Manager.instance.addUnit( p2_queen.GetComponent<AgentEntity>(), p2_hiveScript );
+		Unit_GameObj_Manager.instance.addPrysme( p1_queen.GetComponent<AgentEntity>(), p1_hiveScript );
+		Unit_GameObj_Manager.instance.addPrysme( p2_queen.GetComponent<AgentEntity>(), p2_hiveScript );
 
         InitResources();
         SetResources();
