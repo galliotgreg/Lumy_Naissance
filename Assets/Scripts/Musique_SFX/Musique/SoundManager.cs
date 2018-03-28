@@ -72,22 +72,23 @@ public class SoundManager : MonoBehaviour {
             Destroy(gameObject);
 
         //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
-        DontDestroyOnLoad(gameObject);
-    }
-    void Start()
-    {
-        string scene = NavigationManager.instance.GetCurrentScene();
-        //TODO Load Music in the right scene        
-    }
-    
+        //DontDestroyOnLoad(gameObject);
+    }   
+
     #region Music Functions
     public void PlayIntroTheme()
     {
         RandomizeClips(introThemeClips, musicSource);
     }
+
     public void PlayMainTheme()
     {
-        RandomizeClips(mainThemeClips, musicSource);
+        //RandomizeClips(mainThemeClips, musicSource);
+        menuFxSource.clip = mainThemeClips[0];                
+        menuFxSource.Play();
+
+        StartCoroutine(WaitAndPlay(mainThemeClips[0], mainThemeClips[1], musicSource));
+        musicSource.loop = true;   
     }
     public void PlayGlossaireTheme()
     {
@@ -224,5 +225,12 @@ public class SoundManager : MonoBehaviour {
             aSource.Play();
         }
         
+    }
+
+    private IEnumerator WaitAndPlay(AudioClip clip, AudioClip waitingClip, AudioSource source)
+    {
+        yield return new WaitForSeconds(clip.length);
+        source.clip = waitingClip;
+        source.Play();
     }
 }
