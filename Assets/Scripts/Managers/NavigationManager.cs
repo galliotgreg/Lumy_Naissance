@@ -65,6 +65,10 @@ public class NavigationManager : MonoBehaviour {
 
     IEnumerator InitSceneLayers()
     {
+        GameObject darkScreen = GameObject.Find("DarkScreen");
+        Image darkImg = darkScreen.GetComponent<Image>();
+        float darkAlpha = darkImg.color.a;
+
         AsyncOperation loadScene = SceneManager.LoadSceneAsync(initialScene, LoadSceneMode.Additive);
         while (!loadScene.isDone)
         {
@@ -76,6 +80,15 @@ public class NavigationManager : MonoBehaviour {
         {
             yield return null;
         }
+
+        // Fondre depuis le noir
+        while (darkAlpha > 0f)
+        {
+            darkAlpha = darkScreen.GetComponent<Image>().color.a;
+            darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a - fadeStep);
+            yield return true;
+        }
+
         currentScene = initialScene;
         currentLayer = layerToLoad;
 
@@ -174,6 +187,9 @@ public class NavigationManager : MonoBehaviour {
         canvas = GameObject.Find(nextScene + "Canvas");
         canvas.SetActive(false);
 
+        // Désactiver l'interactabilité du nouveau canvas
+        canvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
         // Attendre la fin du déchargement de la scène initiale
         AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
         while (!unload.isDone)
@@ -236,6 +252,9 @@ public class NavigationManager : MonoBehaviour {
             canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
             yield return true;
         }
+
+        // Réactiver l'interactabilité du nouveau canvas
+        canvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
 
         // Mettre à jour la caméra du canvas
         canvas.GetComponent<Canvas>().worldCamera = camera;

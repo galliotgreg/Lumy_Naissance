@@ -313,8 +313,8 @@ GameObject:
   - component: {fileID: 114368823567724644}
   - component: {fileID: 114107907229580660}
   - component: {fileID: 114662239543177926}
+  - component: {fileID: 114988961927564190}
   - component: {fileID: 195848833984645618}
-  - component: {fileID: 114797667755122866}
   m_Layer: 8
   m_Name: EmptyAgentPrefab
   m_TagString: Agent
@@ -1423,38 +1423,6 @@ MonoBehaviour:
   behaviour: {fileID: 0}
   context: {fileID: 0}
   behaviorModelIdentifier: 
---- !u!114 &114797667755122866
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1618866709941296}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82aa6bfea7d13f44ca2087917e38dbf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  key: 0
-  cast: 
-  curPos: {x: 0, y: 0}
-  trgPos: {x: 0, y: 0}
-  vitalityMax: 0
-  vitality: 0
-  strength: 0
-  stamina: 0
-  actSpd: 0
-  moveSpd: 0
-  nbItemMax: 0
-  nbItem: 0
-  atkRange: 0
-  pickRange: 0
-  layTimeCost: 0
-  visionRange: 0
-  mineralRed: {fileID: 1058851524587528, guid: 91c261209d0ba8e46b837613f413175b, type: 2}
-  mineralGreen: {fileID: 1296238305559098, guid: 64c769cd616894a4e8d170e4ca72197b,
-    type: 2}
-  mineralBlue: {fileID: 1203613816790226, guid: 49efb2191ce2dff48b2ffc91d6c2744f,
-    type: 2}
 --- !u!114 &114850887274006616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1517,6 +1485,7 @@ MonoBehaviour:
   cast: 
   curPos: {x: 0, y: 0}
   trgPos: {x: 0, y: 0}
+  trgPosValid: 0
   vitalityMax: 0
   vitality: 0
   strength: 0
@@ -1529,11 +1498,12 @@ MonoBehaviour:
   pickRange: NaN
   layTimeCost: 0
   visionRange: 0
-  mineralRed: {fileID: 1058851524587528, guid: 91c261209d0ba8e46b837613f413175b, type: 2}
+  mineralRed: {fileID: 0}
   mineralGreen: {fileID: 1296238305559098, guid: 64c769cd616894a4e8d170e4ca72197b,
     type: 2}
   mineralBlue: {fileID: 1203613816790226, guid: 49efb2191ce2dff48b2ffc91d6c2744f,
     type: 2}
+  lumyTransform: {fileID: 4805403469943082}
 --- !u!114 &114954285268622200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1570,6 +1540,24 @@ MonoBehaviour:
   coolDownTime: 0.1
   path: []
   currentPathIndex: 0
+--- !u!114 &114988961927564190
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1618866709941296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad28d71c9fd32541a7be0f7a9b85d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolDownActivate: 1
+  coolDownTime: 1
+  path: []
+  currentPathIndex: 0
+  angle: 0
+  dist: 0
+  changeTargetDemand: 1
 --- !u!119 &119588536036002848
 Projector:
   m_ObjectHideFlags: 1
