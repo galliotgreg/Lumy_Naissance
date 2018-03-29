@@ -141,13 +141,14 @@ public class AgentBehavior : MonoBehaviour
 					break;
 				case ActionType.Goto:
 					ABTable<ABVec> path = ((ABTable<ABVec>)curActionParams [0]);
-					gotoAction.Path = new Vector3[path.Values.Length];
+					Vector3[] pathResult = new Vector3[path.Values.Length];
 					for (int i = 0; i < path.Values.Length; i++)
 					{
 						ABVec abVec = path.Values[i];
 						Vector3 vec3 = vec2ToWorld( new Vector2( abVec.X, abVec.Y ) );
-						gotoAction.Path[i] = vec3;
+						pathResult[i] = vec3;
 					}
+					gotoAction.Path = pathResult;
 
 					gotoAction.activate();
 					break;

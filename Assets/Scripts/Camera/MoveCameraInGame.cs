@@ -71,41 +71,39 @@ public class MoveCameraInGame : MonoBehaviour {
 
     private void MoveCamera()
     {
-        CameraRay rayScript = gameObject.GetComponent<CameraRay>(); 
-        if (rayScript != null)
+        if(InGameUIController.instance == null )
         {
-            if(rayScript.Self != null)
-            {
-                camera.transform.localPosition = new Vector3(rayScript.Self.transform.position.x, cameraPos.y, rayScript.Self.transform.position.z -15); 
-            }
-            else
-            {
-                //MOVING 
-                bool up = Input.GetKey(KeyCode.UpArrow);
-                bool down = Input.GetKey(KeyCode.DownArrow);
-                bool right = Input.GetKey(KeyCode.RightArrow);
-                bool left = Input.GetKey(KeyCode.LeftArrow);
+            return; 
+        }
+        if (InGameUIController.instance.Self != null)
+        {
+            camera.transform.localPosition = new Vector3(InGameUIController.instance.Self.transform.position.x, cameraPos.y, InGameUIController.instance.Self.transform.position.z -15); 
+        }
+        else
+        {
+            //MOVING 
+            bool up = Input.GetKey(KeyCode.UpArrow);
+            bool down = Input.GetKey(KeyCode.DownArrow);
+            bool right = Input.GetKey(KeyCode.RightArrow);
+            bool left = Input.GetKey(KeyCode.LeftArrow);
 
-                if (up && cameraPos.z < maxY)
-                {
-                    camera.transform.Translate(Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
-                }
-                if (down && cameraPos.z > minY)
-                {
-                    camera.transform.Translate(-Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
-                }
-                if (left && cameraPos.x > minX)
-                {
-                    camera.transform.Translate(Vector3.left * Time.unscaledDeltaTime * speedCamera, Space.World);
-                }
-                if (right && cameraPos.x < maxX)
-                {
-                    camera.transform.Translate(Vector3.right * Time.unscaledDeltaTime * speedCamera, Space.World);
-                }
+            if (up && cameraPos.z < maxY)
+            {
+                camera.transform.Translate(Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
+            }
+            if (down && cameraPos.z > minY)
+            {
+                camera.transform.Translate(-Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
+            }
+            if (left && cameraPos.x > minX)
+            {
+                camera.transform.Translate(Vector3.left * Time.unscaledDeltaTime * speedCamera, Space.World);
+            }
+            if (right && cameraPos.x < maxX)
+            {
+                camera.transform.Translate(Vector3.right * Time.unscaledDeltaTime * speedCamera, Space.World);
             }
         }
-        
-
     }
     #endregion
 }
