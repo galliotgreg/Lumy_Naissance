@@ -82,17 +82,17 @@ public class GotoAction : GameAction {
 		}
 		previousPosition = curPos;
 
-		//Vector3 destination = getValidTarget( vec2ToWorld(curPos), path [currentPathIndex]);
+		Vector3 destination = getValidTarget( vec2ToWorld(curPos), path [currentPathIndex]);
 		//destination = worldToVec2 ( vec2ToWorld( destination ) );
-		Vector2 destination = worldToVec2 ( path [currentPathIndex] );
+		//Vector3 destination = path [currentPathIndex];
 
 		// On a point
-		if (isClose (curPos, destination) ) {
+		if (isClose (curPos, worldToVec2( destination )) ) {
 			targetReached (currentPathIndex);
 			currentPathIndex = (currentPathIndex == path.Length - 1 ? 0 : (currentPathIndex + 1));
 		}
 
-		agentAttr.TrgPos = destination;
+		agentAttr.TrgPos = worldToVec2( destination );
 
 		// Use Unity A* to move
 		moveTo (agentAttr, movingAgent);
@@ -368,14 +368,19 @@ public class GotoAction : GameAction {
 			// if the path is complete, the target remains
 			return target;
 		} else {
-			// if the path is incomplete, the target is the last point in the path
-			if (path.corners.Length > 0) {
-				Vector3 lastPoint = path.corners [path.corners.Length - 1];
-				return lastPoint;
+			if (path.status == NavMeshPathStatus.PathPartial) {
+				// if the path is incomplete, the target is the last point in the path
+				if (path.corners.Length > 0) {
+					return path.corners [path.corners.Length - 1];
+				}
 			} else {
-				return origin;
+				NavMeshHit hit = new NavMeshHit();
+				NavMesh.Raycast (origin, target, out hit, NavMesh.AllAreas);
+				return hit.position;
 			}
 		}
+
+		return origin;
 	}
 	#endregion
 }
