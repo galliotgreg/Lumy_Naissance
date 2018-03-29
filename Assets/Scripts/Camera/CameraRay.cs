@@ -9,31 +9,15 @@ using UnityEngine.EventSystems;
 public class CameraRay : MonoBehaviour {
 
     private Camera camera;
-    private AgentScript self;
-    private string action;
-
+    //Used for Intersection with UI 
     private int fingerID = -1;
+    private Color color;
+    AgentScript self;    
 
-    public AgentScript Self
-    {
-        get
-        {
-            return self;
-        }
-    }
-
-    public string Action
-    {
-        get
-        {
-            return action;
-        }
-    }
 
     // Use this for initialization
     void Start () {
         self = null;
-        action = "None"; 
         camera = this.gameObject.GetComponent<Camera>(); 
 	}
 	
@@ -50,42 +34,62 @@ public class CameraRay : MonoBehaviour {
     {
         RaycastHit hit;
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        //Draw A ray and test if not on UI 
         if (Physics.Raycast(ray, out hit, 100.0f) && (!EventSystem.current.IsPointerOverGameObject(fingerID)))
         {
-            if (hit.transform.name == "EmptyComponentPrefab(Clone)")
+            if (hit.transform.name == "EmptyComponentPrefab(Clone)") //If the hit is an EmptyComponentPrefab
             {
                 if (self != null) {
-                    self.gameObject.transform.GetChild(2).gameObject.SetActive(false);
+                    //Disable SelectionShader
+                    self.gameObject.transform.GetChild(2).gameObject.SetActive(false); //Disable Canvas
                 }
                 GameObject parent = hit.transform.parent.parent.gameObject;           
                 self = parent.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
-                Renderer rend = self.gameObject.transform.GetChild(2).gameObject.transform.GetChild(0).GetComponent<Renderer>();
-                if(self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
-                    rend.material.color = Color.blue;
-                }
-                if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
-                    rend.material.color = Color.red;
-                }
-                self.gameObject.transform.GetChild(2).gameObject.SetActive(true);
-                action = parent.GetComponent<AgentBehavior>().CurActionType.ToString();
+
+                //Disable Selection Shader
+                self.gameObject.transform.GetChild(2).gameObject.SetActive(true); //Enable Canvas
+
+                //Enable MC Debugger
                 MC_Debugger_Manager.instance.activateDebugger(parent.GetComponent<AgentEntity>());
-                InGameUIController.instance.unitCost(); 
+                
+                //Set Color 
+                ColorPlayer();
+
+               //Enable showing in UI
+               InGameUIController.instance.UnitSelected = true;
+                //Set the self in UI
+                InGameUIController.instance.Self = self; 
+               InGameUIController.instance.unitCost(); 
             }
             else
             {   
                 if(self != null) {
+                    //Disable Selection Shader
                     self.gameObject.transform.GetChild(2).gameObject.SetActive(false);
                 }
+                //Disable MC Debugger 
                 MC_Debugger_Manager.instance.deactivateDebugger();
-                
-             
-                self = null;
-                action = "None";
+
+                //Disable Showing in UI
+                InGameUIController.instance.UnitSelected = false;
+                InGameUIController.instance.Color = Color.white; 
+                InGameUIController.instance.Self = null; 
             }
         }
-        
+       
     }
 
+    private void ColorPlayer()
+    {
+        if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1)
+        {
+            InGameUIController.instance.Color = Color.blue;
+        }
+        else if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2)
+        {
+            InGameUIController.instance.Color = Color.red;
+        }
+    }
    
 }
 
