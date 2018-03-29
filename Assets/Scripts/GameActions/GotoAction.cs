@@ -56,13 +56,17 @@ public class GotoAction : GameAction {
 		}
 		previousPosition = curPos;
 
+		//Vector3 destination = getValidTarget( vec2ToWorld(curPos), path [currentPathIndex]);
+		//destination = worldToVec2 ( vec2ToWorld( destination ) );
+		Vector2 destination = worldToVec2 ( path [currentPathIndex] );
+
 		// On a point
-		if (isClose (curPos, worldToVec2 (path [currentPathIndex]))) {
+		if (isClose (curPos, destination) ) {
 			targetReached (currentPathIndex);
 			currentPathIndex = (currentPathIndex == path.Length - 1 ? currentPathIndex : (currentPathIndex + 1));
 		}
 
-		agentAttr.TrgPos = worldToVec2 (path [currentPathIndex]);
+		agentAttr.TrgPos = destination;
 
 		// Use Unity A* to move
 		moveTo (agentAttr, movingAgent);
@@ -141,14 +145,11 @@ public class GotoAction : GameAction {
             Vector3 destination = vec2ToWorld(agentAttr.TrgPos);
             destination.y = agentAttr.transform.position.y;
 
-            NavMeshPath path = new NavMeshPath();
-            bool hasFoundPath = navMeshAgent.CalculatePath(destination, path);
-
             Vector3 position = vec2ToWorld(agentAttr.CurPos);
             position.y = agentAttr.transform.position.y;
 
-            Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
-            dest.y = agentAttr.transform.position.y;
+            //Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
+            //dest.y = agentAttr.transform.position.y;
 
             // Debug.DrawLine(position, dest, Color.blue);
             //Draw Line 
@@ -156,7 +157,7 @@ public class GotoAction : GameAction {
             {
                 if (OptionManager.instance.DirectionLumy.isOn)
                 {
-                    DrawLine(position, dest, Color.blue, 0.2f);
+					DrawLine(position, destination, Color.blue, 0.2f);
                 }
             }
 
@@ -166,27 +167,11 @@ public class GotoAction : GameAction {
                 }
             }
 
-			if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
+			if(!isCompletePath(position, destination))
             {
-				// Does it depends on the MC? : it works only when the MC has a test comparing the curPos and the TrgPos
-                /*
-				agentAttr.TrgPos = agentAttr.CurPos;
-                destination = vec2ToWorld(agentAttr.TrgPos);
-				*/
 				agentAttr.TrgPosValid = false;
 				destination = targetUnreachable (destination);
-            }/*
-            else if (path.status == NavMeshPathStatus.PathInvalid)
-            {
-                agentAttr.TrgPos = agentAttr.CurPos;
-                destination = vec2ToWorld(agentAttr.TrgPos);
-				targetUnreachable ();
-            }*/
-            /*position = vec2ToWorld(agentAttr.CurPos);
-            position.y = agentAttr.transform.position.y;
-
-            dest = vec2ToWorld(agentAttr.TrgPos);
-            dest.y = agentAttr.transform.position.y;*/
+            }
            
 			navMeshAgent.acceleration = 1000;
 			navMeshAgent.speed = agentAttr.MoveSpd;
@@ -259,7 +244,7 @@ public class GotoAction : GameAction {
 
 	// TODO : adapt isClose and isEdge params
 	private bool isClose( Vector2 pos, Vector2 point ){
-		return Vector2.Distance (pos, point) < closeFactor;
+		return Vector2.Distance (pos, point) < closeFactor*2;
 	}
 		
 	// 1 edge towards the next point
@@ -287,11 +272,19 @@ public class GotoAction : GameAction {
 		return Vector3.Dot( (a-b).normalized, (a-pos).normalized ) > 0.7f ;
 	}
 
-	private static Vector2 worldToVec2( Vector3 point ){
+	protected Vector2 worldToVec2( Vector3 point ){
 		return AgentBehavior.worldToVec2(point);
 	}
-	private static Vector3 vec2ToWorld( Vector2 point ){
+	protected Vector3 vec2ToWorld( Vector2 point ){
 		return AgentBehavior.vec2ToWorld(point);
+	}
+	protected Vector3 vec2ToLumy( Vector2 point ){
+		Vector3 result = AgentBehavior.vec2ToWorld(point);
+		return vec3ToLumy( result );
+	}
+	protected Vector3 vec3ToLumy( Vector3 point ){
+		point.y = agentAttr.transform.position.y;
+		return point;
 	}
 
 	/// <summary>
@@ -299,6 +292,7 @@ public class GotoAction : GameAction {
 	/// </summary>
 	/// <param name="index">Index of the reached point in the path</param>
 	protected virtual void targetReached( int index ){
+		//agentAttr.TrgPos = agentAttr.CurPos;
 	}
 
 	/// <summary>
@@ -311,4 +305,44 @@ public class GotoAction : GameAction {
 		result.y = agentAttr.transform.position.y;
 		return result;
 	}
+
+	#region VALID POSITION
+	bool isNavMeshPosition( Vector3 target ){
+		// Test if there is a navmesh at the point
+		NavMeshHit hit = new NavMeshHit ();
+		if (NavMesh.SamplePosition (target, out hit, 0.5f, NavMesh.AllAreas)) {
+			return true;
+		}
+		return false;
+	}
+
+	protected bool isCompletePath(Vector3 origin, Vector3 target){
+		if (isNavMeshPosition (target)) {
+			NavMeshPath path = new NavMeshPath();
+			NavMesh.CalculatePath(origin, target, NavMesh.AllAreas, path);
+
+			return path.status == NavMeshPathStatus.PathComplete;
+		}
+		return false;
+	}
+
+	protected Vector3 getValidTarget(Vector3 origin, Vector3 target){
+		// Test if there is a path to this 
+		NavMeshPath path = new NavMeshPath();
+		NavMesh.CalculatePath(origin, target, NavMesh.AllAreas, path);
+
+		if (path.status == NavMeshPathStatus.PathComplete) {
+			// if the path is complete, the target remains
+			return target;
+		} else {
+			// if the path is incomplete, the target is the last point in the path
+			if (path.corners.Length > 0) {
+				Vector3 lastPoint = path.corners [path.corners.Length - 1];
+				return lastPoint;
+			} else {
+				return origin;
+			}
+		}
+	}
+	#endregion
 }
