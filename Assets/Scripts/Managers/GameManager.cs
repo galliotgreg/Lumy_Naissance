@@ -336,7 +336,7 @@ public class GameManager : MonoBehaviour {
         );
 
         template.GetComponent<AgentEntity>().Context.Model.Cast = castName;
-
+    
         return template;
     }
     #endregion
