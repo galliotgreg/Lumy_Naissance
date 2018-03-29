@@ -219,6 +219,51 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 149473666}
+--- !u!1 &304854153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 304854154}
+  - component: {fileID: 304854155}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &304854154
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 304854153}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1481022298}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &304854155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 304854153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b132c8016699504499d992cd6f1ab845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particles: {fileID: 1071949270043912, guid: 4ebe6ae0c5c35f04c982f1a06d8206bd, type: 2}
+  particlesTrail: {fileID: 1142039451569848, guid: 293c2cb20f7343f499341c37c38f58d2,
+    type: 2}
+  partSpawner: {fileID: 304854153}
+  period: 1
 --- !u!1 &344631091
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +934,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1056199333}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b132c8016699504499d992cd6f1ab845, type: 3}
   m_Name: 
@@ -897,11 +942,8 @@ MonoBehaviour:
   particles: {fileID: 1071949270043912, guid: 4ebe6ae0c5c35f04c982f1a06d8206bd, type: 2}
   particlesTrail: {fileID: 1142039451569848, guid: 293c2cb20f7343f499341c37c38f58d2,
     type: 2}
+  partSpawner: {fileID: 0}
   period: 1
-  xMin: -960
-  xMax: 960
-  yMin: -540
-  yMax: 540
 --- !u!1 &1256744419
 GameObject:
   m_ObjectHideFlags: 0
@@ -1172,6 +1214,7 @@ RectTransform:
   - {fileID: 2024127537}
   - {fileID: 149473667}
   - {fileID: 1555590335}
+  - {fileID: 304854154}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

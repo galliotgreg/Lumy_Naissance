@@ -4,32 +4,38 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ParticlesSpawn : MonoBehaviour {
+    [Header("Set in inspector")]
     [SerializeField]
     private GameObject particles;
     [SerializeField]
     private GameObject particlesTrail;
     [SerializeField]
+    private GameObject partSpawner;
+    [SerializeField]
     private float period;
-    [SerializeField]
-    private float xMin;
-    [SerializeField]
-    private float xMax;
-    [SerializeField]
-    private float yMin;
-    [SerializeField]
-    private float yMax;
 
+    private float xMax;
+    private float yMax;
+    private float partDuration;
+    private float partTrailDuration;
     private Vector3 pos;
     private float time = 0f;
     private float eps = 0.01f;
     private GameObject partSystem;
     private GameObject partSystemTrail;
     
-
     // Use this for initialization
     void Start () {
- 
-	}
+        //Access canvas width and height
+        GameObject spawnerParent = partSpawner.transform.parent.gameObject;
+        RectTransform canvasRectTransform = spawnerParent.GetComponent<RectTransform>();
+        //Set max coordinates
+        xMax = canvasRectTransform.rect.width/2f;
+        yMax = canvasRectTransform.rect.height/2f;
+        //Get ParticleSystem duration
+        partDuration = partSystem.GetComponent<ParticleSystem>().main.duration;
+        partTrailDuration = partSystemTrail.GetComponent<ParticleSystem>().main.duration;
+    }
 
     // Update is called once per frame
     void Update () {
@@ -46,8 +52,10 @@ public class ParticlesSpawn : MonoBehaviour {
 
     private void CreateParticles()
     {
-        pos = new Vector3(UnityEngine.Random.Range(xMin, xMax), UnityEngine.Random.Range(yMin, yMax), 0f);
+        //Pick position
+        pos = new Vector3(UnityEngine.Random.Range(-xMax, xMax), UnityEngine.Random.Range(-yMax, yMax), 0f);
 
+        //Choose which particles to create
         if (UnityEngine.Random.value <= 0.5)
         {
             partSystem = Instantiate(particles, pos, Quaternion.identity);
@@ -56,9 +64,10 @@ public class ParticlesSpawn : MonoBehaviour {
         {
             partSystemTrail = Instantiate(particlesTrail, pos, Quaternion.identity);
         }
-
-        Destroy(partSystem, 14f);
-        Destroy(partSystemTrail, 14f);
+        
+        //Destroy excedents particles
+        Destroy(partSystem, 2*partDuration);
+        Destroy(partSystemTrail, 2*partTrailDuration);
     }
 
    
