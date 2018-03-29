@@ -163,7 +163,7 @@ public class GotoAction : GameAction {
 
             if (OptionManager.instance.DirectionLumyJ2 != null) {
                 if (OptionManager.instance.DirectionLumyJ2.isOn) {
-                    DrawLine(position, dest, Color.blue, 0.2f);
+                    DrawLine(position, destination, Color.blue, 0.2f);
                 }
             }
 
