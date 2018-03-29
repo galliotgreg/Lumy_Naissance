@@ -85,9 +85,6 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 		return damageResult;
 	}
-	public void addPrysme( AgentEntity prysme, HomeScript home ){
-		home.addPrysmeToHome (prysme);
-	}
 	public void addUnit( AgentEntity unit, HomeScript home ){
 		home.addUnitToHome (unit);
 	}

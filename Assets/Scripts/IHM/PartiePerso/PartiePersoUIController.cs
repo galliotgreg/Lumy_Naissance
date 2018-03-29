@@ -32,10 +32,6 @@ public class PartiePersoUIController : MonoBehaviour {
     private string player1SpecieName;
     [SerializeField]
     private string player2SpecieName;
-    [SerializeField]
-    private Specie player1Specie;
-    [SerializeField]
-    private Specie player2Specie;
 
     [SerializeField]
     private GameObject swarmSelectionBtnPrefab;
@@ -103,33 +99,7 @@ public class PartiePersoUIController : MonoBehaviour {
     [SerializeField]
     private int maxLumy = 250;
 
-    private string sceneTxtField = "MapTutoInte";
-
-    public Specie Player1Specie
-    {
-        get
-        {
-            return player1Specie;
-        }
-
-        set
-        {
-            player1Specie = value;
-        }
-    }
-
-    public Specie Player2Specie
-    {
-        get
-        {
-            return player2Specie;
-        }
-
-        set
-        {
-            player2Specie = value;
-        }
-    }
+    private string sceneTxtField = "MapTutoInte"; 
 
     // Use this for initialization
     void Start () {
@@ -246,34 +216,14 @@ public class PartiePersoUIController : MonoBehaviour {
 
     private void SelectP1ActiveSwarm(string swarmName)
     {
-        player1SelectedSwarmField.GetComponent<Text>().text = swarmName;
         player1SpecieName = swarmName;
-
-        //Save acive specie in order reload it later
-        Specie tmp = AppContextManager.instance.ActiveSpecie;
-
-        //Get selecte specie
-        AppContextManager.instance.SwitchActiveSpecie(swarmName);
-        player1Specie = AppContextManager.instance.ActiveSpecie;
-
-        //Reload previous active specie
-        AppContextManager.instance.SwitchActiveSpecie(tmp.Name);
+        player1SelectedSwarmField.GetComponent<Text>().text = swarmName;
     }
 
     private void SelectP2ActiveSwarm(string swarmName)
     {
-        player2SelectedSwarmField.GetComponent<Text>().text = swarmName;
         player2SpecieName = swarmName;
-
-        //Save acive specie in order reload it later
-        Specie tmp = AppContextManager.instance.ActiveSpecie;
-
-        //Get selecte specie
-        AppContextManager.instance.SwitchActiveSpecie(swarmName);
-        player2Specie = AppContextManager.instance.ActiveSpecie;
-
-        //Reload previous active specie
-        AppContextManager.instance.SwitchActiveSpecie(tmp.Name);
+        player2SelectedSwarmField.GetComponent<Text>().text = swarmName;
     }
 
     /// <summary>
