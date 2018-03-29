@@ -14,8 +14,13 @@ public class InGameUIController : MonoBehaviour {
 
     private float startTime = 2.0f;
     private bool winState = false;
-    private bool alreadyClosed = false; 
+    private bool alreadyClosed = false;
 
+    //Bool to ensure focus is on a Lumy 
+    private bool unitSelected = false;
+    private AgentScript self;
+    private Color color; 
+    GameManager gameManager;
     #region UIVariables
     #region PlayerInfosPanel
     /// <summary>
@@ -245,7 +250,48 @@ public class InGameUIController : MonoBehaviour {
     }
     #endregion
     #endregion
-    GameManager gameManager;
+    
+
+    #region Accesseur
+    public bool UnitSelected
+    {
+        get
+        {
+            return unitSelected;
+        }
+
+        set
+        {
+            unitSelected = value;
+        }
+    }
+
+    public AgentScript Self
+    {
+        get
+        {
+            return self;
+        }
+
+        set
+        {
+            self = value;
+        }
+    }
+
+    public Color Color
+    {
+        get
+        {
+            return color;
+        }
+
+        set
+        {
+            color = value;
+        }
+    }
+    #endregion
 
     // Use this for initialization
     void Start()
@@ -256,6 +302,7 @@ public class InGameUIController : MonoBehaviour {
         popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
         popJ2 = new Dictionary<string, int>(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
     }
+
 
     /// <summary>
     /// Init the Controller 
@@ -371,15 +418,55 @@ public class InGameUIController : MonoBehaviour {
     #endregion
 
     /// <summary>
-    /// Update the UI with the parameters : Resources and Timer
+    /// Update the whole UI each Frames
     /// </summary>
     private void UpdateUI()
     {
         //Get Resources values in game Manager
         if (gameManager == null)
-            return; 
+            return;
+        //*** UPPER UI *** 
+        //Set the resources for each Players
+        SetResources();
+        //Set the Timer of the game 
+        SetTimer(); 
+        
+        //Set the Population for each player
+        J1_Pop.text = "" +gameManager.GetHome(PlayerAuthority.Player1).getPopulation().Count;    
+        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;
 
-        float[] res = gameManager.GetResources(PlayerAuthority.Player1);  
+        //Set the PrysmeLife for each player 
+        //TODO Check if queens are not destroyed
+        J1_PrysmeLife.text = queens[0].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[0].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
+        J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
+
+        //Show the spent fluctuation
+        spentResJ1();
+        spentResJ2();
+
+        //*** DOWN UI ***
+        //All Units infos if a unit have been clicked on
+        if (unitSelected == true)
+        { 
+            UnitStats(); //Show the unit stats
+            DisplayInSight(); //Show the units vision elements 
+            //unitCost();  //Show the ProdCost of the Unit --> Directly call from CameraRay ? 
+        }
+        else
+        {             
+            cleanUnitStats(); //Clean the screen for all stats and cost of a unit
+        }
+        
+        //Show all units by cast 
+        getAllUnit(PlayerAuthority.Player1);
+        getAllUnit(PlayerAuthority.Player2);
+    }
+
+
+    #region UpdateFunctionOfUI
+    private void SetResources()
+    {
+        float[] res = gameManager.GetResources(PlayerAuthority.Player1);
 
         if (CheckRes(res))
         {
@@ -388,48 +475,398 @@ public class InGameUIController : MonoBehaviour {
             J1_Blue_Resources.text = "" + res[2];
         }
 
-        res = gameManager.GetResources(PlayerAuthority.Player2); 
-        if(CheckRes(res))
+        res = gameManager.GetResources(PlayerAuthority.Player2);
+        if (CheckRes(res))
         {
             J2_Red_Resources.text = "" + res[0];
             J2_Green_Resources.text = "" + res[1];
             J2_Blue_Resources.text = "" + res[2];
         }
-
+    }
+    private void SetTimer() {
         if (gameManager.TimerLeft != null)
         {
-            TimeSpan t = TimeSpan.FromSeconds(gameManager.TimerLeft); 
+            TimeSpan t = TimeSpan.FromSeconds(gameManager.TimerLeft);
             timer.text = t.Minutes + " : " + t.Seconds;
-            if (t.Seconds <10)
+            if (t.Seconds < 10)
             {
-                timer.text = t.Minutes + " : 0" + t.Seconds;  
+                timer.text = t.Minutes + " : 0" + t.Seconds;
             }
-            if (gameManager.TimerLeft <=30)
+            if (gameManager.TimerLeft <= 30)
             {
-                timer.color = new Color(255, 0, 0,255);
-                timer.fontStyle = FontStyle.Bold; 
+                timer.color = new Color(255, 0, 0, 255);
+                timer.fontStyle = FontStyle.Bold;
             }
         }
-        
-        J1_Pop.text = "" +gameManager.GetHome(PlayerAuthority.Player1).getPopulation().Count;    
-        J2_Pop.text = "" + gameManager.GetHome(PlayerAuthority.Player2).getPopulation().Count;
+    }
+    //TODO Find a better Implementation than spentResJ1 & spentResJ2
+    private void spendRes(PlayerAuthority player)
+    {
+        GameObject home;
+        HomeScript hiveScript; 
 
+        //Check which Player was sent in parameters 
+        if(PlayerAuthority.Player1 == player)
+        {
+            home = GameManager.instance.P1_home;
+            hiveScript = home.GetComponent<HomeScript>();
+        }
+        else if(PlayerAuthority.Player2 == player)
+        {
+            home = GameManager.instance.P2_home;
+            hiveScript = home.GetComponent<HomeScript>(); 
+        }
+        else
+        {
+            return; 
+        }
+       
+        float oldAmount = hiveScript.RedResAmout + hiveScript.BlueResAmout + hiveScript.GreenResAmout;
+        float[] oldAmountColor = { hiveScript.RedResAmout, hiveScript.GreenResAmout, hiveScript.BlueResAmout };
+        int depense = (int)(oldAmount - newAmount);
+        int depenseB = (int)(oldAmountColor[2] - newAmountColor[2]);
+        int depenseG = (int)(oldAmountColor[1] - newAmountColor[1]);
+        int depenseR = (int)(oldAmountColor[0] - newAmountColor[0]);
 
+        if (isDisplayingNegativeResJ1)
+        {
+            if (DateTime.Now > tsNegativeJ1)
+            {
+                isDisplayingNegativeResJ1 = false;
+                negativeRedText.text = "-";
+                negativeBlueText.text = "-";
+                negativeGreenText.text = "-";
+            }
+        }
+        else if (!isDisplayingNegativeResJ1)
+        {
+            if (depense < 0)
+            {
+                negativeRedText.text = depenseR.ToString();
+                negativeBlueText.text = depenseB.ToString();
+                negativeGreenText.text = depenseG.ToString();
+                tsNegativeJ1 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingNegativeResJ1 = true;
+            }
 
+        }
+        if (isDisplayingPositiveResJ1)
+        {
+            if (DateTime.Now > tsPositiveJ1)
+            {
+                isDisplayingPositiveResJ1 = false;
+                positiveRedText.text = "-";
+                positiveBlueText.text = "-";
+                positiveGreenText.text = "-";
+            }
+        }
+        else if (!isDisplayingPositiveResJ1)
+        {
+            if (depense > 0)
+            {
+                positiveRedText.text = "+" + depenseR.ToString();
+                positiveBlueText.text = "+" + depenseB.ToString();
+                positiveGreenText.text = "+" + depenseG.ToString();
+                tsPositiveJ1 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingPositiveResJ1 = true;
+            }
 
-        J1_PrysmeLife.text = queens[0].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[0].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
-        J2_PrysmeLife.text = queens[1].transform.GetChild(1).GetComponent<AgentScript>().Vitality.ToString() + " / " + queens[1].transform.GetChild(1).GetComponent<AgentScript>().VitalityMax.ToString();
+        }
+        newAmount = oldAmount;
+        newAmountColor[0] = oldAmountColor[0];
+        newAmountColor[1] = oldAmountColor[1];
+        newAmountColor[2] = oldAmountColor[2];
+    }
+    private void spentResJ1()
+    {
+        GameObject homeP1 = GameManager.instance.P1_home;
 
-        UnitStats();
-        DisplayInSight();
-        unitCost();
-        displayRessourceJ1();
-        displayRessourceJ2();
-        getAllUnit(PlayerAuthority.Player1);
-        getAllUnit(PlayerAuthority.Player2);
+        HomeScript p1_hiveScript = homeP1.GetComponent<HomeScript>();
+        float oldAmount = p1_hiveScript.RedResAmout + p1_hiveScript.BlueResAmout + p1_hiveScript.GreenResAmout;
+        float[] oldAmountColor = { p1_hiveScript.RedResAmout, p1_hiveScript.GreenResAmout, p1_hiveScript.BlueResAmout };
+        int depense = (int)(oldAmount - newAmount);
+        int depenseB = (int)(oldAmountColor[2] - newAmountColor[2]);
+        int depenseG = (int)(oldAmountColor[1] - newAmountColor[1]);
+        int depenseR = (int)(oldAmountColor[0] - newAmountColor[0]);
+
+        if (isDisplayingNegativeResJ1)
+        {
+            if (DateTime.Now > tsNegativeJ1)
+            {
+                isDisplayingNegativeResJ1 = false;
+                negativeRedText.text = "-";
+                negativeBlueText.text = "-";
+                negativeGreenText.text = "-";
+            }
+        }
+        else if (!isDisplayingNegativeResJ1)
+        {
+            if (depense < 0)
+            {
+                negativeRedText.text = depenseR.ToString();
+                negativeBlueText.text = depenseB.ToString();
+                negativeGreenText.text = depenseG.ToString();
+                tsNegativeJ1 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingNegativeResJ1 = true;
+            }
+
+        }
+        if (isDisplayingPositiveResJ1)
+        {
+            if (DateTime.Now > tsPositiveJ1)
+            {
+                isDisplayingPositiveResJ1 = false;
+                positiveRedText.text = "-";
+                positiveBlueText.text = "-";
+                positiveGreenText.text = "-";
+            }
+        }
+        else if (!isDisplayingPositiveResJ1)
+        {
+            if (depense > 0)
+            {
+                positiveRedText.text = "+" + depenseR.ToString();
+                positiveBlueText.text = "+" + depenseB.ToString();
+                positiveGreenText.text = "+" + depenseG.ToString();
+                tsPositiveJ1 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingPositiveResJ1 = true;
+            }
+
+        }
+        newAmount = oldAmount;
+        newAmountColor[0] = oldAmountColor[0];
+        newAmountColor[1] = oldAmountColor[1];
+        newAmountColor[2] = oldAmountColor[2];
+    }
+    private void spentResJ2()
+    {
+        GameObject homeP2 = GameManager.instance.P2_home;
+
+        HomeScript p2_hiveScript = homeP2.GetComponent<HomeScript>();
+        float oldAmount = p2_hiveScript.RedResAmout + p2_hiveScript.BlueResAmout + p2_hiveScript.GreenResAmout;
+        float[] oldAmountColorJ2 = { p2_hiveScript.RedResAmout, p2_hiveScript.GreenResAmout, p2_hiveScript.BlueResAmout };
+        int depense = (int)(oldAmount - newAmountJ2);
+        int depenseB = (int)(oldAmountColorJ2[2] - newAmountColorJ2[2]);
+        int depenseG = (int)(oldAmountColorJ2[1] - newAmountColorJ2[1]);
+        int depenseR = (int)(oldAmountColorJ2[0] - newAmountColorJ2[0]);
+
+        if (isDisplayingNegativeResJ2)
+        {
+            if (DateTime.Now > tsNegativeJ2)
+            {
+                isDisplayingNegativeResJ2 = false;
+                negativeRedTextJ2.text = "-";
+                negativeBlueTextJ2.text = "-";
+                negativeGreenTextJ2.text = "-";
+            }
+        }
+        else if (!isDisplayingNegativeResJ2)
+        {
+            if (depense < 0)
+            {
+                negativeRedTextJ2.text = depenseR.ToString();
+                negativeBlueTextJ2.text = depenseB.ToString();
+                negativeGreenTextJ2.text = depenseG.ToString();
+                tsNegativeJ2 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingNegativeResJ2 = true;
+            }
+
+        }
+        if (isDisplayingPositiveResJ2)
+        {
+            if (DateTime.Now > tsPositiveJ2)
+            {
+                isDisplayingPositiveResJ2 = false;
+                positiveRedTextJ2.text = "-";
+                positiveBlueTextJ2.text = "-";
+                positiveGreenTextJ2.text = "-";
+            }
+        }
+        else if (!isDisplayingPositiveResJ2)
+        {
+            if (depense > 0)
+            {
+                positiveRedTextJ2.text = "+" + depenseR.ToString();
+                positiveBlueTextJ2.text = "+" + depenseB.ToString();
+                positiveGreenTextJ2.text = "+" + depenseG.ToString();
+                tsPositiveJ2 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
+                isDisplayingPositiveResJ2 = true;
+            }
+
+        }
+        newAmountJ2 = oldAmount;
+        newAmountColorJ2[0] = oldAmountColorJ2[0];
+        newAmountColorJ2[1] = oldAmountColorJ2[1];
+        newAmountColorJ2[2] = oldAmountColorJ2[2];
     }
 
 
+    private void UnitStats()
+    {
+
+        GameObject[] allUnits = GameObject.FindGameObjectsWithTag("Agent");
+
+        if (self == null)
+        {
+            cleanUnitStats();
+            foreach (GameObject agent in allUnits)
+            {
+                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            }
+
+            return;
+        }
+
+        foreach (GameObject agent in allUnits)
+        {
+            if (agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>() != self)
+            {
+                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else if (agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>() == self)
+            {
+                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            }
+        }
+        //Get Stats from Self
+        string vitality = self.Vitality.ToString();
+        string visionRange = self.VisionRange.ToString();
+        string vitalityMax = self.VitalityMax.ToString();
+        string strength = self.Strength.ToString();
+        string pickRange = self.PickRange.ToString();
+        string atkRange = self.AtkRange.ToString();
+        string actSpeed = self.ActSpd.ToString();
+        string moveSpeed = self.MoveSpd.ToString();
+        string nbItemMax = self.NbItemMax.ToString();
+        string nbItem = self.NbItem.ToString();
+        string layTimeCost = self.LayTimeCost.ToString();
+        string stamina = self.Stamina.ToString();
+        string cast = self.Cast;
+
+        //Set Color
+        vitalityText.color = color;
+        strenghtText.color = color;
+        staminaText.color = color;
+        moveSpeedText.color = color;
+        actionSpeedText.color = color;
+        visionText.color = color;
+        pickupRangeText.color = color;
+        strikeRangeText.color = color;
+        item.color = color;
+        LayTimeText.color = color;
+        castText.color = color;
+
+        //Set Text
+        vitalityText.text = vitality + " / " + self.VitalityMax.ToString();
+        strenghtText.text = strength;
+        staminaText.text = stamina.ToString();
+        moveSpeedText.text = moveSpeed;
+        actionSpeedText.text = actSpeed;
+        visionText.text = visionRange;
+        pickupRangeText.text = pickRange;
+        strikeRangeText.text = atkRange;
+        item.text = nbItem + " / " + nbItemMax;
+        LayTimeText.text = layTimeCost;
+        castText.text = cast;
+
+    }
+    #region getAllUnits
+
+    private Dictionary<string, int> getAllUnit(PlayerAuthority player)
+    {
+        if (PlayerAuthority.Player1 == player)
+        {
+            if (!CheckDicoEquality(popJ1, GameObject.Find("p1_hive").GetComponent<HomeScript>().Population))
+            {
+                DisplayUnits(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+                popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
+            }
+
+        }
+        if (PlayerAuthority.Player2 == player)
+        {
+            if (!CheckDicoEquality(popJ2, GameObject.Find("p2_hive").GetComponent<HomeScript>().Population))
+            {
+                DisplayUnitsJ2(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
+                popJ2 = new Dictionary<string, int>(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
+            }
+        }
+        return null;
+    }
+
+
+    private bool CheckDicoEquality(Dictionary<string, int> dico1, Dictionary<string, int> dico2)
+    {
+        // check keys are the same
+
+        foreach (string str in dico1.Keys)
+        {
+            if (!dico2.ContainsKey(str))
+            {
+                return false;
+            }
+        }
+        // check values are the same
+        foreach (string str in dico1.Keys)
+        {
+            if (!dico1[str].Equals(dico2[str]))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    #endregion
+    /// <summary>
+    /// Set cost and stats elements in UI to white color and "-" 
+    /// </summary>
+    private void cleanUnitStats()
+    {
+        //Clean Stats 
+        vitalityText.color = Color.white;
+        strenghtText.color = Color.white;
+        staminaText.color = Color.white;
+        moveSpeedText.color = Color.white;
+        actionSpeedText.color = Color.white;
+        visionText.color = Color.white;
+        pickupRangeText.color = Color.white;
+        strikeRangeText.color = Color.white;
+        item.color = Color.white;
+        LayTimeText.color = Color.white;
+        castText.color = Color.white;
+
+        vitalityText.text = "-";
+        strenghtText.text = "-";
+        staminaText.text = "-";
+        moveSpeedText.text = "-";
+        actionSpeedText.text = "-";
+        visionText.text = "-";
+        pickupRangeText.text = "-";
+        strikeRangeText.text = "-";
+        item.text = "-";
+        LayTimeText.text = "-";
+        castText.text = "-";
+
+        //Clean Cost 
+        unitCostRedText.color = Color.white;
+        unitCostGreenText.color = Color.white;
+        unitCostBlueText.color = Color.white;
+        unitCostRedText.text = "-";
+        unitCostGreenText.text = "-";
+        unitCostBlueText.text = "-";
+
+        //Clean Elements in sight
+        alliesInSightText.color = Color.white;
+        ressourcesInSightText.color = Color.white;
+        ennemiesInSightText.color = Color.white;
+        tracesInSightText.color = Color.white;
+        alliesInSightText.text = "-";
+        ressourcesInSightText.text = "-";
+        ennemiesInSightText.text = "-";
+        tracesInSightText.text = "-";
+    }
+    #endregion
+    #region CheckRes
     /// <summary>
     /// Check is Resources from GameManager is ok
     /// </summary>
@@ -450,10 +887,10 @@ public class InGameUIController : MonoBehaviour {
         }
         return true;
     }
-
+    #endregion
     #region Validator
     /// <summary>
-    /// Check is UI gameobjetcs are not null 
+    /// Check is UI game objects are not null 
     /// </summary>
     /// <returns>Return a boolean</returns>
     private bool isNotNull()
@@ -561,7 +998,6 @@ public class InGameUIController : MonoBehaviour {
         return true; 
     }
     #endregion
-
     #region BtnListener
     private void CloseExitMenu()
     {
@@ -652,176 +1088,8 @@ public class InGameUIController : MonoBehaviour {
     }
     #endregion
 
-    private void UnitStats()
-    {
-        AgentScript self = getUnitSelf();
-        GameObject[] allUnits = GameObject.FindGameObjectsWithTag("Agent");
-
-        if (self == null)
-        {
-            vitalityText.color = Color.white;
-            strenghtText.color = Color.white;
-            staminaText.color = Color.white;
-            moveSpeedText.color = Color.white;
-            actionSpeedText.color = Color.white;
-            visionText.color = Color.white;
-            pickupRangeText.color = Color.white;
-            strikeRangeText.color = Color.white;
-            item.color = Color.white;
-            LayTimeText.color = Color.white;
-            castText.color = Color.white;
-
-            vitalityText.text = "-";
-            strenghtText.text = "-";
-            staminaText.text = "-";
-            moveSpeedText.text = "-";
-            actionSpeedText.text = "-";
-            visionText.text = "-";
-            pickupRangeText.text = "-";
-            strikeRangeText.text = "-";
-            item.text = "-";
-            LayTimeText.text = "-";
-            castText.text = "-";
-
-            foreach (GameObject agent in allUnits)
-            {
-                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            }
-
-            return; 
-        }
-
-        foreach (GameObject agent in allUnits)
-        {
-            if(agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>() != self)
-            {
-                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(false);
-            }
-            else if(agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>() == self)
-            {
-                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            }
-        }
-
-        string vitality = self.Vitality.ToString();
-        string visionRange = self.VisionRange.ToString();
-        string vitalityMax = self.VitalityMax.ToString();
-        string strength = self.Strength.ToString();
-        string pickRange = self.PickRange.ToString();
-        string atkRange = self.AtkRange.ToString();
-        string actSpeed = self.ActSpd.ToString();
-        string moveSpeed = self.MoveSpd.ToString();
-        string nbItemMax = self.NbItemMax.ToString();
-        string nbItem = self.NbItem.ToString();
-        string layTimeCost = self.LayTimeCost.ToString();
-        string stamina = self.Stamina.ToString();
-        string cast = self.Cast;
-        
-        if(self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
-            vitalityText.color = Color.blue;
-            strenghtText.color = Color.blue;
-            staminaText.color = Color.blue;
-            moveSpeedText.color = Color.blue;
-            actionSpeedText.color = Color.blue;
-            visionText.color = Color.blue;
-            pickupRangeText.color = Color.blue;
-            strikeRangeText.color = Color.blue;
-            item.color = Color.blue;
-            LayTimeText.color = Color.blue;
-            castText.color = Color.blue;
-        }
-        if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
-            vitalityText.color = Color.red;
-            strenghtText.color = Color.red;
-            staminaText.color = Color.red;
-            moveSpeedText.color = Color.red;
-            actionSpeedText.color = Color.red;
-            visionText.color = Color.red;
-            pickupRangeText.color = Color.red;
-            strikeRangeText.color = Color.red;
-            item.color = Color.red;
-            LayTimeText.color = Color.red;
-            castText.color = Color.red;
-        }
-        vitalityText.text = vitality + " / " + self.VitalityMax.ToString();
-        strenghtText.text = strength;
-        staminaText.text = stamina.ToString();
-        moveSpeedText.text = moveSpeed;
-        actionSpeedText.text = actSpeed;
-        visionText.text = visionRange;
-        pickupRangeText.text = pickRange;
-        strikeRangeText.text = atkRange;
-        item.text = nbItem + " / " + nbItemMax;
-        LayTimeText.text = layTimeCost;
-        castText.text = cast;
-        
-        
-
-    }
-
-   
-    private AgentScript getUnitSelf()
-    {
-        Camera camera = NavigationManager.instance.GetCurrentCamera();
-        if (camera != null)
-        {
-            CameraRay cameraRay = camera.GetComponent<CameraRay>();
-            if (cameraRay != null)
-            {
-                return cameraRay.Self;
-            }
-        }
-        return null; 
-    }
-
-    private void getCurAction()
-    {
-        Camera camera = NavigationManager.instance.GetCurrentCamera();
-        string action = camera.GetComponent<CameraRay>().Action;
-    }
-
-    //TODO REMOVE once implemented in UI 
-
-    private Dictionary<string, int> getAllUnit(PlayerAuthority player) {
-        if (PlayerAuthority.Player1 == player) {
-            if (!CheckDicoEquality(popJ1, GameObject.Find("p1_hive").GetComponent<HomeScript>().Population)) {
-                DisplayUnits(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
-                popJ1 = new Dictionary<string, int>(GameObject.Find("p1_hive").GetComponent<HomeScript>().Population);
-            }
-
-        }
-        if (PlayerAuthority.Player2 == player) {
-            if (!CheckDicoEquality(popJ2, GameObject.Find("p2_hive").GetComponent<HomeScript>().Population)) {
-                DisplayUnitsJ2(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
-                popJ2 = new Dictionary<string, int>(GameObject.Find("p2_hive").GetComponent<HomeScript>().Population);
-            }
-        }
-        return null; 
-    }
-
-   
-    private bool CheckDicoEquality (Dictionary<string, int> dico1, Dictionary<string, int> dico2) {
-        // check keys are the same
-        
-        foreach (string str in dico1.Keys) {
-            if (!dico2.ContainsKey(str)) {
-                return false;
-            }      
-        }
-        // check values are the same
-        foreach (string str in dico1.Keys) {
-            if (!dico1[str].Equals(dico2[str])) {
-                return false;
-            } 
-        }
-        return true; 
-    }
-
-
-
-
-
-    private void DisplayUnits(Dictionary<string, int> units)
+    #region DisplayUnits
+private void DisplayUnits(Dictionary<string, int> units)
     {
         //Dictionary<string, int> units = getAllUnit(PlayerAuthority.Player1);
         //Clean list if element in it
@@ -870,35 +1138,24 @@ public class InGameUIController : MonoBehaviour {
             }
         }
     }
+#endregion
 
-    private void DisplayInSight() {
-        AgentScript self = getUnitSelf();
+    #region DisplayElementInSight
+private void DisplayInSight() {
 
-        if(self == null) {
-            alliesInSightText.color = Color.white;
-            ressourcesInSightText.color = Color.white;
-            ennemiesInSightText.color = Color.white;
-            tracesInSightText.color = Color.white;
-            alliesInSightText.text = "-";
-            ressourcesInSightText.text = "-";
-            ennemiesInSightText.text = "-";
-            tracesInSightText.text = "-";
+        if (self == null)
+        {
+            cleanUnitStats(); 
             return;
         }
 
-        if(self.GetComponentInParent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
-            alliesInSightText.color = Color.blue;
-            ressourcesInSightText.color = Color.blue;
-            ennemiesInSightText.color = Color.blue;
-            tracesInSightText.color = Color.blue;
-        }
-        if (self.GetComponentInParent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
-            alliesInSightText.color = Color.red;
-            ressourcesInSightText.color = Color.red;
-            ennemiesInSightText.color = Color.red;
-            tracesInSightText.color = Color.red;
-        }
+        //Set Color
+        alliesInSightText.color = Color;
+        ressourcesInSightText.color = Color;
+        ennemiesInSightText.color = Color;
+        tracesInSightText.color = Color;
 
+        //Set Text
         alliesInSightText.text = self.GetComponentInParent<AgentContext>().Allies.Length.ToString();
         ressourcesInSightText.text = self.GetComponentInParent<AgentContext>().Resources.Length.ToString();
         ennemiesInSightText.text = self.GetComponentInParent<AgentContext>().Enemies.Length.ToString();
@@ -906,37 +1163,25 @@ public class InGameUIController : MonoBehaviour {
 
 
     }
+    #endregion
 
     public void unitCost() {
-        AgentScript self = getUnitSelf();
-        if (self == null) {
-            //Set values to "-" like for stats
-            unitCostRedText.color = Color.white;
-            unitCostGreenText.color = Color.white;
-            unitCostBlueText.color = Color.white;
-            unitCostRedText.text = "-";
-            unitCostGreenText.text = "-";
-            unitCostBlueText.text = "-";
+
+       if (self == null) {
+            cleanUnitStats();     
             return;
         }
+        //Set Color
+        unitCostRedText.color = Color;
+        unitCostGreenText.color = Color;
+        unitCostBlueText.color = Color;
 
         Dictionary<string, int> costs = self.ProdCost;
         foreach (KeyValuePair<string, int> cost in costs) {
             //Set color and count like stats for the lumy 
             string color = cost.Key;
             int count = cost.Value;
-
-            if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1) {
-                unitCostRedText.color = Color.blue;
-                unitCostGreenText.color = Color.blue;
-                unitCostBlueText.color = Color.blue;
-            }
-            if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2) {
-                unitCostRedText.color = Color.red;
-                unitCostGreenText.color = Color.red;
-                unitCostBlueText.color = Color.red;
-            }
-
+           
             if (color == "Red") {
                 unitCostRedText.text = count.ToString();
             }
@@ -947,115 +1192,9 @@ public class InGameUIController : MonoBehaviour {
                 unitCostBlueText.text = count.ToString();
             }
         }
-        //Enjoy this incredible code ;) 
 
     }
 
-    private void displayRessourceJ1() {
-        GameObject homeP1 = GameManager.instance.P1_home;
-
-        HomeScript p1_hiveScript = homeP1.GetComponent<HomeScript>();
-        float oldAmount = p1_hiveScript.RedResAmout + p1_hiveScript.BlueResAmout + p1_hiveScript.GreenResAmout;
-        float[] oldAmountColor = { p1_hiveScript.RedResAmout, p1_hiveScript.GreenResAmout, p1_hiveScript.BlueResAmout };
-        int depense = (int) (oldAmount -  newAmount);
-        int depenseB = (int)( oldAmountColor[2] - newAmountColor[2]);
-        int depenseG = (int) (oldAmountColor[1] - newAmountColor[1]);
-        int depenseR = (int) (oldAmountColor[0] - newAmountColor[0]);
-
-        if (isDisplayingNegativeResJ1) {
-            if (DateTime.Now > tsNegativeJ1) {
-                isDisplayingNegativeResJ1 = false;
-                negativeRedText.text = "-";
-                negativeBlueText.text = "-";
-                negativeGreenText.text = "-";
-            }
-        }
-        else if (!isDisplayingNegativeResJ1) {
-            if (depense < 0) {
-                negativeRedText.text = depenseR.ToString();
-                negativeBlueText.text = depenseB.ToString();
-                negativeGreenText.text = depenseG.ToString();
-                tsNegativeJ1 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
-                isDisplayingNegativeResJ1 = true;
-            }
-
-        }
-        if (isDisplayingPositiveResJ1) {
-            if (DateTime.Now > tsPositiveJ1) {
-                isDisplayingPositiveResJ1 = false;
-                positiveRedText.text = "-";
-                positiveBlueText.text = "-";
-                positiveGreenText.text = "-";
-            }
-        }
-        else if (!isDisplayingPositiveResJ1) {
-            if (depense > 0) {
-                positiveRedText.text = "+" + depenseR.ToString();
-                positiveBlueText.text = "+" + depenseB.ToString();
-                positiveGreenText.text = "+" + depenseG.ToString();
-                tsPositiveJ1 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
-                isDisplayingPositiveResJ1 = true;
-            }
-
-        }
-        newAmount = oldAmount;
-        newAmountColor[0] = oldAmountColor[0];
-        newAmountColor[1] = oldAmountColor[1];
-        newAmountColor[2] = oldAmountColor[2];
-    }
-
-    private void displayRessourceJ2() {
-        GameObject homeP2 = GameManager.instance.P2_home;
-
-        HomeScript p2_hiveScript = homeP2.GetComponent<HomeScript>();
-        float oldAmount = p2_hiveScript.RedResAmout + p2_hiveScript.BlueResAmout + p2_hiveScript.GreenResAmout;
-        float[] oldAmountColorJ2 = { p2_hiveScript.RedResAmout, p2_hiveScript.GreenResAmout, p2_hiveScript.BlueResAmout };
-        int depense = (int)(oldAmount - newAmountJ2);
-        int depenseB = (int)(oldAmountColorJ2[2] - newAmountColorJ2[2]);
-        int depenseG = (int)(oldAmountColorJ2[1] - newAmountColorJ2[1]);
-        int depenseR = (int)(oldAmountColorJ2[0] - newAmountColorJ2[0]);
-
-        if (isDisplayingNegativeResJ2) {
-            if (DateTime.Now > tsNegativeJ2) {
-                isDisplayingNegativeResJ2 = false;
-                negativeRedTextJ2.text = "-";
-                negativeBlueTextJ2.text = "-";
-                negativeGreenTextJ2.text = "-";
-            }
-        }
-        else if (!isDisplayingNegativeResJ2) {
-            if (depense < 0) {
-                negativeRedTextJ2.text = depenseR.ToString();
-                negativeBlueTextJ2.text = depenseB.ToString();
-                negativeGreenTextJ2.text = depenseG.ToString();
-                tsNegativeJ2 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
-                isDisplayingNegativeResJ2 = true;
-            }
-
-        }
-        if (isDisplayingPositiveResJ2) {
-            if (DateTime.Now > tsPositiveJ2) {
-                isDisplayingPositiveResJ2 = false;
-                positiveRedTextJ2.text = "-";
-                positiveBlueTextJ2.text = "-";
-                positiveGreenTextJ2.text = "-";
-            }
-        }
-        else if (!isDisplayingPositiveResJ2) {
-            if (depense > 0) {
-                positiveRedTextJ2.text = "+" + depenseR.ToString();
-                positiveBlueTextJ2.text = "+" + depenseB.ToString();
-                positiveGreenTextJ2.text = "+" + depenseG.ToString();
-                tsPositiveJ2 = DateTime.Now + TimeSpan.FromSeconds(waitingTime);
-                isDisplayingPositiveResJ2 = true;
-            }
-
-        }
-        newAmountJ2 = oldAmount;
-        newAmountColorJ2[0] = oldAmountColorJ2[0];
-        newAmountColorJ2[1] = oldAmountColorJ2[1];
-        newAmountColorJ2[2] = oldAmountColorJ2[2];
-    }
 
 
 
