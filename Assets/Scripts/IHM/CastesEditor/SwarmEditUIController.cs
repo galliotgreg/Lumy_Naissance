@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -216,6 +217,7 @@ public class SwarmEditUIController : MonoBehaviour
         RefreshView();
     }
 
+    #region Refresh view functions
     public void RefreshView()
     {
         RefreashSwarmScroll();
@@ -346,34 +348,13 @@ public class SwarmEditUIController : MonoBehaviour
         redCost = GetRedCost();
         greenCost = GetGreenCost();
         blueCost = GetBlueCost();
+        LoadCastActions();
     }
 
     private void RefreshSwarmInfo()
     {
         swarmPanelSwarmName.text = AppContextManager.instance.ActiveSpecie.Name;
        
-    }
-
-    private int GetBlueCost()
-    {
-        return CostManager.instance.ComputeBlueCost(editedLumy);
-    }
-
-    private int GetGreenCost()
-    {
-        return CostManager.instance.ComputeGreenCost(editedLumy);
-    }
-
-    private int GetRedCost()
-    {
-        return CostManager.instance.ComputeRedCost(editedLumy);
-    }
-
-    private float GetProdTime()
-    {
-        AgentContext agentContext = editedLumy.GetComponent<AgentContext>();
-        AgentComponent[] agentComponent = agentContext.Entity.getAgentComponents();
-        return CostManager.instance.ComputeProdTime(agentComponent);
     }
 
     private void RefreashLumysScroll()
@@ -497,6 +478,84 @@ public class SwarmEditUIController : MonoBehaviour
         //Layout
         editedLumy.transform.position = new Vector3(-1.5f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+    }
+    #endregion
+
+    #region Cost Functions
+    private int GetBlueCost()
+    {
+        return CostManager.instance.ComputeBlueCost(editedLumy);
+    }
+
+    private int GetGreenCost()
+    {
+        return CostManager.instance.ComputeGreenCost(editedLumy);
+    }
+
+    private int GetRedCost()
+    {
+        return CostManager.instance.ComputeRedCost(editedLumy);
+    }
+
+    private float GetProdTime()
+    {
+        AgentContext agentContext = editedLumy.GetComponent<AgentContext>();
+        AgentComponent[] agentComponent = agentContext.Entity.getAgentComponents();
+        return CostManager.instance.ComputeProdTime(agentComponent);
+    }
+    #endregion
+
+    /// <summary>
+    /// Find actions used in the mc of the current cast and show this in the actions list canvas
+    /// </summary>
+    private void LoadCastActions()
+    {
+        List<string> actionsList = new List<string>();
+        
+        //Open .csv behavior of the current cast
+        string behaviorPath = AppContextManager.instance.ActiveBehaviorPath;
+        if (File.Exists(behaviorPath))
+        {
+            StreamReader reader = new StreamReader(behaviorPath);
+
+            List<string> lines = new List<string>();
+            while (reader.Peek() >= 0)
+            {
+                lines.Add(reader.ReadLine());
+            }
+
+            // Create a list with the actions used by the current cast
+            foreach (string line in lines)
+            {
+                if (line.Contains("trigger")){                    
+                    string[] splitedLine = line.Split(',');
+                    string[] splitedTrigger = splitedLine[2].Split('{');
+                    string action = splitedTrigger[1].Substring(0, splitedTrigger[1].Length-1);                    
+                    if (!actionsList.Contains(action)){
+                        actionsList.Add(action);
+                    }
+                }
+            }
+
+            int i = 1;
+
+            // Find Action Lumy canvas and put the right text in actions list
+            GameObject listActionsCanvas = GameObject.Find("Liste_Actions");
+            Text[] textAction = listActionsCanvas.GetComponentsInChildren<Text>();
+            foreach (Text text in textAction)
+            {
+                //Do not erase the canvas title
+                if (!text.text.Contains("Lumy"))
+                {
+                    text.text = "";
+                }                    
+            }
+            foreach (string actionText in actionsList)
+            {                                                        
+                    textAction[i].text = "- " + actionText.First().ToString().ToUpper() + actionText.Substring(1);
+                    i++;
+            }
+        }
     }
 
     /// <summary>
