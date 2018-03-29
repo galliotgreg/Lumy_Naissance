@@ -214,7 +214,7 @@ public class SwarmEditUIController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        RefreshView();
+        Invoke("RefreshView", 0.05f);
     }
 
     #region Refresh view functions
