@@ -33,6 +33,9 @@ public class LayAction : GameAction {
         GameObject child = Instantiate(
             childTemplate, this.transform.position + (transform.forward*2) , this.transform.rotation);
         child.SetActive(true);
+        AgentScript selfTemplate= childTemplate.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
+        AgentScript self = child.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
+        self.ProdCost = selfTemplate.ProdCost; 
         child.transform.parent = GameManager.instance.transform; 
 		AgentEntity childEntity = child.GetComponent<AgentEntity> ();
 		child.name = childEntity.CastName;
