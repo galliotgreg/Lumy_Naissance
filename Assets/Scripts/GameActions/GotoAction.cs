@@ -186,7 +186,7 @@ public class GotoAction : GameAction {
 
             // Debug.DrawLine(position, dest, Color.blue);
             //Draw Line 
-            if(OptionManager.instance.DirectionLumy != null)
+            if(OptionManager.instance.DirectionLumy != null && Time.timeScale == 1)
             {
                 if (OptionManager.instance.DirectionLumy.isOn)
                 {
@@ -194,7 +194,7 @@ public class GotoAction : GameAction {
                 }
             }
 
-            if (OptionManager.instance.DirectionLumyJ2 != null) {
+            if (OptionManager.instance.DirectionLumyJ2 != null && Time.timeScale == 1) {
                 if (OptionManager.instance.DirectionLumyJ2.isOn) {
                     DrawLine(position, destination, Color.blue, 0.2f);
                 }
@@ -231,7 +231,7 @@ public class GotoAction : GameAction {
 
     void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
     {
-        GameObject myLine = new GameObject();
+        GameObject myLine = new GameObject() ;
         myLine.transform.SetParent(GameManager.instance.transform); 
         myLine.transform.position = start;
         myLine.AddComponent<LineRenderer>();
