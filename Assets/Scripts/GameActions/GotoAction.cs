@@ -274,11 +274,19 @@ public class GotoAction : GameAction {
 		return Vector3.Dot( (a-b).normalized, (a-pos).normalized ) > 0.7f ;
 	}
 
-	private static Vector2 worldToVec2( Vector3 point ){
+	protected Vector2 worldToVec2( Vector3 point ){
 		return AgentBehavior.worldToVec2(point);
 	}
-	private static Vector3 vec2ToWorld( Vector2 point ){
+	protected Vector3 vec2ToWorld( Vector2 point ){
 		return AgentBehavior.vec2ToWorld(point);
+	}
+	protected Vector3 vec2ToLumy( Vector2 point ){
+		Vector3 result = AgentBehavior.vec2ToWorld(point);
+		return vec3ToLumy( result );
+	}
+	protected Vector3 vec3ToLumy( Vector3 point ){
+		point.y = agentAttr.transform.position.y;
+		return point;
 	}
 
 	/// <summary>
@@ -310,7 +318,7 @@ public class GotoAction : GameAction {
 		return false;
 	}
 
-	bool isCompletePath(Vector3 origin, Vector3 target){
+	protected bool isCompletePath(Vector3 origin, Vector3 target){
 		if (isNavMeshPosition (target)) {
 			NavMeshPath path = new NavMeshPath();
 			NavMesh.CalculatePath(origin, target, NavMesh.AllAreas, path);
@@ -320,7 +328,7 @@ public class GotoAction : GameAction {
 		return false;
 	}
 
-	Vector3 getValidTarget(Vector3 origin, Vector3 target){
+	protected Vector3 getValidTarget(Vector3 origin, Vector3 target){
 		// Test if there is a path to this 
 		NavMeshPath path = new NavMeshPath();
 		NavMesh.CalculatePath(origin, target, NavMesh.AllAreas, path);
