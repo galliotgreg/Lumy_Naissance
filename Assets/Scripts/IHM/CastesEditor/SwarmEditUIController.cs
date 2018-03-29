@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SwarmEditUIController : MonoBehaviour
@@ -213,7 +214,7 @@ public class SwarmEditUIController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        RefreshView();
+        Invoke("RefreshView", 0.05f);
     }
 
     public void RefreshView()
@@ -515,7 +516,10 @@ public class SwarmEditUIController : MonoBehaviour
         Cast lumyCast = AppContextManager.instance.ActiveCast;
         editedLumy = Instantiate(emptyAgentPrefab);
         editedLumy.transform.parent = this.transform;
-        
+
+        //Change tag (Bug 482 workaround)
+        editedLumy.tag = "Untagged";
+
         //editedLumy.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             lumyCast, editedLumy, emptyComponentPrefab);
