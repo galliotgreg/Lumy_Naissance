@@ -8,18 +8,17 @@ public class HelpData : MonoBehaviour,IPointerDownHandler,IPointerEnterHandler,I
     public Help help;
    // public HelpDatabase helps = new HelpDatabase();
 
-    private ListHelp ListHelp;
     private Tooltip tooltip;
     private Vector2 offset;
 	// Use this for initialization
 	void Start () {
-        ListHelp = GameObject.Find("ListHelp").GetComponent<ListHelp>();
+        /*ListHelp = GameObject.Find("ListHelp").GetComponent<ListHelp>();
         tooltip = ListHelp.GetComponent<Tooltip>();
         //helps.LoadDatabase();
         //help = helps.FetchHelpByID(1);
         GameObject.Find("ListHelp").GetComponent<ListHelp>().LoadDatabase();
         help = GameObject.Find("ListHelp").GetComponent<ListHelp>().FetchHelpByID(1);
-        Debug.Log(help);
+        Debug.Log(help);*/
     }
 	
 	// Update is called once per frame
