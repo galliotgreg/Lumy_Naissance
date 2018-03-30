@@ -805,6 +805,12 @@ public class SwarmEditUIController : MonoBehaviour
         RefreshView();
     }
 
+    public void OpenResetSwarmDialog()
+    {
+        ImportController.ResetSpecie();
+        RefreshView();
+    }
+
     public void OpenExportSwarmDialog()
     {
         ExportController.ExportSpecie();
