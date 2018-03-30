@@ -63,7 +63,7 @@ public class HelpDatabase : MonoBehaviour
     }
     public void LoadDatabase(string namefile = "parametres")
     {
-        string path = Application.dataPath + "//Scenes//Xuan//"+ namefile +".json";
+        string path = Application.dataPath + @"/Inputs/HelpFiles/"+ namefile +".json";
         using (StreamReader stream = new StreamReader(path))
         {
             string json = stream.ReadToEnd();
