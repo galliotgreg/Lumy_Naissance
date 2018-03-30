@@ -17,18 +17,17 @@ public class PlayThenLoadVideo : MonoBehaviour {
         player.GetComponent<VideoPlayer>().Play();
         Debug.Log(player.GetComponent<VideoPlayer>()); 
         StartCoroutine(WaitForLengthCo(player.GetComponent<VideoPlayer>().clip.length));
-        SoundManager.instance.PlayMainTheme();
         //skip.onClick.AddListener(SkipVideo);
     }
 	
 	// Update is called once per frame
 	void Update () {
         
-        if(alreadyClick)
+        if (alreadyClick)
         {
             return; 
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && NavigationManager.instance.GetCurrentScene() != null)
         {
             alreadyClick = true; 
             SkipVideo();

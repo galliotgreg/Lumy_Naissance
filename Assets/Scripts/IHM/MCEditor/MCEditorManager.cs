@@ -999,18 +999,10 @@ public class MCEditorManager : MonoBehaviour {
         outcomeOpeParent = outcome.GetComponentInParent<ProxyABOperator>();
 
         int availeblePin = incomeOpeParent.GetAvailablePinEnter();
-        int opeInputInt = income.Pin_order.OrderPosition;
 
         if (availeblePin != -1)
         {
-            if (incomeOpeParent.Inputs.Length <= 3)
-            {
-                incomeOpeParent.Inputs[opeInputInt - 1] = (ABNode)outcomeOpeParent.AbOperator;
-            }
-            else
-            {
-                incomeOpeParent.Inputs[availeblePin] = (ABNode)outcomeOpeParent.AbOperator;
-            }            
+            incomeOpeParent.Inputs[availeblePin] = (ABNode)outcomeOpeParent.AbOperator;
             ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
         }                
     }
@@ -1020,22 +1012,13 @@ public class MCEditorManager : MonoBehaviour {
         ProxyABOperator opeParent;
         ProxyABParam paramParent;
 
-        int opeInputInt = ope.Pin_order.OrderPosition;
-
         opeParent = ope.GetComponentInParent<ProxyABOperator>();
         paramParent = param.GetComponentInParent<ProxyABParam>();
 
         int availeblePin = opeParent.GetAvailablePinEnter();
         if(availeblePin !=-1)
         {
-            if(opeParent.Inputs.Length <= 3)
-            {
-                opeParent.Inputs[opeInputInt - 1] = (ABNode)paramParent.AbParam;
-            } else
-            {
-                opeParent.Inputs[availeblePin] = (ABNode)paramParent.AbParam;
-            }
-            
+            opeParent.Inputs[availeblePin] = (ABNode)paramParent.AbParam;
         }
         opeParent.CurPinIn++;
         ((ABNode)paramParent.AbParam).Output = (ABNode)opeParent.AbOperator;

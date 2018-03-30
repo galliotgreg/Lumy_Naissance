@@ -84,6 +84,29 @@ public class RoamingAction : GotoAction {
 	#endregion
 
 	protected void newTarget(){
+
+		Vector3 curPos = vec2ToWorld (agentAttr.CurPos);
+		Vector3 newtarget = vec3ToLumy( GenerateNewTarget( true ) );
+		/*
+		// Create several targets (use the angle of view) and check if they are valid; if no one is valid, generate with an angle of view of 360 degrees
+		int MaxTries = 5;
+		int tries = MaxTries;
+		// a half of tries will consider the angle; the other half will consider 360 degrees
+		while( !isCompletePath( curPos, newtarget ) && tries > -MaxTries ){
+			newtarget = vec3ToLumy( GenerateNewTarget( tries > 0 ) );
+			tries--;
+		}
+		*/
+		this.Path = new Vector3[1]{ newtarget };
+		changeTargetDemand = false;
+	}
+
+	/// <summary>
+	/// Generates the new target
+	/// </summary>
+	/// <returns>The new target.</returns>
+	/// <param name="useAngle">If set to <c>true</c> consider the angle. Else, consider 360 degrees.</param>
+	protected Vector3 GenerateNewTarget( bool useAngle ){
 		Vector3 newtarget = AgentBehavior.vec2ToWorld( agentAttr.CurPos );
 
 		// If params are valid, calculate target
@@ -92,7 +115,7 @@ public class RoamingAction : GotoAction {
 			Vector3 dir = Vector3.zero;
 
 			// Check current Direction : if direction exists, use angle to calculate. Else, create a random target
-			if (this.CurDirection != null) {
+			if (this.CurDirection != null && useAngle) {
 				int roundedAngle = Mathf.RoundToInt( Mathf.Abs( Angle ) );
 				newAngle = Random.Range ( - roundedAngle/2, roundedAngle/2 );
 				dir = Quaternion.Euler(0,newAngle,0) * AgentBehavior.vec2ToWorld(this.CurDirection).normalized;
@@ -103,9 +126,9 @@ public class RoamingAction : GotoAction {
 			newtarget += dir*Dist;
 		}else{
 			// If params are not valid, keep the unit stopped
+			throw new System.Exception("Roaming : invalid params values");
 		}
-			
-		this.Path = new Vector3[1]{ newtarget };
-		changeTargetDemand = false;
+
+		return newtarget;
 	}
 }

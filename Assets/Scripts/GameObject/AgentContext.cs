@@ -180,7 +180,8 @@ public class AgentContext : MonoBehaviour
         ABModel behaviorModel = ABManager.instance.LoadABModelFromFile(path);
         AgentScript.ResourceCost cost = getCost( agentComponents, behaviorModel);
 		this.model.ProdCost = cost.Resources;
-		// layTimeCost
+
+        // layTimeCost
 		this.model.LayTimeCost = getCooldown( agentComponents );
         // visionRange
 

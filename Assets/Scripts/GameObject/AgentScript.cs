@@ -285,7 +285,7 @@ public class AgentScript : MonoBehaviour {
         ResourceScript resource = resourceGO.GetComponent<ResourceScript>(); 
         resource.Stock -= 1;
         //ResourceMineral 
-        GameObject res = null;
+        GameObject res = null; 
         if (resource.Color == Color.red)
         {
             res = Instantiate(mineralRed);
