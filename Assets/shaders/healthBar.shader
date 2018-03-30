@@ -70,6 +70,7 @@
               v2f vert(appdata_t IN)
               {
                   v2f OUT;
+                  UNITY_INITIALIZE_OUTPUT(v2f, OUT);
                   OUT.vertex = UnityObjectToClipPos(IN.vertex);
                   OUT.texcoord = IN.texcoord;
                   #ifdef PIXELSNAP_ON
