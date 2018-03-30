@@ -15,7 +15,6 @@ public class PlayThenLoadVideo : MonoBehaviour {
     // Use this for initialization
     void Start () {
         player.GetComponent<VideoPlayer>().Play();
-        Debug.Log(player.GetComponent<VideoPlayer>()); 
         StartCoroutine(WaitForLengthCo(player.GetComponent<VideoPlayer>().clip.length));
         //skip.onClick.AddListener(SkipVideo);
     }
