@@ -98,6 +98,10 @@ public class InGameUIController : MonoBehaviour {
     private Text timer;
     [SerializeField]
     private Button playPause;
+    [SerializeField]
+    private Sprite pause;
+    [SerializeField]
+    private Sprite play;
 
     #region ExitMenu
     /// <summary>
@@ -345,10 +349,21 @@ public class InGameUIController : MonoBehaviour {
             }
         }
     }
-
+    private bool statePlayPause = true;
     private void PauseGame()
     {
-        GameManager.instance.PauseGame(); 
+        Image pp = playPause.GetComponent<Image>();
+        if (statePlayPause)
+        {
+            pp.sprite = play;
+        }
+        else if (statePlayPause == false)
+        {
+            pp.sprite = pause;
+        }
+
+        GameManager.instance.PauseGame();
+        statePlayPause = !statePlayPause;
     }
 
 
