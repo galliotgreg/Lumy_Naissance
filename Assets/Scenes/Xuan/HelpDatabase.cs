@@ -43,9 +43,24 @@ public class HelpDatabase : MonoBehaviour
            if (database[i].ID == id)
                return database[i];
        }
-       return null;
-   }
+       if (id >= database.Count)
+        {
+            return database[0];
 
+        }
+        return null;
+   }
+    public Help FetchHelpByTitle(string title)
+    {
+        for (int i = 0; i < database.Count; i++)
+        {
+            if (database[i].Title == title)
+                return database[i];
+        }
+        //TODO RETURN SOMETHING WRONG
+        return database[0];
+
+    }
     public void LoadDatabase(string namefile = "parametres")
     {
         string path = Application.dataPath + "//Scenes//Xuan//"+ namefile +".json";
