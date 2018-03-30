@@ -23,11 +23,11 @@ public class PlayThenLoadVideo : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         
-        if(alreadyClick)
+        if (alreadyClick)
         {
             return; 
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && NavigationManager.instance.GetCurrentScene() != null)
         {
             alreadyClick = true; 
             SkipVideo();

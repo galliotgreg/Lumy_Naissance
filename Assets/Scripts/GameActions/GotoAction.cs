@@ -10,6 +10,7 @@ public class GotoAction : GameAction {
 
 	private Vector2 previousPosition;
 	private Vector2 curDirection;
+	private bool pathChanged = false;
 
 	#region PROPERTIES
     public Vector3[] Path
@@ -21,6 +22,24 @@ public class GotoAction : GameAction {
 
         set
         {
+			// verify modifications
+			bool changed = false;
+
+			if (path == null || value == null) {
+				changed = true;
+			} else {
+				if (value.Length != path.Length) {
+					changed = true;
+				} else {
+					for (int i = 0; i < path.Length; i++) {
+						if( path[i] != value[i] ){
+							changed = true;
+						}
+					}
+				}
+			}
+
+			pathChanged = changed;
 			path = value;
         }
     }
@@ -47,6 +66,13 @@ public class GotoAction : GameAction {
 
 	protected override bool executeAction ()
 	{
+		/**
+		 * every Update, we check if the unit reached its target and change it if necessary.
+		 * move the unit towards the target
+		 * 
+		 * In addition, we define the current direction
+		 */
+
 		Vector2 curPos = agentAttr.CurPos;
 
 		// Calculating direction : necessary to roamingAction
@@ -56,17 +82,17 @@ public class GotoAction : GameAction {
 		}
 		previousPosition = curPos;
 
-		//Vector3 destination = getValidTarget( vec2ToWorld(curPos), path [currentPathIndex]);
+		Vector3 destination = getValidTarget( vec2ToWorld(curPos), path [currentPathIndex]);
 		//destination = worldToVec2 ( vec2ToWorld( destination ) );
-		Vector2 destination = worldToVec2 ( path [currentPathIndex] );
+		//Vector3 destination = path [currentPathIndex];
 
 		// On a point
-		if (isClose (curPos, destination) ) {
+		if (isClose (curPos, worldToVec2( destination )) ) {
 			targetReached (currentPathIndex);
-			currentPathIndex = (currentPathIndex == path.Length - 1 ? currentPathIndex : (currentPathIndex + 1));
+			currentPathIndex = (currentPathIndex == path.Length - 1 ? 0 : (currentPathIndex + 1));
 		}
 
-		agentAttr.TrgPos = destination;
+		agentAttr.TrgPos = worldToVec2( destination );
 
 		// Use Unity A* to move
 		moveTo (agentAttr, movingAgent);
@@ -87,27 +113,34 @@ public class GotoAction : GameAction {
 
 	protected override void frameBeginAction ()
 	{
+		/**
+		 * every Frame, if the path has changed, we obtain the closest path point to the unit. the currentPathIndex will store the index of the point
+		 * In the case of several point in the path, if the unit is close to a point, 
+		 */
+
 		if (movingAgent != null) {
 			movingAgent.isStopped = false;
 
-			// define startPoint
-			if (path.Length > 0) {
-				if (path.Length == 1) {
-					currentPathIndex = 0;
-				} else {
-					Vector2 curPos = agentAttr.CurPos;
-
-					// selectNext Point
-					int closestIndex = indexClosest (curPos, path);
-
-					// On a point
-					if (isClose (curPos, worldToVec2 (path [closestIndex]))) {
-						// set next target (or the last point, if the index is the last)
-						currentPathIndex = (closestIndex == path.Length - 1 ? closestIndex : closestIndex + 1);
+			if (pathChanged) {
+				// define startPoint
+				if (path.Length > 0) {
+					if (path.Length == 1) {
+						currentPathIndex = 0;
 					} else {
-						// On an intersection
-						int edge = getEdge (curPos, closestIndex, path);
-						currentPathIndex = closestIndex + edge;
+						Vector2 curPos = agentAttr.CurPos;
+
+						// selectNext Point
+						int closestIndex = indexClosest (curPos, path);
+
+						// On a point
+						if (isClose (curPos, worldToVec2 (path [closestIndex]))) {
+							// set next target (or the initial point, if the index is the last)
+							currentPathIndex = (closestIndex == path.Length - 1 ? 0 : closestIndex + 1);
+						} else {
+							// On an intersection
+							int edge = getEdge (curPos, closestIndex, path);
+							currentPathIndex = closestIndex + edge;
+						}
 					}
 				}
 			}
@@ -335,14 +368,19 @@ public class GotoAction : GameAction {
 			// if the path is complete, the target remains
 			return target;
 		} else {
-			// if the path is incomplete, the target is the last point in the path
-			if (path.corners.Length > 0) {
-				Vector3 lastPoint = path.corners [path.corners.Length - 1];
-				return lastPoint;
+			if (path.status == NavMeshPathStatus.PathPartial) {
+				// if the path is incomplete, the target is the last point in the path
+				if (path.corners.Length > 0) {
+					return path.corners [path.corners.Length - 1];
+				}
 			} else {
-				return origin;
+				NavMeshHit hit = new NavMeshHit();
+				NavMesh.Raycast (origin, target, out hit, NavMesh.AllAreas);
+				return hit.position;
 			}
 		}
+
+		return origin;
 	}
 	#endregion
 }
