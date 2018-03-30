@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class CameraCorner : MonoBehaviour {
     
     private Camera cam;
-    /*[SerializeField]
-    private Shader replacement;*/
+    [SerializeField]
+    private Shader replacement;
     [SerializeField]
     private Camera minimapCam;
     [SerializeField]
@@ -30,7 +30,7 @@ public class CameraCorner : MonoBehaviour {
         // Lines Creation
         if (minimapCam != null)
         {
-            //minimapCam.SetReplacementShader(replacement, null);
+            minimapCam.SetReplacementShader(replacement, null);
 
             GameObject goCanvas = new GameObject("Canvas");
             goCanvas.transform.SetParent(minimapCam.transform, false);
@@ -93,7 +93,8 @@ public class CameraCorner : MonoBehaviour {
 	void Update ()
     {
         ComputeCorners();
-	}
+        minimapCam.SetReplacementShader(replacement, null);
+    }
 
     void ComputeCorners()
     {

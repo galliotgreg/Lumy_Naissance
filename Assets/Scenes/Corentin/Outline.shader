@@ -54,7 +54,7 @@ ENDCG
 			//Blend One OneMinusDstColor // Soft Additive
 			//Blend DstColor Zero // Multiplicative
 			//Blend DstColor SrcColor // 2x Multiplicative
- 
+
 CGPROGRAM
 #pragma vertex vert
 #pragma fragment frag
@@ -107,7 +107,6 @@ ENDCG
 			ENDCG
 			SetTexture [_MainTex] { combine primary }
 		}
- 
 CGPROGRAM
 #pragma surface surf Lambert
 struct Input {
