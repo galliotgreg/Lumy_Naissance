@@ -5,38 +5,29 @@ using UnityEngine.UI;
 
 public class ViewExplanation : MonoBehaviour
 {
+    [SerializeField]
+    public GameObject explanationText;
 
-    public GameObject subMenu;
-    public GameObject tabMenu;
-    public ListHelp listHelp;
-    HelpDatabase help = new HelpDatabase();
     [SerializeField]
     int ID;
 
     // Use this for initialization
     void Start()
     {
-
-        help.LoadDatabase(tabMenu.GetComponent<ViewPanel>().JSON_file);
-        help.LoadDatabase(GameObject.Find("SidePanel").GetComponent<SidePanel>().GetFile());
+        //help.LoadDatabase(GameObject.Find("SidePanel").GetComponent<SidePanel>().GetFile());
         this.gameObject.GetComponent<Button>().onClick.AddListener(SwitchMenu);
-        this.gameObject.GetComponentInChildren<Text>().text = help.FetchHelpByID(ID).Title;
-
-       // subMenu.GetComponent<Text>().text =  tabMenu.GetComponent<HelpDatabase>().FetchHelpByID(ID).Content;
+        this.gameObject.GetComponentInChildren<Text>().text = HelpManager.instance.help.FetchHelpByID(ID).Title;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        this.gameObject.GetComponentInChildren<Text>().text = HelpManager.instance.help.FetchHelpByID(ID).Title;
     }
 
     void SwitchMenu()
     {
-        subMenu.GetComponent<Text>().text = help.FetchHelpByID(ID).Content;
-        //subMenu.GetComponent<Text>().text = tabMenu.GetComponent<HelpDatabase>().FetchHelpByID(ID).Content;
-        // subMenu.SetActive(!subMenu.activeSelf);
-
+        explanationText.GetComponent<Text>().text = HelpManager.instance.help.FetchHelpByID(ID).Content;
     }
 }
