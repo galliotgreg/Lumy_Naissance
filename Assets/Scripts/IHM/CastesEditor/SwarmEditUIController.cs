@@ -83,7 +83,13 @@ public class SwarmEditUIController : MonoBehaviour
     [Header("Main Panel")]
     [SerializeField]
     private Text mainPanelLumyName;
-    
+
+    [SerializeField]
+    private GameObject lumyPanel;
+
+    [SerializeField]
+    private GameObject prysmePanel;
+
     /// <summary>
     /// The name of the current lumy on the main panel
     /// </summary>
@@ -325,7 +331,7 @@ public class SwarmEditUIController : MonoBehaviour
 
             //Set Position
             rectTransform.localPosition = new Vector3(
-                0,
+                200,
                 -i * (rectTransform.rect.height + 20f) - 20f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
@@ -348,7 +354,7 @@ public class SwarmEditUIController : MonoBehaviour
         redCost = GetRedCost();
         greenCost = GetGreenCost();
         blueCost = GetBlueCost();
-        LoadCastActions();
+        //LoadCastActions();
     }
 
     private void RefreshSwarmInfo()
@@ -804,8 +810,28 @@ public class SwarmEditUIController : MonoBehaviour
         ExportController.ExportSpecie();
     }
 
+    public void SelectPrysme()
+    {
+        SetPrysmePanel();
+    }
+
+    private void SetPrysmePanel()
+    {
+        editedLumy.SetActive(false);
+        lumyPanel.SetActive(false);
+        prysmePanel.SetActive(true);
+    }
+
+    private void SetLumyPanel()
+    {
+        editedLumy.SetActive(true);
+        lumyPanel.SetActive(true);
+        prysmePanel.SetActive(false);
+    }
+
     public void SelectLumy(string lumyName)
     {
+        SetLumyPanel();
         AppContextManager.instance.SwitchActiveCast(lumyName);
         RefreshView();
     }

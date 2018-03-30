@@ -65,7 +65,11 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	#region Actions
 	public float strikeUnit( AgentEntity target, float damage ){
-		float vitalityResult = Mathf.Max( target.Context.Model.Vitality - damage, 0 );
+        if(target.Context.Model.Vitality <= 0)
+        {
+            return 0; 
+        }
+        float vitalityResult = Mathf.Max( target.Context.Model.Vitality - damage, 0 );
 		float damageResult = target.Context.Model.Vitality - vitalityResult;
 		target.Context.Model.Vitality -= damageResult;
 

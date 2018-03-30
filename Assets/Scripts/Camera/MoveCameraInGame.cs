@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MoveCameraInGame : MonoBehaviour {
 
@@ -35,6 +36,8 @@ public class MoveCameraInGame : MonoBehaviour {
     private Vector3 initPos;
     private Vector3 initRotation;
     private float zoomRotation = 1;
+    //Used for Intersection with UI
+    private int fingerID = -1;
 
     // Use this for initialization
     void Start () {
@@ -58,15 +61,18 @@ public class MoveCameraInGame : MonoBehaviour {
     #region CameraMovement
     private void zoomCamera()
     {
-        currentZoom -= Input.GetAxisRaw("Mouse ScrollWheel") * Time.unscaledDeltaTime * 1000 * zoomSpeed;
+        if(!EventSystem.current.IsPointerOverGameObject(fingerID))
+        {
+            currentZoom -= Input.GetAxisRaw("Mouse ScrollWheel") * Time.unscaledDeltaTime * 1000 * zoomSpeed;
+        }
+            currentZoom = Mathf.Clamp(currentZoom, zoomRange.x, zoomRange.y);
+            transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y - (initPos.y + currentZoom)) * 0.1f, transform.position.z);
 
-        currentZoom = Mathf.Clamp(currentZoom, zoomRange.x, zoomRange.y);
-        transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y - (initPos.y + currentZoom)) * 0.1f, transform.position.z);
+            float x = transform.eulerAngles.x - (transform.eulerAngles.x - (initRotation.x + currentZoom * zoomRotation)) * 0.1f;
+            x = Mathf.Clamp(x, zoomAngleRange.x, zoomAngleRange.y);
 
-        float x = transform.eulerAngles.x - (transform.eulerAngles.x - (initRotation.x + currentZoom * zoomRotation)) * 0.1f;
-        x = Mathf.Clamp(x, zoomAngleRange.x, zoomAngleRange.y);
-
-        transform.eulerAngles = new Vector3(x, transform.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(x, transform.eulerAngles.y, transform.eulerAngles.z);
+        
     }
 
     private void MoveCamera()
