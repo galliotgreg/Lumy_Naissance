@@ -354,7 +354,7 @@ public class SwarmEditUIController : MonoBehaviour
         redCost = GetRedCost();
         greenCost = GetGreenCost();
         blueCost = GetBlueCost();
-        //LoadCastActions();
+        LoadCastActions();
     }
 
     private void RefreshSwarmInfo()
