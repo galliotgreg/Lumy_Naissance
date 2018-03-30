@@ -13,11 +13,13 @@ public class ParticlesSpawn : MonoBehaviour {
     private GameObject partSpawner;
     [SerializeField]
     private float period;
+    [SerializeField]
+    private float partDuration;
+    [SerializeField]
+    private float partTrailDuration;
 
     private float xMax;
     private float yMax;
-    private float partDuration;
-    private float partTrailDuration;
     private Vector3 pos;
     private float time = 0f;
     private float eps = 0.01f;
@@ -32,15 +34,13 @@ public class ParticlesSpawn : MonoBehaviour {
         //Set max coordinates
         xMax = canvasRectTransform.rect.width/2f;
         yMax = canvasRectTransform.rect.height/2f;
-        //Get ParticleSystem duration
-        partDuration = partSystem.GetComponent<ParticleSystem>().main.duration;
-        partTrailDuration = partSystemTrail.GetComponent<ParticleSystem>().main.duration;
+
     }
 
     // Update is called once per frame
     void Update () {
         
-        //periodic action
+        //periodic particles creation
         if( time % period < eps)
         {
             CreateParticles();  
@@ -58,17 +58,16 @@ public class ParticlesSpawn : MonoBehaviour {
         //Choose which particles to create
         if (UnityEngine.Random.value <= 0.5)
         {
-            partSystem = Instantiate(particles, pos, Quaternion.identity);
+            partSystem = Instantiate(particles, pos, Quaternion.identity); 
         }
         else
         {
-            partSystemTrail = Instantiate(particlesTrail, pos, Quaternion.identity);
+            partSystemTrail = Instantiate(particlesTrail, pos, Quaternion.identity);    
         }
-        
-        //Destroy excedents particles
-        Destroy(partSystem, 2*partDuration);
-        Destroy(partSystemTrail, 2*partTrailDuration);
-    }
 
-   
+        //Destroy excedents particles
+        Destroy(partSystem, partDuration * 2f);
+        Destroy(partSystemTrail, partTrailDuration * 2f);
+    }
+ 
 }
