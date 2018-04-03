@@ -127,7 +127,7 @@ public class MCToolManager : MonoBehaviour
         btn_Main.onClick.AddListener(() => { CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; });
         btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); ToolUndo(); });
         btn_Redo.onClick.AddListener(() => { CurrentTool = ToolType.Redo; CancelInventory(); ToolRedo(); });
-        
+        DeleteTemporary_Backup();
 
     }
 
@@ -272,7 +272,15 @@ public class MCToolManager : MonoBehaviour
             DeleteNodes();
         }
     }
+    void DeleteTemporary_Backup()
+    {
+        string backupPath = Application.dataPath + @"/TemporaryBackup";
+        string[] filesPath = Directory.GetFiles(backupPath, "*.csv", SearchOption.TopDirectoryOnly);
+        foreach (string filepath in filesPath){
+            File.Delete(filepath);
+        }
 
+    }
     //Method to Return Clicked Object
     GameObject ReturnClickedObject(out RaycastHit hit)
     {
