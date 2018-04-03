@@ -209,6 +209,7 @@ public class PartiePersoUIController : MonoBehaviour {
         {
             AppContextManager.instance.LoadPlayerSpecies(player1SpecieName, player2SpecieName);
             //Launch
+            NavigationManager.instance.ActivateFadeToBlack();
             NavigationManager.instance.SwapScenes(sceneTxtField, Vector3.zero);
         }
       
