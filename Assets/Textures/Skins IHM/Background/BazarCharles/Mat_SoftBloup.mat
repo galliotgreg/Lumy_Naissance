@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Mat_Arctan
-  m_Shader: {fileID: 4800000, guid: cbfaaf7489d51d047bcdd997c86d8d18, type: 3}
+  m_Name: Mat_SoftBloup
+  m_Shader: {fileID: 4800000, guid: 97254d2e6d82d004488336c5ab68ff13, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -18,9 +18,13 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _node_9524:
-        m_Texture: {fileID: 2800000, guid: 3e54f5471adcf2348a7637785b97461f, type: 3}
+    - _TextureNoise:
+        m_Texture: {fileID: 2800000, guid: 28c7aad1372ff114b90d330f8a2dd938, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _Cutoff: 0.5
+    - _Opacity: 0.5
+    - _Refraction: 0.02
+    m_Colors:
+    - _color: {r: 0.29411763, g: 0.21393625, b: 0.11245675, a: 0.663}
