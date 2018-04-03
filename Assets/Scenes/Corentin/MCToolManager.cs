@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System;
+using System.IO;
 
 public class MCToolManager : MonoBehaviour
 {
-	#region SINGLETON
+    #region SINGLETON
     /// <summary>
     /// The static instance of the Singleton for external access
     /// </summary>
@@ -30,34 +32,52 @@ public class MCToolManager : MonoBehaviour
             Destroy(gameObject);
         }
         neverCalculated = true;
+        cast_name = AppContextManager.instance.ActiveCast.Name + "_behavior_POSITION";
+
+        //string[] path_cutted = cast_name.Split('/');
+        //cast_name = path_cutted[path_cutted.Length - 2];
     }
-	#endregion
-    
-	public enum ToolType{
-		Selection,
-		Hand,
-        Undo,
-		None
-	};
+    #endregion
 
-    public class UndoableAction
+    public enum ToolType
     {
-        public List<GameObject> impactedNodes;
-        public Vector3 transform;
+        Selection,
+        Hand,
+        Undo,
+        Redo,
+        None
+    };
 
-        public UndoableAction(List<GameObject> impactedNodes, Vector3 transform)
+    /*public class UndoableAction
+    {
+        public GameObject[] impactedNodes;
+        public List<Vector3> transform;
+
+        public UndoableAction() {
+            //this.impactedNodes = new GameObject[0];
+            this.transform = new List<Vector3>();
+        }
+
+        public UndoableAction(GameObject[] impactedNodes, List<Vector3> transform)
         {
             this.impactedNodes = impactedNodes;
             this.transform = transform;
         }
-    }
 
-    public  List<GameObject> SelectedNodes = new List<GameObject>();
+        public void Clear()
+        {
+            //this.impactedNodes = new GameObject[0];
+            this.transform.Clear();
+        }
+    }*/
+
+    public List<GameObject> SelectedNodes = new List<GameObject>();
     public GameObject getTarget;
-	[SerializeField]
-	ToolType currentTool = ToolType.None;
+    [SerializeField]
+    ToolType currentTool = ToolType.None;
+
     bool isMouseDragging;
-	[SerializeField]
+    [SerializeField]
     bool inventory = false;
 
     [SerializeField]
@@ -66,9 +86,11 @@ public class MCToolManager : MonoBehaviour
     private Button btn_Main;
     [SerializeField]
     private Button btn_Undo;
+    [SerializeField]
+    private Button btn_Redo;
 
     [SerializeField]
-	DropArea centerZone;
+    DropArea centerZone;
 
     private bool selectionEnCours;
 
@@ -76,25 +98,37 @@ public class MCToolManager : MonoBehaviour
     private bool neverCalculated;
     List<Vector3> DistanceList = new List<Vector3>();
 
+    /*List<UndoableAction> undoableActions = new List<UndoableAction>();
+    UndoableAction currentUndoableAction = new UndoableAction();*/
 
-    List<UndoableAction> undoableActions = new List<UndoableAction>();
+    int id = 0;
+    int idmax = 0;
+    string cast_name;
+    public bool saved = false;
+    bool hasBeenAdded = false;
 
     #region PROPERTIES
-    ToolType CurrentTool {
-		get {
-			return currentTool;
-		}
-		set {
-			currentTool = value;
-		}
-	}
-	#endregion
+    ToolType CurrentTool
+    {
+        get
+        {
+            return currentTool;
+        }
+        set
+        {
+            currentTool = value;
+        }
+    }
+    #endregion
 
     private void Start()
     {
-		btn_Selection.onClick.AddListener(() => {CurrentTool = ToolType.Selection; CancelInventory(); SelectionSquare.instance.enabled = true; } );
-		btn_Main.onClick.AddListener(() => {CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; } );
-        btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); ToolUndo();  });
+        btn_Selection.onClick.AddListener(() => { CurrentTool = ToolType.Selection; CancelInventory(); SelectionSquare.instance.enabled = true; });
+        btn_Main.onClick.AddListener(() => { CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; });
+        btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); ToolUndo(); });
+        btn_Redo.onClick.AddListener(() => { CurrentTool = ToolType.Redo; CancelInventory(); ToolRedo(); });
+        DeleteTemporary_Backup();
+
     }
 
     private void Update()
@@ -102,79 +136,85 @@ public class MCToolManager : MonoBehaviour
         //Mouse Button Press Down
         if (Input.GetMouseButtonDown(0) && !selectionEnCours)
         {
-			RaycastHit hitInfo;
-			getTarget = ReturnClickedObject (out hitInfo);
-            if(getTarget.name == "pin(Clone)" || getTarget.name ==  "pinOut(Clone)" || getTarget.name == "transition(Clone)")
+            RaycastHit hitInfo;
+            getTarget = ReturnClickedObject(out hitInfo);
+            if (getTarget.name == "pin(Clone)" || getTarget.name == "pinOut(Clone)" || getTarget.name == "transition(Clone)")
             {
                 SelectionSquare.instance.enabled = false;
                 isMouseDragging = false;
             }
-			if( centerZone.CanDrop ){
-			//if (!inventory) {
-				//Hit background
-				if (getTarget.name == "STUBS_backgroundCollider") //getTarget == null || 
+            if (centerZone.CanDrop)
+            {
+                //Hit background
+                if (getTarget.name == "STUBS_backgroundCollider")
                 {
-				//if (getTarget.name == "STUBS_backgroundCollider") {
-					inventory = false;
-					//current tool activated
-					if (CurrentTool == ToolType.Selection) {
-                        //Debug.Log ("le current tool est selection avec hit background");
-                        
+                    inventory = false;
+                    //current tool activated
+                    if (CurrentTool == ToolType.Selection)
+                    {
                         selectionEnCours = true;
                         SelectionSquare.instance.MultipleSelection = true;
 
                         SelectionSquare.instance.enabled = true;
-                        
+
                         SelectedNodes = SelectionSquare.instance.selectedUnits;
-                        //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
-                        //SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
-                        //Debug.Log ("il y a " + SelectedNodes.Count + " nodes selected");
-					}
-					if (CurrentTool == ToolType.Hand) {
-                        //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
+                    }
+                    if (CurrentTool == ToolType.Hand)
+                    {
                         SelectionSquare.instance.enabled = false;
                         isMouseDragging = false;
                     }
-				}
+                }
 
-				if (getTarget.name != "STUBS_backgroundCollider") //(getTarget != null)
+                if (getTarget.name != "STUBS_backgroundCollider")
                 {
-					//hit something selectable (node, state, action...)
-					if (getTarget.tag == "Selectable") {
-						inventory = false;
-						//current tool activated
-						if (CurrentTool == ToolType.Selection) {
- 
-                            //selectionEnCours = true;
+                    //hit something selectable (node, state, action...)
+                    if (getTarget.tag == "Selectable")
+                    {
+                        inventory = false;
+                        //current tool activated
+                        if (CurrentTool == ToolType.Selection)
+                        {
+
                             SelectionSquare.instance.MultipleSelection = false;
                             SelectionSquare.instance.enabled = true;
                             SelectedNodes = SelectionSquare.instance.selectedUnits;
-                            //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = true;
-                            //SelectedNodes = GameObject.Find ("Camera").GetComponent<SelectionSquare> ().selectedUnits;
+
                         }
-                        if (CurrentTool == ToolType.Hand) {
-                            //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
+                        if (CurrentTool == ToolType.Hand)
+                        {
                             SelectionSquare.instance.enabled = false;
                             isMouseDragging = true;
 
-                            
+                            //currentUndoableAction.Clear();
+
                             if (neverCalculated)
                             {
                                 DistanceList.Clear();
                                 mpos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -GameObject.Find("Camera").GetComponent<Camera>().transform.position.z);
                                 mpos = GameObject.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(mpos);
                                 neverCalculated = false;
+
+                                //currentUndoableAction.impactedNodes = new GameObject[SelectedNodes.Count];
+                                //SelectedNodes.CopyTo(currentUndoableAction.impactedNodes);
+
                                 foreach (GameObject b in SelectedNodes)
                                 {
                                     DistanceList.Add(b.transform.position - mpos);
+                                    //currentUndoableAction.transform.Add(b.transform.position);
+                                    /*currentUndoableAction.transform = new List<Vector3>
+                                    {
+                                        b.transform.position
+                                    };*/
                                 }
                             }
                         }
-					}
-				}
-			} else {
+                    }
+                }
+            }
+            else
+            {
                 // Disable square when inventory is selected
-                //GameObject.Find ("Camera").GetComponent<SelectionSquare> ().enabled = false;
                 SelectionSquare.instance.enabled = false;
                 SelectionSquare.instance.MultipleSelection = false;
                 isMouseDragging = false;
@@ -182,27 +222,65 @@ public class MCToolManager : MonoBehaviour
             }
         }
 
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             isMouseDragging = false;
             selectionEnCours = false;
+            if (saved)
+                hasBeenAdded = false;
+            saved = false;
         }
 
-        if (CurrentTool == ToolType.Hand)
+        if (CurrentTool == ToolType.Hand )
         {
-			if (isMouseDragging) {
-				ToolMain ();
-			} else {
-				ToolMain_ConsolidateNodes ();
-			}
+            if (isMouseDragging)
+            {
+                ToolMain();
+                if (!hasBeenAdded)
+                {
+                    id++;
+                    if (idmax <= id)
+                    {
+                         idmax = id;
+                    }
+                    else
+                    {
+                        string sourceFilePath;
+                        for (int id_delete = id; id_delete <= idmax; id_delete++)
+                        {
+                            sourceFilePath = Application.dataPath + @"\TemporaryBackup\" + cast_name + "_" + id_delete.ToString() + ".csv";
+                            File.Delete(sourceFilePath);
+                        }
+                        idmax = id;
+                    }
+                    MCEditorManager.instance.Temporary_Save_MC_Position(cast_name, id.ToString());
+                    saved = true;
+                    Debug.Log("+1");
+                    hasBeenAdded = true;
+                }
+
+            }
+            else
+            {
+                ToolMain_ConsolidateNodes();
+            }
         }
 
-		// Delete selected nodes when DELETE is pressed
-		if (Input.GetKeyDown (KeyCode.Delete)) {
-			DeleteNodes ();
-		}
+        // Delete selected nodes when DELETE is pressed
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            DeleteNodes();
+        }
     }
+    void DeleteTemporary_Backup()
+    {
+        string backupPath = Application.dataPath + @"/TemporaryBackup";
+        string[] filesPath = Directory.GetFiles(backupPath, "*.csv", SearchOption.TopDirectoryOnly);
+        foreach (string filepath in filesPath){
+            File.Delete(filepath);
+        }
 
+    }
     //Method to Return Clicked Object
     GameObject ReturnClickedObject(out RaycastHit hit)
     {
@@ -216,10 +294,10 @@ public class MCToolManager : MonoBehaviour
         return target;
     }
 
-	#region TOOL : HAND
+    #region TOOL : HAND
     private void ToolMain()
     {
-        Vector3 transformUndoable = new Vector3();
+
         //Mouse moving
         if (isMouseDragging)
         {
@@ -232,7 +310,6 @@ public class MCToolManager : MonoBehaviour
             if (SelectedNodes != null && SelectedNodes.Count == 0)
             {
                 getTarget.transform.position = currentPosition;
-                transformUndoable = currentPosition;
             }
 
             else
@@ -243,90 +320,146 @@ public class MCToolManager : MonoBehaviour
                     foreach (GameObject b in SelectedNodes)
                     {
                         //update targets current postions.
-                        if(DistanceList[i].x < 0 || DistanceList[i].y < 0 )
+                        if (DistanceList[i].x < 0 || DistanceList[i].y < 0)
                         {
                             DistanceList[i].Set(DistanceList[i].x * -1.0f, DistanceList[i].y * -1.0f, DistanceList[i].z);
                         }
                         b.transform.position = currentPosition + DistanceList[i];
-                        transformUndoable = currentPosition + DistanceList[i];
                         i++;
 
                     }
                 }
             }
         }
-        
-        UndoableAction currentUndoableAction = new UndoableAction(SelectedNodes, transformUndoable);
-        undoableActions.Add(currentUndoableAction);
-        Debug.Log("liste = " + undoableActions.Count);
     }
 
-	/// <summary>
-	/// After dropping the nodes, adjust the selected nodes to the grid
-	/// </summary>
-	private void ToolMain_ConsolidateNodes()
-	{
-		if (SelectedNodes != null && SelectedNodes.Count == 0)
-		{
-			MCEditorManager.positioningProxy( getTarget.GetComponent<MCEditor_Proxy>() );
-		}else
-		{
-			if (SelectedNodes != null)
-			{
-				foreach (GameObject b in SelectedNodes)
-				{
-					MCEditorManager.positioningProxy( b.GetComponent<MCEditor_Proxy>() );
-				}
-			}
-		}
-	}
-	#endregion
+    /// <summary>
+    /// After dropping the nodes, adjust the selected nodes to the grid
+    /// </summary>
+    private void ToolMain_ConsolidateNodes()
+    {
+        if (SelectedNodes != null && SelectedNodes.Count == 0)
+        {
+            MCEditorManager.positioningProxy(getTarget.GetComponent<MCEditor_Proxy>());
+        }
+        else
+        {
+            if (SelectedNodes != null)
+            {
+                foreach (GameObject b in SelectedNodes)
+                {
+                    MCEditorManager.positioningProxy(b.GetComponent<MCEditor_Proxy>());
+                }
+            }
+        }
+    }
+    #endregion
 
-	#region DELETE
-	/// <summary>
-	/// Deletes the selected nodes
-	/// </summary>
-	void DeleteNodes(){
-		if (SelectedNodes != null && SelectedNodes.Count == 0)
-		{
-			MCEditorManager.instance.deleteSelectedProxies ( new List<MCEditor_Proxy>(){ getTarget.GetComponent<MCEditor_Proxy> () } );
-			getTarget = null;
-		}else
-		{
-			if (SelectedNodes != null)
-			{
-				List<MCEditor_Proxy> selectedProxies = new List<MCEditor_Proxy> ();
-				foreach (GameObject b in SelectedNodes)
-				{
-					selectedProxies.Add( b.GetComponent<MCEditor_Proxy>() );
-				}
-				MCEditorManager.instance.deleteSelectedProxies ( selectedProxies );
-				SelectedNodes.Clear ();
-			}
-		}
-	}
+    #region DELETE
+    /// <summary>
+    /// Deletes the selected nodes
+    /// </summary>
+    void DeleteNodes()
+    {
+        if (SelectedNodes != null && SelectedNodes.Count == 0)
+        {
+            MCEditorManager.instance.deleteSelectedProxies(new List<MCEditor_Proxy>() { getTarget.GetComponent<MCEditor_Proxy>() });
+            getTarget = null;
+        }
+        else
+        {
+            if (SelectedNodes != null)
+            {
+                List<MCEditor_Proxy> selectedProxies = new List<MCEditor_Proxy>();
+                foreach (GameObject b in SelectedNodes)
+                {
+                    selectedProxies.Add(b.GetComponent<MCEditor_Proxy>());
+                }
+                MCEditorManager.instance.deleteSelectedProxies(selectedProxies);
+                SelectedNodes.Clear();
+            }
+        }
+    }
     #endregion
 
     #region UNDO
     private void ToolUndo()
     {
-        List<GameObject> currentImpactedNodes = undoableActions[0].impactedNodes;
-        Debug.Log(undoableActions[0].impactedNodes);
-        foreach(GameObject b in currentImpactedNodes)
+        /*//List<GameObject> currentImpactedNodes = undoableActions.Peek().impactedNodes;
+        int i = 0;
+        foreach(GameObject b in undoableActions[undoableActions.Count -1].impactedNodes)
         {
-            b.transform.position = undoableActions[0].transform;
+            b.transform.position = undoableActions[undoableActions.Count - 1].transform[i];
+            i++;
         }
-        undoableActions.RemoveAt(0);
+        undoableActions[undoableActions.Count - 1].Clear();
+        //currentImpactedNodes.Clear();*/
+        if (id == idmax)
+        {
+            idmax++;
+            MCEditorManager.instance.Temporary_Save_MC_Position(cast_name, idmax.ToString());
+
+        }
+
+        string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
+        string sourceFilePath = Application.dataPath + @"\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
+
+        if (id > 0)
+        {
+            File.Delete(destinationFolderPath + cast_name + ".csv");
+            Debug.Log(sourceFilePath);
+            File.Delete(destinationFolderPath + cast_name + ".csv.meta");
+            File.Copy(sourceFilePath, destinationFolderPath + cast_name + ".csv");
+            MCEditorManager.instance.LoadMC_Position();
+
+            id--;
+            //File.Delete(sourceFilePath);
+        }
+
+
     }
     #endregion
+
+    #region REDO
+    private void ToolRedo()
+    {
+        /*//List<GameObject> currentImpactedNodes = undoableActions.Peek().impactedNodes;
+        int i = 0;
+        foreach(GameObject b in undoableActions[undoableActions.Count -1].impactedNodes)
+        {
+            b.transform.position = undoableActions[undoableActions.Count - 1].transform[i];
+            i++;
+        }
+        undoableActions[undoableActions.Count - 1].Clear();
+        //currentImpactedNodes.Clear();*/
+        string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
+        
+
+        if (id <  idmax )
+        {
+            id++;
+            string sourceFilePath = Application.dataPath + @"\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
+            File.Delete(destinationFolderPath + cast_name + ".csv");
+            File.Delete(destinationFolderPath + cast_name + ".csv.meta");
+            Debug.Log(sourceFilePath);
+            File.Copy(sourceFilePath, destinationFolderPath + cast_name + ".csv");
+            MCEditorManager.instance.LoadMC_Position();
+
+            //File.Delete(sourceFilePath);
+        }
+
+
+    }
+    #endregion
+
 
     public void Inventory()
     {
         inventory = true;
     }
-	public void CancelInventory()
-	{
-		inventory = false;
-	}
+    public void CancelInventory()
+    {
+        inventory = false;
+    }
 }
 
