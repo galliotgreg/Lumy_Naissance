@@ -7,11 +7,6 @@ public abstract class SyntaxTree_MC_Exception : MC_Exception {
 		: base(context, msg){
 	}
 
-	public string getMessage(){
-		string trace = getTrace ( 0 );
-		return trace;
-	}
-
 	public abstract string getTrace ( int level );
 	protected abstract string getNodeMessage ();
 
@@ -21,6 +16,11 @@ public abstract class SyntaxTree_MC_Exception : MC_Exception {
 		get {
 			return Cast;
 		}
+	}
+
+	public override string getMessage(){
+		string trace = getTrace ( 0 );
+		return trace;
 	}
 
 	#endregion

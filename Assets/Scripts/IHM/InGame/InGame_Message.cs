@@ -10,6 +10,8 @@ public class InGame_Message : MonoBehaviour {
 	[SerializeField]
 	GameObject container;
 	[SerializeField]
+	Transform containerTransform;
+	[SerializeField]
 	Button activateButton;
 	[SerializeField]
 	Text activateText;
@@ -65,7 +67,7 @@ public class InGame_Message : MonoBehaviour {
 
 		// fill exception
 		activateText.text = exception.Title;
-		InGame_MessageItem_Line.instantiate( exception.Message, container.transform, LinePrefab );
+		InGame_MessageItem_Line.instantiate( exception.getMessage(), containerTransform, LinePrefab );
 	}
 
 	public static InGame_Message instantiate( MC_Exception exception, Transform parent, InGame_Message prefab ){

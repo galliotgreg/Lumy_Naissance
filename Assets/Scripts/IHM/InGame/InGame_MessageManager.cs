@@ -68,25 +68,31 @@ public class InGame_MessageManager : MonoBehaviour {
 		Destroy (exception.gameObject);
 	}
 	public void activateMessage( InGame_Message exception ){
+		// If the exception is not Selected, select it
 		if (exception != selectedMessage) {
 			// Hide previous
-			if (selectedMessage != null) {
-				hideMessage (selectedMessage);
-			}
+			hideMessage (selectedMessage);
 
 			// Show current
 			showMessage( exception );
+
 			selectedMessage = exception;
+		
+		// If the exception is Selected, hide it
 		} else {
-			hideMessage ( exception );
+			hideMessage ( selectedMessage );
 			selectedMessage = null;
 		}
 	}
 	public void showMessage( InGame_Message exception ){
-		exception.showMessage ();
+		if (exception != null) {
+			exception.showMessage ();
+		}
 	}
 	public void hideMessage( InGame_Message exception ){
-		exception.hideMessage ();
+		if (exception != null) {
+			exception.hideMessage ();
+		}
 	}
 	#endregion
 
@@ -94,11 +100,16 @@ public class InGame_MessageManager : MonoBehaviour {
 	public void show(){
 		logger.SetActive (true);
 		activateButton.gameObject.SetActive (false);
+
+		// close all messages
+		activateMessage (null);
+
 		UpdateAmount ();
 	}
 	public void hide(){
 		logger.SetActive (false);
 		activateButton.gameObject.SetActive (true);
+
 		UpdateAmount ();
 	}
 	#endregion
