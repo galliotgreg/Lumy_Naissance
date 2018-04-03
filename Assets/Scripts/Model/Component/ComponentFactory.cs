@@ -80,6 +80,8 @@ public class ComponentFactory : MonoBehaviour {
     private string readFile(string path)
     {
         System.IO.StreamReader reader = new System.IO.StreamReader(path);
-        return reader.ReadToEnd();
+        string content = reader.ReadToEnd();
+        reader.Close();
+        return content;
     }
 }

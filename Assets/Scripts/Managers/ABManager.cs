@@ -391,7 +391,7 @@ public class ABManager : MonoBehaviour
         {
             lines.Add(reader.ReadLine());
         }
-
+        reader.Close();
         return lines;
     }
 

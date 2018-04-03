@@ -9,9 +9,11 @@ public class ComponentsParser_Test {
 	string pathFile = "Assets/Inputs/Components/components.csv";
 
 	string readFile( string path ){
-		System.IO.StreamReader reader = new System.IO.StreamReader(path);
-		return reader.ReadToEnd();
-	}
+        System.IO.StreamReader reader = new System.IO.StreamReader(path);
+        string content = reader.ReadToEnd();
+        reader.Close();
+        return content;
+    }
 
 	[Test]
 	public void notCreated() {
