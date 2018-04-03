@@ -87,7 +87,7 @@ public class RoamingAction : GotoAction {
 
 		Vector3 curPos = vec2ToWorld (agentAttr.CurPos);
 		Vector3 newtarget = vec3ToLumy( GenerateNewTarget( true ) );
-
+		/*
 		// Create several targets (use the angle of view) and check if they are valid; if no one is valid, generate with an angle of view of 360 degrees
 		int MaxTries = 5;
 		int tries = MaxTries;
@@ -96,7 +96,7 @@ public class RoamingAction : GotoAction {
 			newtarget = vec3ToLumy( GenerateNewTarget( tries > 0 ) );
 			tries--;
 		}
-
+		*/
 		this.Path = new Vector3[1]{ newtarget };
 		changeTargetDemand = false;
 	}

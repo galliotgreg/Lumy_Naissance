@@ -138,7 +138,7 @@ public class NavigationManager : MonoBehaviour {
     IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
     {
         GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
-
+        
         // Faire disparaître le canvas en fondu
         GameObject canvas = GameObject.Find(currentScene + "Canvas");
         canvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -337,7 +337,7 @@ public class NavigationManager : MonoBehaviour {
         {
             if (Camera.allCamerasCount >= 2)
             {
-                if (c.name != "Main Camera")
+                if (c.name != "Main Camera" && c.tag == "MainCamera")
                 {
                     camera.GetComponent<AudioListener>().enabled = false;
                     camera = c;
