@@ -11,6 +11,8 @@ public class ParticlesSpawn : MonoBehaviour {
     private GameObject particlesTrail;
     [SerializeField]
     private float period;
+    [SerializeField]
+    private float depth;
 
     private int compteurParticules = 0;   
     private float xMax;
@@ -25,13 +27,15 @@ public class ParticlesSpawn : MonoBehaviour {
     void Start () {
         particlesList = new List<GameObject>();
         particlesToBeDestroyed = new List<GameObject>();
-        //Access canvas width and height
+        //Access parent canvas width and height
         GameObject spawnerParent = this.gameObject.transform.parent.gameObject;
         RectTransform canvasRectTransform = spawnerParent.GetComponent<RectTransform>();
         //Set max coordinates
         xMax = canvasRectTransform.rect.width/2f;
         yMax = canvasRectTransform.rect.height/2f;
-
+        Debug.Log("parent name :" + spawnerParent.name);
+        Debug.Log("xMax :" + xMax);
+        Debug.Log("yMax :" + yMax);
     }
 
     // Update is called once per frame
@@ -49,17 +53,19 @@ public class ParticlesSpawn : MonoBehaviour {
     private void CreateParticles()
     {
         //Pick position
-        Vector3 pos = new Vector3(UnityEngine.Random.Range(-xMax, xMax), UnityEngine.Random.Range(-yMax, yMax), 0f);
+        Vector3 pos = new Vector3(UnityEngine.Random.Range(-xMax, xMax), UnityEngine.Random.Range(-yMax, yMax), depth);
 
         //Choose which particles to create
         if (UnityEngine.Random.value <= 0.5)
         {
             GameObject part = Instantiate(particles, pos, Quaternion.identity);
+            part.transform.SetParent(this.gameObject.transform, false);
             particlesList.Add(part);  
         }
         else
         {
             GameObject partTrail = Instantiate(particlesTrail, pos, Quaternion.identity);
+            partTrail.transform.SetParent(this.gameObject.transform, false);
             particlesList.Add(partTrail);   
         }  
   
@@ -95,7 +101,6 @@ public class ParticlesSpawn : MonoBehaviour {
             //Destroy particles
             foreach (GameObject part in particlesToBeDestroyed)
             {
-                //Debug.Log("kaboom");
                 Destroy(part);
             }
         }
