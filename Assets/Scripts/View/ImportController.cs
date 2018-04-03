@@ -19,12 +19,7 @@ public class ImportController : MonoBehaviour {
 
     public static void ImportSpecie()
     {
-        // TODO Remove EdiorUtility
-        /* Application.dataPath + "/" + compoDataPath
-        System.IO.StreamReader reader = new System.IO.StreamReader(path);
-        return reader.ReadToEnd();*/
 
-        // Debug.Log(Application.dataPath + "/");
         string filePath = Application.dataPath + @"/Inputs/Species";
         string name = "";
         string path = FileBrowser.OpenSingleFile("Open Folder", "","zip");        
@@ -38,6 +33,27 @@ public class ImportController : MonoBehaviour {
         AppContextManager.instance.UpdateSpeciesFoldersNames();
         SwarmEditUIController.instance.SelectSwarm(name);
     }
+    public static void ResetSpecie()
+    {
+        
+        string filePath = Application.dataPath + @"/Inputs/Species";
+        string name = "";
 
+        string backupPath = Application.dataPath + @"/Inputs/Backup";
+        string[] filesPath = Directory.GetFiles(backupPath, "*.zip", SearchOption.TopDirectoryOnly);
+        foreach (string filepath in filesPath)
+        {
+            if (filepath != null && filepath != "")
+            {
+
+                name = (Path.GetFileName(filepath)).Split('.')[0];
+
+                string new_folder = filePath + "\\" + name;
+                ZipUtil.Unzip(filepath, new_folder);
+            }
+        }
+        AppContextManager.instance.UpdateSpeciesFoldersNames();
+
+    }
 }
 
