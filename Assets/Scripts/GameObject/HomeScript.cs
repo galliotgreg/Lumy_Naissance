@@ -26,6 +26,8 @@ public class HomeScript : MonoBehaviour {
 	private Dictionary<string, Dictionary<string,int>> cost = new Dictionary<string, Dictionary<string, int>> ();
 
 	[SerializeField]
+	AgentEntity prysme; 
+	[SerializeField]
 	Unit_GameObj_Manager gameObjectManager;
 	[SerializeField]
 	PlayerAuthority authority;
@@ -106,6 +108,12 @@ public class HomeScript : MonoBehaviour {
 		}
 	}
 
+	public string PrysmeName { 
+		get { 
+			return prysme.CastName; 
+		} 
+	}
+
 	public Unit_GameObj_Manager GameObjectManager {
 		set {
 			gameObjectManager = value;
@@ -131,6 +139,10 @@ public class HomeScript : MonoBehaviour {
 		return this.populationGameObj[ cast ];
 	}
 
+	public void addPrysmeToHome( AgentEntity prysme ){ 
+		this.addUnitToHome (prysme); 
+		this.prysme = prysme; 
+	}
 	public void addUnitToHome( AgentEntity unit ){
 		if( !this.populationGameObj.ContainsKey( unit.Context.Model.Cast ) ){
 			this.populationGameObj.Add( unit.Context.Model.Cast, new List<AgentEntity>() );
