@@ -14,11 +14,12 @@ public class ParticlesSpawn : MonoBehaviour {
     [SerializeField]
     private float depth;
 
-    private int compteurParticules = 0;   
+    private float particleDuration;
+    private int compteurParticules = 1;   
     private float xMax;
     private float yMax;
     private float time = 0f;
-    private float eps = 0.005f;
+    private float eps = 0.01f;
     private List<GameObject> particlesList;
     private List<GameObject> particlesToBeDestroyed;
 
@@ -27,25 +28,24 @@ public class ParticlesSpawn : MonoBehaviour {
     void Start () {
         particlesList = new List<GameObject>();
         particlesToBeDestroyed = new List<GameObject>();
+        //Get particle duration
+        particleDuration = particles.GetComponent<ParticleSystem>().main.duration;
         //Access parent canvas width and height
         GameObject spawnerParent = this.gameObject.transform.parent.gameObject;
         RectTransform canvasRectTransform = spawnerParent.GetComponent<RectTransform>();
         //Set max coordinates
         xMax = canvasRectTransform.rect.width/2f;
         yMax = canvasRectTransform.rect.height/2f;
-        Debug.Log("parent name :" + spawnerParent.name);
-        Debug.Log("xMax :" + xMax);
-        Debug.Log("yMax :" + yMax);
     }
 
     // Update is called once per frame
     void Update () {
         //periodic creation
-        if ( time % period < eps)
-        { 
+        if (time % period < eps)
+        {
             CreateParticles();
+            DestroyParticles();   
         }
-        //DestroyParticles();
         //timer
         time += Time.deltaTime;
     }
@@ -68,42 +68,16 @@ public class ParticlesSpawn : MonoBehaviour {
             partTrail.transform.SetParent(this.gameObject.transform, false);
             particlesList.Add(partTrail);   
         }  
-  
     }
-
+  
     private void DestroyParticles()
     {
-        if (particlesList != null)
-        { 
-            //Check if particle system is expired
-            for (int i = 0; i < particlesList.Count; i++)
-            {
-                float timeSinceCreation = time - period * (i+compteurParticules);
-                //Debug.Log("time since creation:" + timeSinceCreation);
-                //Debug.Log("time:" + time);
-                
-                if (timeSinceCreation > particlesList[i].GetComponent<ParticleSystem>().main.duration)
-                {
-                   
-                    //Debug.Log("time since creation:" + timeSinceCreation);
-                    //Debug.Log("time:" + time);
-
-                    particlesToBeDestroyed.Add(particlesList[i]);
-                    particlesList.RemoveAt(i);
-                    i--;
-                    compteurParticules +=  1;
-                }
-            }
-        } 
-        
-        if (particlesToBeDestroyed != null)
+        GameObject particleToDestroy = null;
+        if (particlesList.Count > Mathf.Ceil(particleDuration / period))
         {
-            //Destroy particles
-            foreach (GameObject part in particlesToBeDestroyed)
-            {
-                Destroy(part);
-            }
+            particleToDestroy = particlesList[0]; 
         }
-            
+        particlesList.Remove(particleToDestroy);
+        Destroy(particleToDestroy);
     }
 }
