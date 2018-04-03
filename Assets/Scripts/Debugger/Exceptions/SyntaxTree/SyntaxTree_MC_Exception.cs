@@ -14,4 +14,14 @@ public abstract class SyntaxTree_MC_Exception : MC_Exception {
 
 	public abstract string getTrace ( int level );
 	protected abstract string getNodeMessage ();
+
+	#region implemented abstract members of MC_Exception
+
+	public override string Title {
+		get {
+			return Cast;
+		}
+	}
+
+	#endregion
 }
