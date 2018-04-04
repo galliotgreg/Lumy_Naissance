@@ -145,7 +145,13 @@ public class MCEditorManager : MonoBehaviour
         LoadProxyTransitions();
         LoadMC_Position();
     }
-
+    /*public void TempSetupModel()
+    {
+        abModel = LoadMC();
+        LoadProxyStates();
+        LoadProxyTransitions();
+        LoadMC_Position();
+    }*/
     void setProxyPositionOnLoad(string nameProxy, bool isStateBlock, bool isActionBlock, bool isOperatorBlock, bool isParameterBlock, float x, float y, float z)
     {
 
