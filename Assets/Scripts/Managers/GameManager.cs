@@ -44,7 +44,9 @@ public class GameManager : MonoBehaviour {
     string readFile(string path)
     {
         System.IO.StreamReader reader = new System.IO.StreamReader(path);
-        return reader.ReadToEnd();
+        string content = reader.ReadToEnd();
+        reader.Close();
+        return content;
     }
 
     //Paths
@@ -251,6 +253,7 @@ public class GameManager : MonoBehaviour {
         {
             lines.Add(reader.ReadLine());
         }
+        reader.Close();
         //Parse file
         SpecieParser parser = new SpecieParser();
         p1_specie = parser.Parse(lines);
@@ -274,6 +277,7 @@ public class GameManager : MonoBehaviour {
         {
             lines.Add(reader.ReadLine());
         }
+        reader.Close();
         //Parse file
         parser = new SpecieParser();
         p2_specie = parser.Parse(lines);
@@ -397,9 +401,9 @@ public class GameManager : MonoBehaviour {
             gameParam.GetComponent<GameParamsScript>();
         p2_queen.GetComponent<AgentEntity>().GameParams =
             gameParam.GetComponent<GameParamsScript>();
-
-		Unit_GameObj_Manager.instance.addUnit( p1_queen.GetComponent<AgentEntity>(), p1_hiveScript );
-		Unit_GameObj_Manager.instance.addUnit( p2_queen.GetComponent<AgentEntity>(), p2_hiveScript );
+		
+		Unit_GameObj_Manager.instance.addPrysme( p1_queen.GetComponent<AgentEntity>(), p1_hiveScript ); 
+		Unit_GameObj_Manager.instance.addPrysme( p2_queen.GetComponent<AgentEntity>(), p2_hiveScript ); 
 
         InitResources();
         SetResources();

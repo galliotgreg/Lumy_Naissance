@@ -278,6 +278,7 @@ public class ABManager : MonoBehaviour
 					}
 				}
 				MessagesManager.instance.LogMsg("Syntax Error : "+(cast.Length>0?"[ Cast = "+cast+" ]":"")+"\n"+syntaxEx.getMessage());
+				InGame_MessageManager.instance.addMessage (syntaxEx);
 			}
 			catch (Exception e)
             {
@@ -391,7 +392,7 @@ public class ABManager : MonoBehaviour
         {
             lines.Add(reader.ReadLine());
         }
-
+        reader.Close();
         return lines;
     }
 

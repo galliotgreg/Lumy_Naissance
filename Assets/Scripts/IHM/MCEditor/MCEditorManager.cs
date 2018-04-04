@@ -1127,7 +1127,15 @@ public class MCEditorManager : MonoBehaviour
 
         if (availeblePin != -1)
         {
-            incomeOpeParent.Inputs[availeblePin] = (ABNode)outcomeOpeParent.AbOperator;
+            if (incomeOpeParent.Inputs.Length <= 3)
+            {
+                incomeOpeParent.Inputs[income.Pin_order.OrderPosition - 1] = (ABNode)outcomeOpeParent.AbOperator;
+            }
+            else
+            {
+                incomeOpeParent.Inputs[availeblePin] = (ABNode)outcomeOpeParent.AbOperator;
+            }
+            
             ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
         }
     }
@@ -1143,7 +1151,14 @@ public class MCEditorManager : MonoBehaviour
         int availeblePin = opeParent.GetAvailablePinEnter();
         if (availeblePin != -1)
         {
-            opeParent.Inputs[availeblePin] = (ABNode)paramParent.AbParam;
+            if(opeParent.Inputs.Length <= 3)
+            {
+                opeParent.Inputs[ope.Pin_order.OrderPosition - 1] = (ABNode)paramParent.AbParam;
+            }
+            else
+            {
+                opeParent.Inputs[availeblePin] = (ABNode)paramParent.AbParam;
+            }            
         }
         opeParent.CurPinIn++;
         ((ABNode)paramParent.AbParam).Output = (ABNode)opeParent.AbOperator;

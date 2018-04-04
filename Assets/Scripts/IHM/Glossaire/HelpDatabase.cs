@@ -68,6 +68,7 @@ public class HelpDatabase : MonoBehaviour
         {
             string json = stream.ReadToEnd();
             database = JsonConvert.DeserializeObject<List<Help>>(json);
+            stream.Close();
         }
     }
     public int GetLength()

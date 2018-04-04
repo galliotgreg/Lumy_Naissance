@@ -105,21 +105,25 @@ public class LayAction : GameAction {
 
 	protected override void frameBeginAction_CooldownAuthorized ()
 	{
-		currentTemplate = GameManager.instance.GetUnitTemplate (agentEntity.Authority, castName);
-		AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
+		if (castName != agentEntity.Home.PrysmeName) {
+			currentTemplate = GameManager.instance.GetUnitTemplate (agentEntity.Authority, castName);
+			AgentEntity unitEntity = currentTemplate.GetComponent<AgentEntity> ();
 
-		currentCost = new AgentScript.ResourceCost (unitEntity.Context.Model.ProdCost);
-		if (!CheckResources (currentTemplate, currentCost))
-			return;
-		if (this.agentEntity.Home.getPopulation ().Count >= SwapManager.instance.GetPlayerNbLumy ())
-			return; 
+			currentCost = new AgentScript.ResourceCost (unitEntity.Context.Model.ProdCost);
+			if (!CheckResources (currentTemplate, currentCost))
+				return;
+			if (this.agentEntity.Home.getPopulation ().Count >= SwapManager.instance.GetPlayerNbLumy ())
+				return; 
 
-		DecreaseResources (currentCost);
+			DecreaseResources (currentCost);
 
-		this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
+			this.CoolDownTime = unitEntity.Context.Model.LayTimeCost;
 
-		// wait for cooldownTime
-		layDemand = true;
+			// wait for cooldownTime
+			layDemand = true;
+		} else { 
+			throw new System.Exception ("Lay : cannot lay Prysme."); 
+		}
 	}
 
 	protected override void cooldownFinishAction ()

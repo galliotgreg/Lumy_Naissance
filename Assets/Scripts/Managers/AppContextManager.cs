@@ -363,7 +363,7 @@ public class AppContextManager : MonoBehaviour
 
         //Build new file
         //Copy Header
-        string content = lines[0] + "\n"  + lines[1] + "\n";
+        string content = lines[0] + "\n" + lines[1] + "\n";
         //Write cast definitions
         content += "Name,Behavior,Head Size,Components List,\n";
         foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
@@ -380,21 +380,6 @@ public class AppContextManager : MonoBehaviour
             }
             content += "\n";
         }
-        //Write cast hierarchy
-        //content += "Cast, Parent,\n";
-        //foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
-        //{
-        //    Cast curCast = entry.Value;
-
-        //    if (curCast.Parent != null)
-        //    {
-        //        content += curCast.Name + "," + curCast.Parent.Name + ",";
-        //    } else
-        //    {
-        //        content += curCast.Name + ",,";
-        //    }
-        //    content += "\n";
-        //}
 
         //Replace file
         File.Delete(activeSpecieFilePath);
@@ -529,9 +514,39 @@ public class AppContextManager : MonoBehaviour
         //CastesUIController.instance.SelectActiveSwarm(specieFolderName);
     }
 
+    private bool IsFileLocked(string filename)
+    {
+        FileInfo file = new FileInfo(filename);
+
+        FileStream stream = null;
+
+        try
+        {
+            stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+        }
+        catch (IOException)
+        {
+            //the file is unavailable because it is:
+            //still being written to
+            //or being processed by another thread
+            //or does not exist (has already been processed)
+            return true;
+        }
+        finally
+        {
+            if (stream != null)
+                stream.Close();
+        }
+
+        //file is not locked
+        return false;
+    }
+
     public void DeleteCast()
     {
-        File.Delete(ActiveSpecieFolderPath + activeCast.BehaviorModelIdentifier + CSV_EXT);        
+        //Delet file and position
+        File.Delete(ActiveSpecieFolderPath + activeCast.BehaviorModelIdentifier + CSV_EXT);
+        File.Delete(ActiveSpecieFolderPath + activeCast.Name + POSITION_FILES_SUFFIX + CSV_EXT);
 
         //Remove childs from specie
         activeSpecie.Casts.Remove(activeCast.Name);
@@ -544,6 +559,7 @@ public class AppContextManager : MonoBehaviour
 
     public void DeleteSpecie()
     {
+
         Directory.Delete(ActiveSpecieFolderPath, true);
         UpdateSpeciesFoldersNames();
     }
