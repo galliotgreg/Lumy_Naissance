@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ public class HelpManager : MonoBehaviour {
     public HelpDatabase help;
 
     [SerializeField]
-    string JSON_name = "parametres";
+    string JSON_name = "";
 
 
     [Header("Explanation Panel")]
@@ -19,6 +20,8 @@ public class HelpManager : MonoBehaviour {
     private Text mainPanelHelpTitle;
     [SerializeField]
     private Text mainPanelHelpContent;
+    [SerializeField]
+    private Image mainPanelHelpImage;
 
     /// <summary>
     /// The help scroll selection content
@@ -66,7 +69,7 @@ public class HelpManager : MonoBehaviour {
         }
     }
 
-    public void UpdatePanel(string JSON_name)
+    public void UpdatePanel(string JSON_name = "definition")
     {
         this.JSON_name = JSON_name;
         help.LoadDatabase(JSON_name);
@@ -128,9 +131,20 @@ public class HelpManager : MonoBehaviour {
 
     public void SelectHelp(string title)
     {
-        //AppContextManager.instance.SwitchActiveSpecie(swarmName);
         mainPanelHelpTitle.text = help.FetchHelpByTitle(title).Title;
         mainPanelHelpContent.text = help.FetchHelpByTitle(title).Content;
+        string imagename = help.FetchHelpByTitle(title).Image;
+        if (imagename != "")
+        {
+            //TODO Format image voir plus tard.
+            mainPanelHelpImage.gameObject.SetActive(true);
+            byte[] bytes = File.ReadAllBytes(Application.dataPath + @"/Inputs/HelpFiles/Resources/" + imagename);
+            mainPanelHelpImage.sprite.texture.LoadImage(bytes);
+        }
+        else
+        {
+            mainPanelHelpImage.gameObject.SetActive(false);
+        }
     }
 
 
