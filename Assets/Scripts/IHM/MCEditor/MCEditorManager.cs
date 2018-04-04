@@ -145,7 +145,13 @@ public class MCEditorManager : MonoBehaviour
         LoadProxyTransitions();
         LoadMC_Position();
     }
-
+    /*public void TempSetupModel()
+    {
+        abModel = LoadMC();
+        LoadProxyStates();
+        LoadProxyTransitions();
+        LoadMC_Position();
+    }*/
     void setProxyPositionOnLoad(string nameProxy, bool isStateBlock, bool isActionBlock, bool isOperatorBlock, bool isParameterBlock, float x, float y, float z)
     {
 
@@ -654,7 +660,7 @@ public class MCEditorManager : MonoBehaviour
 
     public void Temporary_Save_MC_Position(string swarm_name, string id)
     {
-        string csvpath = Application.dataPath + @"/TemporaryBackup/" + swarm_name + "_" + id + ".csv";
+        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + swarm_name + "_" + id + ".csv";
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
         csvcontent.AppendLine("States,Position");
