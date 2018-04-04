@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SwarmEditUIController : MonoBehaviour
 {
@@ -217,10 +218,21 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
-    // Use this for initialization
-    void Start()
+    private bool isSceneLoaded = false;
+    private bool isFirstRefreashed = false;
+
+    void Update()
     {
-        Invoke("RefreshView", 0.05f);
+        if (GameObject.Find("Liste_Actions") != null)
+        {
+            isSceneLoaded = true;
+        }
+
+        if (isSceneLoaded && !isFirstRefreashed)
+        {
+            RefreshView();
+            isFirstRefreashed = true;
+        } 
     }
 
     #region Refresh view functions
