@@ -1110,7 +1110,7 @@ public class MCEditorManager : MonoBehaviour
 
         startActionParent = start.GetComponentInParent<ProxyABAction>();
         endOpeParent = end.GetComponentInParent<ProxyABOperator>();
-        startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endOpeParent.AbOperator;
+        startActionParent.AbState.Action.Parameters[start.Pin_order.OrderPosition - 1].Inputs[0] = (ABNode)endOpeParent.AbOperator;
     }
 
     private void LinkAction_Param(Pin start, Pin end)
@@ -1119,9 +1119,8 @@ public class MCEditorManager : MonoBehaviour
         ProxyABParam endParamParent;
 
         startActionParent = start.GetComponentInParent<ProxyABAction>();
-        endParamParent = end.GetComponentInParent<ProxyABParam>();
-        //TODO : Gestion du pin courant 
-        startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endParamParent.AbParam;
+        endParamParent = end.GetComponentInParent<ProxyABParam>();        
+        startActionParent.AbState.Action.Parameters[start.Pin_order.OrderPosition - 1].Inputs[0] = (ABNode)endParamParent.AbParam;
     }
 
     private void LinkOperator_Operator(Pin income, Pin outcome)
