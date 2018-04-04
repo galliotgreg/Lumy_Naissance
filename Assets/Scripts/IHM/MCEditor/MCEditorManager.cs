@@ -39,7 +39,8 @@ public class MCEditorManager : MonoBehaviour
     private List<ProxyABTransition> proxyTransitions;
     private List<Pin> pins; //ProxyABGateOperator    
     private List<ProxyABOperator> proxyOperators;
-    private List<ProxyABParam> proxyParams;
+    private List<ProxyABParam> proxyParams;        
+    private Text toolTipText;
 
     //[SerializeField]
     private string MC_OrigFilePath;
@@ -89,6 +90,7 @@ public class MCEditorManager : MonoBehaviour
         proxyActions = new List<ProxyABAction>();
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
+        toolTipText = GetComponentInChildren<Text>();
 
         /**START DO NOT COMMIT**/
         if (AppContextManager.instance.PrysmeEdit)
@@ -131,6 +133,7 @@ public class MCEditorManager : MonoBehaviour
         {
             this.deleteSelectedTransition();
         }
+        
     }
 
     private void OnDestroy()
@@ -2080,6 +2083,14 @@ public class MCEditorManager : MonoBehaviour
                 p.deleteProxy();
             }
         }
+    }
+    #endregion
+
+    #region ToolTips
+    public void ShowToolTip(string text, Vector3 pos)
+    {
+        toolTipText.gameObject.transform.position = new Vector3(pos.x, pos.y, -2);
+        toolTipText.text = text;
     }
     #endregion
 }
