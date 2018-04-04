@@ -11,6 +11,12 @@ public class DropArea : MonoBehaviour {
 		}
 	}
 
+	public bool IsHover {
+		get {
+			return CanDrop;
+		}
+	}
+
 	void Start(){
 	}
 	void Update(){

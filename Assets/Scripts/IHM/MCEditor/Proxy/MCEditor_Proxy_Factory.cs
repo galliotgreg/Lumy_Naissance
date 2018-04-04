@@ -42,6 +42,10 @@ public class MCEditor_Proxy_Factory : MonoBehaviour {
 	[SerializeField]
 	private Pin pinOutPrefab;
 
+	// interactable Zone
+	[SerializeField]
+	private DropArea interactableZone;
+
 	void Start(){}
 	void Update(){}
 
@@ -97,7 +101,12 @@ public class MCEditor_Proxy_Factory : MonoBehaviour {
             pinOutPrefab = value;
         }
     }
-
+		
+	public DropArea InteractableZone {
+		get {
+			return interactableZone;
+		}
+	}
     #endregion
 
     #region INSTANTIATE
@@ -124,7 +133,7 @@ public class MCEditor_Proxy_Factory : MonoBehaviour {
 	}
 
 	public static ProxyABTransition instantiateTransition( Pin start, Pin end, bool createCondition ){
-		return ProxyABTransition.instantiate (start, end, createCondition);
+		return ProxyABTransition.instantiate ( start, end, createCondition );
 	}
 
 	public static Pin instantiatePin( Pin.PinType pinType, Vector3 position, Transform parent ){
