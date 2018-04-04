@@ -561,6 +561,7 @@ public class SwarmEditUIController : MonoBehaviour
                     textAction[i].text = "- " + actionText.First().ToString().ToUpper() + actionText.Substring(1);
                     i++;
             }
+            reader.Close();
         }
     }
 
