@@ -14,7 +14,6 @@ public class ViewExplanation : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //help.LoadDatabase(GameObject.Find("SidePanel").GetComponent<SidePanel>().GetFile());
         this.gameObject.GetComponent<Button>().onClick.AddListener(SwitchMenu);
         this.gameObject.GetComponentInChildren<Text>().text = HelpManager.instance.help.FetchHelpByID(ID).Title;
 
