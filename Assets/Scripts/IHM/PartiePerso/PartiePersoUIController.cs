@@ -33,6 +33,9 @@ public class PartiePersoUIController : MonoBehaviour {
     [SerializeField]
     private string player2SpecieName;
 
+    private Specie player1Specie = null;
+    private Specie player2Specie = null;
+
     [SerializeField]
     private GameObject swarmSelectionBtnPrefab;
 
@@ -219,12 +222,24 @@ public class PartiePersoUIController : MonoBehaviour {
     {
         player1SpecieName = swarmName;
         player1SelectedSwarmField.GetComponent<Text>().text = swarmName;
+
+        //Register specie
+        Specie tmpSpecie = AppContextManager.instance.ActiveSpecie;
+        AppContextManager.instance.SwitchActiveSpecie(swarmName);
+        player1Specie = AppContextManager.instance.ActiveSpecie;
+        AppContextManager.instance.SwitchActiveSpecie(tmpSpecie.Name);
     }
 
     private void SelectP2ActiveSwarm(string swarmName)
     {
         player2SpecieName = swarmName;
         player2SelectedSwarmField.GetComponent<Text>().text = swarmName;
+
+        //Register specie
+        Specie tmpSpecie = AppContextManager.instance.ActiveSpecie;
+        AppContextManager.instance.SwitchActiveSpecie(swarmName);
+        player2Specie = AppContextManager.instance.ActiveSpecie;
+        AppContextManager.instance.SwitchActiveSpecie(tmpSpecie.Name);
     }
 
     /// <summary>
