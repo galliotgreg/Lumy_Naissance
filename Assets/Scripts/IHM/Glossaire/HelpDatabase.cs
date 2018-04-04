@@ -12,12 +12,16 @@ public class Help
     public int ID;
     public string Title;
     public string Content;
+    public string Image;
+    public string Video;
 
-    public Help(int id, string title, string content)
+    public Help(int id, string title, string content, string image, string video)
     {
         this.ID = id;
         this.Title = title;
         this.Content = content;
+        this.Image = image;
+        this.Video = video;
     }
     public Help()
     {
