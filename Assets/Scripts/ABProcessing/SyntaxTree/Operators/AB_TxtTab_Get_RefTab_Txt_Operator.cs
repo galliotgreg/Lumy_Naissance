@@ -21,7 +21,7 @@
         {
             values[i] = (ABText)tab.Values[i].GetAttr(t.Value);
         }
-        ABText<ABScalar> result = TypeFactory.CreateEmptyTable<ABText>();
+        ABTable<ABText> result = TypeFactory.CreateEmptyTable<ABText>();
         result.Values = values;
         return result;
     }
