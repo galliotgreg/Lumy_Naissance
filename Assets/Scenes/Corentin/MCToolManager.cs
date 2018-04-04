@@ -286,7 +286,7 @@ public class MCToolManager : MonoBehaviour
     }
     void DeleteTemporary_Backup()
     {
-        string backupPath = Application.dataPath + @"/TemporaryBackup";
+        string backupPath = Application.dataPath + @"/Inputs/TemporaryBackup";
         string[] filesPath = Directory.GetFiles(backupPath, "*.csv", SearchOption.TopDirectoryOnly);
         foreach (string filepath in filesPath){
             File.Delete(filepath);
@@ -416,7 +416,7 @@ public class MCToolManager : MonoBehaviour
         }
 
         string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
-        string sourceFilePath = Application.dataPath + @"\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
+        string sourceFilePath = Application.dataPath + @"/Inputs\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
 
         if (id > 0)
         {
@@ -467,7 +467,7 @@ public class MCToolManager : MonoBehaviour
         if (id <  idmax )
         {
             id++;
-            string sourceFilePath = Application.dataPath + @"\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
+            string sourceFilePath = Application.dataPath + @"\Inputs\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
             File.Delete(destinationFolderPath + cast_name + ".csv");
             File.Delete(destinationFolderPath + cast_name + ".csv.meta");
             Debug.Log(sourceFilePath);
@@ -497,7 +497,7 @@ public class MCToolManager : MonoBehaviour
                 string sourceFilePath;
                 for (int id_delete = id; id_delete <= idmax; id_delete++)
                 {
-                    sourceFilePath = Application.dataPath + @"\TemporaryBackup\" + cast_name + "_" + id_delete.ToString() + ".csv";
+                    sourceFilePath = Application.dataPath + @"\Inputs\TemporaryBackup\" + cast_name + "_" + id_delete.ToString() + ".csv";
                     File.Delete(sourceFilePath);
                 }
                 idmax = id;
