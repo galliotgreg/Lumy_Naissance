@@ -5,9 +5,9 @@ using UnityEngine;
 public class PinColor {
 
     static Color boolColor = Color.blue; // blue
-    static Color scalColor = new Color(0.438f, 0.258f, 0.078f); //sepia
+    static Color scalColor = new Color(0.682f, 0.537f, 0.392f); //sepia 174 | 137 | 100
     static Color textColor = new Color(0.25f, 0.875f, 0.813f); // turquoise
-    static Color colorColor = new Color(0.785f, 0.410f, 0.117f); // chocolat
+    static Color colorColor = new Color(0.352f, 0.227f, 0.145f); // chocolat 90 | 58 | 34
     static Color refColor = Color.red; // red
     static Color vecColor = new Color(0.930f, 0.508f, 0.930f); // violet
 

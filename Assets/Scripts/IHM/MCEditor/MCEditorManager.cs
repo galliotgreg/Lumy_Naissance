@@ -39,7 +39,8 @@ public class MCEditorManager : MonoBehaviour
     private List<ProxyABTransition> proxyTransitions;
     private List<Pin> pins; //ProxyABGateOperator    
     private List<ProxyABOperator> proxyOperators;
-    private List<ProxyABParam> proxyParams;
+    private List<ProxyABParam> proxyParams;        
+    private Text toolTipText;
 
     //[SerializeField]
     private string MC_OrigFilePath;
@@ -89,6 +90,7 @@ public class MCEditorManager : MonoBehaviour
         proxyActions = new List<ProxyABAction>();
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
+        toolTipText = GetComponentInChildren<Text>();
 
         /**START DO NOT COMMIT**/
         if (AppContextManager.instance.PrysmeEdit)
@@ -131,6 +133,7 @@ public class MCEditorManager : MonoBehaviour
         {
             this.deleteSelectedTransition();
         }
+        
     }
 
     private void OnDestroy()
@@ -1107,7 +1110,7 @@ public class MCEditorManager : MonoBehaviour
 
         startActionParent = start.GetComponentInParent<ProxyABAction>();
         endOpeParent = end.GetComponentInParent<ProxyABOperator>();
-        startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endOpeParent.AbOperator;
+        startActionParent.AbState.Action.Parameters[start.Pin_order.OrderPosition - 1].Inputs[0] = (ABNode)endOpeParent.AbOperator;
     }
 
     private void LinkAction_Param(Pin start, Pin end)
@@ -1116,9 +1119,8 @@ public class MCEditorManager : MonoBehaviour
         ProxyABParam endParamParent;
 
         startActionParent = start.GetComponentInParent<ProxyABAction>();
-        endParamParent = end.GetComponentInParent<ProxyABParam>();
-        //TODO : Gestion du pin courant 
-        startActionParent.AbState.Action.Parameters[0].Inputs[0] = (ABNode)endParamParent.AbParam;
+        endParamParent = end.GetComponentInParent<ProxyABParam>();        
+        startActionParent.AbState.Action.Parameters[start.Pin_order.OrderPosition - 1].Inputs[0] = (ABNode)endParamParent.AbParam;
     }
 
     private void LinkOperator_Operator(Pin income, Pin outcome)
@@ -2086,6 +2088,14 @@ public class MCEditorManager : MonoBehaviour
                 p.deleteProxy();
             }
         }
+    }
+    #endregion
+
+    #region ToolTips
+    public void ShowToolTip(string text, Vector3 pos)
+    {
+        toolTipText.gameObject.transform.position = new Vector3(pos.x, pos.y, -2);
+        toolTipText.text = text;
     }
     #endregion
 }
