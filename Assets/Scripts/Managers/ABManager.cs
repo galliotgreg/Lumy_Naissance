@@ -277,12 +277,13 @@ public class ABManager : MonoBehaviour
 						cast = ((ABText)castParam).Value;
 					}
 				}
-				MessagesManager.instance.LogMsg("Syntax Error : "+(cast.Length>0?"[ Cast = "+cast+" ]":"")+"\n"+syntaxEx.getMessage());
+				//MessagesManager.instance.LogMsg("Syntax Error : "+(cast.Length>0?"[ Cast = "+cast+" ]":"")+"\n"+syntaxEx.getMessage());
 				InGame_MessageManager.instance.addMessage (syntaxEx);
 			}
 			catch (Exception e)
             {
-                MessagesManager.instance.LogMsg("Something happened during your MC execution. You might miss something !! \nError is :\n" + e.Message);
+                //MessagesManager.instance.LogMsg("Something happened during your MC execution. You might miss something !! \nError is :\n" + e.Message);
+				InGame_MessageManager.instance.addMessage (e);
             }
         }
     }

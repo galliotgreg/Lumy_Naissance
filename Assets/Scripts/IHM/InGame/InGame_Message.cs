@@ -5,12 +5,10 @@ using UnityEngine.UI;
 
 public class InGame_Message : MonoBehaviour {
 
-	MC_Exception exception;
+	System.Exception exception;
+	string title;
+	string message;
 
-	[SerializeField]
-	GameObject container;
-	[SerializeField]
-	Transform containerTransform;
 	[SerializeField]
 	Button activateButton;
 	[SerializeField]
@@ -21,10 +19,14 @@ public class InGame_Message : MonoBehaviour {
 	Button removeButton;
 
 	[SerializeField]
+	Color selectedColor;
+	Color originalColor;
+
+	[SerializeField]
 	InGame_MessageItem_Line LinePrefab;
 
 	#region PROPERTIES
-	public MC_Exception Exception {
+	public System.Exception Exception {
 		get {
 			return exception;
 		}
@@ -35,11 +37,12 @@ public class InGame_Message : MonoBehaviour {
 	#endregion
 
 	#region Handle Messages
-	public void showMessage(){
-		container.SetActive(true);
+	public List<InGame_MessageItem_Line> showMessage( Transform container ){
+		activateButton.GetComponent<Image> ().color = selectedColor;
+		return new List<InGame_MessageItem_Line> (){ InGame_MessageItem_Line.instantiate (message, container, LinePrefab) };
 	}
 	public void hideMessage(){
-		container.SetActive(false);
+		activateButton.GetComponent<Image> ().color = originalColor;
 	}
 	public void activateMessage(){
 		InGame_MessageManager.instance.activateMessage (this);
@@ -51,7 +54,7 @@ public class InGame_Message : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		originalColor = activateButton.GetComponent<Image> ().color;
 	}
 	
 	// Update is called once per frame
@@ -59,20 +62,21 @@ public class InGame_Message : MonoBehaviour {
 		
 	}
 
-	public void Init( MC_Exception exception ){
+	public void Init( System.Exception exception, string title, string message ){
 		this.Exception = exception;
 
 		removeButton.onClick.AddListener ( removeMessage );
 		activateButton.onClick.AddListener ( activateMessage );
 
 		// fill exception
-		activateText.text = exception.Title;
-		InGame_MessageItem_Line.instantiate( exception.getMessage(), containerTransform, LinePrefab );
+		this.title = title;
+		this.message = message;
+		activateText.text = title;
 	}
 
-	public static InGame_Message instantiate( MC_Exception exception, Transform parent, InGame_Message prefab ){
+	public static InGame_Message instantiate( System.Exception exception, string title, string message, Transform parent, InGame_Message prefab ){
 		InGame_Message result = Instantiate<InGame_Message> (prefab, parent);
-		result.Init (exception);
+		result.Init (exception, title, message);
 
 		result.hideMessage ();
 		return result;
