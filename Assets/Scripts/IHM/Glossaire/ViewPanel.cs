@@ -8,12 +8,14 @@ public class ViewPanel : MonoBehaviour
 
     public GameObject subMenu;
     [SerializeField]
-    public string JSON_file = "";
+    public string JSON_file = "parametres";
 
     // Use this for initialization
     void Start()
     {
         this.gameObject.GetComponent<Button>().onClick.AddListener(SwitchMenu);
+        HelpManager.instance.UpdatePanel(JSON_file);
+        HelpManager.instance.RefreshHelpScroll();
     }
 
     // Update is called once per frame
@@ -24,11 +26,8 @@ public class ViewPanel : MonoBehaviour
 
     void SwitchMenu()
     {
-        //InstantiateButton();
-
         HelpManager.instance.UpdatePanel(JSON_file);
         HelpManager.instance.RefreshHelpScroll();
-
     }
 
 }

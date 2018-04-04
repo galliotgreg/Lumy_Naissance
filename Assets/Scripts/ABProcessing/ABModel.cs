@@ -9,7 +9,7 @@ public class ABModel {
     private int lastStateId = 0;
     private int lastTransitionId = 0;
 
-    private int initStateId = 0;
+    public int initStateId = 0;
     private List<ABState> states = new List<ABState>();
     private List<ABTransition> transitions = new List<ABTransition>();
 

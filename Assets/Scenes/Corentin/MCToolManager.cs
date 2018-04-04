@@ -48,6 +48,14 @@ public class MCToolManager : MonoBehaviour
         None
     };
 
+    public ABModel AbModel
+    {
+        get
+        {
+            return abModel;
+        }
+    }
+
     /*public class UndoableAction
     {
         public GameObject[] impactedNodes;
@@ -71,6 +79,7 @@ public class MCToolManager : MonoBehaviour
         }
     }*/
 
+    private ABModel abModel;
     public List<GameObject> SelectedNodes = new List<GameObject>();
     public GameObject getTarget;
     [SerializeField]
@@ -106,6 +115,7 @@ public class MCToolManager : MonoBehaviour
     string cast_name;
     public bool saved = false;
     bool hasBeenAdded = false;
+    public GameObject[] allUnits;
 
     #region PROPERTIES
     ToolType CurrentTool
@@ -133,6 +143,7 @@ public class MCToolManager : MonoBehaviour
 
     private void Update()
     {
+        allUnits = GameObject.FindGameObjectsWithTag("Selectable");
         //Mouse Button Press Down
         if (Input.GetMouseButtonDown(0) && !selectionEnCours)
         {
@@ -236,7 +247,8 @@ public class MCToolManager : MonoBehaviour
             if (isMouseDragging)
             {
                 ToolMain();
-                if (!hasBeenAdded)
+                TemporarySave();
+                /*if (!hasBeenAdded)
                 {
                     id++;
                     if (idmax <= id)
@@ -257,7 +269,7 @@ public class MCToolManager : MonoBehaviour
                     saved = true;
                     Debug.Log("+1");
                     hasBeenAdded = true;
-                }
+                }*/
 
             }
             else
@@ -274,10 +286,11 @@ public class MCToolManager : MonoBehaviour
     }
     void DeleteTemporary_Backup()
     {
-        string backupPath = Application.dataPath + @"/TemporaryBackup";
+        string backupPath = Application.dataPath + @"/Inputs/TemporaryBackup";
         string[] filesPath = Directory.GetFiles(backupPath, "*.csv", SearchOption.TopDirectoryOnly);
         foreach (string filepath in filesPath){
             File.Delete(filepath);
+            File.Delete(filepath + ".meta");
         }
 
     }
@@ -379,6 +392,7 @@ public class MCToolManager : MonoBehaviour
                 SelectedNodes.Clear();
             }
         }
+        TemporarySave();
     }
     #endregion
 
@@ -402,7 +416,7 @@ public class MCToolManager : MonoBehaviour
         }
 
         string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
-        string sourceFilePath = Application.dataPath + @"\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
+        string sourceFilePath = Application.dataPath + @"/Inputs\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
 
         if (id > 0)
         {
@@ -410,13 +424,28 @@ public class MCToolManager : MonoBehaviour
             Debug.Log(sourceFilePath);
             File.Delete(destinationFolderPath + cast_name + ".csv.meta");
             File.Copy(sourceFilePath, destinationFolderPath + cast_name + ".csv");
-            MCEditorManager.instance.LoadMC_Position();
+            //MCEditorManager.instance.LoadMC_Position();
+
+            List<MCEditor_Proxy> allProxies = new List<MCEditor_Proxy>();
+            GameObject initToDestroy = null;
+            foreach (GameObject b in allUnits)
+            {
+                if (b.GetComponent<ProxyABState>() && b.GetComponent<ProxyABState>().AbState.Id == MCEditorManager.instance.AbModel.InitStateId)
+                {
+                    initToDestroy = b;
+                }
+                else
+                {
+                    allProxies.Add(b.GetComponent<MCEditor_Proxy>());
+                }
+            }
+            Destroy(initToDestroy);
+            MCEditorManager.instance.deleteSelectedProxies(allProxies);
+            
+            MCEditorManager.instance.SetupModel();
 
             id--;
-            //File.Delete(sourceFilePath);
         }
-
-
     }
     #endregion
 
@@ -438,7 +467,7 @@ public class MCToolManager : MonoBehaviour
         if (id <  idmax )
         {
             id++;
-            string sourceFilePath = Application.dataPath + @"\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
+            string sourceFilePath = Application.dataPath + @"\Inputs\TemporaryBackup\" + cast_name + "_" + id.ToString() + ".csv";
             File.Delete(destinationFolderPath + cast_name + ".csv");
             File.Delete(destinationFolderPath + cast_name + ".csv.meta");
             Debug.Log(sourceFilePath);
@@ -452,6 +481,35 @@ public class MCToolManager : MonoBehaviour
     }
     #endregion
 
+    #region TEMPO SAVE
+
+    public void TemporarySave()
+    {
+        if (!hasBeenAdded)
+        {
+            id++;
+            if (idmax <= id)
+            {
+                idmax = id;
+            }
+            else
+            {
+                string sourceFilePath;
+                for (int id_delete = id; id_delete <= idmax; id_delete++)
+                {
+                    sourceFilePath = Application.dataPath + @"\Inputs\TemporaryBackup\" + cast_name + "_" + id_delete.ToString() + ".csv";
+                    File.Delete(sourceFilePath);
+                }
+                idmax = id;
+            }
+            MCEditorManager.instance.Temporary_Save_MC_Position(cast_name, id.ToString());
+            saved = true;
+            Debug.Log("+1");
+            hasBeenAdded = true;
+        }
+    }
+
+    #endregion
 
     public void Inventory()
     {
