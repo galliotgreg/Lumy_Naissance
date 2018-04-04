@@ -38,9 +38,13 @@ public class InGame_MessageManager : MonoBehaviour {
 	[SerializeField]
 	Button deactivateButton;
 	[SerializeField]
-	GameObject logger;
+	Button closeMessageButton;
 	[SerializeField]
-	Transform loggerContainer;
+	GameObject Logger;
+	[SerializeField]
+	ScrollRect ErrorList;
+	[SerializeField]
+	ScrollRect SelectedErrorPrompt;
 
 	[SerializeField]
 	GameObject[] amountErrors;
@@ -48,12 +52,23 @@ public class InGame_MessageManager : MonoBehaviour {
 	[SerializeField]
 	InGame_Message messagePrefab;
 
-	bool first = true;
 	#region Handle Messages
-	public void addMessage( MC_Exception newException ){
+	public void addMessage( System.Exception newException ){
 		string exceptionHash = Md5Sum( ExceptionToString( newException ) );
 		if( ! currentMessages.ContainsKey( exceptionHash ) ){
-			currentMessages.Add ( exceptionHash, InGame_Message.instantiate (newException, loggerContainer, messagePrefab) );
+			string title = "Error";
+			string message = "Message";
+			// Defining Title
+			if (newException is MC_Exception) {
+				MC_Exception mcException = (MC_Exception)newException;
+				title = mcException.Title;
+				message = mcException.getMessage ();
+			} else {
+				title = newException.Message;
+				message = newException.Message;
+			}
+
+			currentMessages.Add ( exceptionHash, InGame_Message.instantiate (newException, title, message, ErrorList.content.transform, messagePrefab) );
 
 			UpdateAmount ();
 		}
@@ -68,37 +83,60 @@ public class InGame_MessageManager : MonoBehaviour {
 		Destroy (exception.gameObject);
 	}
 	public void activateMessage( InGame_Message exception ){
+		// If the exception is not Selected, select it
 		if (exception != selectedMessage) {
 			// Hide previous
-			if (selectedMessage != null) {
-				hideMessage (selectedMessage);
-			}
+			hideMessage (selectedMessage);
 
 			// Show current
 			showMessage( exception );
+
 			selectedMessage = exception;
+		
+		// If the exception is Selected, hide it
 		} else {
-			hideMessage ( exception );
+			hideMessage ( selectedMessage );
 			selectedMessage = null;
 		}
 	}
+	public void deactivateAll(){
+		activateMessage (null);
+	}
 	public void showMessage( InGame_Message exception ){
-		exception.showMessage ();
+		if (exception != null) {
+			SelectedErrorPrompt.gameObject.SetActive (true);
+
+			// Clear container and fill with the new ones
+			// Clear
+			for(int i=0; i<SelectedErrorPrompt.content.childCount; i++){
+				Destroy (SelectedErrorPrompt.content.GetChild (i).gameObject);
+			}
+			// Fill
+			exception.showMessage ( SelectedErrorPrompt.content.transform );
+		}
 	}
 	public void hideMessage( InGame_Message exception ){
-		exception.hideMessage ();
+		SelectedErrorPrompt.gameObject.SetActive (false);
+		if (exception != null) {
+			exception.hideMessage();
+		}
 	}
 	#endregion
 
 	#region Activate/Deactivate
 	public void show(){
-		logger.SetActive (true);
+		Logger.SetActive (true);
 		activateButton.gameObject.SetActive (false);
+
+		// close all messages
+		deactivateAll();
+
 		UpdateAmount ();
 	}
 	public void hide(){
-		logger.SetActive (false);
+		Logger.SetActive (false);
 		activateButton.gameObject.SetActive (true);
+
 		UpdateAmount ();
 	}
 	#endregion
@@ -107,6 +145,7 @@ public class InGame_MessageManager : MonoBehaviour {
 	void Start () {
 		activateButton.onClick.AddListener (show);
 		deactivateButton.onClick.AddListener (hide);
+		closeMessageButton.onClick.AddListener (deactivateAll);
 
 		hide ();
 	}
@@ -133,8 +172,12 @@ public class InGame_MessageManager : MonoBehaviour {
 	}
 
 	#region MD5
-	public static string ExceptionToString( MC_Exception exception ){
-		return "[ Cast = "+exception.Cast+" ]"+exception.Message;
+	public static string ExceptionToString( System.Exception exception ){
+		if (exception is MC_Exception) {
+			MC_Exception mcException = (MC_Exception)exception;
+			return "[ Cast = " + mcException.Cast + " ]" + mcException.getMessage ();
+		}
+		return exception.Message;
 	}
 
 	public static string Md5Sum(string strToEncrypt)
