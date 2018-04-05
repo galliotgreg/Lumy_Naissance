@@ -1,0 +1,82 @@
+States,Position
+INIT, 1, 4, -0.410553
+Enemy in range, -4, 3, -0.410553
+Enemy not in range, 4, 3, -0.410553
+Ressource in sight, -1, 2, -0.410553
+Ressource not in sight, 4, 4, -0.410553
+Guard in range, 3, -5, -0.410553
+No guard in range, -3, -5, -0.410553
+Path to ressource in sight, 0, -4, -0.410553
+Path to ressource not in sight, 1, 0, -0.410553
+,,
+Actions,Position
+Attack, 4, 1, -0.410553
+Back, -1, 3, -0.410553
+Follow, -3, 2, -0.410553
+Goto, -3, -1, -0.410553
+,,
+Operators,Position
+RgetR[]S, -5, -2, -0.410553
+SminIdS[], -3, -2, -0.410553
+S[]distV[]V, -3, 2, -0.410553
+V[]getR[]T, -3, 3, -0.410553
+VgetRT, -3, 2, -0.410553
+V[]aggV*, -2, 3, -0.410553
+VgetRT, -3, 3, -0.410553
+V[]getRT, -4, 0, -0.410553
+RgetR[]S, -4, 1, -0.410553
+SminIdS[], -4, 0, -0.410553
+S[]getR[]T, -4, 0, -0.410553
+V[]aggV*, 0, 1, -0.410553
+VgetRT, 0, 2, -0.410553
+RgetR[]S, 4, 4, -0.410553
+SminIdS[], -1, -2, -0.410553
+S[]distV[]V, 2, 4, -0.410553
+V[]getR[]T, -2, -5, -0.410553
+VgetRT, -2, -5, -0.410553
+B<SS, -1, -1, -0.410553
+SgetRT, -2, -2, -0.410553
+SminValS[], 1, 3, -0.410553
+S[]distV[]V, 0, -1, -0.410553
+V[]getR[]T, 4, -1, -0.410553
+VgetRT, 2, -4, -0.410553
+B<SS, -4, 3, -0.410553
+SsizeR[], -1, -5, -0.410553
+B<SS, 2, -3, -0.410553
+SsizeR[], -4, -5, -0.410553
+R[]where==R[]TT, -1, 4, -0.410553
+B<SS, -4, 0, -0.410553
+SsizeR[], -5, -4, -0.410553
+,,
+Parameters,Position
+ref[]:enemies,2, -1, -0.410553
+ref[]:enemies,4, 3, -0.410553
+const txt=curPos,4, -4, -0.410553
+ref:self,-3, 1, -0.410553
+const txt=curPos,-5, 4, -0.410553
+ref:home,2, 4, -0.410553
+const txt=pos,-5, 1, -0.410553
+ref[]:traces,-4, -2, -0.410553
+ref[]:traces,-4, 3, -0.410553
+const txt=age,-4, 2, -0.410553
+const txt=points,4, 3, -0.410553
+ref[]:resources,3, -3, -0.410553
+ref[]:resources,-4, 2, -0.410553
+const txt=pos,-4, 3, -0.410553
+ref:self,-3, 0, -0.410553
+const txt=curPos,3, 0, -0.410553
+const txt=pos,-1, -2, -0.410553
+ref:self,0, 4, -0.410553
+const txt=atkRange,1, 2, -0.410553
+ref[]:enemies,-4, 4, -0.410553
+const txt=curPos,1, 2, -0.410553
+ref:self,-2, -2, -0.410553
+const txt=curPos,2, -3, -0.410553
+const scal=0,4, -2, -0.410553
+ref[]:resources,-3, -3, -0.410553
+const scal=3,-1, -3, -0.410553
+ref[]:resources,1, -2, -0.410553
+const txt=cast,3, -1, -0.410553
+const txt=Guard,3, 4, -0.410553
+const scal=0,4, 1, -0.410553
+ref[]:traces,3, 0, -0.410553
