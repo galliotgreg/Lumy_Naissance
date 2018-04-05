@@ -7,8 +7,10 @@ public class GotoAction : GameAction {
 	
     [SerializeField]
     private Vector3[] path;
+   
 
-	private Vector2 previousPosition;
+
+    private Vector2 previousPosition;
 	private Vector2 curDirection;
 	private bool pathChanged = false;
 
@@ -181,22 +183,21 @@ public class GotoAction : GameAction {
             Vector3 position = vec2ToWorld(agentAttr.CurPos);
             position.y = agentAttr.transform.position.y;
 
-            //Vector3 dest = vec2ToWorld(agentAttr.TrgPos);
-            //dest.y = agentAttr.transform.position.y;
 
-            // Debug.DrawLine(position, dest, Color.blue);
-            //Draw Line 
-            if(OptionManager.instance.DirectionLumy != null && Time.timeScale == 1)
+
+            if (OptionManager.instance.DirectionLumy != null && 
+                OptionManager.instance.DirectionLumyJ2 !=null && 
+                Time.timeScale == 1)
             {
-                if (OptionManager.instance.DirectionLumy.isOn)
+                if (OptionManager.instance.DirectionLumy.isOn &&
+                agentAttr.gameObject.GetComponentInParent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1)
                 {
 					DrawLine(position, destination, Color.blue, 0.2f);
                 }
-            }
-
-            if (OptionManager.instance.DirectionLumyJ2 != null && Time.timeScale == 1) {
-                if (OptionManager.instance.DirectionLumyJ2.isOn) {
-                    DrawLine(position, destination, Color.blue, 0.2f);
+                else if (OptionManager.instance.DirectionLumyJ2.isOn &&
+                agentAttr.gameObject.GetComponentInParent<AgentContext>().Home.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2)
+                {
+                    DrawLine(position, destination, Color.red, 0.2f);
                 }
             }
 
@@ -212,36 +213,19 @@ public class GotoAction : GameAction {
 			navMeshAgent.destination = destination;
 			navMeshAgent.stoppingDistance = closeFactor;
 
-            /*//navMeshAgent.updatePosition = false;
-			UnityEngine.AI.NavMeshPath auxpath = new UnityEngine.AI.NavMeshPath();
-			navMeshAgent.CalculatePath( destination, auxpath );
-
-			// move towards next corner
-			if (auxpath.corners.Length > 0) {
-				Debug.Log ("move");
-				Debug.Log (auxpath.corners[0]);
-				Debug.Log (auxpath.corners[1]);
-				Debug.Log (agentAttr.transform.position);
-				return agentAttr.transform.position + Time.deltaTime * agentAttr.MoveSpd * (auxpath.corners [1] - agentAttr.transform.position).normalized;
-			}*/
         }
-		//agentAttr.transform.position = navMeshAgent.nextPosition;
+
 		return agentAttr.transform.position;
 	}
 
     void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
     {
-        GameObject myLine = new GameObject() ;
-        myLine.transform.SetParent(GameManager.instance.transform); 
-        myLine.transform.position = start;
-        myLine.AddComponent<LineRenderer>();
-        LineRenderer lr = myLine.GetComponent<LineRenderer>();
-        //lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
+        LineRenderer lr = agentAttr.gameObject.GetComponentInChildren<LineRenderer>();
+       
         lr.SetColors(color, color);
-        lr.SetWidth(0.1f, 0.1f);
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
-        GameObject.Destroy(myLine, duration);
+        //GameObject.Destroy(myLine, duration);
     }
 
     private int indexClosest( Vector2 pos, Vector3[] _path ){

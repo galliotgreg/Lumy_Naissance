@@ -1036,31 +1036,19 @@ public class InGameUIController : MonoBehaviour {
     private void ExitGame()
     
     {
-       if(alreadyClosed)
+        if (!CheckExitGame())
         {
-            return; 
+            return;
         }
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
         alreadyClosed = true; 
     }
     private void GoToCasteMenu()
     {
-        if(alreadyClosed)
+        if (!CheckExitGame())
         {
-            return; 
+            return;
         }
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("EditeurCastesScene");
         alreadyClosed = true;
     }
@@ -1068,32 +1056,20 @@ public class InGameUIController : MonoBehaviour {
 
     private void GoToMainMenu()
     {
-        if(alreadyClosed)
+        if (!CheckExitGame())
         {
-            return; 
+            return;
         }
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
         alreadyClosed = true; 
     }
 
     private void GoToPersonnalizedMap()
     {
-        if(alreadyClosed)
+        if(!CheckExitGame())
         {
             return; 
         }
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
         alreadyClosed = true; 
     }
@@ -1115,6 +1091,22 @@ public class InGameUIController : MonoBehaviour {
             Time.timeScale = 1; 
         }
     }
+
+    private bool CheckExitGame()
+    {
+        if (alreadyClosed)
+        {
+            return false;
+        }
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        MessagesManager.instance.CloseMsgPanel();
+        CheckPause();
+        return true; 
+    }
+
 
     void SwitchMenu() {
         subMenu.SetActive(!subMenu.activeSelf);

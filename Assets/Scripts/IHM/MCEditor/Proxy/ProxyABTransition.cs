@@ -155,10 +155,14 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
 
 	#region INSTANTIATE
 	public static ProxyABTransition instantiate( Pin start, Pin end, bool createCondition ){
-		return instantiate ( start, end, createCondition,  MCEditorManager.instance.MCparent );
+		return instantiate ( start, end, createCondition, MCEditor_Proxy_Factory.instance.InteractableZone );
 	}
-	public static ProxyABTransition instantiate( Pin start, Pin end, bool createCondition, Transform parent ){
+	public static ProxyABTransition instantiate( Pin start, Pin end, bool createCondition, DropArea selectableZone ){
+		return instantiate ( start, end, createCondition, selectableZone, MCEditorManager.instance.MCparent );
+	}
+	public static ProxyABTransition instantiate( Pin start, Pin end, bool createCondition, DropArea selectableZone, Transform parent ){
 		ProxyABTransition proxyABTransition = Instantiate<ProxyABTransition>(MCEditor_Proxy_Factory.instance.TransitionPrefab, parent);
+		proxyABTransition.selectZone = selectableZone;
 		proxyABTransition.transform.position = start.transform.position + (start.transform.position - end.transform.position)/2;
 
 		/*if(start.Pin_Type == Pin.PinType.TransitionOut) 

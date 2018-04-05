@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  GameObject de branchement de transition entre deux états
- */  
+ */
 public class Pin : DragSelectableProxyGameObject {
 
 	public enum PinType{
@@ -73,7 +74,7 @@ public class Pin : DragSelectableProxyGameObject {
 
     // Use this for initialization
     protected void Start () {
-		trackingCamera = ( MCEditor_BringToFront_Camera.CanvasCamera != null ? MCEditor_BringToFront_Camera.CanvasCamera : Camera.main );
+		trackingCamera = ( MCEditor_BringToFront_Camera.CanvasCamera != null ? MCEditor_BringToFront_Camera.CanvasCamera : Camera.main );        
 	}
 
 	// Update is called once per frame
@@ -107,7 +108,7 @@ public class Pin : DragSelectableProxyGameObject {
 		}
 	}
 
-	#region implemented abstract members of SelectableProxyGameObject
+	#region implemented abstract members of DragSelectableProxyGameObject
 	protected override void select ()
 	{
 		if (MCEditorManager.instance.Transition_Pin_Start != null ) {
@@ -123,8 +124,16 @@ public class Pin : DragSelectableProxyGameObject {
 			MCEditorManager.instance.createTransition_setStartPin ( null );
 		}
 	}
-		
-	ProxyABTransition auxTransition;
+
+	protected override void doubleClick ()
+	{
+		if (this.Pin_Type == Pin.PinType.TransitionOut && this.AssociatedTransitions.Count > 0) {
+			Vector2 pos = new Vector2 (this.gameObject.transform.position.x, this.gameObject.transform.position.y);
+			MCEditor_DialogBoxManager.instance.instantiateChangePin ( this, pos );
+		}
+	}
+
+ProxyABTransition auxTransition;
 	bool selectNow = false;
 
 	protected void handleSelectedState(){
@@ -171,20 +180,22 @@ public class Pin : DragSelectableProxyGameObject {
         {
             result.SetPinColor();
         }
-        
-		return result;
+
+        return result;
 	}
 
     public void SetPinColor()
     {
-        Color color = new Color();        
+        Color color = new Color();
+        string type = "";
 
         if (this.Pin_Type == Pin.PinType.OperatorOut)
         {
             ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
             string opeParentType = parent.AbOperator.ClassName;
-            string typePinOut = opeParentType.Split('_')[1];
-            this.regularColor = PinColor.GetColorPinFromType(typePinOut);
+            type = opeParentType.Split('_')[1];            
+
+            this.regularColor = PinColor.GetColorPinFromType(type);            
 
             if (parent.getOutcomeType().ToString().Contains("Tab"))
             {
@@ -197,7 +208,8 @@ public class Pin : DragSelectableProxyGameObject {
             ProxyABOperator parent = this.GetComponentInParent<ProxyABOperator>();
             int curPinIn = parent.CurPinIn;
             parent.CurPinIn++;
-			this.regularColor = PinColor.GetColorPinFromType( parent.AbOperator.getIncomeType(curPinIn));
+            type = parent.AbOperator.getIncomeType(curPinIn).ToString();
+            this.regularColor = PinColor.GetColorPinFromType(type);            
             if (parent.getIncomeType(pin_order.OrderPosition).ToString().Contains("Tab"))
             {
                 SetTableColor();
@@ -206,25 +218,60 @@ public class Pin : DragSelectableProxyGameObject {
         else if(this.Pin_Type == Pin.PinType.Param)
         {
             ProxyABParam parent = this.GetComponentInParent<ProxyABParam>();
-            string type = parent.AbParam.GetType().ToString();
-            this.regularColor = PinColor.GetColorPinFromType(type);            
+            type = parent.AbParam.GetType().ToString();
+            this.regularColor = PinColor.GetColorPinFromType(type);           
         }
         else if (this.pin_Type == Pin.PinType.Condition)
         {
-            this.regularColor = PinColor.GetColorPinFromType("Bool");
+            type = "Bool";
+            this.regularColor = PinColor.GetColorPinFromType(type);
         }
         else if (this.pin_Type == Pin.PinType.ActionParam)
         {
             if (this.GetComponentInParent<ProxyABAction>().AbState.Action.Parameters.Length > 0)
             {
                 Debug.Log("Pin order : " + (pin_order.OrderPosition));
-                string actionParamType = this.GetComponentInParent<ProxyABAction>().AbState.Action.Parameters[pin_order.OrderPosition-1].GetType().ToString();
-                this.regularColor = PinColor.GetColorPinFromType(actionParamType);
+                type = this.GetComponentInParent<ProxyABAction>().AbState.Action.Parameters[pin_order.OrderPosition-1].GetType().ToString();
+                this.regularColor = PinColor.GetColorPinFromType(type);                
             }            
         }
         else
         {
             this.regularColor = Color.white;
+        }
+
+        // Set toolTipsText
+        if (type.Contains("Bool"))
+        {
+            base.toolTipText = "Bool";
+        }
+        else if (type.Contains("Scal"))
+        {
+            base.toolTipText = "Scal";
+        }
+        else if (type.Contains("Text") || type.Contains("Txt"))
+        {
+            base.toolTipText = "Text";
+        }
+        else if (type.Contains("Color"))
+        {
+            base.toolTipText = "Color";
+        }
+        else if (type.Contains("Ref"))
+        {
+            base.toolTipText = "Ref";
+        }
+        else if (type.Contains("Vec"))
+        {
+            base.toolTipText = "Vec";
+        }
+        else
+        {
+            base.toolTipText = "";
+        }
+        if (type.Contains("Tab"))
+        {
+            base.toolTipText += "[]";
         }
     }
 

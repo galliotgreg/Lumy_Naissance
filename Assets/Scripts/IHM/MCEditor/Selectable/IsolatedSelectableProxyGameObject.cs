@@ -12,6 +12,9 @@ public abstract class IsolatedSelectableProxyGameObject : MonoBehaviour {
 	protected Color selectedColor;
 
 	[SerializeField]
+	protected DropArea selectZone;
+
+	[SerializeField]
 	protected Renderer colorRenderer;
 
 	bool selected = false;
@@ -30,6 +33,16 @@ public abstract class IsolatedSelectableProxyGameObject : MonoBehaviour {
 			return mouseOver;
 		}
 	}
+
+	public DropArea SelectZone {
+		get {
+			return selectZone;
+		}
+		set {
+			selectZone = value;
+		}
+	}
+
 	#endregion
 
 	// Use this for initialization
@@ -39,7 +52,12 @@ public abstract class IsolatedSelectableProxyGameObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	protected void Update () {
-		if (mouseOver) {
+		/**
+		 * Change color and select when the mouse is on the select zone
+		 */
+
+		// Change color on hover
+		if (mouseOver && (!selectZone || selectZone.IsHover)) {
 			setColor (hoverColor);
 		} else {
 			if (selected) {
@@ -49,14 +67,15 @@ public abstract class IsolatedSelectableProxyGameObject : MonoBehaviour {
 			}
 		}
 
+		// selecting on click
 		if (Input.GetMouseButton (0)) {
-			if (mouseOver) {
+			if (mouseOver && (!selectZone || selectZone.IsHover)) {
 				selecting = true;
 			} else {
 				unselectGameObject ();
 			}
 		} else {
-			if (selecting && mouseOver) {
+			if (selecting && mouseOver && (!selectZone || selectZone.IsHover)) {
 				selectGameObject ();
 			}
 			selecting = false;
