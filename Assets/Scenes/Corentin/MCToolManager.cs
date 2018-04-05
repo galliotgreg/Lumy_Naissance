@@ -115,7 +115,7 @@ public class MCToolManager : MonoBehaviour
     string cast_name;
     public bool saved = false;
     bool hasBeenAdded = false;
-    public GameObject[] allUnits;
+    public MCEditor_Proxy[] allUnits;
 
     #region PROPERTIES
     ToolType CurrentTool
@@ -143,7 +143,8 @@ public class MCToolManager : MonoBehaviour
 
     private void Update()
     {
-        allUnits = GameObject.FindGameObjectsWithTag("Selectable");
+        allUnits = FindObjectsOfType<MCEditor_Proxy>();
+        //allUnits = GameObject.FindGameObjectsWithTag("Selectable");
         //Mouse Button Press Down
         if (Input.GetMouseButtonDown(0) && !selectionEnCours)
         {
@@ -433,11 +434,14 @@ public class MCToolManager : MonoBehaviour
             Debug.Log(sourceFilePath);
             File.Delete(destinationFolderPath + cast_name + ".csv.meta");
             File.Copy(sourceFilePath, destinationFolderPath + cast_name + ".csv");
-            //MCEditorManager.instance.LoadMC_Position();
 
+
+            MCEditorManager.instance.LoadMC_Position();
+
+            
             List<MCEditor_Proxy> allProxies = new List<MCEditor_Proxy>();
-            GameObject initToDestroy = null;
-            foreach (GameObject b in allUnits)
+            MCEditor_Proxy initToDestroy = null;
+            foreach (MCEditor_Proxy b in allUnits)
             {
                 if (b.GetComponent<ProxyABState>() && b.GetComponent<ProxyABState>().AbState.Id == MCEditorManager.instance.AbModel.InitStateId)
                 {
@@ -448,9 +452,10 @@ public class MCToolManager : MonoBehaviour
                     allProxies.Add(b.GetComponent<MCEditor_Proxy>());
                 }
             }
-            Destroy(initToDestroy);
             MCEditorManager.instance.deleteSelectedProxies(allProxies);
-            
+            MCEditorManager.instance.forcedeleteProxy((ProxyABState)initToDestroy);
+
+            SelectedNodes.Clear();
             MCEditorManager.instance.SetupModel();
 
             id--;
