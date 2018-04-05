@@ -112,8 +112,9 @@ public class ABModel {
 
 		if (start == null || end == null)
 		{
-			throw new NotSupportedException();
-		}
+            //throw new NotSupportedException();
+            return false;
+        }
 
 		ABTransition transition = FindTransition(start,end);
 
