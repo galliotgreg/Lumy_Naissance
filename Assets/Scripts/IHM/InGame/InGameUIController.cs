@@ -225,6 +225,17 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private Button valider;
 
+    #region miniMap
+    [Header("Minimap")]
+    //Icon minimap materials
+    [SerializeField]
+    private Material player1Material;
+    [SerializeField]
+    private Material player2Material;
+    [SerializeField]
+    private Material playerDefaultMaterial;
+    #endregion
+
     private bool isDisplayingNegativeResJ1 =false;
     private bool isDisplayingPositiveResJ1 = false;
     private bool isDisplayingNegativeResJ2 = false;
@@ -233,6 +244,8 @@ public class InGameUIController : MonoBehaviour {
     private DateTime tsPositiveJ1;
     private DateTime tsNegativeJ2;
     private DateTime tsPositiveJ2;
+
+
 
     #region Instance
     /// <summary>
@@ -475,6 +488,7 @@ public class InGameUIController : MonoBehaviour {
         //Show all units by cast 
         getAllUnit(PlayerAuthority.Player1);
         getAllUnit(PlayerAuthority.Player2);
+        lumyMinimapIconColor();
     }
 
 
@@ -1022,31 +1036,19 @@ public class InGameUIController : MonoBehaviour {
     private void ExitGame()
     
     {
-       if(alreadyClosed)
+        if (!CheckExitGame())
         {
-            return; 
+            return;
         }
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
         alreadyClosed = true; 
     }
     private void GoToCasteMenu()
     {
-        if(alreadyClosed)
+        if (!CheckExitGame())
         {
-            return; 
+            return;
         }
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("EditeurCastesScene");
         alreadyClosed = true;
     }
@@ -1054,32 +1056,20 @@ public class InGameUIController : MonoBehaviour {
 
     private void GoToMainMenu()
     {
-        if(alreadyClosed)
+        if (!CheckExitGame())
         {
-            return; 
+            return;
         }
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
         alreadyClosed = true; 
     }
 
     private void GoToPersonnalizedMap()
     {
-        if(alreadyClosed)
+        if(!CheckExitGame())
         {
             return; 
         }
-        if (OperatorHelper.Instance != null)
-        {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
-        }
-        CheckPause();
-        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
         alreadyClosed = true; 
     }
@@ -1101,6 +1091,22 @@ public class InGameUIController : MonoBehaviour {
             Time.timeScale = 1; 
         }
     }
+
+    private bool CheckExitGame()
+    {
+        if (alreadyClosed)
+        {
+            return false;
+        }
+        if (OperatorHelper.Instance != null)
+        {
+            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+        }
+        MessagesManager.instance.CloseMsgPanel();
+        CheckPause();
+        return true; 
+    }
+
 
     void SwitchMenu() {
         subMenu.SetActive(!subMenu.activeSelf);
@@ -1212,6 +1218,42 @@ private void DisplayInSight() {
             }
         }
 
+    }
+
+
+    public void lumyMinimapIconColor()
+    {
+        AgentContext[] units = GameObject.FindObjectsOfType<AgentContext>();
+        foreach (AgentContext lumy in units)
+        {
+            //Icons Size
+            if (lumy.name == "p1_queen" || lumy.name == "p2_queen")
+            {
+                lumy.transform.GetChild(5).transform.localScale = new Vector3(3, 3, 3);
+            }
+            else
+            {
+                lumy.transform.GetChild(5).transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            }
+
+            //Icons Color
+            if (lumy.Home.gameObject.name == "p1_hive")
+            {
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+
+                lumyRendIcoMinimap.material = player1Material;
+            }
+            else if (lumy.Home.gameObject.name == "p2_hive")
+            {
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+                lumyRendIcoMinimap.material = player2Material;
+            }
+            else
+            {
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+                lumyRendIcoMinimap.material = playerDefaultMaterial;
+            }
+        }
     }
 
 

@@ -20,14 +20,21 @@ public class InGame_MessageItem_Line : MonoBehaviour {
 		}
 	}
 
+	//Rect thisRect;
+
 	// Use this for initialization
 	void Start () {
-		
+		//thisRect = GetComponent<RectTransform> ().rect;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		// adjust size to TEXT
+//		Rect textRect = text.gameObject.GetComponent<RectTransform>().rect;
+		/*thisRect.Set( thisRect.x, thisRect.y, thisRect.width, textRect.height );
+		Debug.LogError (textRect.height);
+		Debug.LogError (thisRect.height);*/
+//		text.gameObject.GetComponent<LayoutElement> ().preferredHeight = textRect.height;
 	}
 
 	#region INSTANTIATE

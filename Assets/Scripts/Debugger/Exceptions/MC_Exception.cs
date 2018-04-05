@@ -14,6 +14,8 @@
 
 	public abstract string Title{ get; }
 
+	public abstract string getMessage ();
+
 	public string Cast{
 		get{
 			string cast = "";

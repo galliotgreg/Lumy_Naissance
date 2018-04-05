@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 	[SerializeField]
@@ -15,6 +16,8 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 
 	[SerializeField]
 	protected Renderer colorRenderer;
+
+    protected string toolTipText = "";
 
 	bool selected = false;
 	bool clicked = false;
@@ -42,9 +45,9 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 	// Update is called once per frame
 	protected void Update () {
 		if (mouseOver) {
-			setColor (hoverColor);
-		} else {
-			if (selected) {
+			setColor (hoverColor);            
+		} else {            
+            if (selected) {
 				setColor (selectedColor);
 			} else {
 				setColor (regularColor);
@@ -78,7 +81,7 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 		} else {
 			clicked = true;
 		}
-	}
+	}        
 
 	void setColor( Color color ){
 		if (colorRenderer != null) {
@@ -110,18 +113,31 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 
 	protected void OnMouseEnter(){
 		mouseOver = true;
-	}
+        ShowToolTip();
+    }
 
 	protected void OnMouseExit(){
 		mouseOver = false;
-	}
+        HideToolTip();
+    }
 
-	protected void OnMouseDown(){
+    protected void OnMouseDown(){
 		firstSelected = this;
 
 		selectGameObject ();
 	}
 
-	protected abstract void select();
+   protected void ShowToolTip()
+    {
+        MCEditorManager.instance.ShowToolTip(toolTipText, this.transform.position);
+    }
+
+    protected void HideToolTip()
+    {
+        MCEditorManager.instance.ShowToolTip("", this.transform.position);
+    }
+
+    protected abstract void select();
 	protected abstract void unselect();
+    
 }
