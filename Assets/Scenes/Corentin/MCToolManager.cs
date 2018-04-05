@@ -233,6 +233,15 @@ public class MCToolManager : MonoBehaviour
             }
         }
 
+		// Stop Selection when the mouse goes into the inventory 
+		// Attention : it is necessary to remove the raycast target property of the selection square 
+		// Attention : it is necessary to implement the "stop drawing" the selection square 
+		/*if (Input.GetMouseButton (0) && selectionEnCours && !centerZone.CanDrop) { 
+	      isMouseDragging = false; 
+	      selectionEnCours = false; 
+	      SelectionSquare.instance.enabled = false; 
+	    }*/
+
         if (Input.GetMouseButtonUp(0))
         {
             isMouseDragging = false;
