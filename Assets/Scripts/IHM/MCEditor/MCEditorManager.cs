@@ -189,7 +189,7 @@ public class MCEditorManager : MonoBehaviour
                         if (!proxy.IsPositioned)
                         {
                             proxy.transform.position = new Vector3(x, y, z);
-                            //proxy.IsPositioned = true;
+                            proxy.IsPositioned = true;
                             return;
                         }
                     }
@@ -199,7 +199,7 @@ public class MCEditorManager : MonoBehaviour
                     if (!proxy.IsPositioned)
                     {
                         proxy.transform.position = new Vector3(x, y, z);
-                        //proxy.IsPositioned = true;
+                        proxy.IsPositioned = true;
                         return;
                     }
                 }
@@ -219,7 +219,7 @@ public class MCEditorManager : MonoBehaviour
                         if (!proxy.IsPositioned)
                         {
                             proxy.transform.position = new Vector3(x, y, z);
-                            //proxy.IsPositioned = true;
+                            proxy.IsPositioned = true;
                             return;
                         }
                     }
@@ -232,7 +232,7 @@ public class MCEditorManager : MonoBehaviour
                         if (!proxy.IsPositioned)
                         {
                             proxy.transform.position = new Vector3(x, y, z);
-                           // proxy.IsPositioned = true;
+                            proxy.IsPositioned = true;
                             return;
                         }
                     }
@@ -1924,6 +1924,7 @@ public class MCEditorManager : MonoBehaviour
                 if (!(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut || transition.StartPosition.Pin_Type == Pin.PinType.Param)
                     && !(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut || transition.EndPosition.Pin_Type == Pin.PinType.Param))
                 {
+                    Debug.Log(transition.Transition);
                     AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
                     // Update Pins
                     if (transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut)
@@ -1991,6 +1992,26 @@ public class MCEditorManager : MonoBehaviour
 
             Destroy(_state.gameObject);
         }
+    }
+
+    public void forcedeleteProxy(ProxyABState _state)
+    {
+        
+        ABState state = AbModel.getState(_state.AbState.Id);
+
+        // remove transitions
+        deleteTransitions(_state);
+
+        // Remove from model
+        if (state != null)
+        {
+            AbModel.delete(state);
+            proxyStates.Remove(_state);
+            statesDictionnary.Remove(state);
+        }
+
+        Destroy(_state.gameObject);
+        
     }
     public void deleteProxy(ProxyABAction _action)
     {
