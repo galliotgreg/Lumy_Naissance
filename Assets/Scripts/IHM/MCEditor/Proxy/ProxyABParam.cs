@@ -103,8 +103,15 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (timeOnHover > 0 
+            && timeOnHover + timeOnHoverWait < Time.time 
+            && !toolTipIsCreated 
+            && !(MCToolManager.instance.CurrentTool == MCToolManager.ToolType.Hand))
+        {
+            toolTipIsCreated = true;
+            toolTip = MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, this.GetType().ToString(), this);
+        }
+    }
 
 	public static string GetViewValue( IABParam param )
 	{
