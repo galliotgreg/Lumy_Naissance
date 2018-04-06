@@ -74,13 +74,14 @@ public class MCToolManager : MonoBehaviour
     List<Vector3> DistanceList = new List<Vector3>();
 
 
-    int id = 0;
+    int id = -1;
     int idmax = 0;
     string cast_name;
     public bool saved = false;
-    bool hasBeenAdded = false;
+    public bool hasBeenAdded = false;
     public MCEditor_Proxy[] allUnits;
     string sourceFilePath;
+
     #region PROPERTIES
     ToolType CurrentTool
     {
@@ -97,6 +98,7 @@ public class MCToolManager : MonoBehaviour
 
     private void Start()
     {
+        currentTool = ToolType.None;
         btn_Selection.onClick.AddListener(() => { CurrentTool = ToolType.Selection; CancelInventory(); SelectionSquare.instance.enabled = true; });
         btn_Main.onClick.AddListener(() => { CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; });
         btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); ToolUndo(); });
@@ -210,7 +212,7 @@ public class MCToolManager : MonoBehaviour
         if (CurrentTool == ToolType.Hand )
         {
             if (isMouseDragging)
-            {
+            {        
                 ToolMain();
             }
             else
@@ -225,7 +227,6 @@ public class MCToolManager : MonoBehaviour
         {
             DeleteNodes();
             SelectedNodes.Clear();
-
             TemporarySave();
         }
     }
@@ -256,9 +257,9 @@ public class MCToolManager : MonoBehaviour
     private void ToolMain()
     {
 
-        //Mouse moving
+        /*//Mouse moving
         if (isMouseDragging)
-        {
+        {*/
             //tracking mouse pos
             Vector3 currentScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -GameObject.Find("Camera").GetComponent<Camera>().transform.position.z);
 
@@ -288,7 +289,7 @@ public class MCToolManager : MonoBehaviour
                     }
                 }
             }
-        }
+        //}
     }
 
     /// <summary>
@@ -344,27 +345,19 @@ public class MCToolManager : MonoBehaviour
     #region UNDO
     private void ToolUndo()
     {
-        /*//List<GameObject> currentImpactedNodes = undoableActions.Peek().impactedNodes;
-        int i = 0;
-        foreach(GameObject b in undoableActions[undoableActions.Count -1].impactedNodes)
-        {
-            b.transform.position = undoableActions[undoableActions.Count - 1].transform[i];
-            i++;
-        }
-        undoableActions[undoableActions.Count - 1].Clear();
-        //currentImpactedNodes.Clear();*/
-        if (id == idmax)
+        /*if (id == idmax)
         {
             idmax++;
             MCEditorManager.instance.Temporary_Save_MC_Behavior(cast_name, idmax.ToString());
+        }*/
 
-        }
 
-        string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
-        string sourcePosition = sourceFilePath + "_POSITION_" + id.ToString() + ".csv";
-        string sourceBehavior = sourceFilePath + "_" + id.ToString() + ".csv";
-        if (id > 0)
+        if (id >= 0)
         {
+            id--;
+            string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
+            string sourcePosition = sourceFilePath + "_POSITION_" + id.ToString() + ".csv";
+            string sourceBehavior = sourceFilePath + "_" + id.ToString() + ".csv";
             //Backup Behavior Files
             File.Delete(destinationFolderPath + cast_name + ".csv");
             File.Delete(destinationFolderPath + cast_name + ".csv.meta");
@@ -393,9 +386,7 @@ public class MCToolManager : MonoBehaviour
 
             SelectedNodes.Clear();
             MCEditorManager.instance.SetupModel();
-            Debug.Log("LOAD: " + cast_name + "   " + id.ToString());
-
-            id--;
+            Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
         }
     }
     #endregion
@@ -403,21 +394,12 @@ public class MCToolManager : MonoBehaviour
     #region REDO
     private void ToolRedo()
     {
-        /*//List<GameObject> currentImpactedNodes = undoableActions.Peek().impactedNodes;
-        int i = 0;
-        foreach(GameObject b in undoableActions[undoableActions.Count -1].impactedNodes)
-        {
-            b.transform.position = undoableActions[undoableActions.Count - 1].transform[i];
-            i++;
-        }
-        undoableActions[undoableActions.Count - 1].Clear();
-        //currentImpactedNodes.Clear();*/
         string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
-        
 
-        if (id <  idmax )
+        id++;
+        if (id <=  idmax )
         {
-            id++;
+            
             string sourcePosition = sourceFilePath + "_POSITION_" + id.ToString() + ".csv";
             string sourceBehavior = sourceFilePath + "_" + id.ToString() + ".csv";
 
@@ -447,9 +429,8 @@ public class MCToolManager : MonoBehaviour
 
             SelectedNodes.Clear();
             MCEditorManager.instance.SetupModel();
+            Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
         }
-
-
     }
     #endregion
 
@@ -459,27 +440,24 @@ public class MCToolManager : MonoBehaviour
     {
         if (!hasBeenAdded)
         {
+
             id++;
             if (idmax <= id)
             {
                 idmax = id;
             }
-            else
+            for (int id_delete = id; id_delete <= idmax; id_delete++)
             {
-                for (int id_delete = id; id_delete <= idmax; id_delete++)
-                {
-                    string sourceBehavior = Application.dataPath + @"\Inputs\TemporaryBackup\" + cast_name + "_" + id_delete.ToString() + ".csv";
-                    string sourcePosition = Application.dataPath + @"\Inputs\TemporaryBackup\" + cast_name + "_POSITION_" + id_delete.ToString() + ".csv";
-                    File.Delete(sourceBehavior);
-                    File.Delete(sourcePosition);
-
-                }
-                idmax = id;
+                string sourceBehavior = Application.dataPath + @"\Inputs\TemporaryBackup\" + cast_name + "_" + id_delete.ToString() + ".csv";
+                string sourcePosition = Application.dataPath + @"\Inputs\TemporaryBackup\" + cast_name + "_POSITION_" + id_delete.ToString() + ".csv";
+                File.Delete(sourceBehavior);
+                File.Delete(sourcePosition);
             }
+
+
             MCEditorManager.instance.Temporary_Save_MC_Behavior(cast_name, id.ToString());
             Debug.Log("SAVE: " + cast_name + "   " + id.ToString());
             saved = true;
-            Debug.Log("+1");
             hasBeenAdded = true;
         }
     }

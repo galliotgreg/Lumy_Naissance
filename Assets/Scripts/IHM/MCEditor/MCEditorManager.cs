@@ -119,7 +119,8 @@ public class MCEditorManager : MonoBehaviour
         /** LOAD MODEL AND CREATE PROXY OBJECTS **/
         SetupModel();
 
-        Temporary_Save_MC_Behavior(AppContextManager.instance.ActiveCast.Name + "_behavior", "0");
+        //Temporary_Save_MC_Behavior(AppContextManager.instance.ActiveCast.Name + "_behavior", "0");
+        MCToolManager.instance.TemporarySave();
     }
 
     private void Update()
@@ -132,6 +133,8 @@ public class MCEditorManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Delete))
         {
             this.deleteSelectedTransition();
+            MCToolManager.instance.hasBeenAdded = false;
+            MCToolManager.instance.TemporarySave();
         }
         
     }
@@ -148,13 +151,7 @@ public class MCEditorManager : MonoBehaviour
         LoadProxyTransitions();
         LoadMC_Position();
     }
-    /*public void TempSetupModel()
-    {
-        abModel = LoadMC();
-        LoadProxyStates();
-        LoadProxyTransitions();
-        LoadMC_Position();
-    }*/
+
     void setProxyPositionOnLoad(string nameProxy, bool isStateBlock, bool isActionBlock, bool isOperatorBlock, bool isParameterBlock, float x, float y, float z)
     {
 
@@ -243,7 +240,7 @@ public class MCEditorManager : MonoBehaviour
 
     public void LoadMC_Position()
     {
-        string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";
+        string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";        
         if (File.Exists(path))
         {
             StreamReader reader = new StreamReader(path);
@@ -1608,6 +1605,7 @@ public class MCEditorManager : MonoBehaviour
         {
             // create transition proxy
             ProxyABTransition trans = MCEditor_Proxy_Factory.instantiateTransition(start, end, false);
+            
 
             // Associate transition
             if (createdTransition != null)
@@ -1625,6 +1623,7 @@ public class MCEditorManager : MonoBehaviour
             {
                 ((ProxyABState)end.ProxyParent).checkPins();
             }
+            MCToolManager.instance.TemporarySave();
         }
         else
         {
@@ -2033,6 +2032,7 @@ public class MCEditorManager : MonoBehaviour
             // Destroy( transition.Condition.gameObject );
             // Destroy Object
             Destroy(transition.gameObject);
+            
         }
     }
 
