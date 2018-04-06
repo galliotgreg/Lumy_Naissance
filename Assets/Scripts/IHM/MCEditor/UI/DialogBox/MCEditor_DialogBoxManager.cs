@@ -27,8 +27,6 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 
     [SerializeField]
     RectTransform container;
-
-    GameObject toolTip_operator_prefab;
     
     //Pin
     [SerializeField]
