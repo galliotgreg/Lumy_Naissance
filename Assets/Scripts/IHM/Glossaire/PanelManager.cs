@@ -4,11 +4,9 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HelpManager : MonoBehaviour {
-    /// <summary>
-    /// The static instance of the Singleton for external access
-    /// </summary>
-    public static HelpManager instance = null;
+public class PanelManager : MonoBehaviour
+{
+    public static PanelManager instance = null;
     public HelpDatabase help;
 
     [SerializeField]
@@ -36,6 +34,7 @@ public class HelpManager : MonoBehaviour {
     [SerializeField]
     private GameObject helpSelectionBtnPrefab;
 
+
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -55,19 +54,8 @@ public class HelpManager : MonoBehaviour {
             Destroy(gameObject);
         }
     }
-    
-    public string JSON_Name
-    {
-        get
-        {
-            return JSON_name;
-        }
 
-        set
-        {
-            JSON_name = value;
-        }
-    }
+
 
     public void UpdatePanel(string JSON_name = "definition")
     {
@@ -75,11 +63,10 @@ public class HelpManager : MonoBehaviour {
         help.LoadDatabase(JSON_name);
     }
 
-
     private string[] GetListHelpTitle()
     {
         string[] listTitle = new string[help.GetLength()];
-        for(int i = 0; i< help.GetLength();i++)
+        for (int i = 0; i < help.GetLength(); i++)
         {
             listTitle[i] = help.FetchHelpByID(i).Title;
         }
@@ -89,6 +76,7 @@ public class HelpManager : MonoBehaviour {
     public void RefreshHelpScroll()
     {
         //Remove old buttons
+        help = HelpManager.instance.help;
         IList<GameObject> childs = new List<GameObject>();
         for (int i = 0; i < helpScrollContent.transform.childCount; i++)
         {
@@ -114,7 +102,7 @@ public class HelpManager : MonoBehaviour {
             //Text button_text = helpSelectionButton.transform.Find("Text").GetComponent<Text>();
             RectTransform rectTransform = helpSelectionButton.GetComponent<RectTransform>();
             helpSelectionButton.transform.SetParent(helpScrollContent.transform);
-            
+
             //Set Text
             button_text.text = listNames[i];
             //Set Position
@@ -131,9 +119,9 @@ public class HelpManager : MonoBehaviour {
 
     public void SelectHelp(string title)
     {
-        mainPanelHelpTitle.text = help.FetchHelpByTitle(title).Title;
-        mainPanelHelpContent.text = help.FetchHelpByTitle(title).Content;
-        string imagename = help.FetchHelpByTitle(title).Image;
+        mainPanelHelpTitle.text = HelpManager.instance.help.FetchHelpByTitle(title).Title;
+        mainPanelHelpContent.text = HelpManager.instance.help.FetchHelpByTitle(title).Content;
+        string imagename = HelpManager.instance.help.FetchHelpByTitle(title).Image;
         if (imagename != "")
         {
             //TODO Format image voir plus tard.
@@ -151,12 +139,14 @@ public class HelpManager : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 }

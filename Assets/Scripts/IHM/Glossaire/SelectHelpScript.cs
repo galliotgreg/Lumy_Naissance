@@ -15,6 +15,7 @@ public class SelectHelpScript : MonoBehaviour {
 
     void SelectHelp()
     {
-        HelpManager.instance.SelectHelp(helpName);
+        //HelpManager.instance.SelectHelp(helpName);
+        PanelManager.instance.SelectHelp(helpName);
     }
 }
