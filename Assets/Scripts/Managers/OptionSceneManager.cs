@@ -29,11 +29,15 @@ public class OptionSceneManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        sfx.value = SoundManager.instance.menuFxSource.volume;
+        general.value = SoundManager.instance.musicSource.volume;
         resolution.onValueChanged.AddListener(delegate { SetResolution(); });
         windowed.onValueChanged.AddListener((on) => { SetWindowed(); });
         quality.onValueChanged.AddListener(delegate{ SetQuality(); });
         fps.onValueChanged.AddListener(delegate { SetFps(); });
         luminosity.onValueChanged.AddListener(delegate { setLuminosity(); });
+        sfx.onValueChanged.AddListener(delegate { SetVolumeFX(); });
+        general.onValueChanged.AddListener(delegate { SetVolumeGeneral(); });
     }
 	
 	// Update is called once per frame
@@ -123,12 +127,14 @@ public class OptionSceneManager : MonoBehaviour {
     }
 
     private void SetVolumeFX()
-    {
-        //TODO Pour Greg
+    {        
+        SoundManager.instance.inGameFXSource.volume = sfx.value;
+        SoundManager.instance.lumyFxSource.volume = sfx.value;
+        SoundManager.instance.menuFxSource.volume = sfx.value;        
     }
 
     private void SetVolumeGeneral()
-    {
-        //TODO Pour Greg
+    {        
+        SoundManager.instance.musicSource.volume = general.value;
     }
 }

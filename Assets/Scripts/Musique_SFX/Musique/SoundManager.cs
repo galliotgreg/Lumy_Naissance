@@ -86,8 +86,8 @@ public class SoundManager : MonoBehaviour
     public void PlayMainTheme()
     {
         //RandomizeClips(mainThemeClips, musicSource);
-        menuFxSource.clip = mainThemeClips[0];
-        menuFxSource.Play();
+        musicSource.clip = mainThemeClips[0];
+        musicSource.Play();
 
         StartCoroutine(WaitAndPlay(mainThemeClips[0], mainThemeClips[1], musicSource));
         musicSource.loop = true;
