@@ -109,6 +109,9 @@ public class PhySkeleton : MonoBehaviour
         ////Close tail
         lastJoin.DstBones = new PhyBone[0];
 
+        ///Enlarging head
+        firstJoin.gameObject.transform.localScale = new Vector3(2f, 1f, 1.5f);
+
         //Set root Bone
         rootBone = firstJoin.DstBones[0];
         IKAnkor = firstJoin.gameObject;
