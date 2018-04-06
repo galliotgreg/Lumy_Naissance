@@ -118,7 +118,7 @@ public class MCToolManager : MonoBehaviour
     public GameObject[] allUnits;
 
     #region PROPERTIES
-    ToolType CurrentTool
+    public ToolType CurrentTool
     {
         get
         {
