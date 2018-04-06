@@ -82,7 +82,7 @@ public class MCToolManager : MonoBehaviour
     public MCEditor_Proxy[] allUnits;
     string sourceFilePath;
     #region PROPERTIES
-    ToolType CurrentTool
+    public ToolType CurrentTool
     {
         get
         {
