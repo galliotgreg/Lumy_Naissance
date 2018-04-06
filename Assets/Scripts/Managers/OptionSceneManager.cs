@@ -24,11 +24,15 @@ public class OptionSceneManager : MonoBehaviour {
     private Slider sfx;
     [SerializeField]
     private Slider general;
+    [SerializeField]
+    private Slider music;
     #endregion
     #endregion
 
     // Use this for initialization
     void Start () {
+        windowed.isOn = Screen.fullScreen;
+
         sfx.value = SoundManager.instance.menuFxSource.volume;
         general.value = SoundManager.instance.musicSource.volume;
         resolution.onValueChanged.AddListener(delegate { SetResolution(); });
@@ -64,18 +68,23 @@ public class OptionSceneManager : MonoBehaviour {
         switch (resolution.value)
         {
             case 0:
+                windowed.isOn = Screen.fullScreen;
                 Screen.SetResolution(1280, 720, windowed.isOn);
                 break;
             case 1:
+                windowed.isOn = Screen.fullScreen;
                 Screen.SetResolution(1366, 768, windowed.isOn);
                 break;
             case 2:
+                windowed.isOn = Screen.fullScreen;
                 Screen.SetResolution(1920, 1080, windowed.isOn);
                 break;
             case 3:
+                windowed.isOn = Screen.fullScreen;
                 Screen.SetResolution(2560, 1440, windowed.isOn);
                 break;
             case 4:
+                windowed.isOn = Screen.fullScreen;
                 Screen.SetResolution(3840, 2160, windowed.isOn);
                 break;
             default:
@@ -122,7 +131,6 @@ public class OptionSceneManager : MonoBehaviour {
     {
         float rgbValue = luminosity.value;
         RenderSettings.ambientLight = new Color(rgbValue,rgbValue,rgbValue, 1);
-        //RenderSettings.ambientLight = Color.red;
         Debug.Log("lumy");
     }
 
