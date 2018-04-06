@@ -11,9 +11,7 @@ public class CameraRay : MonoBehaviour {
     private Camera camera;
     //Used for Intersection with UI 
     private int fingerID = -1;
-    private Color color;
-    AgentScript self;    
-
+    AgentScript self;
 
     // Use this for initialization
     void Start () {
@@ -46,14 +44,14 @@ public class CameraRay : MonoBehaviour {
                 GameObject parent = hit.transform.parent.parent.gameObject;           
                 self = parent.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
 
-                //Disable Selection Shader
+                
                 self.gameObject.transform.GetChild(2).gameObject.SetActive(true); //Enable Canvas
 
                 //Enable MC Debugger
                 MC_Debugger_Manager.instance.activateDebugger(parent.GetComponent<AgentEntity>());
                 
                 //Set Color 
-                ColorPlayer();
+                InGameUIController.instance.ColorPlayer(self);
 
                //Enable showing in UI
                InGameUIController.instance.UnitSelected = true;
@@ -72,24 +70,16 @@ public class CameraRay : MonoBehaviour {
 
                 //Disable Showing in UI
                 InGameUIController.instance.UnitSelected = false;
-                InGameUIController.instance.Color = Color.white; 
+          
                 InGameUIController.instance.Self = null; 
             }
         }
        
     }
 
-    private void ColorPlayer()
-    {
-        if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1)
-        {
-            InGameUIController.instance.Color = Color.blue;
-        }
-        else if (self.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2)
-        {
-            InGameUIController.instance.Color = Color.red;
-        }
-    }
+
+
+
    
 }
 
