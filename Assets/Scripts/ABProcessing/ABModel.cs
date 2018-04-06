@@ -112,8 +112,9 @@ public class ABModel {
 
 		if (start == null || end == null)
 		{
-			throw new NotSupportedException();
-		}
+            //throw new NotSupportedException();
+            return false;
+        }
 
 		ABTransition transition = FindTransition(start,end);
 
@@ -153,6 +154,31 @@ public class ABModel {
         return null;
     }
 
+	public void exchangeTransitionPositions(ABTransition transA, ABTransition transB) {
+		int indexA = -1;
+		int indexB = -1;
+
+		// Find transition indexes
+		for( int i=0; i < transitions.Count; i++ )
+		{
+			if (transitions[i] == transA)
+			{
+				indexA = i;
+			}
+			if (transitions[i] == transB)
+			{
+				indexB = i;
+			}
+			if (indexA >= 0 && indexB >= 0) {
+				break;
+			}
+		}
+
+		if (indexA >= 0 && indexB >= 0) {
+			transitions [indexA] = transB;
+			transitions [indexB] = transA;
+		}
+	}
 
     public void SetCondition(int transitionId, AB_BoolGate_Operator condition)
     {

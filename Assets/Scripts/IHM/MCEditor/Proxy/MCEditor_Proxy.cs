@@ -120,7 +120,7 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
 	#region IPointerClickHandler implementation
 
-	float doubleClickIntervalMseconds = 200;
+	public const float doubleClickIntervalMseconds = 200;
 
 	float lastClick = -1;
 	public void OnMouseDown ()

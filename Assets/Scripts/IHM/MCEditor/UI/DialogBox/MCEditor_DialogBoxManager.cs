@@ -28,6 +28,14 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
     [SerializeField]
     RectTransform container;
 
+    GameObject toolTip_operator_prefab;
+    
+    //Pin
+    [SerializeField]
+    MCEditor_DialogBox_ChangePin changePin_Prefab;
+	
+    
+
     // States
     [SerializeField]
     MCEditor_DialogBox_State_Name stateName_Prefab;
@@ -88,6 +96,10 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 	public MCEditor_DialogBox_Action_Name instantiateActionName( ProxyABAction action, Vector2 position ){
 		Vector3 pos3D = new Vector3 ( position.x + 1, position.y + 1, container.position.z );
 		return (MCEditor_DialogBox_Action_Name)MCEditor_DialogBox_Action.instantiate( action, actionName_Prefab, pos3D, container );
+	}
+	public MCEditor_DialogBox_ChangePin instantiateChangePin( Pin pin, Vector2 position ){
+		Vector3 pos3D = new Vector3 ( position.x + 1, position.y + 1, container.position.z );
+		return (MCEditor_DialogBox_ChangePin)MCEditor_DialogBox_ChangePin.instantiate( pin, changePin_Prefab, pos3D, container );
 	}
 
     public GameObject instantiateToolTip(Vector3 position, string type, MCEditor_Proxy proxy)

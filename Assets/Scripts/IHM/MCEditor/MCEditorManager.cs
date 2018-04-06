@@ -123,7 +123,7 @@ public class MCEditorManager : MonoBehaviour
         /** LOAD MODEL AND CREATE PROXY OBJECTS **/
         SetupModel();
 
-        Temporary_Save_MC_Position(AppContextManager.instance.ActiveCast.Name + "_behavior_POSITION", "0");
+        Temporary_Save_MC_Behavior(AppContextManager.instance.ActiveCast.Name + "_behavior", "0");
     }
 
     private void Update()
@@ -193,7 +193,7 @@ public class MCEditorManager : MonoBehaviour
                         if (!proxy.IsPositioned)
                         {
                             proxy.transform.position = new Vector3(x, y, z);
-                            //proxy.IsPositioned = true;
+                            proxy.IsPositioned = true;
                             return;
                         }
                     }
@@ -203,7 +203,7 @@ public class MCEditorManager : MonoBehaviour
                     if (!proxy.IsPositioned)
                     {
                         proxy.transform.position = new Vector3(x, y, z);
-                        //proxy.IsPositioned = true;
+                        proxy.IsPositioned = true;
                         return;
                     }
                 }
@@ -223,7 +223,7 @@ public class MCEditorManager : MonoBehaviour
                         if (!proxy.IsPositioned)
                         {
                             proxy.transform.position = new Vector3(x, y, z);
-                            //proxy.IsPositioned = true;
+                            proxy.IsPositioned = true;
                             return;
                         }
                     }
@@ -236,7 +236,7 @@ public class MCEditorManager : MonoBehaviour
                         if (!proxy.IsPositioned)
                         {
                             proxy.transform.position = new Vector3(x, y, z);
-                           // proxy.IsPositioned = true;
+                            proxy.IsPositioned = true;
                             return;
                         }
                     }
@@ -665,9 +665,9 @@ public class MCEditorManager : MonoBehaviour
         Debug.Log("Save MC Position");
     }
 
-    public void Temporary_Save_MC_Position(string swarm_name, string id)
+    public void Temporary_Save_MC_Position(string cast_name, string id)
     {
-        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + swarm_name + "_" + id + ".csv";
+        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + cast_name + "_POSITION_" + id + ".csv";
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
         csvcontent.AppendLine("States,Position");
@@ -732,7 +732,91 @@ public class MCEditorManager : MonoBehaviour
         
         Debug.Log("Temporary Saved MC Position");
     }
+    public void Temporary_Save_MC_Behavior(string cast_name, string id)
+    {
+        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + cast_name + "_" + id + ".csv";
+        StringBuilder csvcontent = new StringBuilder();
+        List<StringBuilder> syntTrees = new List<StringBuilder>();
 
+        csvcontent.AppendLine("States,Name,Type");
+        foreach (ABState state in abModel.States)
+        {
+            if (state.Action != null)
+            {
+                csvcontent.AppendLine(state.Id + "," + state.Name + "," + "trigger{" + state.Action.Type.ToString().ToLower() + "}");
+
+                if (state.Action.Parameters != null)
+                {
+                    for (int i = 0; i < state.Action.Parameters.Length; i++)
+                    {
+                        if (state.Action.Parameters[i].Inputs[0] != null)
+                        {
+                            StringBuilder syntTreeContent = new StringBuilder();
+                            syntTreeContent.AppendLine("Syntax Tree,output,");
+                            syntTreeContent.AppendLine("1," + state.Name + "->" + i + ",");
+                            syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
+
+                            idNodeSyntTree = 0;
+                            foreach (ABNode node in state.Action.Parameters[i].Inputs)
+                            {
+                                Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+                            }
+                            syntTreeContent.AppendLine(",,");
+                            syntTrees.Add(syntTreeContent);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (state.Id == 0)
+                {
+                    csvcontent.AppendLine(state.Id + "," + state.Name + ",Init");
+                }
+                else
+                {
+                    csvcontent.AppendLine(state.Id + "," + state.Name + ",Inter");
+                }
+            }
+        }
+        csvcontent.AppendLine(",,");
+        csvcontent.AppendLine("Transitions,Start State,End State");
+        int last_id = 0;
+        foreach (ABTransition trans in abModel.Transitions)
+        {
+            //trans.Id = last_id;
+            csvcontent.AppendLine(trans.Id + "," + trans.Start.Name + "," + trans.End.Name);
+            if (trans.Condition != null)
+            {
+                if (trans.Condition.Inputs[0] != null)
+                {
+                    StringBuilder syntTreeContent = new StringBuilder();
+                    syntTreeContent.AppendLine("Syntax Tree,output,");
+                    syntTreeContent.AppendLine("1," + trans.Id + ",");
+                    syntTreeContent.AppendLine("Nodes,Type,output (Node -> Input)");
+
+                    idNodeSyntTree = 0;
+                    foreach (ABNode node in trans.Condition.Inputs)
+                    {
+                        Save_Ope_Param(idNodeSyntTree, idNodeInputPin, node, syntTreeContent);
+                    }
+                    syntTreeContent.AppendLine(",,");
+                    syntTrees.Add(syntTreeContent);
+                    //last_id++;
+                }
+
+            }
+        }
+        csvcontent.AppendLine(",,");
+        File.WriteAllText(csvpath, csvcontent.ToString());
+
+        foreach (StringBuilder content in syntTrees)
+        {
+            File.AppendAllText(csvpath, content.ToString());
+        }
+        Debug.Log("Save MC");
+        Temporary_Save_MC_Position(cast_name ,id);
+    }
     public void Save_MC()
     {
         string csvpath = MC_OrigFilePath;
@@ -1587,16 +1671,9 @@ public class MCEditorManager : MonoBehaviour
     {
 
     }
-    void ShiftIdTransition(int id_transition_to_remove)
+	public void exchangeTransitionPosition(ABTransition transitionA, ABTransition transitionB)
     {
-        //decrement the ID of the following transitions
-        foreach (ABTransition trans in abModel.Transitions)
-        {
-            if (trans.Id > id_transition_to_remove)
-            {
-                trans.Id--;
-            }
-        }
+		abModel.exchangeTransitionPositions (transitionA, transitionB);
     }
 
     void Move()
@@ -1928,6 +2005,7 @@ public class MCEditorManager : MonoBehaviour
                 if (!(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut || transition.StartPosition.Pin_Type == Pin.PinType.Param)
                     && !(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut || transition.EndPosition.Pin_Type == Pin.PinType.Param))
                 {
+                    Debug.Log(transition.Transition);
                     AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
                     // Update Pins
                     if (transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut)
@@ -1995,6 +2073,26 @@ public class MCEditorManager : MonoBehaviour
 
             Destroy(_state.gameObject);
         }
+    }
+
+    public void forcedeleteProxy(ProxyABState _state)
+    {
+        
+        ABState state = AbModel.getState(_state.AbState.Id);
+
+        // remove transitions
+        deleteTransitions(_state);
+
+        // Remove from model
+        if (state != null)
+        {
+            AbModel.delete(state);
+            proxyStates.Remove(_state);
+            statesDictionnary.Remove(state);
+        }
+
+        Destroy(_state.gameObject);
+        
     }
     public void deleteProxy(ProxyABAction _action)
     {
