@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 using System.Runtime.InteropServices;
 using System.Text;
+using Newtonsoft.Json;
 
 public class MCEditorManager : MonoBehaviour
 {
@@ -41,6 +42,9 @@ public class MCEditorManager : MonoBehaviour
     private List<ProxyABOperator> proxyOperators;
     private List<ProxyABParam> proxyParams;        
     private Text toolTipText;
+
+    //ToolTip
+    private List<Help> database = new List<Help>();
 
     //[SerializeField]
     private string MC_OrigFilePath;
@@ -119,7 +123,8 @@ public class MCEditorManager : MonoBehaviour
         /** LOAD MODEL AND CREATE PROXY OBJECTS **/
         SetupModel();
 
-        Temporary_Save_MC_Behavior(AppContextManager.instance.ActiveCast.Name + "_behavior", "0");
+        //Temporary_Save_MC_Behavior(AppContextManager.instance.ActiveCast.Name + "_behavior", "0");
+        MCToolManager.instance.TemporarySave();
     }
 
     private void Update()
@@ -132,6 +137,8 @@ public class MCEditorManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Delete))
         {
             this.deleteSelectedTransition();
+            MCToolManager.instance.hasBeenAdded = false;
+            MCToolManager.instance.TemporarySave();
         }
         
     }
@@ -148,13 +155,7 @@ public class MCEditorManager : MonoBehaviour
         LoadProxyTransitions();
         LoadMC_Position();
     }
-    /*public void TempSetupModel()
-    {
-        abModel = LoadMC();
-        LoadProxyStates();
-        LoadProxyTransitions();
-        LoadMC_Position();
-    }*/
+
     void setProxyPositionOnLoad(string nameProxy, bool isStateBlock, bool isActionBlock, bool isOperatorBlock, bool isParameterBlock, float x, float y, float z)
     {
 
@@ -243,7 +244,7 @@ public class MCEditorManager : MonoBehaviour
 
     public void LoadMC_Position()
     {
-        string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";
+        string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";        
         if (File.Exists(path))
         {
             StreamReader reader = new StreamReader(path);
@@ -1608,6 +1609,7 @@ public class MCEditorManager : MonoBehaviour
         {
             // create transition proxy
             ProxyABTransition trans = MCEditor_Proxy_Factory.instantiateTransition(start, end, false);
+            
 
             // Associate transition
             if (createdTransition != null)
@@ -1625,6 +1627,7 @@ public class MCEditorManager : MonoBehaviour
             {
                 ((ProxyABState)end.ProxyParent).checkPins();
             }
+            MCToolManager.instance.TemporarySave();
         }
         else
         {
@@ -2033,6 +2036,7 @@ public class MCEditorManager : MonoBehaviour
             // Destroy( transition.Condition.gameObject );
             // Destroy Object
             Destroy(transition.gameObject);
+            
         }
     }
 
@@ -2190,10 +2194,184 @@ public class MCEditorManager : MonoBehaviour
     #endregion
 
     #region ToolTips
+
+    public void LoadActionDatabase()
+    {
+        string path = Application.dataPath + @"/Inputs/HelpFiles/" + "actions" + ".json";
+        using (StreamReader stream = new StreamReader(path))
+        {
+            string json = stream.ReadToEnd();
+            database = JsonConvert.DeserializeObject<List<Help>>(json);
+            stream.Close();
+        }
+    }
+
+    public void LoadParamDatabase()
+    {
+        string path = Application.dataPath + @"/Inputs/HelpFiles/" + "parametres" + ".json";
+        using (StreamReader stream = new StreamReader(path))
+        {
+            string json = stream.ReadToEnd();
+            database = JsonConvert.DeserializeObject<List<Help>>(json);
+            stream.Close();
+        }
+    }
+
+    // ToolTip for Pin
     public void ShowToolTip(string text, Vector3 pos)
     {
         toolTipText.gameObject.transform.position = new Vector3(pos.x, pos.y, -2);
         toolTipText.text = text;
+    }
+
+    // ToolTip for Node
+    public GameObject instantiateToolTip(Vector3 position, GameObject toolTip_prefab, string type, MCEditor_Proxy proxy)
+    {
+        GameObject clone = Instantiate(toolTip_prefab);
+        clone.transform.SetParent(this.transform);
+        clone.transform.position = new Vector3(position.x, position.y, -1);
+        if (type.Contains("Action"))
+        {
+            FeelActionToolTip(clone, proxy);
+        }
+        else if (type.Contains("Param"))
+        {
+            FeelParamToolTip(clone, proxy);
+        }
+        else if (type.Contains("Operator"))
+        {
+            FeelOperatorToolTip(clone);
+        }
+        return clone;
+    }
+
+    private void FeelActionToolTip(GameObject toolTip, MCEditor_Proxy proxy)
+    {
+        //TODO : Use HelpManager
+        LoadActionDatabase();
+        int index = -1;
+        for (int i = 0; i < database.Count; i++)
+        {            
+            if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Goto"))
+            {
+                if (database[i].Title == "goto")
+                {
+                    index = i;
+                }                    
+            }
+            else if(((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Strike"))
+            {
+                if (database[i].Title == "strike")
+                {
+                    index = i;
+                }                    
+            }
+            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Pick"))
+            {
+                if (database[i].Title == "pick")
+                {
+                    index = i;
+                }
+            }
+            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Drop"))
+            {
+                if (database[i].Title == "drop")
+                {
+                    index = i;
+                }
+            }
+            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Lay"))
+            {
+                if (database[i].Title == "lay")
+                {
+                    index = i;
+                }                    
+            }
+            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Trace"))
+            {
+                if (database[i].Title == "trace")
+                {
+                    index = i;
+                }                    
+            }
+            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Roaming"))
+            {
+                if (database[i].Title == "roaming")
+                {
+                    index = i;
+                }                    
+            }
+        }
+        if(index > -1)
+        {            
+            Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
+            TextFields[0].text = database[index].Title;
+            TextFields[1].text = "Value In";
+            TextFields[2].text = database[index].Content;
+        }        
+    }
+
+    private void FeelParamToolTip(GameObject toolTip, MCEditor_Proxy proxy)
+    {
+        //TODO : Use HelpManager
+        LoadParamDatabase();
+        int index = -1;
+        for (int i = 0; i < database.Count; i++)
+        {            
+            if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Scal"))
+            {
+                if (database[i].Title == "Scalaire")
+                {
+                    index = i;                    
+                }                 
+            }
+            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Bool"))
+            {
+                if (database[i].Title == "Booléen")
+                {
+                    index = i;
+                }
+            }
+            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Color"))
+            {
+                if (database[i].Title == "Couleur")
+                {
+                    index = i;
+                }
+            }
+            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Vec"))
+            {
+                if (database[i].Title == "Vecteur")
+                {
+                    index = i;
+                }
+            }
+            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Text") || ((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Txt"))
+            {
+                if (database[i].Title == "Texte")
+                {
+                    index = i;
+                }
+            }
+            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Ref"))
+            {
+                if (database[i].Title == "Référence")
+                {
+                    index = i;
+                }
+            }
+        }
+        if(index > -1)
+        {            
+            Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
+            TextFields[0].text = database[index].Title;
+            TextFields[1].text = database[index].Content;
+        }        
+    }
+
+    private void FeelOperatorToolTip(GameObject toolTip)
+    {
+
     }
     #endregion
 }
