@@ -57,8 +57,6 @@ public class GameManager : MonoBehaviour {
 
     //Templates & Prefabs
     [SerializeField]
-    private GameObject prysmePrefab;
-    [SerializeField]
     private GameObject emptyAgentPrefab;
     [SerializeField]
     private GameObject emptyComponentPrefab;
