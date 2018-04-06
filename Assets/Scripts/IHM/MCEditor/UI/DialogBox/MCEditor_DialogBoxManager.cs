@@ -4,50 +4,61 @@ using UnityEngine;
 
 public class MCEditor_DialogBoxManager : MonoBehaviour {
 
-	#region SINGLETON
-	// The static instance of the Singleton for external access
-	public static MCEditor_DialogBoxManager instance = null;
+    #region SINGLETON
+    // The static instance of the Singleton for external access
+    public static MCEditor_DialogBoxManager instance = null;
 
-	// Enforce Singleton properties
-	void Awake()
-	{
-		//Check if instance already exists and set it to this if not
-		if (instance == null)
-		{
-			instance = this;
-		}
+    // Enforce Singleton properties
+    void Awake()
+    {
+        //Check if instance already exists and set it to this if not
+        if (instance == null)
+        {
+            instance = this;
+        }
 
-		//Enforce the unicity of the Singleton
-		else if (instance != this)
-		{
-			Destroy(gameObject);
-		}
-	}
-	#endregion
+        //Enforce the unicity of the Singleton
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
 
-	[SerializeField]
-	RectTransform container;
+    [SerializeField]
+    RectTransform container;
+    
+    //Pin
+    [SerializeField]
+    MCEditor_DialogBox_ChangePin changePin_Prefab;
+	
+    
 
-	// States
-	[SerializeField]
-	MCEditor_DialogBox_State_Name stateName_Prefab;
-	// Actions
-	[SerializeField]
-	MCEditor_DialogBox_Action_Name actionName_Prefab;
-	// Params
-	[SerializeField]
-	MCEditor_DialogBox_Param_String paramText_Prefab;
-	[SerializeField]
-	MCEditor_DialogBox_Param_Scalar paramScalar_Prefab;
-	[SerializeField]
-	MCEditor_DialogBox_Param_Bool paramBool_Prefab;
-	[SerializeField]
-	MCEditor_DialogBox_Param_Color paramColor_Prefab;
-	[SerializeField]
-	MCEditor_DialogBox_Param_Vec paramVec_Prefab;
-
-	// Use this for initialization
-	void Start () {
+    // States
+    [SerializeField]
+    MCEditor_DialogBox_State_Name stateName_Prefab;
+    // Actions
+    [SerializeField]
+    MCEditor_DialogBox_Action_Name actionName_Prefab;
+    // Params
+    [SerializeField]
+    MCEditor_DialogBox_Param_String paramText_Prefab;
+    [SerializeField]
+    MCEditor_DialogBox_Param_Scalar paramScalar_Prefab;
+    [SerializeField]
+    MCEditor_DialogBox_Param_Bool paramBool_Prefab;
+    [SerializeField]
+    MCEditor_DialogBox_Param_Color paramColor_Prefab;
+    [SerializeField]
+    MCEditor_DialogBox_Param_Vec paramVec_Prefab;
+    [SerializeField]
+    GameObject toolTip_action_prefab;
+    [SerializeField]
+    GameObject toolTip_param_prefab;
+    [SerializeField]
+    GameObject toolTip_operator_prefab;
+    // Use this for initialization
+    void Start () {
 	}
 	
 	// Update is called once per frame
@@ -84,4 +95,31 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 		Vector3 pos3D = new Vector3 ( position.x + 1, position.y + 1, container.position.z );
 		return (MCEditor_DialogBox_Action_Name)MCEditor_DialogBox_Action.instantiate( action, actionName_Prefab, pos3D, container );
 	}
+	public MCEditor_DialogBox_ChangePin instantiateChangePin( Pin pin, Vector2 position ){
+		Vector3 pos3D = new Vector3 ( position.x + 1, position.y + 1, container.position.z );
+		return (MCEditor_DialogBox_ChangePin)MCEditor_DialogBox_ChangePin.instantiate( pin, changePin_Prefab, pos3D, container );
+	}
+
+    public GameObject instantiateToolTip(Vector3 position, string type, MCEditor_Proxy proxy)
+    {
+        GameObject prefab;
+        if (type.Contains("Action"))
+        {
+            prefab = toolTip_action_prefab;
+        }
+        else if (type.Contains("Param"))
+        {
+            prefab = toolTip_param_prefab;
+        }
+        else if (type.Contains("Operator"))
+        {
+            prefab = toolTip_operator_prefab;
+        }
+        else
+        {
+            Debug.LogWarning("Type de Noeud inconnu : "+type);
+            return prefab = new GameObject();
+        }
+        return MCEditorManager.instance.instantiateToolTip(position, prefab, type, proxy);        
+    }
 }

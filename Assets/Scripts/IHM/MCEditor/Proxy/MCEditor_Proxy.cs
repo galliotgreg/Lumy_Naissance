@@ -5,7 +5,12 @@ using UnityEngine.EventSystems;
 
 public abstract class MCEditor_Proxy : MonoBehaviour {
 
-	public List<Pin> AllPins{
+    protected GameObject toolTip;
+    protected float timeOnHover = -1;
+    protected float timeOnHoverWait = 1.5f;
+    protected bool toolTipIsCreated = false;    
+
+    public List<Pin> AllPins{
 		get{
 			return new List<Pin> (this.gameObject.GetComponentsInChildren<Pin> ());
 		}
@@ -25,8 +30,32 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 		return result;
 	}
 
-	#region VIEW METHODS
-	public void SetNodeName(ABNode node)
+    private void OnMouseEnter()
+    {
+        timeOnHover = Time.time;
+        //toolTip = MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, this.GetType().ToString(), this );
+    }
+
+    private void OnMouseExit()
+    {
+        timeOnHover = -1;
+        if (toolTipIsCreated)
+        {
+            if (toolTip.GetComponent<MCEditor_DialogBox_ToolTip>())
+            {
+                toolTipIsCreated = false;                
+                toolTip.GetComponent<MCEditor_DialogBox_ToolTip>().Desactivate();
+            }
+            else //Init node case (no tooltip instantiate)
+            {
+                toolTipIsCreated = false;                
+                Destroy(toolTip.gameObject);
+            }
+        }                    
+    }
+
+    #region VIEW METHODS
+    public void SetNodeName(ABNode node)
 	{
 		UnityEngine.UI.Text operatorName = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
 		operatorName.text = getNodeName( node );
@@ -91,7 +120,7 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
 	#region IPointerClickHandler implementation
 
-	float doubleClickIntervalMseconds = 200;
+	public const float doubleClickIntervalMseconds = 200;
 
 	float lastClick = -1;
 	public void OnMouseDown ()

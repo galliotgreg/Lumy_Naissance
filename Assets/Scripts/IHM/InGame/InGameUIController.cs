@@ -1044,6 +1044,7 @@ public class InGameUIController : MonoBehaviour {
         {
             return;
         }
+        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
         alreadyClosed = true; 
     }
@@ -1053,6 +1054,7 @@ public class InGameUIController : MonoBehaviour {
         {
             return;
         }
+        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("EditeurCastesScene");
         alreadyClosed = true;
     }
@@ -1064,6 +1066,7 @@ public class InGameUIController : MonoBehaviour {
         {
             return;
         }
+        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
         alreadyClosed = true; 
     }
@@ -1074,6 +1077,7 @@ public class InGameUIController : MonoBehaviour {
         {
             return; 
         }
+        NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
         alreadyClosed = true; 
     }

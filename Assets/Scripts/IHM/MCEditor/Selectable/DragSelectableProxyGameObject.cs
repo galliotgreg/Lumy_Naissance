@@ -23,6 +23,8 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 	bool clicked = false;
 	bool mouseOver = false;
 
+	float lastClick = -1;
+
 	#region PROPERTIES
 	public bool Selected {
 		get {
@@ -65,6 +67,12 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 					firstSelected.select ();
 					secondSelected.select ();
 				}
+
+				// double click
+				if (lastClick > 0 && Time.time - lastClick < MCEditor_Proxy.doubleClickIntervalMseconds / 1000f) {
+					doubleClick ();
+				}
+				lastClick = Time.time;
 			}
 
 			// clear
@@ -138,6 +146,6 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
     }
 
     protected abstract void select();
+	protected abstract void doubleClick();
 	protected abstract void unselect();
-    
 }

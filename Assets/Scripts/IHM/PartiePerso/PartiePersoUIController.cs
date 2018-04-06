@@ -63,6 +63,21 @@ public class PartiePersoUIController : MonoBehaviour {
     Dropdown lumyLimit;
     [SerializeField]
     Button swapSceneButton;
+    [SerializeField]
+    private Image statBarPrefab;
+    [SerializeField]
+    private Image bckStatBarPrefab;
+    [SerializeField]
+    private Text percentagePrefab;
+    [SerializeField]
+    List<Text> player1StatsNamesList;
+    [SerializeField]
+    List<Text> player2StatsNamesList;
+
+    private List<Text> player1PercentageToDestroyList = new List<Text>();
+    private List<Text> player2PercentageToDestroyList = new List<Text>();
+    private List<GameObject> player1StatsBarToDestroyList = new List<GameObject>();
+    private List<GameObject> player2StatsBarToDestroyList = new List<GameObject>();
 
     [SerializeField]
     List<Image> imagesScenes; 
@@ -110,9 +125,223 @@ public class PartiePersoUIController : MonoBehaviour {
         CreateP2SwarmSelectionButons();
         CheckParams();
         InitMenu();
-        ButtonListener(); 
+        ButtonListener();
+        CheckView();
     }
 
+    
+    private void CheckView()
+    {
+        //Clear names
+       foreach (Text text in player1StatsNamesList)
+        {
+            text.gameObject.SetActive(false);
+        }
+
+       foreach (Text text in player2StatsNamesList)
+        {
+            text.gameObject.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Compute and display player1 swarm stats
+    /// </summary>
+    private void ComputePlayer1Stats()
+    {
+        List<float> castStatsList = new List<float>();
+        float vitalityGlobalSum = 0f;
+        float staminaGlobalSum = 0f;
+        float strengthGlobalSum = 0f;
+        float actionSpeedGlobalSum = 0f;
+        float moveSpeedGlobalSum = 0f;
+        float visionRangeGlobalSum = 0f;
+        float pickRangeGlobalSum = 0f;
+        float attackRangeGlobalSum = 0f;
+
+        float maxStat = 3 * player1Specie.Casts.Count;
+        float barHeight = statBarPrefab.GetComponent<RectTransform>().rect.height;
+
+        //Parse player1 casts
+        foreach (KeyValuePair<string, Cast> cast in player1Specie.Casts)
+        {
+            float vitalitySum = 0f;
+            float staminaSum = 0f;
+            float strengthSum = 0f;
+            float actionSpeedSum = 0f;
+            float moveSpeedSum = 0f;
+            float visionRangeSum = 0f; 
+            float pickRangeSum = 0f;
+            float attackRangeSum = 0f;
+
+            //Get head stats
+            for (int i = 0; i< cast.Value.Head.Count; i++)
+            {
+                //Get stats and exclude Base stats
+                if (cast.Value.Head[i].Id != 1 && cast.Value.Head[i].Id != 2)
+                {
+                    strengthSum += cast.Value.Head[i].StrengthBuff; 
+                    visionRangeSum += cast.Value.Head[i].VisionRangeBuff;
+                    pickRangeSum += cast.Value.Head[i].PickRangeBuff;
+                    attackRangeSum += cast.Value.Head[i].AtkRangeBuff;
+                }   
+            }
+            //Get tail stats
+            for (int i=0; i< cast.Value.Tail.Count; i++)
+            {
+                //Get stats and exclude Base stats
+                if (cast.Value.Tail[i].Id != 1 && cast.Value.Tail[i].Id != 2)
+                {
+                    vitalitySum += cast.Value.Tail[i].VitalityBuff;
+                    staminaSum += cast.Value.Tail[i].StaminaBuff;
+                    actionSpeedSum += cast.Value.Tail[i].ActionSpeedBuff;
+                    moveSpeedSum += cast.Value.Tail[i].MoveSpeedBuff;
+                } 
+            }
+            //sum stats of all casts
+            vitalityGlobalSum += vitalitySum;
+            staminaGlobalSum += staminaSum;
+            strengthGlobalSum += strengthSum;
+            actionSpeedGlobalSum += actionSpeedSum;
+            moveSpeedGlobalSum += moveSpeedSum;
+            visionRangeGlobalSum += visionRangeSum;
+            pickRangeGlobalSum += pickRangeSum;
+            attackRangeGlobalSum += attackRangeSum;
+        }
+       
+        castStatsList.Add(vitalityGlobalSum);
+        castStatsList.Add(staminaGlobalSum);
+        castStatsList.Add(strengthGlobalSum);
+        castStatsList.Add(actionSpeedGlobalSum);
+        castStatsList.Add(moveSpeedGlobalSum);
+        castStatsList.Add(visionRangeGlobalSum);
+        castStatsList.Add(pickRangeGlobalSum);
+        castStatsList.Add(attackRangeGlobalSum);
+
+        //Display stats
+        for (int i=0; i< castStatsList.Count;i++)
+        {
+            //Bars
+            Image bckStatBar = Instantiate(bckStatBarPrefab, new Vector3(160f, -i * barHeight, 0f), Quaternion.identity);
+            bckStatBar.transform.SetParent(GameObject.Find("PanelJoueur1").transform, false);
+            player1StatsBarToDestroyList.Add(bckStatBar.gameObject);
+
+            Image statBar = Instantiate(statBarPrefab, new Vector3(160f, -i* barHeight, 0f), Quaternion.identity);
+            statBar.transform.SetParent(GameObject.Find("PanelJoueur1").transform, false);
+            statBar.fillAmount = castStatsList[i] / maxStat ;
+            player1StatsBarToDestroyList.Add(statBar.gameObject);
+
+            //Texts
+            player1StatsNamesList[i].transform.localPosition = new Vector3(-150f, statBar.transform.localPosition.y,0f) ;
+            player1StatsNamesList[i].gameObject.SetActive(true);
+            
+            //Percentage
+            Text percentage = Instantiate(percentagePrefab, new Vector3(330f, statBar.transform.localPosition.y, 0f), Quaternion.identity);
+            percentage.transform.SetParent(GameObject.Find("PanelJoueur1").transform, false);
+            percentage.text = Mathf.Floor(statBar.fillAmount*100).ToString() + "%";
+            player1PercentageToDestroyList.Add(percentage);
+        }
+
+    }
+    /// <summary>
+    /// Compute and display player2 swarm stats
+    /// </summary>
+    private void ComputePlayer2Stats()
+    { 
+        List<float> castStatsList = new List<float>();
+        float vitalityGlobalSum = 0f;
+        float staminaGlobalSum = 0f;
+        float strengthGlobalSum = 0f;
+        float actionSpeedGlobalSum = 0f;
+        float moveSpeedGlobalSum = 0f;
+        float visionRangeGlobalSum = 0f;
+        float pickRangeGlobalSum = 0f;
+        float attackRangeGlobalSum = 0f;
+
+        float maxStat = 3 * player2Specie.Casts.Count;
+        float barHeight = statBarPrefab.GetComponent<RectTransform>().rect.height;
+
+        //Parse player2 casts
+        foreach (KeyValuePair<string, Cast> cast in player2Specie.Casts)
+        {
+            float vitalitySum = 0f;
+            float staminaSum = 0f;
+            float strengthSum = 0f;
+            float actionSpeedSum = 0f;
+            float moveSpeedSum = 0f;
+            float visionRangeSum = 0f;
+            float pickRangeSum = 0f;
+            float attackRangeSum = 0f;
+
+            //Get head stats
+            for (int i = 0; i < cast.Value.Head.Count; i++)
+            {
+                //Get stats and exclude Base stats
+                if (cast.Value.Head[i].Id != 1 && cast.Value.Head[i].Id != 2)
+                {
+                    strengthSum += cast.Value.Head[i].StrengthBuff;
+                    visionRangeSum += cast.Value.Head[i].VisionRangeBuff;
+                    pickRangeSum += cast.Value.Head[i].PickRangeBuff;
+                    attackRangeSum += cast.Value.Head[i].AtkRangeBuff;
+                }
+            }
+            //Get tail stats
+            for (int i = 0; i < cast.Value.Tail.Count; i++)
+            {
+                //Get stats and exclude Base stats
+                if (cast.Value.Tail[i].Id != 1 && cast.Value.Tail[i].Id != 2)
+                {
+                    vitalitySum += cast.Value.Tail[i].VitalityBuff;
+                    staminaSum += cast.Value.Tail[i].StaminaBuff;
+                    actionSpeedSum += cast.Value.Tail[i].ActionSpeedBuff;
+                    moveSpeedSum += cast.Value.Tail[i].MoveSpeedBuff;
+                }
+            }
+            //sum stats of all casts
+            vitalityGlobalSum += vitalitySum;
+            staminaGlobalSum += staminaSum;
+            strengthGlobalSum += strengthSum;
+            actionSpeedGlobalSum += actionSpeedSum;
+            moveSpeedGlobalSum += moveSpeedSum;
+            visionRangeGlobalSum += visionRangeSum;
+            pickRangeGlobalSum += pickRangeSum;
+            attackRangeGlobalSum += attackRangeSum;
+        }
+
+        castStatsList.Add(vitalityGlobalSum);
+        castStatsList.Add(staminaGlobalSum);
+        castStatsList.Add(strengthGlobalSum);
+        castStatsList.Add(actionSpeedGlobalSum);
+        castStatsList.Add(moveSpeedGlobalSum);
+        castStatsList.Add(visionRangeGlobalSum);
+        castStatsList.Add(pickRangeGlobalSum);
+        castStatsList.Add(attackRangeGlobalSum);
+
+        //Display stats
+        for (int i = 0; i < castStatsList.Count; i++)
+        {
+            //Bars
+            Image bckStatBar = Instantiate(bckStatBarPrefab, new Vector3(160f, -i * barHeight, 0f), Quaternion.identity);
+            bckStatBar.transform.SetParent(GameObject.Find("PanelJoueur2").transform, false);
+            player2StatsBarToDestroyList.Add(bckStatBar.gameObject);
+
+            Image statBar = Instantiate(statBarPrefab, new Vector3(160f, -i * barHeight, 0f), Quaternion.identity);
+            statBar.transform.SetParent(GameObject.Find("PanelJoueur2").transform, false);
+            statBar.fillAmount = castStatsList[i] / maxStat;
+            player2StatsBarToDestroyList.Add(statBar.gameObject);
+            //Texts
+            player2StatsNamesList[i].transform.localPosition = new Vector3(-150f, statBar.transform.localPosition.y, 0f);
+            player2StatsNamesList[i].gameObject.SetActive(true);
+            
+            //Percentage
+            Text percentage = Instantiate(percentagePrefab, new Vector3(330f, statBar.transform.localPosition.y, 0f), Quaternion.identity);
+            percentage.transform.SetParent(GameObject.Find("PanelJoueur2").transform, false);
+            percentage.text = Mathf.Floor(statBar.fillAmount * 100).ToString() + "%";
+            player2PercentageToDestroyList.Add(percentage);
+        }
+
+    }
+    
     private void ButtonListener ()
     {
         swapSceneButton.onClick.AddListener(swapSceneOnClick); 
@@ -181,7 +410,7 @@ public class PartiePersoUIController : MonoBehaviour {
 
             //Set Position
             rectTransform.localPosition = new Vector3(
-                0,
+                0f,
                 -i * (rectTransform.rect.height + 20f) -20f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
@@ -216,6 +445,8 @@ public class PartiePersoUIController : MonoBehaviour {
 
     private void SelectP1ActiveSwarm(string swarmName)
     {
+        ClearPlayer1View();
+
         player1SpecieName = swarmName;
         player1SelectedSwarmField.GetComponent<Text>().text = swarmName;
 
@@ -224,10 +455,42 @@ public class PartiePersoUIController : MonoBehaviour {
         AppContextManager.instance.SwitchActiveSpecie(swarmName);
         player1Specie = AppContextManager.instance.ActiveSpecie;
         AppContextManager.instance.SwitchActiveSpecie(tmpSpecie.Name);
+        
+        //Compute and display stats
+        ComputePlayer1Stats();
+      
+    }
+
+    private void ClearPlayer1View()
+    {   
+        //Clear percentage
+        if (player1PercentageToDestroyList != null)
+        {
+            for(int i = 0; i < player1PercentageToDestroyList.Count; i++)
+            {
+                Text percentToDestroy = player1PercentageToDestroyList[i];
+                player1PercentageToDestroyList.RemoveAt(i);
+                Destroy(percentToDestroy.gameObject);
+                i--;
+            }
+        }
+        //Clear stat bars
+        if(player1StatsBarToDestroyList != null)
+        {
+            for (int i=0; i< player1StatsBarToDestroyList.Count; i++)
+            {
+                GameObject statBarToDestroy = player1StatsBarToDestroyList[i];
+                player1StatsBarToDestroyList.RemoveAt(i);
+                Destroy(statBarToDestroy);
+                i--;
+            }
+        }
     }
 
     private void SelectP2ActiveSwarm(string swarmName)
     {
+        ClearPlayer2View();
+
         player2SpecieName = swarmName;
         player2SelectedSwarmField.GetComponent<Text>().text = swarmName;
 
@@ -236,6 +499,38 @@ public class PartiePersoUIController : MonoBehaviour {
         AppContextManager.instance.SwitchActiveSpecie(swarmName);
         player2Specie = AppContextManager.instance.ActiveSpecie;
         AppContextManager.instance.SwitchActiveSpecie(tmpSpecie.Name);
+
+     
+        //Compute and display stats
+        ComputePlayer2Stats();
+ 
+    }
+
+    private void ClearPlayer2View()
+    {
+        //Clear percentage
+        if (player2PercentageToDestroyList != null)
+        {
+            for (int i = 0; i < player2PercentageToDestroyList.Count; i++)
+            {
+                Text percentToDestroy = player2PercentageToDestroyList[i];
+                player2PercentageToDestroyList.RemoveAt(i);
+                Destroy(percentToDestroy.gameObject);
+                i--;
+            }
+
+        }
+        //Clear stat bars
+        if (player2StatsBarToDestroyList != null)
+        {
+            for (int i = 0; i < player2StatsBarToDestroyList.Count; i++)
+            {
+                GameObject statBarToDestroy = player2StatsBarToDestroyList[i];
+                player2StatsBarToDestroyList.RemoveAt(i);
+                Destroy(statBarToDestroy);
+                i--;
+            }
+        }
     }
 
     /// <summary>

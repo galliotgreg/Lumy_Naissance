@@ -108,7 +108,7 @@ public class Pin : DragSelectableProxyGameObject {
 		}
 	}
 
-	#region implemented abstract members of SelectableProxyGameObject
+	#region implemented abstract members of DragSelectableProxyGameObject
 	protected override void select ()
 	{
 		if (MCEditorManager.instance.Transition_Pin_Start != null ) {
@@ -122,6 +122,14 @@ public class Pin : DragSelectableProxyGameObject {
 	{
 		if (MCEditorManager.instance.Transition_Pin_Start == this) {
 			MCEditorManager.instance.createTransition_setStartPin ( null );
+		}
+	}
+
+	protected override void doubleClick ()
+	{
+		if (this.Pin_Type == Pin.PinType.TransitionOut && this.AssociatedTransitions.Count > 0) {
+			Vector2 pos = new Vector2 (this.gameObject.transform.position.x, this.gameObject.transform.position.y);
+			MCEditor_DialogBoxManager.instance.instantiateChangePin ( this, pos );
 		}
 	}
 
