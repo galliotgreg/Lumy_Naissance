@@ -68,24 +68,23 @@ public class OptionSceneManager : MonoBehaviour {
         switch (resolution.value)
         {
             case 0:
-                windowed.isOn = Screen.fullScreen;
-                Screen.SetResolution(1280, 720, windowed.isOn);
+                Screen.SetResolution(1280, 720, Screen.fullScreen);
                 break;
             case 1:
-                windowed.isOn = Screen.fullScreen;
-                Screen.SetResolution(1366, 768, windowed.isOn);
+                windowed.isOn = !Screen.fullScreen;
+                Screen.SetResolution(1366, 768, Screen.fullScreen);
                 break;
             case 2:
-                windowed.isOn = Screen.fullScreen;
-                Screen.SetResolution(1920, 1080, windowed.isOn);
+                windowed.isOn = !Screen.fullScreen;
+                Screen.SetResolution(1920, 1080, Screen.fullScreen);
                 break;
             case 3:
-                windowed.isOn = Screen.fullScreen;
-                Screen.SetResolution(2560, 1440, windowed.isOn);
+                windowed.isOn = !Screen.fullScreen;
+                Screen.SetResolution(2560, 1440, Screen.fullScreen);
                 break;
             case 4:
-                windowed.isOn = Screen.fullScreen;
-                Screen.SetResolution(3840, 2160, windowed.isOn);
+                windowed.isOn = !Screen.fullScreen;
+                Screen.SetResolution(3840, 2160, Screen.fullScreen);
                 break;
             default:
                 break;
