@@ -83,7 +83,7 @@ public class MCToolManager : MonoBehaviour
     string sourceFilePath;
 
     #region PROPERTIES
-    ToolType CurrentTool
+    public ToolType CurrentTool
     {
         get
         {

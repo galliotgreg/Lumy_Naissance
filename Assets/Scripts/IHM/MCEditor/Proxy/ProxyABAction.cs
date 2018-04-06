@@ -104,8 +104,16 @@ public Pin Income {
 	} 
 
 	// Update is called once per frame 
-	void Update () { 
-
+	void Update () {
+        if (timeOnHover > 0 && timeOnHover + timeOnHoverWait < Time.time )
+        {
+            if (!toolTipIsCreated 
+                && !(MCToolManager.instance.CurrentTool == MCToolManager.ToolType.Hand))
+            {
+                toolTipIsCreated = true;
+                toolTip = MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, this.GetType().ToString(), this);
+            }            
+        }
     }
 
 	public Pin getParamPin( int index ){
