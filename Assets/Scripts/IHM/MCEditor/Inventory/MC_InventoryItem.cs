@@ -70,6 +70,7 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 	{
 		MCToolManager.instance.CancelInventory ();
 		inventory.DropItem ( droppedObject, this );
+        MCToolManager.instance.TemporarySave();
 	}
 
 	#endregion
