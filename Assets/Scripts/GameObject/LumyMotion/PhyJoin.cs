@@ -94,7 +94,7 @@ public class PhyJoin : MonoBehaviour {
     {
         totalTime += Time.deltaTime;
 
-        if (DstBones.Length > 0)
+        if (DstBones.Length > 0 && DstBones[0] != null)
         {
             Vector2 pos2D = DstBones[0].Origin;
             this.transform.position = new Vector3(pos2D.x, this.transform.position.y, pos2D.y);
@@ -123,7 +123,7 @@ public class PhyJoin : MonoBehaviour {
         //    gameObject.transform.Rotate(new Vector3(0, SrcBone.transform.rotation.y /2, 0));  
         //}
 
-        if (DstBones != null && DstBones.Length == 1)
+        if (DstBones != null && DstBones.Length == 1 && DstBones[0] != null)
         {
             PhyJoin nextJoin = DstBones[0].HeadJoin;
             Vector3 dir = (nextJoin.transform.position - transform.position).normalized;

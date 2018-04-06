@@ -54,19 +54,33 @@ public class PhySkeleton : MonoBehaviour
 
         GameObject head = gameObject.transform.parent.Find("Head").gameObject;
         GameObject tail = gameObject.transform.parent.Find("Tail").gameObject;
+        GameObject hearth = gameObject.transform.parent.Find("Hearth").gameObject;
         GameObject lumy = gameObject.transform.parent.gameObject;
 
-        //Build Head
+        //Build Sub Parts
         PhyJoin[] headJoins = BuildSubPart(head, lumy);
         PhyJoin[] tailJoins = BuildSubPart(tail, lumy);
+        PhyJoin hearthJoin = hearth.GetComponent<PhyJoin>();
 
-        //Link head to tail
+        //Link head to hearth
         GameObject bone = Instantiate(
             bonePrefab, lumy.transform.position, lumy.transform.rotation);
         bone.transform.parent = gameObject.transform;
         PhyBone phyBone = bone.GetComponent<PhyBone>();
         PhyJoin join1 = headJoins[headJoins.Length - 1];
-        PhyJoin join2 = tailJoins[0];
+        PhyJoin join2 = hearthJoin;
+        phyBone.BaseJoin = join1;
+        phyBone.HeadJoin = join2;
+        join1.DstBones[0] = phyBone;
+        join2.SrcBone = phyBone;
+
+        //Link hearth to tail
+       bone = Instantiate(
+            bonePrefab, lumy.transform.position, lumy.transform.rotation);
+        bone.transform.parent = gameObject.transform;
+        phyBone = bone.GetComponent<PhyBone>();
+        join1 = hearthJoin;
+        join2 = tailJoins[0];
         phyBone.BaseJoin = join1;
         phyBone.HeadJoin = join2;
         join1.DstBones[0] = phyBone;
@@ -88,7 +102,7 @@ public class PhySkeleton : MonoBehaviour
         }
         else
         {
-            lastJoin = headJoins[tailJoins.Length - 1];
+            lastJoin = headJoins[headJoins.Length - 1];
         }
 
 
