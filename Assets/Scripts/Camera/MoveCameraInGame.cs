@@ -25,6 +25,8 @@ public class MoveCameraInGame : MonoBehaviour {
 
     private Vector3 cameraPos;
 
+    private int cameraFocus = 0; 
+
     //ZOOM
     private float currentZoom;
     [SerializeField]
@@ -56,6 +58,7 @@ public class MoveCameraInGame : MonoBehaviour {
         //Scroll Camera
         zoomCamera(); 
      
+
     }
 
     #region CameraMovement
@@ -83,8 +86,8 @@ public class MoveCameraInGame : MonoBehaviour {
         }
         if (InGameUIController.instance.Self != null)
         {
-            camera.transform.localPosition = new Vector3(InGameUIController.instance.Self.transform.position.x, cameraPos.y, InGameUIController.instance.Self.transform.position.z -15); 
-        }
+            camera.transform.localPosition = new Vector3(InGameUIController.instance.Self.transform.position.x, cameraPos.y, InGameUIController.instance.Self.transform.position.z -15);
+       }
         else
         {
             //MOVING 

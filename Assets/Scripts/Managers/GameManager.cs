@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour {
     public enum Winner { Player1Q, Player2Q, Player1R, Player2R, Equality, None };
     private Winner winnerPlayer;
 
-
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -82,7 +81,8 @@ public class GameManager : MonoBehaviour {
 
     private Specie p1_specie;
     private Specie p2_specie;
-    
+
+    #region Accesseur
     public GameObject P1_home
     {
         get
@@ -166,6 +166,7 @@ public class GameManager : MonoBehaviour {
         ABManager.instance.Reset(true);
         SetupMatch();
 
+
     }
 
     public void Update()
@@ -179,9 +180,11 @@ public class GameManager : MonoBehaviour {
 	    if(Input.GetKeyDown(KeyCode.P))
         {
             PauseGame(); 
-        }       
-    }
+        }   
+        
 
+    }
+#endregion
 
     private void WinCondition()
     {
@@ -410,6 +413,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void InitResources() {
+
         List<ResourceScript> listResources = new List<ResourceScript>();
         ResourceScript[] list;
         list = FindObjectsOfType<ResourceScript>();
@@ -549,7 +553,6 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public void PauseGame()
     {
-        Debug.Log(Time.timeScale); 
         if (Time.timeScale == 1)
         {
             Time.timeScale = 0;
@@ -560,5 +563,7 @@ public class GameManager : MonoBehaviour {
         }
         
     }
+
+   
 
 }
