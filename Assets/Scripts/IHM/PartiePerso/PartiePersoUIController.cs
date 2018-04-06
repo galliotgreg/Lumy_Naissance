@@ -410,7 +410,7 @@ public class PartiePersoUIController : MonoBehaviour {
 
             //Set Position
             rectTransform.localPosition = new Vector3(
-                0,
+                0f,
                 -i * (rectTransform.rect.height + 20f) -20f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
