@@ -197,10 +197,6 @@ public class PartiePersoUIController : MonoBehaviour {
         }
     }
 
-    private void ChangeMap()
-    {
-
-    }
 
     public void LaunchGame()
     {

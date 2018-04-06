@@ -21,6 +21,8 @@ public class InGameUIController : MonoBehaviour {
     private AgentScript self;
     private Color color; 
     GameManager gameManager;
+    private int indiceFocus = 0; 
+
     #region UIVariables
     #region PlayerInfosPanel
     /// <summary>
@@ -386,6 +388,8 @@ public class InGameUIController : MonoBehaviour {
         CheckWinCondition();
         CheckKeys(); 
         UpdateUI();
+        SwitchFocus();
+       
     }
 
     /// <summary>
@@ -1256,7 +1260,99 @@ private void DisplayInSight() {
         }
     }
 
+    /// <summary>
+    /// Change the self returns in case of a Tab clicked. 
+    /// Used for switching of focus on Lumy. 
+    /// </summary>
+    private void SwitchFocus()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Tab))
+        {
+            indiceFocus--;
+            DecrementFocus();
+        }
+        else if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            indiceFocus++;
+            IncrementFocus(); 
+        }
 
+    }
+
+    private void updateFocus(AgentContext[] agentList)
+    {
+        //Enable Selection Shader
+        InGameUIController.instance.Self.gameObject.transform.GetChild(2).gameObject.SetActive(true); //Enable Canvas
+        //Enable MC
+        MC_Debugger_Manager.instance.activateDebugger(agentList[indiceFocus].gameObject.GetComponent<AgentEntity>());
+        //Change the color based on the player
+        ColorPlayer(this.self);
+        //Enable showing in the UI
+        this.unitSelected = true;
+        //Show The unitCost
+        this.unitCost();
+        //At the end increment the indiceFocus
+    }
+
+    private void DecrementFocus()
+    {
+        AgentContext[] agentList = FindObjectsOfType<AgentContext>();
+        if (InGameUIController.instance.self != null)
+        {
+            //Disable Shader Selection
+            InGameUIController.instance.Self.gameObject.transform.GetChild(2).gameObject.SetActive(false); //Enable Canvas
+        }
+        //Change the Self for the Focus
+        if (indiceFocus < 0)
+        {
+            indiceFocus = agentList.Length;
+            this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
+        }
+        else
+        {
+            this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
+        }
+        updateFocus(agentList);
+    }
+
+    private void IncrementFocus()
+    {
+        AgentContext[] agentList = FindObjectsOfType<AgentContext>();
+        if (InGameUIController.instance.self != null)
+        {
+            //Disable Shader Selection
+            InGameUIController.instance.Self.gameObject.transform.GetChild(2).gameObject.SetActive(false); //Enable Canvas
+        }
+        //Change the Self for the Focus
+        if (indiceFocus >= agentList.Length)
+        {
+            indiceFocus = 0;
+            this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
+        }
+        else
+        {
+            this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
+        }
+        updateFocus(agentList);
+    }
+
+
+
+    public void ColorPlayer(AgentScript agentScript)
+    {
+        if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1)
+        {
+            this.color = Color.blue;
+        }
+        else if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2)
+        {
+            this.color = Color.red;
+        }
+        else
+        {
+            this.color = Color.white; 
+        }
+    }
 
 
 
