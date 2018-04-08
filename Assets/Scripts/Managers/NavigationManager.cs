@@ -171,7 +171,7 @@ public class NavigationManager : MonoBehaviour {
         }
 
         //Switch the Active Scene if it's InGame To apply New Lighting settings 
-        if (nextScene == "MapTutoInte")
+        if (nextScene == "MapTutoInteResized")
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
         }

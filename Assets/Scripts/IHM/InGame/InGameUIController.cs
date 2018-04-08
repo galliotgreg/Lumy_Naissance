@@ -1247,18 +1247,18 @@ private void DisplayInSight() {
             //Icons Color
             if (lumy.Home.gameObject.name == "p1_hive")
             {
-                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(6).GetComponent<Renderer>();
 
                 lumyRendIcoMinimap.material = player1Material;
             }
             else if (lumy.Home.gameObject.name == "p2_hive")
             {
-                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(6).GetComponent<Renderer>();
                 lumyRendIcoMinimap.material = player2Material;
             }
             else
             {
-                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(6).GetComponent<Renderer>();
                 lumyRendIcoMinimap.material = playerDefaultMaterial;
             }
         }
