@@ -44,8 +44,7 @@ public class PanelManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            help = new HelpDatabase();
-            help.LoadDatabase(JSON_name);
+            AutomaticSelectHelp();
         }
 
         //Enforce the unicity of the Singleton
@@ -55,23 +54,6 @@ public class PanelManager : MonoBehaviour
         }
     }
 
-
-
-    public void UpdatePanel(string JSON_name = "definition")
-    {
-        this.JSON_name = JSON_name;
-        help.LoadDatabase(JSON_name);
-    }
-
-    private string[] GetListHelpTitle()
-    {
-        string[] listTitle = new string[help.GetLength()];
-        for (int i = 0; i < help.GetLength(); i++)
-        {
-            listTitle[i] = help.FetchHelpByID(i).Title;
-        }
-        return listTitle;
-    }
 
     public void RefreshHelpScroll()
     {
@@ -87,7 +69,7 @@ public class PanelManager : MonoBehaviour
             Destroy(child);
         }
 
-        string[] listNames = GetListHelpTitle();
+        string[] listNames = HelpManager.instance.GetListHelpTitle();
 
         // Set ScrollRect sizes
         RectTransform rec = helpScrollContent.transform.GetComponent<RectTransform>();
@@ -120,7 +102,7 @@ public class PanelManager : MonoBehaviour
     public void SelectHelp(string title)
     {
         mainPanelHelpTitle.text = HelpManager.instance.help.FetchHelpByTitle(title).Title;
-        mainPanelHelpContent.text = HelpManager.instance.help.FetchHelpByTitle(title).Content;
+        mainPanelHelpContent.text = HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
         string imagename = HelpManager.instance.help.FetchHelpByTitle(title).Image;
         if (imagename != "")
         {
@@ -135,6 +117,25 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+
+    public void AutomaticSelectHelp()
+    {
+
+        mainPanelHelpTitle.text = HelpManager.instance.help.GetFirstfromList().Title;
+        mainPanelHelpContent.text = HelpManager.instance.help.GetFirstfromList().GetContentText();
+        string imagename = HelpManager.instance.help.GetFirstfromList().Image;
+        if (imagename != "")
+        {
+            //TODO Format image voir plus tard.
+            mainPanelHelpImage.gameObject.SetActive(true);
+            byte[] bytes = File.ReadAllBytes(Application.dataPath + @"/Inputs/HelpFiles/Resources/" + imagename);
+            mainPanelHelpImage.sprite.texture.LoadImage(bytes);
+        }
+        else
+        {
+            mainPanelHelpImage.gameObject.SetActive(false);
+        }
+    }
 
 
 
