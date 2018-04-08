@@ -45,6 +45,10 @@ public class UnitTemplateInitializer {
             componentObject.transform.parent = headObject.transform;
             CopyComponentValues(agentComponent, componentObject.GetComponent<AgentComponent>());
         }
+        //Set hearth picto
+        GameObject hearthObject = agentTemplate.transform.Find("Hearth").gameObject;
+        GameObject picto = LumyPictFactory.instance.InstanciatePict(cast.PictId);
+        picto.transform.SetParent(hearthObject.transform);
         //Set Tail Components
         GameObject tailObject = agentTemplate.transform.Find("Tail").gameObject;
         foreach (ComponentInfo agentComponent in cast.Tail)

@@ -343,7 +343,7 @@ public class SwarmEditUIController : MonoBehaviour
 
             //Set Position
             rectTransform.localPosition = new Vector3(
-                0,
+                200f,
                 -i * (rectTransform.rect.height + 20f) - 20f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
