@@ -363,13 +363,14 @@ public class AppContextManager : MonoBehaviour
 
         //Build new file
         //Copy Header
-        string content = lines[0] + "\n" + lines[1] + "\n";
+        string content = "Resources (rgb),Pict Id,,,,,,,,,\n";
+        content += activeSpecie.RedResAmount + "," + activeSpecie.GreenResAmount + "," + activeSpecie.BlueResAmount + "," + activeSpecie.PictId + ",,,,,,,\n";
         //Write cast definitions
-        content += "Name,Behavior,Head Size,Components List,\n";
+        content += "Name,Behavior,Pict Id,Head Size,Components List,\n";
         foreach (KeyValuePair<string, Cast> entry in activeSpecie.Casts)
         {
             Cast curCast = entry.Value;
-            content += curCast.Name + "," + curCast.BehaviorModelIdentifier + "," + curCast.Head.Count + ",";
+            content += curCast.Name + "," + curCast.BehaviorModelIdentifier + "," + curCast.PictId + "," + curCast.Head.Count + ",";
             foreach (ComponentInfo compoInfo in curCast.Head)
             {
                 content += compoInfo.Id + ",";
@@ -412,7 +413,7 @@ public class AppContextManager : MonoBehaviour
             string[] tokens = line.Split(',');
             if (tokens[0] == trgCast.Name && tokens[1] == trgCast.BehaviorModelIdentifier)
             {
-                content += activeCast.Name + "," + activeCast.BehaviorModelIdentifier + "," + activeCast.Head.Count + ",";
+                content += activeCast.Name + "," + activeCast.BehaviorModelIdentifier + "," + activeCast.PictId + "," + activeCast.Head.Count + ",";
                 foreach (ComponentInfo compoInfo in activeCast.Head)
                 {
                     content += compoInfo.Id + ",";
