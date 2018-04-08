@@ -33,4 +33,16 @@ public class LumyPictFactory : MonoBehaviour {
     {
         return Instantiate(pictPrefabs[id], Vector3.zero, Quaternion.identity);
     }
+
+    public GameObject[] InstanciateAllPicts()
+    {
+        GameObject[] allPicts = new GameObject[pictPrefabs.Count];
+        int i = 0;
+        foreach (GameObject prefab in pictPrefabs)
+        {
+            allPicts[i] = InstanciatePict(i);
+            i++;
+        }
+        return allPicts;
+    }
 }
