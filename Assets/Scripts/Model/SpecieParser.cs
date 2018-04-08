@@ -69,15 +69,16 @@ public class SpecieParser
         Cast cast = new Cast();
         cast.Name = tokens[0];
         cast.BehaviorModelIdentifier = tokens[1];
-        int headSize = int.Parse(tokens[2]);
-        for (int i = 3; i < headSize + 3; i++)
+        int headSize = int.Parse(tokens[3]);
+        cast.PictId = int.Parse(tokens[2]);
+        for (int i = 4; i < headSize + 4; i++)
         {
             if (tokens[i] == "") break;
             int id = int.Parse(tokens[i]);
             ComponentInfo component = ComponentFactory.instance.CreateComponent(id);
             cast.Head.Add(component);
         }
-        for (int i = headSize + 3; i < tokens.Length; i++)
+        for (int i = headSize + 4; i < tokens.Length; i++)
         {
             if (tokens[i] == "") break;
             int id = int.Parse(tokens[i]);
@@ -93,6 +94,7 @@ public class SpecieParser
         specie.RedResAmount = float.Parse(tokens[0]);
         specie.GreenResAmount = float.Parse(tokens[1]);
         specie.BlueResAmount = float.Parse(tokens[2]);
+        specie.PictId = int.Parse(tokens[3]);
     }
 
     private void ParseQueenCastLine(string[] tokens)
