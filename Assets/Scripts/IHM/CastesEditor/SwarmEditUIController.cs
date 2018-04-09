@@ -725,7 +725,7 @@ public class SwarmEditUIController : MonoBehaviour
             //Set Position
             rectTransform.localPosition = new Vector3(
                 200f,
-                -i * (rectTransform.rect.height + 20f) - 20f,
+                -i * (rectTransform.rect.height + 20f) - 70f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
@@ -904,6 +904,7 @@ public class SwarmEditUIController : MonoBehaviour
     }
     #endregion
 
+    #region Display Actions
     /// <summary>
     /// Find actions used in the mc of the current cast and show this in the actions list canvas
     /// </summary>
@@ -938,7 +939,7 @@ public class SwarmEditUIController : MonoBehaviour
                 }
             }
 
-            int i = 1;
+            //int i = 1;
             
             /* Greg's code for text display :
              * 
@@ -975,6 +976,8 @@ public class SwarmEditUIController : MonoBehaviour
                 text.color = new Color32(70, 70, 70, 255);
             }
             
+            //Set Panel color
+            imageAction[0].color = new Color32(255, 255, 255, 255);
             //Set title color
             textAction[0].color = new Color32(255, 255, 255, 255);
 
@@ -1013,12 +1016,10 @@ public class SwarmEditUIController : MonoBehaviour
                 }
 
             }
-
-           
-
             reader.Close();
         }
     }
+    #endregion
 
     /// <summary>
     /// Load the selected lumy given its cast name
