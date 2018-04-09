@@ -281,7 +281,12 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
-    
+
+    private void Start()
+    {
+        DisplayStatBars();
+        RefreshView();
+    }
 
     #region Stats Button Listener
     private void StatsButtonListener()
@@ -321,6 +326,19 @@ public class SwarmEditUIController : MonoBehaviour
     #endregion
 
     #region Refresh Stat Bars
+    private void RefreshStatBars()
+    {
+        RefreshStrength();
+        RefreshVisionRange();
+        RefreshPickRange();
+        RefreshAttackRange();
+        RefreshVitality();
+        RefreshStamina();
+        RefreshMoveSpeed();
+        RefreshActionSpeed();
+
+    }
+
     //Left Stats
     private void RefreshStrength()
     {
@@ -544,13 +562,7 @@ public class SwarmEditUIController : MonoBehaviour
     /// <summary>
     /// Display Stat Bars 
     /// </summary>
-    /// 
-
-    private void Start()
-    {
-        DisplayStatBars();
-    }
-
+    ///
     private void DisplayStatBars()
     {
         barLeftStatsList = new List<GameObject>();
@@ -599,13 +611,14 @@ public class SwarmEditUIController : MonoBehaviour
     #region Refresh view functions
     public void RefreshView()
     {
-        StatsButtonListener();
         RefreashSwarmScroll();
         RefreashLumysScroll();
         RefreshLumyAppearenceFromData();
         RefreshLumyInfo();
         RefreshSwarmInfo();
-        RefreashLumyStats();        
+        RefreashLumyStats();
+        RefreshStatBars();
+        StatsButtonListener();
     }
 
     /// <summary>
@@ -925,7 +938,9 @@ public class SwarmEditUIController : MonoBehaviour
             }
 
             int i = 1;
-
+            
+            /* Greg's code for text display :
+             * 
             // Find Action Lumy canvas and put the right text in actions list
             GameObject listActionsCanvas = GameObject.Find("Liste_Actions");
             Text[] textAction = listActionsCanvas.GetComponentsInChildren<Text>();
@@ -942,6 +957,49 @@ public class SwarmEditUIController : MonoBehaviour
                 textAction[i].text = "- " + actionText.First().ToString().ToUpper() + actionText.Substring(1);
                 i++;
             }
+            */
+
+            // Find Action Lumy canvas and put the right image in actions list
+            GameObject listActionsCanvas = GameObject.Find("Liste_Actions");
+            Image[] imageAction = listActionsCanvas.GetComponentsInChildren<Image>();
+            foreach (Image image in imageAction)
+            {
+                image.color = new Color32(0,0,145,255);
+            }
+            foreach (string actionText in actionsList)
+            {
+                //imageAction[i].color = new Color32(255, 255, 255, 255);
+
+                if (String.Compare(actionText,"goto") == 0)
+                {
+                    imageAction[0].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "strike") == 0)
+                {
+                    imageAction[1].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "pick") == 0)
+                {
+                    imageAction[2].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "roaming") == 0)
+                {
+                    imageAction[3].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "trace") == 0)
+                {
+                    imageAction[4].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "drop") == 0)
+                {
+                    imageAction[5].color = new Color32(255, 255, 255, 255);
+                }
+
+                Debug.Log(actionText);
+
+                i++;
+            }
+
             reader.Close();
         }
     }
@@ -962,7 +1020,7 @@ public class SwarmEditUIController : MonoBehaviour
         Cast lumyCast = AppContextManager.instance.ActiveCast;
         editedLumy = Instantiate(emptyAgentPrefab);
         editedLumy.transform.parent = this.transform;
-        
+
         //editedLumy.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             lumyCast, editedLumy, emptyComponentPrefab);
@@ -1014,7 +1072,7 @@ public class SwarmEditUIController : MonoBehaviour
         }
 
         //Layout
-        editedLumy.transform.position = new Vector3(-1.5f, -3f, 0f);
+        editedLumy.transform.position = new Vector3(-6f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
     }
 
