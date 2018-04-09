@@ -76,6 +76,15 @@ public abstract class ABOperator<T> : ABNode, IABOperator
 		}
 	}
 
+	/*public abstract OperatorCategory OpCategory {
+		get;
+	}*/
+	public OperatorCategory OpCategory {
+		get{
+			return OperatorCategory.None;
+		}
+	}
+
     public T EvaluateOperator(ABContext context){
 		try{
 			return Evaluate( context );

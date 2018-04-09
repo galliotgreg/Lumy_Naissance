@@ -311,6 +311,12 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		return this.AbOperator.acceptIncome (index, income);
 	}
 
+	public OperatorCategory OpCategory {
+		get {
+			return this.AbOperator.OpCategory;
+		}
+	}
+
 	public IABOperator Clone ()
 	{
 		throw new System.NotImplementedException ();
