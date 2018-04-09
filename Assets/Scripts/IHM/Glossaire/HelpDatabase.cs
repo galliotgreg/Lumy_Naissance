@@ -49,7 +49,7 @@ public class Help
     public string Content;
     public string Image;
     public string Video;
-public Help(int id, string title, IList<SubHelp> content, string image, string video)
+    public Help(int id, string title, IList<SubHelp> content, string image, string video)
     {
 
          this.ID = id;
@@ -61,7 +61,6 @@ public Help(int id, string title, IList<SubHelp> content, string image, string v
 
     } 
 
-   
     public Help(int id, string title, IList<string> content, string image, string video)
     {
 
@@ -74,7 +73,6 @@ public Help(int id, string title, IList<SubHelp> content, string image, string v
         this.IsSimple_Content = true;
 
     }
-    
     public Help()
      {
          this.ID = -1;

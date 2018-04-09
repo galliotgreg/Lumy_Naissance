@@ -89,10 +89,10 @@ public class PanelManager : MonoBehaviour
             button_text.text = listNames[i];
             //Set Position
             rectTransform.localPosition = new Vector3(
-                30f,
-                -i * (rectTransform.rect.height + 10f) - 10f,
+                10f,
+                -i * (rectTransform.rect.height /3f) - 15f,
                 0f);
-            rectTransform.localScale = new Vector3(1f, 1f, 1f);
+            //rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
             //Set Callback
             button.onClick.AddListener(delegate { SelectHelp(button_text.text); });
