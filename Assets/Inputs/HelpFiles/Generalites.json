@@ -1,54 +1,85 @@
-[
-	{
+[{
 		"ID": 0,
-		"Title": "Game",
-		"Content": "Relatif à la partie en cours, Game donne des informations générales\ntime (scalaire) : temps écoulé depuis le début de la partie\ntotalTime(scalaire) : durée maximale d’une partie\nmaxPop (scalaire) : population Maximale\nseamSize (scalaire) : taille des gisements\ncaveMultiplier (scalaire) : coefficient multiplicateur de la quantité de ressources aux départ.",
-		"Image":"",
-		"Video":""
+		"Title": "But du jeu",
+		"Content": "TEXT A TROUVER",
+		"Image": "",
+		"Video": ""
 	},
 	{
 		"ID": 1,
-		"Title": "Home",
-		"Content": "Renvoie à la base du Lumy qui exécute le MC\npos (vecteur) : position du Prysme\nrRes (scalaire) : quantité de ressources rouges possédées\ngRes\n(scalaire) : quantité de ressources vertes possédées\nvRes (scalaire) : quantité de ressources bleues possédées\npopulation (reference) :\npopulation de la nuée en fonction des castes selon le modèle suivant\ncasteName1 (scalaire) : nombre de Lumys de la caste casteName1\n…\ncasteNameN(scalaire) : nombre de Lumys de la caste casteNameN\ncost (reference) : Coût des différentes castes selon le modèle suivant\ncasteName1 (reference) : Lumy de la caste casteName1\nRed (scalaire) : coût en ressources rouges\nGreen (scalaire) : coût en ressources vertes\nBlue (scalaire) : coût en ressources bleues\n...\ncasteNameN (reference) : Lumy de la caste casteNameN\nRed (scalaire) : coût en ressources rouges\nGreen (scalaire) : coût en ressources vertes\nBlue (scalaire) : coût en ressources bleues",
-		"Image":"",
-		"Video":""
+		"Title": "Lumy",
+		"Content": [{
+				"SubTitle": "Description",
+				"Content": "TEXT A TROUVER"
+			},
+			{
+				"SubTitle": "Edition comportemental",
+				"Content": "TEXT A TROUVER"
+			},
+			{
+				"SubTitle": "Edition du Lumy",
+				"Content": "TEXT A TROUVER"
+			}
+		],
+		"Image": "DEBUG_image.png",
+		"Video": ""
 	},
 	{
 		"ID": 2,
-		"Title": "Self",
-		"Content": "L’ensemble des informations propre au Lumy exécutant le MC\ncast (text) : nom de la caste du Lumy\ncurPos (vecteur) : position du Lumy\ntrgPos (vecteur) : destination du Lumy\nvitalityMax (scalaire) : Vitalité max du Lumy\nvitality (scalaire) : Vitalité actuelle du Lumy\nstrength (scalaire) : Force du Lumy\nstamina (scalaire) : Endurance du Lumy\nactSpd (scalaire) : Vitesse d’action du Lumy\nmoveSpd (scalaire) : Vitesse de déplacement du Lumy\nnbItemMax (scalaire) : Quantité maximale de ressources transportées\nnbItem (scalaire) : Quantité de ressources transportées\natkRange (scalaire) : Portée d’attaque du Lumy\npickRange (scalaire) : Portée de saisie du Lumy\nprodCost ( ? ) : \nlayTimeCost (scalaire) : Temps de production du Lumy\nvisionRange (scalaire) : Portée visuelle du Lumy",
-		"Image":"",
-		"Video":""
+		"Title": "Caractérisitques",
+		"Content": [{
+				"SubTitle": "Description",
+				"Content": "Les caractéristiques influent sur les capacités du Lumy. Il y a un total de dix caractéristiques. Il est important de savoir quels sont leurs effets, afin d'investir efficacement pour produire un Lumy dont les capaictés correspondent au rôle qu'on lui assigne."
+			},
+			{
+				"SubTitle": "Force",
+				"Content": "Cette caractéristique détermine les dégâts infliger par le Lumy lors de l'attaque"
+			},
+			{
+				"SubTitle": "Vitalité",
+				"Content": "Cette caractéristique détermine les points de vie du Lumy"
+			},
+			{
+				"SubTitle": "Portée de vision",
+				"Content": "Cette caractéristique détermine la distance de visibilité du Lumy"
+			},
+			{
+				"SubTitle": "Stamina",
+				"Content": "Cette caractéristique détermine la quantité de ressource transportable"
+			},
+			{
+				"SubTitle": "Portée de pick",
+				"Content": "Cette caractéristique détermine la distance de rammassage"
+			},
+			{
+				"SubTitle": "Vitesse",
+				"Content": "Cette caractéristique détermine la vitesse de déplacement du Lumy"
+			},
+			{
+				"SubTitle": "Portée d'attaque",
+				"Content": "Cette caractéristique détermine la distance de visibilité du Lumy"
+			},
+			{
+				"SubTitle": "Vitesse d'action",
+				"Content": "Cette caractéristique détermine la vitesse d'action du Lumy"
+			},
+			{
+				"SubTitle": "Coût de production",
+				"Content": "Cette caractéristique détermine le coût en ressource nécessaire à la production du Lumy"
+			},
+			{
+				"SubTitle": "Temps de production",
+				"Content": "Cette caractéristique détermine le temps requis pour générer le Lumy"
+			}
+		],
+		"Image": "",
+		"Video": ""
 	},
 	{
 		"ID": 3,
-		"Title": "Allies[]",
-		"Content": "Ce tableau contient les références Self des Lumy Alliés présent dans le champ de vision du Lumy exécutant le MC\nlumy1 (Référence : Self) : le Self de lumy1\n…\nlumyN (Référence : Self) : le Self de lumyN",
-		"Image":"",
-		"Video":""
-	},
-	{
-		"ID": 4,
-		"Title": "Enemies[]",
-		"Content": "Un autre tableau qui prend les références Self des Lumy Ennemis dans le champ de vision. Il contient les mêmes informations qu'Allies[], mais pour les Lumys de l'adversaire.",
-		"Image":"",
-		"Video":""
-	},
-	{
-		"ID": 5,
-		"Title": "Ressources[]",
-		"Content": "Un tableau de références qui regroupe les ressources dans le champs de vision du Lumy exécutant le MC.\nRessource (Référence) :\nstock (scalaire) : quantité de ressources restantes\npos (vecteur) : position de la ressource\ncolor (couleur) : couleur de la ressource",
-		"Image":"",
-		"Video":""
-	},
-	{
-		"ID": 6,
-		"Title": "Trace[]",
-		"Content": "Un tableau de références qui regroupe les traces dans le champ de vision du Lumy exécutant le MC.\nTrace (Référence) :\npoints (vecteur[]) : Liste des points définissant la trace\ncolor (couleur) : Couleur de la trace\nage (scalaire) :  âge de la trace, le temps écoulé depuis sa création.",
-		"Image":"",
-		"Video":""
-	},
-	
-	
-	
+		"Title": "Prysme",
+		"Content": "TEXT A TROUVER",
+		"Image": "",
+		"Video": ""
+	}
 ]
