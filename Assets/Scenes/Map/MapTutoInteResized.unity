@@ -45750,7 +45750,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &854958741
 Transform:
   m_ObjectHideFlags: 0
@@ -45772,9 +45772,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 854958740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1417cbe616f95c041acbd7df97fd6223, type: 3}
+  m_Script: {fileID: 11500000, guid: e352f48c1382b4e42bb0025eb9038dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  renderTextureMinimap: {fileID: 8400000, guid: d717e0c735c36ad489a827f09a636fb1,
+    type: 2}
 --- !u!20 &854958743
 Camera:
   m_ObjectHideFlags: 0
@@ -46881,7 +46883,6 @@ GameObject:
   - component: {fileID: 897130266}
   - component: {fileID: 897130268}
   - component: {fileID: 897130267}
-  - component: {fileID: 897130269}
   m_Layer: 0
   m_Name: MapTutoInteCamera
   m_TagString: MainCamera
@@ -47003,20 +47004,6 @@ MonoBehaviour:
   zoomRange: {x: -10, y: 10}
   zoomAngleRange: {x: 20, y: 70}
   zoomSpeed: 10
---- !u!114 &897130269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 897130260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40d7ac1110aa7d54e90aee1611211490, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  replacement: {fileID: 0}
-  minimapCam: {fileID: 854958743}
-  myMaterial: {fileID: 2100000, guid: 58ed64ebb7b1a544586bb04ed3addfff, type: 2}
 --- !u!1001 &905909802
 Prefab:
   m_ObjectHideFlags: 0

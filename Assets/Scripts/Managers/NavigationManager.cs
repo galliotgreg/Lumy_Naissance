@@ -175,6 +175,10 @@ public class NavigationManager : MonoBehaviour {
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
         }
+        else if (nextScene == "Map2.1")
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
+        }
         else
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName("BasicLayer"));
