@@ -153,6 +153,67 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private float lumyYMarginLayout = 35f;
 
+    /// <summary>
+    /// Elements needed for stat bars display
+    /// </summary>
+    [Header("Stat Bars")]
+    [SerializeField]
+    private GameObject statBarPrefab;
+    [SerializeField]
+    private float statBarHSpacing;
+    [SerializeField]
+    private float statBarVertSpacing;
+    [Header("Stat Bars Params")]
+    [SerializeField]
+    private float statBarLeftXpos;
+    [SerializeField]
+    private float statBarRightXpos;
+    [SerializeField]
+    private float statBarYPos;
+    [SerializeField]
+    private Color32 statsColor;
+    [SerializeField]
+    private Color32 statsBaseColor;
+  
+    private List<GameObject> barLeftStatsList;
+    private List<GameObject> barRightStatsList;
+
+    /// <summary>
+    /// Increase / Decrease stats Button
+    /// </summary>
+    [SerializeField]
+    private Button vitalityPlus;
+    [SerializeField]
+    private Button vitalityLess;
+    [SerializeField]
+    private Button staminaPlus;
+    [SerializeField]
+    private Button staminaLess;
+    [SerializeField]
+    private Button strengthPlus;
+    [SerializeField]
+    private Button strengthLess;
+    [SerializeField]
+    private Button actSpeedPlus;
+    [SerializeField]
+    private Button actSpeedLess;
+    [SerializeField]
+    private Button moveSpeedPlus;
+    [SerializeField]
+    private Button moveSpeedLess;
+    [SerializeField]
+    private Button visionRangePlus;
+    [SerializeField]
+    private Button visionRangeLess;
+    [SerializeField]
+    private Button pickRangePlus;
+    [SerializeField]
+    private Button pickRangeLess;
+    [SerializeField]
+    private Button  atkRangePlus;
+    [SerializeField]
+    private Button atkRangeLess;
+
     public int RedCost
     {
         get
@@ -220,6 +281,306 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
+    
+
+    #region Stats Button Listener
+    private void StatsButtonListener()
+    {
+        //vitality
+        vitalityLess.onClick.AddListener(RefreshVitality);
+        vitalityPlus.onClick.AddListener(RefreshVitality);
+
+        //stamina
+        staminaLess.onClick.AddListener(RefreshStamina);
+        staminaPlus.onClick.AddListener(RefreshStamina);
+
+        //strength
+        strengthLess.onClick.AddListener(RefreshStrength);
+        strengthPlus.onClick.AddListener(RefreshStrength);
+
+        //actionSpeed
+        actSpeedLess.onClick.AddListener(RefreshActionSpeed);
+        actSpeedPlus.onClick.AddListener(RefreshActionSpeed);
+
+        //moveSpeed
+        moveSpeedLess.onClick.AddListener(RefreshMoveSpeed);
+        moveSpeedPlus.onClick.AddListener(RefreshMoveSpeed);
+
+        //visionRange
+        visionRangeLess.onClick.AddListener(RefreshVisionRange);
+        visionRangePlus.onClick.AddListener(RefreshVisionRange);
+
+        //pickRange
+        pickRangeLess.onClick.AddListener(RefreshPickRange);
+        pickRangePlus.onClick.AddListener(RefreshPickRange);
+
+        //attackRange
+        atkRangeLess.onClick.AddListener(RefreshAttackRange);
+        atkRangePlus.onClick.AddListener(RefreshAttackRange);
+    }
+    #endregion
+
+    #region Refresh Stat Bars
+    //Left Stats
+    private void RefreshStrength()
+    {
+        //Clear stats
+        for (int i = 0; i < 3; i++)
+        {
+            barLeftStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.Strength)
+        {
+            case 1:
+                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[1].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[1].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[2].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshVisionRange()
+    {
+        //Clear stats
+        for (int i = 3; i < 6; i++)
+        {
+            barLeftStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.VisionRange)
+        {
+            case 1:
+                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[4].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[4].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[5].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshPickRange()
+    {
+        //Clear stats
+        for (int i = 6; i < 9; i++)
+        {
+            barLeftStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.PickRange)
+        {
+            case 1:
+                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[7].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[7].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[8].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshAttackRange()
+    {
+        //Clear stats
+        for (int i = 9; i < 12; i++)
+        {
+            barLeftStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.AtkRange)
+        {
+            case 1:
+                barLeftStatsList[9].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barLeftStatsList[9].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[10].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barLeftStatsList[9].SetActive(true);
+                barLeftStatsList[10].SetActive(true);
+                barLeftStatsList[11].SetActive(true);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    //Right Stats
+    private void RefreshVitality()
+    {
+        //Clear stats
+        for (int i = 0; i < 3; i++)
+        {
+            barRightStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.Vitality)
+        {
+            case 1:
+                barRightStatsList[0].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barRightStatsList[0].GetComponent<Image>().color = statsColor;
+                barRightStatsList[1].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barRightStatsList[0].GetComponent<Image>().color = statsColor;
+                barRightStatsList[1].GetComponent<Image>().color = statsColor;
+                barRightStatsList[2].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshStamina()
+    {
+        //Clear stats
+        for (int i = 3; i < 6; i++)
+        {
+            barRightStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.Stamina)
+        {
+            case 1:
+                barRightStatsList[3].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barRightStatsList[3].GetComponent<Image>().color = statsColor;
+                barRightStatsList[4].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barRightStatsList[3].GetComponent<Image>().color = statsColor;
+                barRightStatsList[4].GetComponent<Image>().color = statsColor;
+                barRightStatsList[5].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshMoveSpeed()
+    {
+        //Clear stats
+        for (int i = 6; i < 9; i++)
+        {
+            barRightStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.MoveSpeed)
+        {
+            case 1:
+                barRightStatsList[6].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barRightStatsList[6].GetComponent<Image>().color = statsColor;
+                barRightStatsList[7].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barRightStatsList[6].GetComponent<Image>().color = statsColor;
+                barRightStatsList[7].GetComponent<Image>().color = statsColor;
+                barRightStatsList[8].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshActionSpeed()
+    {
+        //Clear stats
+        for (int i = 9; i < 12; i++)
+        {
+            barRightStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.ActSpeed)
+        {
+            case 1:
+                barRightStatsList[9].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barRightStatsList[9].GetComponent<Image>().color = statsColor;
+                barRightStatsList[10].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barRightStatsList[9].GetComponent<Image>().color = statsColor;
+                barRightStatsList[10].GetComponent<Image>().color = statsColor;
+                barRightStatsList[11].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+    #endregion
+
+    #region Display Stat Bars
+    /// <summary>
+    /// Display Stat Bars 
+    /// </summary>
+    /// 
+
+    private void Start()
+    {
+        DisplayStatBars();
+    }
+
+    private void DisplayStatBars()
+    {
+        barLeftStatsList = new List<GameObject>();
+        barRightStatsList = new List<GameObject>();
+
+        //Display Right Bars
+        //Instantiate 4 rows
+        for (int i = 0; i < 4; i++)
+        {   //Instantiate 1 Prefab
+            for (int j = 0; j < 3; j++)
+            {
+                GameObject statLeftBar = Instantiate(statBarPrefab, new Vector3(statBarLeftXpos + j * statBarHSpacing, statBarYPos - i * statBarVertSpacing, 0f), Quaternion.identity);
+                statLeftBar.transform.SetParent(GameObject.Find("StatBars").transform, false);
+                barLeftStatsList.Add(statLeftBar);
+            }
+        }
+        
+        //Display Right Bars
+        //Instantiate 4 rows
+        for (int i = 0; i < 4; i++)
+        {   //Instantiate 1 Prefab
+            for (int j = 0; j < 3; j++)
+            {
+                GameObject statBar = Instantiate(statBarPrefab, new Vector3(statBarRightXpos + j * statBarHSpacing, statBarYPos - i * statBarVertSpacing, 0f), Quaternion.identity);
+                statBar.transform.SetParent(GameObject.Find("StatBars").transform, false);
+                barRightStatsList.Add(statBar);
+            }
+        }
+    }
+    #endregion
 
     void Update()
     {
@@ -238,6 +599,7 @@ public class SwarmEditUIController : MonoBehaviour
     #region Refresh view functions
     public void RefreshView()
     {
+        StatsButtonListener();
         RefreashSwarmScroll();
         RefreashLumysScroll();
         RefreshLumyAppearenceFromData();

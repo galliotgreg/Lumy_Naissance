@@ -57,6 +57,7 @@ public class InteractableOrNot : MonoBehaviour {
     private List<GameObject> barRightStatsList;
 
     // Use this for initialization
+    /*
     void Start () {
         DisplayLeftBars();
         DisplayRightBars();
@@ -410,6 +411,7 @@ public class InteractableOrNot : MonoBehaviour {
     }
 
     #endregion
+    */
 
     #region  Allow Increase / Decrease
     // Update is called once per frame
