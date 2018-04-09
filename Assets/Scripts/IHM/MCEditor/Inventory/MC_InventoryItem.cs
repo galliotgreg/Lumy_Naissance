@@ -48,7 +48,6 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		}
 	}
 
-
 	public UnityEngine.UI.Text Text {
 		get {
 			return text;
