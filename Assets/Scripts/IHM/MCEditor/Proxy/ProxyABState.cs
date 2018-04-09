@@ -22,8 +22,8 @@ public class ProxyABState : MCEditor_Proxy {
 
         set
         {
-            UnityEngine.UI.Text stateName = this.GetComponentInChildren<UnityEngine.UI.Text>();
-            stateName.text = value;
+			UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text> ();
+			text.text = value;
             abState.Name = value;
             name = value;
         }
