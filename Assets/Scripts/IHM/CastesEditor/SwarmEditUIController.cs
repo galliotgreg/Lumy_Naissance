@@ -959,41 +959,56 @@ public class SwarmEditUIController : MonoBehaviour
             Image[] imageAction = listActionsCanvas.GetComponentsInChildren<Image>();
             foreach (Image image in imageAction)
             {
-                image.color = new Color32(0,0,145,255);
+                image.color = new Color32(70,70,70,255);
             }
+           
+            // Find Action Lumy canvas and put the right text in actions list
+            Text[] textAction = listActionsCanvas.GetComponentsInChildren<Text>();
+            foreach (Text text in textAction)
+            {
+                text.color = new Color32(70, 70, 70, 255);
+            }
+            
+            //Set title color
+            textAction[0].color = new Color32(255, 255, 255, 255);
+
             foreach (string actionText in actionsList)
             {
-                //imageAction[i].color = new Color32(255, 255, 255, 255);
-
+      
                 if (String.Compare(actionText,"goto") == 0)
                 {
-                    imageAction[0].color = new Color32(255, 255, 255, 255);
+                    imageAction[1].color = new Color32(255, 255, 255, 255);
+                    textAction[1].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "strike") == 0)
                 {
-                    imageAction[1].color = new Color32(255, 255, 255, 255);
+                    imageAction[2].color = new Color32(255, 255, 255, 255);
+                    textAction[2].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "pick") == 0)
                 {
-                    imageAction[2].color = new Color32(255, 255, 255, 255);
+                    imageAction[3].color = new Color32(255, 255, 255, 255);
+                    textAction[3].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "roaming") == 0)
                 {
-                    imageAction[3].color = new Color32(255, 255, 255, 255);
+                    imageAction[4].color = new Color32(255, 255, 255, 255);
+                    textAction[4].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "trace") == 0)
                 {
-                    imageAction[4].color = new Color32(255, 255, 255, 255);
+                    imageAction[5].color = new Color32(255, 255, 255, 255);
+                    textAction[5].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "drop") == 0)
                 {
-                    imageAction[5].color = new Color32(255, 255, 255, 255);
+                    imageAction[6].color = new Color32(255, 255, 255, 255);
+                    textAction[6].color = new Color32(255, 255, 255, 255);
                 }
 
-                Debug.Log(actionText);
-
-                i++;
             }
+
+           
 
             reader.Close();
         }
