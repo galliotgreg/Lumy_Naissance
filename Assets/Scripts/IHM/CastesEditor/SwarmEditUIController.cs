@@ -286,6 +286,12 @@ public class SwarmEditUIController : MonoBehaviour
     {
         DisplayStatBars();
         RefreshView();
+        //SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
+    }
+
+    private void OnDestroy()
+    {
+        //SceneManager.UnloadScene("MapSwarmEdit");
     }
 
     #region Stats Button Listener
