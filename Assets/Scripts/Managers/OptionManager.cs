@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class OptionManager : MonoBehaviour {
@@ -98,15 +100,35 @@ public class OptionManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        if(!IsInGameSceneLoaded())
+        {
+            return;
+        }
 
         OptionManager.instance.getPlayerPreferencesDebug();
         toutDesactiver.onValueChanged.AddListener((on) => {allDesactivate();});
 
         toutActiver.onValueChanged.AddListener((on) => {showAll();});
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    private bool IsInGameSceneLoaded()
+    {
+        // use gisement instanciation in order to determine weather the inGame is loades or not
+        if (gisements == null)
+        {
+            return false;
+        } else
+        {
+            return true;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (!IsInGameSceneLoaded())
+        {
+            return;
+        }
 
         DebugGisement();
         DebugLifebarJ1();
