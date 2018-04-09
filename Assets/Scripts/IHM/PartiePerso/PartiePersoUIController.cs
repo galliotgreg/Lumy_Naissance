@@ -129,7 +129,8 @@ public class PartiePersoUIController : MonoBehaviour {
         CheckView();
     }
 
-    
+    #region Compute and Display Stats
+
     private void CheckView()
     {
         //Clear names
@@ -341,7 +342,8 @@ public class PartiePersoUIController : MonoBehaviour {
         }
 
     }
-    
+    #endregion
+
     private void ButtonListener ()
     {
         swapSceneButton.onClick.AddListener(swapSceneOnClick); 
