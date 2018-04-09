@@ -95,12 +95,6 @@ public enum OperatorType
     Vec_TermProd_Vec_Vec
 }
 
-public enum OperatorCategory
-{
-	Not,
-	None
-}
-
 //public enum OperatorType {
 //    And,
 //    Or,

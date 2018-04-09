@@ -10,7 +10,6 @@ public interface IABOperator {
     string SymbolName { get; set; }
 
 	OperatorType OpType { get; set; }
-	OperatorCategory OpCategory { get; }
 
     System.Type getOutcomeType ();
 

@@ -64,11 +64,13 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		}
 		set {
 			image.sprite = value;
-			image.preserveAspect = true;
 
 			// Choose the element which will be activated
 			if (value == null) {
 				image.gameObject.SetActive (false);
+
+				//image.type = UnityEngine.UI.Image.Type.Sliced;
+				//image.preserveAspect = true;
 			} else {
 				text.gameObject.SetActive (false);
 			}
