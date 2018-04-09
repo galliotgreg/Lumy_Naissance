@@ -227,7 +227,8 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private Button valider;
 
-    #region miniMap
+    #region 
+
     [Header("Minimap")]
     //Icon minimap materials
     [SerializeField]
@@ -1237,11 +1238,11 @@ private void DisplayInSight() {
             //Icons Size
             if (lumy.name == "p1_queen" || lumy.name == "p2_queen")
             {
-                lumy.transform.GetChild(5).transform.localScale = new Vector3(3, 3, 3);
+                lumy.transform.GetChild(6).transform.localScale = new Vector3(3, 3, 3);
             }
             else
             {
-                lumy.transform.GetChild(5).transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                lumy.transform.GetChild(6).transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             }
 
             //Icons Color
