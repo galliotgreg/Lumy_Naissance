@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InteractableOrNot : MonoBehaviour {
+
 
     public Button vitalityPlus;//
     public Button vitalityLess;
@@ -29,15 +31,11 @@ public class InteractableOrNot : MonoBehaviour {
     public Button atkRangePlus;//
     public Button atkRangeLess;
 
-    // Use this for initialization
-    void Start () {
-		
-	}
 
+    #region  Allow Increase / Decrease
     // Update is called once per frame
     void Update()
     {
-
         //VITA+
         if (SwarmEditUIController.instance.CanIncrVitality())
         {
@@ -191,4 +189,6 @@ public class InteractableOrNot : MonoBehaviour {
         }
         
     }
+    #endregion
+
 }
