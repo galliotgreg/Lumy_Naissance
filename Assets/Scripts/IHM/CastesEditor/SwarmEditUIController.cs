@@ -284,10 +284,12 @@ public class SwarmEditUIController : MonoBehaviour
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
 
+    private GameObject renderingCamera;
+
     private void Start()
     {
-        //AppContextManager.instance.LoadPlayerSpecies("XXX_specie", "XXX_specie");
-        //SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
+        AppContextManager.instance.LoadPlayerSpecies("XXX_specie", "XXX_specie");
+        SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
     }
@@ -295,7 +297,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void OnDestroy()
     {
-        //SceneManager.UnloadScene("MapSwarmEdit");
+        SceneManager.UnloadScene("MapSwarmEdit");
     }
 
     #region Stats Button Listener
@@ -613,8 +615,9 @@ public class SwarmEditUIController : MonoBehaviour
 
         if (isSceneLoaded && !isFirstRefreashed)
         {
-            RefreshView();
             isFirstRefreashed = true;
+            renderingCamera = GameObject.FindGameObjectWithTag("RenderCamera");
+            RefreshView();
         } 
     }
 
@@ -630,7 +633,10 @@ public class SwarmEditUIController : MonoBehaviour
         RefreshStatBars();
         StatsButtonListener();
 
-        if (!isFirstRefreashed) return;
+        if (!isFirstRefreashed)
+        {
+            return;
+        }
 
         GameObject oldEditedInGameLumy = editedInGameLumy;
         LayLumyInGame("origin");
@@ -664,6 +670,8 @@ public class SwarmEditUIController : MonoBehaviour
         GameManager.instance.GameParam.GetComponent<GameParamsScript>();
 
         Unit_GameObj_Manager.instance.addUnit(editedLumyEntity, homeScript);
+
+        renderingCamera.GetComponent<CameraSwarmEdit>().Target = editedInGameLumy;
     }
 
     /// <summary>
@@ -1134,6 +1142,9 @@ public class SwarmEditUIController : MonoBehaviour
         //Layout
         editedLumy.transform.position = new Vector3(-6f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+
+        //Hide
+        editedLumy.SetActive(false);
     }
 
     /// <summary>
