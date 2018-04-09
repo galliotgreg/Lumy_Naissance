@@ -40,7 +40,6 @@ public class HelpManager : MonoBehaviour {
         {
             return JSON_name;
         }
-
         set
         {
             JSON_name = value;
