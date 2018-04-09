@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceScript : MonoBehaviour {
-	// GameObject Identification
-	[AttrName(Identifier = "key")]
+    // GameObject Identification
+    #region attributes
+    [AttrName(Identifier = "key")]
 	[SerializeField]
 	private int key;
 
@@ -15,11 +16,16 @@ public class ResourceScript : MonoBehaviour {
     [AttrName(Identifier = "pos")]
     [SerializeField]
 	private Vector2 location;
+
     [AttrName(Identifier = "color")]
     [SerializeField]
     private Color32 color;
 
-	public Vector2 Location {
+    private List<Transform> spawnPoints;
+
+    #endregion
+    #region Accesseur
+    public Vector2 Location {
 		get
 		{
 			return location;
@@ -60,6 +66,7 @@ public class ResourceScript : MonoBehaviour {
             stock = value;
         }
     }
+    #endregion
 
     void Awake(){
 		key = this.GetHashCode();
@@ -67,6 +74,7 @@ public class ResourceScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        randomizeLoccation(); 
 		this.Location = positionFromTransform ();
 	}
 	
@@ -82,4 +90,22 @@ public class ResourceScript : MonoBehaviour {
 	Vector2 positionFromTransform(){
 		return new Vector2(transform.position.x, transform.position.z);
 	}
+
+    private void randomizeLoccation()
+    { 
+        GameObject[] go = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        if(go.Length <=0)
+        {
+            return; 
+        }
+        for(int i=0; i<go.Length; i++)
+        {
+            if(go[i].transform.IsChildOf(this.transform))
+            {
+                spawnPoints.Add(go[i].transform);
+            }     
+        }
+        int index = Random.Range(0, spawnPoints.Count - 1);
+        this.transform.position = spawnPoints[index].position; 
+    }
 }
