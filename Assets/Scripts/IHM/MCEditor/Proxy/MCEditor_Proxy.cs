@@ -10,7 +10,37 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
     protected float timeOnHoverWait = 1.5f;
     protected bool toolTipIsCreated = false;    
 
-    public List<Pin> AllPins{
+	[SerializeField]
+	UnityEngine.UI.Text text;
+	[SerializeField]
+	UnityEngine.UI.Image image;
+
+	public UnityEngine.UI.Text Text {
+		get {
+			return text;
+		}
+		set {
+			text = value;
+		}
+	}
+	public Sprite Image {
+		get {
+			return image.sprite;
+		}
+		set {
+			image.sprite = value;
+			image.preserveAspect = true;
+
+			// Choose the element which will be activated
+			if (value == null) {
+				image.gameObject.SetActive (false);
+			} else {
+				text.gameObject.SetActive (false);
+			}
+		}
+	}
+
+	public List<Pin> AllPins{
 		get{
 			return new List<Pin> (this.gameObject.GetComponentsInChildren<Pin> ());
 		}
