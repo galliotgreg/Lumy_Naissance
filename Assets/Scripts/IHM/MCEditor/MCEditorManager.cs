@@ -2307,7 +2307,7 @@ public class MCEditorManager : MonoBehaviour
             Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
             TextFields[0].text = database[index].Title;
             TextFields[1].text = "Value In";
-            TextFields[2].text = database[index].Content;
+            TextFields[2].text = database[index].GetContentText();
         }        
     }
 
@@ -2365,7 +2365,7 @@ public class MCEditorManager : MonoBehaviour
         {            
             Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
             TextFields[0].text = database[index].Title;
-            TextFields[1].text = database[index].Content;
+            TextFields[1].text = database[index].GetContentText();
         }        
     }
 

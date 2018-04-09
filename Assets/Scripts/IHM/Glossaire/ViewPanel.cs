@@ -16,9 +16,7 @@ public class ViewPanel : MonoBehaviour
         this.gameObject.GetComponent<Button>().onClick.AddListener(SwitchMenu);
         HelpManager.instance.UpdateDatabase(JSON_file);
         PanelManager.instance.RefreshHelpScroll();
-        /*
-        HelpManager.instance.UpdatePanel(JSON_file);
-        HelpManager.instance.RefreshHelpScroll();*/
+
     }
 
     // Update is called once per frame
@@ -29,11 +27,10 @@ public class ViewPanel : MonoBehaviour
 
     void SwitchMenu()
     {
-        /*HelpManager.instance.UpdateDatabase(JSON_file);
-        HelpManager.instance.RefreshHelpScroll();*/
-
         HelpManager.instance.UpdateDatabase(JSON_file);
         PanelManager.instance.RefreshHelpScroll();
+        PanelManager.instance.AutomaticSelectHelp();
+
 
     }
 

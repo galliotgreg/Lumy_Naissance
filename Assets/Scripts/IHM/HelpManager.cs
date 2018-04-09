@@ -52,9 +52,9 @@ public class HelpManager : MonoBehaviour {
         this.JSON_name = JSON_name;
         help.LoadDatabase(JSON_name);
     }
+    
+    public string[] GetListHelpTitle()
 
-
-    private string[] GetListHelpTitle()
     {
         string[] listTitle = new string[help.GetLength()];
         for(int i = 0; i< help.GetLength();i++)
