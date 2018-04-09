@@ -9,6 +9,7 @@ public class Specie {
     private float redResAmount;
     private float greenResAmount;
     private float blueResAmount;
+    private int pictId;
 
     public string Name
     {
@@ -85,6 +86,19 @@ public class Specie {
         set
         {
             queenCastName = value;
+        }
+    }
+
+    public int PictId
+    {
+        get
+        {
+            return pictId;
+        }
+
+        set
+        {
+            pictId = value;
         }
     }
 }

@@ -54,7 +54,7 @@ public class HelpManager : MonoBehaviour {
     }
 
 
-    private string[] GetListHelpTitle()
+    public string[] GetListHelpTitle()
     {
         string[] listTitle = new string[help.GetLength()];
         for(int i = 0; i< help.GetLength();i++)

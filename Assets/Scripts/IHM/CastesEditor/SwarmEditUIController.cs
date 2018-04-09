@@ -343,7 +343,7 @@ public class SwarmEditUIController : MonoBehaviour
 
             //Set Position
             rectTransform.localPosition = new Vector3(
-                0,
+                200f,
                 -i * (rectTransform.rect.height + 20f) - 20f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
@@ -427,6 +427,7 @@ public class SwarmEditUIController : MonoBehaviour
         agentEntity.BehaviorModelIdentifier = lumyCast.BehaviorModelIdentifier;
         GameObject head = editedLumy.transform.Find("Head").gameObject;
         GameObject tail = editedLumy.transform.Find("Tail").gameObject;
+        GameObject hearth = editedLumy.transform.Find("Hearth").gameObject;
 
         //Add sefault components
         //TODO Extract ID constants
@@ -471,11 +472,14 @@ public class SwarmEditUIController : MonoBehaviour
         skeletonScript.Frame();
         PhyJoin[] headJoins = head.GetComponentsInChildren<PhyJoin>();
         PhyJoin[] tailJoins = tail.GetComponentsInChildren<PhyJoin>();
+        PhyJoin hearthJoin = hearth.GetComponent<PhyJoin>();
         for (int i = 0; i < headJoins.Length; i++)
         {
             headJoins[i].Init();
             headJoins[i].Frame();
         }
+        hearthJoin.Init();
+        hearthJoin.Frame();
         for (int i = 0; i < tailJoins.Length; i++)
         {
             tailJoins[i].Init();
@@ -488,6 +492,7 @@ public class SwarmEditUIController : MonoBehaviour
         {
             headJoins[i].enabled = false;
         }
+        hearthJoin.enabled = false;
         for (int i = 0; i < tailJoins.Length; i++)
         {
             tailJoins[i].enabled = false;
@@ -529,7 +534,7 @@ public class SwarmEditUIController : MonoBehaviour
     private void LoadCastActions()
     {
         List<string> actionsList = new List<string>();
-        
+
         //Open .csv behavior of the current cast
         string behaviorPath = AppContextManager.instance.ActiveBehaviorPath;
         if (File.Exists(behaviorPath))
@@ -545,11 +550,13 @@ public class SwarmEditUIController : MonoBehaviour
             // Create a list with the actions used by the current cast
             foreach (string line in lines)
             {
-                if (line.Contains("trigger")){                    
+                if (line.Contains("trigger"))
+                {
                     string[] splitedLine = line.Split(',');
                     string[] splitedTrigger = splitedLine[2].Split('{');
-                    string action = splitedTrigger[1].Substring(0, splitedTrigger[1].Length-1);                    
-                    if (!actionsList.Contains(action)){
+                    string action = splitedTrigger[1].Substring(0, splitedTrigger[1].Length - 1);
+                    if (!actionsList.Contains(action))
+                    {
                         actionsList.Add(action);
                     }
                 }
@@ -566,12 +573,12 @@ public class SwarmEditUIController : MonoBehaviour
                 if (!text.text.Contains("Lumy"))
                 {
                     text.text = "";
-                }                    
+                }
             }
             foreach (string actionText in actionsList)
-            {                                                        
-                    textAction[i].text = "- " + actionText.First().ToString().ToUpper() + actionText.Substring(1);
-                    i++;
+            {
+                textAction[i].text = "- " + actionText.First().ToString().ToUpper() + actionText.Substring(1);
+                i++;
             }
             reader.Close();
         }
@@ -615,13 +622,17 @@ public class SwarmEditUIController : MonoBehaviour
         skeletonScript.Frame();
         GameObject head = editedLumy.transform.Find("Head").gameObject;
         GameObject tail = editedLumy.transform.Find("Tail").gameObject;
+        GameObject hearth = editedLumy.transform.Find("Hearth").gameObject;
         PhyJoin[] headJoins = head.GetComponentsInChildren<PhyJoin>();
         PhyJoin[] tailJoins = tail.GetComponentsInChildren<PhyJoin>();
+        PhyJoin hearthJoin = hearth.GetComponent<PhyJoin>();
         for (int i = 0; i < headJoins.Length; i++)
         {
             headJoins[i].Init();
             headJoins[i].Frame();
         }
+        hearthJoin.Init();
+        hearthJoin.Frame();
         for (int i = 0; i < tailJoins.Length; i++)
         {
             tailJoins[i].Init();
@@ -634,6 +645,7 @@ public class SwarmEditUIController : MonoBehaviour
         {
             headJoins[i].enabled = false;
         }
+        hearthJoin.enabled = false;
         for (int i = 0; i < tailJoins.Length; i++)
         {
             tailJoins[i].enabled = false;

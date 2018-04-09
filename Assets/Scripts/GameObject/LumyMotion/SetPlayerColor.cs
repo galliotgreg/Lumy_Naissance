@@ -17,6 +17,10 @@ public class SetPlayerColor : MonoBehaviour {
         if (transform.parent != null)
         {
             AgentEntity agent = transform.parent.parent.GetComponent<AgentEntity>();
+            if (agent == null)
+            {
+                agent = transform.parent.GetComponent<AgentEntity>();
+            }
             if (agent.Home != null && agent.Authority == PlayerAuthority.Player2)
             {
                 color = new Color32(230, 60, 250, 255);
