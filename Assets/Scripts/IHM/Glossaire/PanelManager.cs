@@ -20,6 +20,9 @@ public class PanelManager : MonoBehaviour
     private Text mainPanelHelpContent;
     [SerializeField]
     private Image mainPanelHelpImage;
+    [SerializeField]
+    private GameObject mainPanelScrollHelpContent;
+
 
     /// <summary>
     /// The help scroll selection content
@@ -81,7 +84,6 @@ public class PanelManager : MonoBehaviour
             Button button = helpSelectionButton.GetComponent<Button>();
             Text button_text = helpSelectionButton.GetComponentInChildren<Text>();
 
-            //Text button_text = helpSelectionButton.transform.Find("Text").GetComponent<Text>();
             RectTransform rectTransform = helpSelectionButton.GetComponent<RectTransform>();
             helpSelectionButton.transform.SetParent(helpScrollContent.transform);
 
@@ -99,11 +101,22 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    public void RefreshExplanationText(string title)
+    {
+        
+
+        mainPanelScrollHelpContent.GetComponentInChildren<Text>().text = HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
+        //button_text.transform.SetParent(mainPanelScrollHelpContent.transform);
+        // helpSelectionButton.transform.SetParent(mainPanelScrollHelpContent.transform);
+        RectTransform rec = mainPanelScrollHelpContent.transform.GetComponent<RectTransform>();
+        //rec.transform.localScale = new Vector2(rec.sizeDelta.x, rec.sizeDelta.y + 20f);
+    }
+
     public void SelectHelp(string title)
     {
-        mainPanelHelpTitle.text = HelpManager.instance.help.FetchHelpByTitle(title).Title;
-        mainPanelHelpContent.text = HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
-
+         mainPanelHelpTitle.text = HelpManager.instance.help.FetchHelpByTitle(title).Title;
+         //mainPanelHelpContent.text = HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
+         RefreshExplanationText(title);
         string imagename = HelpManager.instance.help.FetchHelpByTitle(title).Image;
         if (imagename != "")
         {
@@ -116,24 +129,8 @@ public class PanelManager : MonoBehaviour
         {
             mainPanelHelpImage.gameObject.SetActive(false);
         }
-    }
-    public void AutomaticSelectionHelp()
-    {
 
-        mainPanelHelpTitle.text = HelpManager.instance.help.GetFirstfromList().Title;
-        mainPanelHelpContent.text = "lol";//HelpManager.instance.help.FetchHelpByTitle(title).Content;
-        string imagename = HelpManager.instance.help.GetFirstfromList().Image;
-        if (imagename != "")
-        {
-            //TODO Format image voir plus tard.
-            mainPanelHelpImage.gameObject.SetActive(true);
-            byte[] bytes = File.ReadAllBytes(Application.dataPath + @"/Inputs/HelpFiles/Resources/" + imagename);
-            mainPanelHelpImage.sprite.texture.LoadImage(bytes);
-        }
-        else
-        {
-            mainPanelHelpImage.gameObject.SetActive(false);
-        }
+
     }
 
     public void AutomaticSelectHelp()
@@ -154,9 +151,7 @@ public class PanelManager : MonoBehaviour
             mainPanelHelpImage.gameObject.SetActive(false);
         }
     }
-
-
-
+    
     // Use this for initialization
     void Start()
     {
