@@ -287,14 +287,14 @@ public class SwarmEditUIController : MonoBehaviour
         int atkRange = 0;
         foreach (AgentComponent compo in compos)
         {
-            vitality += (int) compo.VitalityBuff;
-            stamina += (int)compo.StaminaBuff;
-            strength += (int)compo.StrengthBuff;
-            actSpeed += (int)compo.ActionSpeedBuff;
-            moveSpeed += (int)compo.MoveSpeedBuff;
-            visionRange += (int)compo.VisionRangeBuff;
-            pickRange += (int)compo.PickRangeBuff; 
-            atkRange += (int)compo.AtkRangeBuff ;
+            vitality += VitalityPointsFromCompoId(compo.Id);
+            stamina += StaminaPointsFromCompoId(compo.Id);
+            strength += StrengthPointsFromCompoId(compo.Id);
+            actSpeed += ActionSpeedPointsFromCompoId(compo.Id);
+            moveSpeed += MoveSpeedPointsFromCompoId(compo.Id);
+            visionRange += VisionRangePointsFromCompoId(compo.Id);
+            pickRange += PickRangePointsFromCompoId(compo.Id);
+            atkRange += AtkRangePointsFromCompoId(compo.Id);
         }
         LumyStats.Vitality = vitality;
         LumyStats.Stamina = stamina;
@@ -1007,6 +1007,23 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private int StrengthPointsFromCompoId(int id)
+    {
+        if (id == 9)
+        {
+            return 1;
+        }
+        else if (id == 10)
+        {
+            return 2;
+        }
+        else if (id == 11)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     private void PushAtkRangeComp()
     {
         if (lumyStats.AtkRange == 1)
@@ -1021,6 +1038,23 @@ public class SwarmEditUIController : MonoBehaviour
         {
             PushHead(23);
         }
+    }
+
+    private int AtkRangePointsFromCompoId(int id)
+    {
+        if (id == 21)
+        {
+            return 1;
+        }
+        else if (id == 22)
+        {
+            return 2;
+        }
+        else if (id == 23)
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void PushVisionRangeComp()
@@ -1039,6 +1073,23 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private int VisionRangePointsFromCompoId(int id)
+    {
+        if (id == 18)
+        {
+            return 1;
+        }
+        else if (id == 19)
+        {
+            return 2;
+        }
+        else if (id == 20)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     private void PushPickRangeComp()
     {
         if (lumyStats.PickRange == 1)
@@ -1053,6 +1104,23 @@ public class SwarmEditUIController : MonoBehaviour
         {
             PushHead(26);
         }
+    }
+
+    private int PickRangePointsFromCompoId(int id)
+    {
+        if (id == 24)
+        {
+            return 1;
+        }
+        else if (id == 25)
+        {
+            return 2;
+        }
+        else if (id == 26)
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void PushVitalityComp()
@@ -1071,6 +1139,23 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private int VitalityPointsFromCompoId(int id)
+    {
+        if (id == 3)
+        {
+            return 1;
+        }
+        else if (id == 4)
+        {
+            return 2;
+        }
+        else if (id == 5)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     private void PushMoveSpeedComp()
     {
         if (lumyStats.MoveSpeed == 1)
@@ -1085,6 +1170,23 @@ public class SwarmEditUIController : MonoBehaviour
         {
             PushTail(17);
         }
+    }
+
+    private int MoveSpeedPointsFromCompoId(int id)
+    {
+        if (id == 15)
+        {
+            return 1;
+        }
+        else if (id == 16)
+        {
+            return 2;
+        }
+        else if (id == 17)
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void PushActionSpeedComp()
@@ -1103,6 +1205,23 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private int ActionSpeedPointsFromCompoId(int id)
+    {
+        if (id == 12)
+        {
+            return 1;
+        }
+        else if (id == 13)
+        {
+            return 2;
+        }
+        else if (id == 14)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     private void PushStaminaComp()
     {
         if (lumyStats.Stamina == 1)
@@ -1117,6 +1236,23 @@ public class SwarmEditUIController : MonoBehaviour
         {
             PushTail(8);
         }
+    }
+
+    private int StaminaPointsFromCompoId(int id)
+    {
+        if (id == 6)
+        {
+            return 1;
+        }
+        else if (id == 7)
+        {
+            return 2;
+        }
+        else if (id == 8)
+        {
+            return 3;
+        }
+        return 0;
     }
 
     public void IncrVitality()
