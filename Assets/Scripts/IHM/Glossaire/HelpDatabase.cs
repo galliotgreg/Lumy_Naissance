@@ -36,7 +36,12 @@ public class Help
     public string Video { get; set; }
     public bool IsSimple_Content = false;
 /*
-    public int ID;
+    public int ID { get; set; }
+    public string Title { get; set; }
+    public IList<IList<string>> Content { get; set; }
+    public string Image { get; set; }
+    public string Video { get; set; }
+
     public string Title;
     public bool IsSimple_Content;
    // public IList<SubHelp> Content;
@@ -44,8 +49,7 @@ public class Help
     public string Content;
     public string Image;
     public string Video;
-    
-    public Help(int id, string title, IList<SubHelp> content, string image, string video)
+public Help(int id, string title, IList<SubHelp> content, string image, string video)
     {
 
          this.ID = id;
@@ -56,16 +60,19 @@ public class Help
          this.IsSimple_Content = false;
 
     } 
-    
-    public Help(int id, string title, string content, string image, string video)
+
+   
+    public Help(int id, string title, IList<string> content, string image, string video)
     {
 
         this.ID = id;
         this.Title = title;
-        this.Content = content;
+        this.Content = content[0].ToString();
         this.Image = image;
         this.Video = video;
+
         this.IsSimple_Content = true;
+
     }
     
     public Help()
@@ -96,6 +103,7 @@ public class Help
         }
         return ContentText;
     }
+
 }
 
 [Serializable]

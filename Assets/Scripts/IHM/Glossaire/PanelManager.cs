@@ -103,6 +103,7 @@ public class PanelManager : MonoBehaviour
     {
         mainPanelHelpTitle.text = HelpManager.instance.help.FetchHelpByTitle(title).Title;
         mainPanelHelpContent.text = HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
+
         string imagename = HelpManager.instance.help.FetchHelpByTitle(title).Image;
         if (imagename != "")
         {
@@ -116,7 +117,24 @@ public class PanelManager : MonoBehaviour
             mainPanelHelpImage.gameObject.SetActive(false);
         }
     }
+    public void AutomaticSelectionHelp()
+    {
 
+        mainPanelHelpTitle.text = HelpManager.instance.help.GetFirstfromList().Title;
+        mainPanelHelpContent.text = "lol";//HelpManager.instance.help.FetchHelpByTitle(title).Content;
+        string imagename = HelpManager.instance.help.GetFirstfromList().Image;
+        if (imagename != "")
+        {
+            //TODO Format image voir plus tard.
+            mainPanelHelpImage.gameObject.SetActive(true);
+            byte[] bytes = File.ReadAllBytes(Application.dataPath + @"/Inputs/HelpFiles/Resources/" + imagename);
+            mainPanelHelpImage.sprite.texture.LoadImage(bytes);
+        }
+        else
+        {
+            mainPanelHelpImage.gameObject.SetActive(false);
+        }
+    }
 
     public void AutomaticSelectHelp()
     {

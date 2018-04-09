@@ -31,6 +31,7 @@ public class ViewPanel : MonoBehaviour
         PanelManager.instance.RefreshHelpScroll();
         PanelManager.instance.AutomaticSelectHelp();
 
+
     }
 
 }
