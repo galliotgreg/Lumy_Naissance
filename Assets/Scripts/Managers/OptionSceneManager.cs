@@ -14,10 +14,6 @@ public class OptionSceneManager : MonoBehaviour {
     private Toggle windowed;
     [SerializeField]
     private Dropdown quality;
-    [SerializeField]
-    private Dropdown fps;
-    [SerializeField]
-    private Slider luminosity;
     #endregion
     #region Audio
     [SerializeField]
@@ -32,6 +28,7 @@ public class OptionSceneManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         windowed.isOn = Screen.fullScreen;
+        quality.value = QualitySettings.GetQualityLevel();
 
         music.value = SoundManager.instance.menuFxSource.volume;
         sfx.value = SoundManager.instance.menuFxSource.volume;
@@ -40,8 +37,7 @@ public class OptionSceneManager : MonoBehaviour {
         resolution.onValueChanged.AddListener(delegate { SetResolution(); });
         windowed.onValueChanged.AddListener((on) => { SetWindowed(); });
         quality.onValueChanged.AddListener(delegate{ SetQuality(); });
-        fps.onValueChanged.AddListener(delegate { SetFps(); });
-        luminosity.onValueChanged.AddListener(delegate { setLuminosity(); });
+
         sfx.onValueChanged.AddListener(delegate { SetVolumeFX(); });
         general.onValueChanged.AddListener(delegate { SetVolumeGeneral(); });
         music.onValueChanged.AddListener(delegate { SetVolumeMusic(); });
@@ -110,30 +106,6 @@ public class OptionSceneManager : MonoBehaviour {
     {
         QualitySettings.SetQualityLevel(quality.value);
         Debug.Log(QualitySettings.GetQualityLevel());
-    }
-    private void SetFps()
-    {
-        
-          switch (fps.value)
-        {
-            case 0:
-                Application.targetFrameRate = 30;
-                break;
-            case 1:
-                Application.targetFrameRate = 60;
-                break;
-            case 2:
-                Application.targetFrameRate = 120;
-                break;
-            default:
-                break;
-        }
-    }
-    private void setLuminosity()
-    {
-        float rgbValue = luminosity.value;
-        RenderSettings.ambientLight = new Color(rgbValue,rgbValue,rgbValue, 1);
-        Debug.Log("lumy");
     }
 
     private void SetVolumeFX()
