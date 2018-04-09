@@ -4,10 +4,10 @@ using UnityEngine;
 using System;
 using UnityEngine.EventSystems;
 
-public class HelpData : MonoBehaviour,IPointerDownHandler,IPointerEnterHandler,IPointerExitHandler {
+public class HelpData : MonoBehaviour{
     public Help help;
    // public HelpDatabase helps = new HelpDatabase();
-
+   /*
     private Tooltip tooltip;
     private Vector2 offset;
 	// Use this for initialization
@@ -18,7 +18,7 @@ public class HelpData : MonoBehaviour,IPointerDownHandler,IPointerEnterHandler,I
         //help = helps.FetchHelpByID(1);
         GameObject.Find("ListHelp").GetComponent<ListHelp>().LoadDatabase();
         help = GameObject.Find("ListHelp").GetComponent<ListHelp>().FetchHelpByID(1);
-        Debug.Log(help);*/
+        Debug.Log(help);
     }
 	
 	// Update is called once per frame
@@ -39,5 +39,5 @@ public class HelpData : MonoBehaviour,IPointerDownHandler,IPointerEnterHandler,I
     public void OnPointerExit(PointerEventData eventData)
     {
         tooltip.Deactivate();
-    }
+    }*/
 }

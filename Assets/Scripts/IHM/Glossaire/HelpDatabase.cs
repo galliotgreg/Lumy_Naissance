@@ -7,28 +7,105 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 
 [Serializable]
+public class SubHelp
+{
+    
+    public string SubTitle { get; set; }
+    public string Content { get; set; }
+    /*
+    public string SubTitle;
+    public string Content;
+
+    public SubHelp(string subtitle, string content)
+    {
+        this.SubTitle = subtitle;
+        this.Content = content;
+    }*/
+}
+
+[Serializable]
 public class Help
 {
-    public int ID;
+    
+    public int ID { get; set; }
+    public string Title { get; set; }
+    public IList<SubHelp> Content { get; set; }
+   // public string Content { get; set; }
+
+    public string Image { get; set; }
+    public string Video { get; set; }
+    public bool IsSimple_Content = false;
+/*
+    public int ID { get; set; }
+    public string Title { get; set; }
+    public IList<IList<string>> Content { get; set; }
+    public string Image { get; set; }
+    public string Video { get; set; }
+
     public string Title;
+    public bool IsSimple_Content;
+   // public IList<SubHelp> Content;
+
     public string Content;
     public string Image;
     public string Video;
-
-    public Help(int id, string title, string content, string image, string video)
+public Help(int id, string title, IList<SubHelp> content, string image, string video)
     {
+
+         this.ID = id;
+         this.Title = title;
+         this.Content = content;
+         this.Image = image;
+         this.Video = video;
+         this.IsSimple_Content = false;
+
+    } 
+
+   
+    public Help(int id, string title, IList<string> content, string image, string video)
+    {
+
         this.ID = id;
         this.Title = title;
-        this.Content = content;
+        this.Content = content[0].ToString();
         this.Image = image;
         this.Video = video;
+
+        this.IsSimple_Content = true;
+
     }
+    
     public Help()
+     {
+         this.ID = -1;
+     }
+     */
+    public string GetContentText()
     {
-        this.ID = -1;
+        string ContentText = "";
+        if (this.IsSimple_Content == true)
+        {
+            return ContentText;
+        }
+        else
+        {
+            foreach (SubHelp subhelp in Content)
+            {
+                if (subhelp.SubTitle == "")
+                {
+                    ContentText += subhelp.Content + "\n\n";
+                }
+                else
+                {
+                    ContentText += "<b><size=28>" + subhelp.SubTitle + "</size></b>\n" + subhelp.Content + "\n\n";
+                }
+            }
+        }
+        return ContentText;
     }
+
 }
- 
+
 [Serializable]
 public class HelpDatabase : MonoBehaviour
 {
@@ -37,6 +114,13 @@ public class HelpDatabase : MonoBehaviour
     private void Start()
     {
         LoadDatabase();
+    }
+
+    public Help GetFirstfromList()
+    {
+        if(database[0] != null)
+            return database[0];
+        return null;
     }
 
     //Goes through the database and returns pointer on specified item
@@ -65,6 +149,8 @@ public class HelpDatabase : MonoBehaviour
         return database[0];
 
     }
+
+
     public void LoadDatabase(string namefile = "parametres")
     {
         string path = Application.dataPath + @"/Inputs/HelpFiles/"+ namefile +".json";
@@ -75,6 +161,7 @@ public class HelpDatabase : MonoBehaviour
             stream.Close();
         }
     }
+
     public int GetLength()
     {
         return database.Count;
