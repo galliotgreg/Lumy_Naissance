@@ -363,9 +363,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         mainPanelLumyName.text = AppContextManager.instance.ActiveCast.Name;
         prodTime = GetProdTime();
-        redCost = GetRedCost();
-        greenCost = GetGreenCost();
-        blueCost = GetBlueCost();
+        getCost(); 
         LoadCastActions();
     }
 
@@ -505,19 +503,16 @@ public class SwarmEditUIController : MonoBehaviour
     #endregion
 
     #region Cost Functions
-    private int GetBlueCost()
-    {
-        return CostManager.instance.ComputeBlueCost(editedLumy);
-    }
 
-    private int GetGreenCost()
+    private void getCost()
     {
-        return CostManager.instance.ComputeGreenCost(editedLumy);
-    }
+        string path = AppContextManager.instance.ActiveBehaviorPath;
+        ABModel behaviorModel = ABManager.instance.LoadABModelFromFile(path);
+        AgentScript.ResourceCost res =  CostManager.instance.ComputeCost(editedLumy.GetComponentsInChildren<AgentComponent>(), behaviorModel);
+        redCost = res.getResourceByColor(ABColor.Color.Red);
+        greenCost = res.getResourceByColor(ABColor.Color.Green);
+        blueCost = res.getResourceByColor(ABColor.Color.Blue);
 
-    private int GetRedCost()
-    {
-        return CostManager.instance.ComputeRedCost(editedLumy);
     }
 
     private float GetProdTime()
