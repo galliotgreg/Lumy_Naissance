@@ -284,10 +284,12 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void Start()
     {
+        //AppContextManager.instance.LoadPlayerSpecies("XXX_specie", "XXX_specie");
+        //SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
-        //SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
     }
+
 
     private void OnDestroy()
     {
@@ -602,7 +604,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     void Update()
     {
-        if (GameObject.Find("Liste_Actions") != null)
+        if (/*GameObject.Find("Liste_Actions")*/GameManager.instance != null)
         {
             isSceneLoaded = true;
         }
@@ -625,6 +627,22 @@ public class SwarmEditUIController : MonoBehaviour
         RefreashLumyStats();
         RefreshStatBars();
         StatsButtonListener();
+
+        if (isSceneLoaded)
+        {
+            GameObject editedLumyPrefab = GameManager.instance.GetUnitTemplate(
+                PlayerAuthority.Player1, "origin");
+            HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
+            editedLumy = Instantiate(editedLumyPrefab);
+            editedLumy.SetActive(true);
+            AgentEntity editedLumyEntity = editedLumy.GetComponent<AgentEntity>();
+            editedLumy.transform.parent = GameManager.instance.transform;
+            editedLumy.name = editedLumyEntity.CastName;
+            editedLumyEntity.GameParams =
+            GameManager.instance.GameParam.GetComponent<GameParamsScript>();
+
+            Unit_GameObj_Manager.instance.addUnit(editedLumyEntity, homeScript);
+        }
     }
 
     /// <summary>
