@@ -227,7 +227,8 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private Button valider;
 
-    #region miniMap
+    #region 
+
     [Header("Minimap")]
     //Icon minimap materials
     [SerializeField]
@@ -1237,28 +1238,28 @@ private void DisplayInSight() {
             //Icons Size
             if (lumy.name == "p1_queen" || lumy.name == "p2_queen")
             {
-                lumy.transform.GetChild(5).transform.localScale = new Vector3(3, 3, 3);
+                lumy.transform.GetChild(6).transform.localScale = new Vector3(3, 3, 3);
             }
             else
             {
-                lumy.transform.GetChild(5).transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                lumy.transform.GetChild(6).transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             }
 
             //Icons Color
             if (lumy.Home.gameObject.name == "p1_hive")
             {
-                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(6).GetComponent<Renderer>();
 
                 lumyRendIcoMinimap.material = player1Material;
             }
             else if (lumy.Home.gameObject.name == "p2_hive")
             {
-                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(6).GetComponent<Renderer>();
                 lumyRendIcoMinimap.material = player2Material;
             }
             else
             {
-                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(5).GetComponent<Renderer>();
+                Renderer lumyRendIcoMinimap = lumy.transform.GetChild(6).GetComponent<Renderer>();
                 lumyRendIcoMinimap.material = playerDefaultMaterial;
             }
         }
