@@ -153,6 +153,67 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private float lumyYMarginLayout = 35f;
 
+    /// <summary>
+    /// Elements needed for stat bars display
+    /// </summary>
+    [Header("Stat Bars")]
+    [SerializeField]
+    private GameObject statBarPrefab;
+    [SerializeField]
+    private float statBarHSpacing;
+    [SerializeField]
+    private float statBarVertSpacing;
+    [Header("Stat Bars Params")]
+    [SerializeField]
+    private float statBarLeftXpos;
+    [SerializeField]
+    private float statBarRightXpos;
+    [SerializeField]
+    private float statBarYPos;
+    [SerializeField]
+    private Color32 statsColor;
+    [SerializeField]
+    private Color32 statsBaseColor;
+  
+    private List<GameObject> barLeftStatsList;
+    private List<GameObject> barRightStatsList;
+
+    /// <summary>
+    /// Increase / Decrease stats Button
+    /// </summary>
+    [SerializeField]
+    private Button vitalityPlus;
+    [SerializeField]
+    private Button vitalityLess;
+    [SerializeField]
+    private Button staminaPlus;
+    [SerializeField]
+    private Button staminaLess;
+    [SerializeField]
+    private Button strengthPlus;
+    [SerializeField]
+    private Button strengthLess;
+    [SerializeField]
+    private Button actSpeedPlus;
+    [SerializeField]
+    private Button actSpeedLess;
+    [SerializeField]
+    private Button moveSpeedPlus;
+    [SerializeField]
+    private Button moveSpeedLess;
+    [SerializeField]
+    private Button visionRangePlus;
+    [SerializeField]
+    private Button visionRangeLess;
+    [SerializeField]
+    private Button pickRangePlus;
+    [SerializeField]
+    private Button pickRangeLess;
+    [SerializeField]
+    private Button  atkRangePlus;
+    [SerializeField]
+    private Button atkRangeLess;
+
     public int RedCost
     {
         get
@@ -221,6 +282,324 @@ public class SwarmEditUIController : MonoBehaviour
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
 
+    private void Start()
+    {
+        DisplayStatBars();
+        RefreshView();
+        //SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
+    }
+
+    private void OnDestroy()
+    {
+        //SceneManager.UnloadScene("MapSwarmEdit");
+    }
+
+    #region Stats Button Listener
+    private void StatsButtonListener()
+    {
+        //vitality
+        vitalityLess.onClick.AddListener(RefreshVitality);
+        vitalityPlus.onClick.AddListener(RefreshVitality);
+
+        //stamina
+        staminaLess.onClick.AddListener(RefreshStamina);
+        staminaPlus.onClick.AddListener(RefreshStamina);
+
+        //strength
+        strengthLess.onClick.AddListener(RefreshStrength);
+        strengthPlus.onClick.AddListener(RefreshStrength);
+
+        //actionSpeed
+        actSpeedLess.onClick.AddListener(RefreshActionSpeed);
+        actSpeedPlus.onClick.AddListener(RefreshActionSpeed);
+
+        //moveSpeed
+        moveSpeedLess.onClick.AddListener(RefreshMoveSpeed);
+        moveSpeedPlus.onClick.AddListener(RefreshMoveSpeed);
+
+        //visionRange
+        visionRangeLess.onClick.AddListener(RefreshVisionRange);
+        visionRangePlus.onClick.AddListener(RefreshVisionRange);
+
+        //pickRange
+        pickRangeLess.onClick.AddListener(RefreshPickRange);
+        pickRangePlus.onClick.AddListener(RefreshPickRange);
+
+        //attackRange
+        atkRangeLess.onClick.AddListener(RefreshAttackRange);
+        atkRangePlus.onClick.AddListener(RefreshAttackRange);
+    }
+    #endregion
+
+    #region Refresh Stat Bars
+    private void RefreshStatBars()
+    {
+        RefreshStrength();
+        RefreshVisionRange();
+        RefreshPickRange();
+        RefreshAttackRange();
+        RefreshVitality();
+        RefreshStamina();
+        RefreshMoveSpeed();
+        RefreshActionSpeed();
+
+    }
+
+    //Left Stats
+    private void RefreshStrength()
+    {
+        //Clear stats
+        for (int i = 0; i < 3; i++)
+        {
+            barLeftStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.Strength)
+        {
+            case 1:
+                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[1].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[1].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[2].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshVisionRange()
+    {
+        //Clear stats
+        for (int i = 3; i < 6; i++)
+        {
+            barLeftStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.VisionRange)
+        {
+            case 1:
+                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[4].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[4].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[5].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshPickRange()
+    {
+        //Clear stats
+        for (int i = 6; i < 9; i++)
+        {
+            barLeftStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.PickRange)
+        {
+            case 1:
+                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[7].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[7].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[8].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshAttackRange()
+    {
+        //Clear stats
+        for (int i = 9; i < 12; i++)
+        {
+            barLeftStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.AtkRange)
+        {
+            case 1:
+                barLeftStatsList[9].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barLeftStatsList[9].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[10].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barLeftStatsList[9].SetActive(true);
+                barLeftStatsList[10].SetActive(true);
+                barLeftStatsList[11].SetActive(true);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    //Right Stats
+    private void RefreshVitality()
+    {
+        //Clear stats
+        for (int i = 0; i < 3; i++)
+        {
+            barRightStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.Vitality)
+        {
+            case 1:
+                barRightStatsList[0].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barRightStatsList[0].GetComponent<Image>().color = statsColor;
+                barRightStatsList[1].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barRightStatsList[0].GetComponent<Image>().color = statsColor;
+                barRightStatsList[1].GetComponent<Image>().color = statsColor;
+                barRightStatsList[2].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshStamina()
+    {
+        //Clear stats
+        for (int i = 3; i < 6; i++)
+        {
+            barRightStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.Stamina)
+        {
+            case 1:
+                barRightStatsList[3].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barRightStatsList[3].GetComponent<Image>().color = statsColor;
+                barRightStatsList[4].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barRightStatsList[3].GetComponent<Image>().color = statsColor;
+                barRightStatsList[4].GetComponent<Image>().color = statsColor;
+                barRightStatsList[5].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshMoveSpeed()
+    {
+        //Clear stats
+        for (int i = 6; i < 9; i++)
+        {
+            barRightStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.MoveSpeed)
+        {
+            case 1:
+                barRightStatsList[6].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barRightStatsList[6].GetComponent<Image>().color = statsColor;
+                barRightStatsList[7].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barRightStatsList[6].GetComponent<Image>().color = statsColor;
+                barRightStatsList[7].GetComponent<Image>().color = statsColor;
+                barRightStatsList[8].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void RefreshActionSpeed()
+    {
+        //Clear stats
+        for (int i = 9; i < 12; i++)
+        {
+            barRightStatsList[i].GetComponent<Image>().color = statsBaseColor;
+        }
+        //Display new
+        switch (LumyStats.ActSpeed)
+        {
+            case 1:
+                barRightStatsList[9].GetComponent<Image>().color = statsColor;
+                break;
+            case 2:
+                barRightStatsList[9].GetComponent<Image>().color = statsColor;
+                barRightStatsList[10].GetComponent<Image>().color = statsColor;
+                break;
+            case 3:
+                barRightStatsList[9].GetComponent<Image>().color = statsColor;
+                barRightStatsList[10].GetComponent<Image>().color = statsColor;
+                barRightStatsList[11].GetComponent<Image>().color = statsColor;
+                break;
+            default:
+                break;
+        }
+    }
+    #endregion
+
+    #region Display Stat Bars
+    /// <summary>
+    /// Display Stat Bars 
+    /// </summary>
+    ///
+    private void DisplayStatBars()
+    {
+        barLeftStatsList = new List<GameObject>();
+        barRightStatsList = new List<GameObject>();
+
+        //Display Right Bars
+        //Instantiate 4 rows
+        for (int i = 0; i < 4; i++)
+        {   //Instantiate 1 Prefab
+            for (int j = 0; j < 3; j++)
+            {
+                GameObject statLeftBar = Instantiate(statBarPrefab, new Vector3(statBarLeftXpos + j * statBarHSpacing, statBarYPos - i * statBarVertSpacing, 0f), Quaternion.identity);
+                statLeftBar.transform.SetParent(GameObject.Find("StatBars").transform, false);
+                barLeftStatsList.Add(statLeftBar);
+            }
+        }
+        
+        //Display Right Bars
+        //Instantiate 4 rows
+        for (int i = 0; i < 4; i++)
+        {   //Instantiate 1 Prefab
+            for (int j = 0; j < 3; j++)
+            {
+                GameObject statBar = Instantiate(statBarPrefab, new Vector3(statBarRightXpos + j * statBarHSpacing, statBarYPos - i * statBarVertSpacing, 0f), Quaternion.identity);
+                statBar.transform.SetParent(GameObject.Find("StatBars").transform, false);
+                barRightStatsList.Add(statBar);
+            }
+        }
+    }
+    #endregion
+
     void Update()
     {
         if (GameObject.Find("Liste_Actions") != null)
@@ -243,7 +622,9 @@ public class SwarmEditUIController : MonoBehaviour
         RefreshLumyAppearenceFromData();
         RefreshLumyInfo();
         RefreshSwarmInfo();
-        RefreashLumyStats();        
+        RefreashLumyStats();
+        RefreshStatBars();
+        StatsButtonListener();
     }
 
     /// <summary>
@@ -287,14 +668,14 @@ public class SwarmEditUIController : MonoBehaviour
         int atkRange = 0;
         foreach (AgentComponent compo in compos)
         {
-            vitality += (int) compo.VitalityBuff;
-            stamina += (int)compo.StaminaBuff;
-            strength += (int)compo.StrengthBuff;
-            actSpeed += (int)compo.ActionSpeedBuff;
-            moveSpeed += (int)compo.MoveSpeedBuff;
-            visionRange += (int)compo.VisionRangeBuff;
-            pickRange += (int)compo.PickRangeBuff; 
-            atkRange += (int)compo.AtkRangeBuff ;
+            vitality += VitalityPointsFromCompoId(compo.Id);
+            stamina += StaminaPointsFromCompoId(compo.Id);
+            strength += StrengthPointsFromCompoId(compo.Id);
+            actSpeed += ActionSpeedPointsFromCompoId(compo.Id);
+            moveSpeed += MoveSpeedPointsFromCompoId(compo.Id);
+            visionRange += VisionRangePointsFromCompoId(compo.Id);
+            pickRange += PickRangePointsFromCompoId(compo.Id);
+            atkRange += AtkRangePointsFromCompoId(compo.Id);
         }
         LumyStats.Vitality = vitality;
         LumyStats.Stamina = stamina;
@@ -344,7 +725,7 @@ public class SwarmEditUIController : MonoBehaviour
             //Set Position
             rectTransform.localPosition = new Vector3(
                 200f,
-                -i * (rectTransform.rect.height + 20f) - 20f,
+                -i * (rectTransform.rect.height + 20f) - 70f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
@@ -363,9 +744,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         mainPanelLumyName.text = AppContextManager.instance.ActiveCast.Name;
         prodTime = GetProdTime();
-        redCost = GetRedCost();
-        greenCost = GetGreenCost();
-        blueCost = GetBlueCost();
+        getCost(); 
         LoadCastActions();
     }
 
@@ -505,19 +884,16 @@ public class SwarmEditUIController : MonoBehaviour
     #endregion
 
     #region Cost Functions
-    private int GetBlueCost()
-    {
-        return CostManager.instance.ComputeBlueCost(editedLumy);
-    }
 
-    private int GetGreenCost()
+    private void getCost()
     {
-        return CostManager.instance.ComputeGreenCost(editedLumy);
-    }
+        string path = AppContextManager.instance.ActiveBehaviorPath;
+        ABModel behaviorModel = ABManager.instance.LoadABModelFromFile(path);
+        AgentScript.ResourceCost res =  CostManager.instance.ComputeCost(editedLumy.GetComponentsInChildren<AgentComponent>(), behaviorModel);
+        redCost = res.getResourceByColor(ABColor.Color.Red);
+        greenCost = res.getResourceByColor(ABColor.Color.Green);
+        blueCost = res.getResourceByColor(ABColor.Color.Blue);
 
-    private int GetRedCost()
-    {
-        return CostManager.instance.ComputeRedCost(editedLumy);
     }
 
     private float GetProdTime()
@@ -528,6 +904,7 @@ public class SwarmEditUIController : MonoBehaviour
     }
     #endregion
 
+    #region Display Actions
     /// <summary>
     /// Find actions used in the mc of the current cast and show this in the actions list canvas
     /// </summary>
@@ -562,8 +939,10 @@ public class SwarmEditUIController : MonoBehaviour
                 }
             }
 
-            int i = 1;
-
+            //int i = 1;
+            
+            /* Greg's code for text display :
+             * 
             // Find Action Lumy canvas and put the right text in actions list
             GameObject listActionsCanvas = GameObject.Find("Liste_Actions");
             Text[] textAction = listActionsCanvas.GetComponentsInChildren<Text>();
@@ -580,9 +959,67 @@ public class SwarmEditUIController : MonoBehaviour
                 textAction[i].text = "- " + actionText.First().ToString().ToUpper() + actionText.Substring(1);
                 i++;
             }
+            */
+
+            // Find Action Lumy canvas and put the right image in actions list
+            GameObject listActionsCanvas = GameObject.Find("Liste_Actions");
+            Image[] imageAction = listActionsCanvas.GetComponentsInChildren<Image>();
+            foreach (Image image in imageAction)
+            {
+                image.color = new Color32(70,70,70,255);
+            }
+           
+            // Find Action Lumy canvas and put the right text in actions list
+            Text[] textAction = listActionsCanvas.GetComponentsInChildren<Text>();
+            foreach (Text text in textAction)
+            {
+                text.color = new Color32(70, 70, 70, 255);
+            }
+            
+            //Set Panel color
+            imageAction[0].color = new Color32(255, 255, 255, 255);
+            //Set title color
+            textAction[0].color = new Color32(255, 255, 255, 255);
+
+            foreach (string actionText in actionsList)
+            {
+      
+                if (String.Compare(actionText,"goto") == 0)
+                {
+                    imageAction[1].color = new Color32(255, 255, 255, 255);
+                    textAction[1].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "strike") == 0)
+                {
+                    imageAction[2].color = new Color32(255, 255, 255, 255);
+                    textAction[2].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "pick") == 0)
+                {
+                    imageAction[3].color = new Color32(255, 255, 255, 255);
+                    textAction[3].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "roaming") == 0)
+                {
+                    imageAction[4].color = new Color32(255, 255, 255, 255);
+                    textAction[4].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "trace") == 0)
+                {
+                    imageAction[5].color = new Color32(255, 255, 255, 255);
+                    textAction[5].color = new Color32(255, 255, 255, 255);
+                }
+                if (String.Compare(actionText, "drop") == 0)
+                {
+                    imageAction[6].color = new Color32(255, 255, 255, 255);
+                    textAction[6].color = new Color32(255, 255, 255, 255);
+                }
+
+            }
             reader.Close();
         }
     }
+    #endregion
 
     /// <summary>
     /// Load the selected lumy given its cast name
@@ -600,7 +1037,7 @@ public class SwarmEditUIController : MonoBehaviour
         Cast lumyCast = AppContextManager.instance.ActiveCast;
         editedLumy = Instantiate(emptyAgentPrefab);
         editedLumy.transform.parent = this.transform;
-        
+
         //editedLumy.SetActive(false);
         UnitTemplateInitializer.InitTemplate(
             lumyCast, editedLumy, emptyComponentPrefab);
@@ -652,7 +1089,7 @@ public class SwarmEditUIController : MonoBehaviour
         }
 
         //Layout
-        editedLumy.transform.position = new Vector3(-1.5f, -3f, 0f);
+        editedLumy.transform.position = new Vector3(-6f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
     }
 
@@ -1007,6 +1444,23 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private int StrengthPointsFromCompoId(int id)
+    {
+        if (id == 9)
+        {
+            return 1;
+        }
+        else if (id == 10)
+        {
+            return 2;
+        }
+        else if (id == 11)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     private void PushAtkRangeComp()
     {
         if (lumyStats.AtkRange == 1)
@@ -1021,6 +1475,23 @@ public class SwarmEditUIController : MonoBehaviour
         {
             PushHead(23);
         }
+    }
+
+    private int AtkRangePointsFromCompoId(int id)
+    {
+        if (id == 21)
+        {
+            return 1;
+        }
+        else if (id == 22)
+        {
+            return 2;
+        }
+        else if (id == 23)
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void PushVisionRangeComp()
@@ -1039,6 +1510,23 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private int VisionRangePointsFromCompoId(int id)
+    {
+        if (id == 18)
+        {
+            return 1;
+        }
+        else if (id == 19)
+        {
+            return 2;
+        }
+        else if (id == 20)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     private void PushPickRangeComp()
     {
         if (lumyStats.PickRange == 1)
@@ -1053,6 +1541,23 @@ public class SwarmEditUIController : MonoBehaviour
         {
             PushHead(26);
         }
+    }
+
+    private int PickRangePointsFromCompoId(int id)
+    {
+        if (id == 24)
+        {
+            return 1;
+        }
+        else if (id == 25)
+        {
+            return 2;
+        }
+        else if (id == 26)
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void PushVitalityComp()
@@ -1071,6 +1576,23 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private int VitalityPointsFromCompoId(int id)
+    {
+        if (id == 3)
+        {
+            return 1;
+        }
+        else if (id == 4)
+        {
+            return 2;
+        }
+        else if (id == 5)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     private void PushMoveSpeedComp()
     {
         if (lumyStats.MoveSpeed == 1)
@@ -1085,6 +1607,23 @@ public class SwarmEditUIController : MonoBehaviour
         {
             PushTail(17);
         }
+    }
+
+    private int MoveSpeedPointsFromCompoId(int id)
+    {
+        if (id == 15)
+        {
+            return 1;
+        }
+        else if (id == 16)
+        {
+            return 2;
+        }
+        else if (id == 17)
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void PushActionSpeedComp()
@@ -1103,6 +1642,23 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private int ActionSpeedPointsFromCompoId(int id)
+    {
+        if (id == 12)
+        {
+            return 1;
+        }
+        else if (id == 13)
+        {
+            return 2;
+        }
+        else if (id == 14)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     private void PushStaminaComp()
     {
         if (lumyStats.Stamina == 1)
@@ -1117,6 +1673,23 @@ public class SwarmEditUIController : MonoBehaviour
         {
             PushTail(8);
         }
+    }
+
+    private int StaminaPointsFromCompoId(int id)
+    {
+        if (id == 6)
+        {
+            return 1;
+        }
+        else if (id == 7)
+        {
+            return 2;
+        }
+        else if (id == 8)
+        {
+            return 3;
+        }
+        return 0;
     }
 
     public void IncrVitality()

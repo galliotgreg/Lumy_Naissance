@@ -15,6 +15,8 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 
 	[SerializeField]
 	UnityEngine.UI.Text text;
+	[SerializeField]
+	UnityEngine.UI.Image image;
 
 	// Use this for initialization
 	protected void Start () {
@@ -32,6 +34,8 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		}
 		set {
 			item = value;
+
+			Image = MCEditor_ProxyIcon_Manager.instance.getItemImage (value);
 		}
 	}
 
@@ -51,6 +55,25 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 		}
 		set {
 			text = value;
+		}
+	}
+
+	public Sprite Image {
+		get {
+			return image.sprite;
+		}
+		set {
+			image.sprite = value;
+
+			// Choose the element which will be activated
+			if (value == null) {
+				image.gameObject.SetActive (false);
+
+				//image.type = UnityEngine.UI.Image.Type.Sliced;
+				//image.preserveAspect = true;
+			} else {
+				text.gameObject.SetActive (false);
+			}
 		}
 	}
 
