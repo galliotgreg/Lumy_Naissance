@@ -75,14 +75,6 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 		// Kill unit
 		if( target.Context.Model.Vitality <= 0 ){
-
-            //add fx 
-            GameObject explosion = Instantiate(Deathexplosion, target.Context.Model.transform.position, Quaternion.identity);
-            //Move behind GameManager (avoid conflict with swapping scene) 
-            explosion.transform.SetParent(GameManager.instance.transform); 
-            Destroy(explosion, explosion.GetComponentInChildren<ParticleSystem>().duration);
-            //add fx end
-
 			// Reduce enemmies
 			KillUnit( target );
 		}
@@ -242,6 +234,13 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	public void KillUnit( AgentEntity unit ){
+        //add fx 
+        GameObject explosion = Instantiate(Deathexplosion, unit.Context.Model.transform.position, Quaternion.identity);
+        //Move behind GameManager (avoid conflict with swapping scene) 
+        explosion.transform.SetParent(GameManager.instance.transform);
+        Destroy(explosion, explosion.GetComponentInChildren<ParticleSystem>().duration);
+        //add fx end
+
         homes[ unit.Authority ].removeUnit( unit );
 		GameObject.Destroy( unit.gameObject );
 	}
