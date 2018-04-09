@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1504115113}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -45758,7 +45758,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 854958740}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.54, y: 20, z: 3}
+  m_LocalPosition: {x: 25.3, y: 20, z: 29.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1252140770}
@@ -45797,13 +45797,13 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 25
+  orthographic size: 48
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 768
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: d03584d395b24384e88283b2d72f8efc, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: d717e0c735c36ad489a827f09a636fb1, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -46883,6 +46883,7 @@ GameObject:
   - component: {fileID: 897130266}
   - component: {fileID: 897130268}
   - component: {fileID: 897130267}
+  - component: {fileID: 897130269}
   m_Layer: 0
   m_Name: MapTutoInteCamera
   m_TagString: MainCamera
@@ -46953,14 +46954,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 897130260}
-  m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: -4.9, y: 26.83, z: -13.4}
+  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
+  m_LocalPosition: {x: 1.2, y: 19.98001, z: -17.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 624856589}
   m_Father: {fileID: 1252140770}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
 --- !u!114 &897130266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46997,13 +46998,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 897130260}
   speedCamera: 10
-  maxX: 42
-  minX: -5
-  maxY: 48
-  minY: -13
+  maxX: 120
+  minX: -10
+  maxY: 100
+  minY: -27
   zoomRange: {x: -10, y: 10}
   zoomAngleRange: {x: 20, y: 70}
   zoomSpeed: 10
+--- !u!114 &897130269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 897130260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40d7ac1110aa7d54e90aee1611211490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  replacement: {fileID: 4800000, guid: fddc8bb5d437ced49b1bc4c35d0904a6, type: 3}
+  minimapCam: {fileID: 854958743}
+  myMaterial: {fileID: 2100000, guid: ab8c254824a0b01499f0c50850cea4c3, type: 2}
 --- !u!1001 &905909802
 Prefab:
   m_ObjectHideFlags: 0
