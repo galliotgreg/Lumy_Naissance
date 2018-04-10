@@ -14,7 +14,7 @@ public class SetPlayerLight : MonoBehaviour {
     void Update()
     {
         Light light = GetComponent<Light>();
-        Color color = Color.white;
+        Color color = new Color32(88, 255, 255, 255);
 
         if (transform.parent != null)
         {

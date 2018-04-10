@@ -12,7 +12,7 @@ public class SetPlayerColor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        Color color = new Color32(88, 255, 255, 255);
+        Color color = Color.white;
 
         if (transform.parent != null)
         {
