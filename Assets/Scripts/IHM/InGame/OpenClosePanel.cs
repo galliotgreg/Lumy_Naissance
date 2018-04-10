@@ -40,7 +40,7 @@ public class OpenClosePanel : MonoBehaviour
         isOpen = !isOpen;
     }
 
-    void OpenClose()
+   public void OpenClose()
     {
         if (isOpen)
         {
