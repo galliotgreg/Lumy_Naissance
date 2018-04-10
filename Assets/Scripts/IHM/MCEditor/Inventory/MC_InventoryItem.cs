@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
+public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator, IPointerEnterHandler, IPointerExitHandler
+{
 
 	/// <summary>
 	/// The inventory that contains the item
@@ -13,7 +15,9 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
 	/// </summary>
 	protected System.Object item;
 
-	[SerializeField]
+    protected GameObject toolTip;
+
+    [SerializeField]
 	UnityEngine.UI.Text text;
 	[SerializeField]
 	UnityEngine.UI.Image image;
@@ -95,5 +99,19 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator {
         MCToolManager.instance.TemporarySave();
 	}
 
-	#endregion
+    #endregion
+
+    #region ToolTip
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        toolTip = MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, item);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Destroy(toolTip.gameObject);
+    }
+
+    #endregion
 }

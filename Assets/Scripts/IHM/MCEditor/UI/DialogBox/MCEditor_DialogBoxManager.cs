@@ -122,4 +122,34 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
         }
         return MCEditorManager.instance.instantiateToolTip(position, prefab, type, proxy);        
     }
+
+    public GameObject instantiateToolTip(Vector3 position, System.Object item)
+    {
+        GameObject prefab;
+        if (item is ABState)
+        {
+            if(((ABState)item).Action != null)
+            {
+                prefab = toolTip_action_prefab;
+            } else
+            {
+                Debug.LogWarning("State node" + item);
+                return prefab = new GameObject();
+            }                
+        }
+        else if (item is IABParam)
+        {
+            prefab = toolTip_param_prefab;
+        }
+        else if (item is IABOperator)
+        {
+            prefab = toolTip_operator_prefab;
+        }
+        else
+        {
+            Debug.LogWarning("Type de Noeud inconnu : " + item);
+            return prefab = new GameObject();
+        }
+        return MCEditorManager.instance.instantiateToolTip(position, prefab, item);
+    }
 }
