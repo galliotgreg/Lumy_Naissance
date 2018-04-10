@@ -65,8 +65,8 @@ Shader "Shader Forge/PictoMC" {
                 float faceSign = ( facing >= 0 ? 1 : -1 );
 ////// Lighting:
 ////// Emissive:
-                float4 node_4150 = _Time + _TimeEditor;
-                float2 node_9750 = (i.uv0+node_4150.g*float2(0.35,0.2));
+                float4 node_9558 = _Time + _TimeEditor;
+                float2 node_9750 = (i.uv0+node_9558.g*float2(0.35,0.2));
                 float4 _node_6151_var = tex2D(_node_6151,TRANSFORM_TEX(node_9750, _node_6151));
                 float2 node_3317 = lerp(i.uv0,float2(_node_6151_var.r,_node_6151_var.r),_NoiseIntensity);
                 float4 _MainTex_var = tex2D(_MainTex,TRANSFORM_TEX(node_3317, _MainTex));

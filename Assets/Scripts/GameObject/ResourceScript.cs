@@ -74,8 +74,10 @@ public class ResourceScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        spawnPoints = new List<Transform>();
         randomizeLoccation(); 
 		this.Location = positionFromTransform ();
+        
 	}
 	
 	// Update is called once per frame
@@ -105,6 +107,11 @@ public class ResourceScript : MonoBehaviour {
                 spawnPoints.Add(go[i].transform);
             }     
         }
+        if (spawnPoints.Count <= 0)
+        {
+            return;
+        }
+
         int index = Random.Range(0, spawnPoints.Count - 1);
         this.transform.position = spawnPoints[index].position; 
     }

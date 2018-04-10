@@ -44,13 +44,19 @@ public class MC_Inventory_Operators : MC_Inventory {
 	}
 
 	#region Filter
+	List<ParamType> currentTypes = new List<ParamType>();
 	protected void loadReturnTypeDropdown(){
 		returnTypeDropdown.ClearOptions ();
+		currentTypes = new List<ParamType>();
 
 		List<string> types = new List<string> ();
 		foreach( ParamType type in System.Enum.GetValues( typeof( ParamType ) ) ){
 			if (type != ParamType.None) {
-				types.Add (type.ToString ());
+				// Check if there are items
+				if( filterReturnType( ABModel.ParamTypeToType( type ), allOperators ).Count > 0 ){
+					currentTypes.Add (type);
+					types.Add (type.ToString ());
+				}
 			}
 		}
 		returnTypeDropdown.AddOptions ( types );
@@ -61,11 +67,14 @@ public class MC_Inventory_Operators : MC_Inventory {
 	}
 
 	public List<IABOperator> filterReturnType( int index, List<IABOperator> operators ){
-		// other types
-		System.Type selectedType = ABModel.ParamTypeToType( (ParamType) System.Enum.GetValues( typeof( ParamType ) ).GetValue( index ) );
+		System.Type selectedType = ABModel.ParamTypeToType( currentTypes[ index ] );
+		Debug.LogError (currentTypes [index].ToString ());
+		return filterReturnType (selectedType, operators);
+	}
+	public List<IABOperator> filterReturnType( System.Type type, List<IABOperator> operators ){
 		List<IABOperator> result = new List<IABOperator>();
 		foreach ( IABOperator oper in operators ) {
-			if( oper.getOutcomeType() == selectedType ){
+			if( oper.getOutcomeType() == type ){
 				result.Add ( oper );
 			}
 		}
