@@ -110,7 +110,7 @@ public class HomeScript : MonoBehaviour {
 
 	public string PrysmeName { 
 		get { 
-			return prysme.CastName; 
+			return Prysme.CastName; 
 		} 
 	}
 
@@ -125,9 +125,22 @@ public class HomeScript : MonoBehaviour {
 			return key;
 		}
 	}
-	#endregion
 
-	public List<AgentEntity> getPopulation(){
+    public AgentEntity Prysme
+    {
+        get
+        {
+            return prysme;
+        }
+
+        set
+        {
+            prysme = value;
+        }
+    }
+    #endregion
+
+    public List<AgentEntity> getPopulation(){
 		List<AgentEntity> result = new List<AgentEntity>();
 		foreach( List<AgentEntity> agent in this.populationGameObj.Values ){
 			result.AddRange(agent);
@@ -141,7 +154,7 @@ public class HomeScript : MonoBehaviour {
 
 	public void addPrysmeToHome( AgentEntity prysme ){ 
 		this.addUnitToHome (prysme); 
-		this.prysme = prysme; 
+		this.Prysme = prysme; 
 	}
 	public void addUnitToHome( AgentEntity unit ){
 		if( !this.populationGameObj.ContainsKey( unit.Context.Model.Cast ) ){

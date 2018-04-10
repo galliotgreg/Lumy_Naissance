@@ -44,7 +44,9 @@ public class MCEditorManager : MonoBehaviour
     private Text toolTipText;
 
     //ToolTip
-    private List<Help> database = new List<Help>();
+    private List<Help> databaseOperators = new List<Help>();
+    private List<Help> databaseActions = new List<Help>();
+    private List<Help> databaseParams = new List<Help>();
 
     //[SerializeField]
     private string MC_OrigFilePath;
@@ -95,6 +97,10 @@ public class MCEditorManager : MonoBehaviour
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
         toolTipText = GetComponentInChildren<Text>();
+        //LoadActionDatabase();
+        //LoadOperatorDatabase();
+        //LoadParamDatabase();
+
 
         /**START DO NOT COMMIT**/
         if (AppContextManager.instance.PrysmeEdit)
@@ -154,6 +160,14 @@ public class MCEditorManager : MonoBehaviour
         LoadProxyStates();
         LoadProxyTransitions();
         LoadMC_Position();
+    }
+
+    public void TemporarySetupModel(string cast_name, string id)
+    {
+        abModel = LoadMCFromTemporary(cast_name, id);
+        LoadProxyStates();
+        LoadProxyTransitions();
+        LoadMC_PositionFromTemporary(cast_name, id);
     }
 
     void setProxyPositionOnLoad(string nameProxy, bool isStateBlock, bool isActionBlock, bool isOperatorBlock, bool isParameterBlock, float x, float y, float z)
@@ -307,7 +321,72 @@ public class MCEditorManager : MonoBehaviour
             reader.Close();
         }
     }
+    public void LoadMC_PositionFromTemporary(string cast_name, string id)
+    {
+        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + cast_name + "_POSITION_" + id + ".csv";
+        //string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";
+        if (File.Exists(csvpath))
+        {
+            StreamReader reader = new StreamReader(csvpath);
 
+            List<string> lines = new List<string>();
+
+            bool isStateBlock = false;
+            bool isActionBlock = false;
+            bool isOperatorBlock = false;
+            bool isParameterBlock = false;
+
+            while (reader.Peek() >= 0)
+            {
+                lines.Add(reader.ReadLine());
+            }
+            foreach (string line in lines)
+            {
+                if (line != ",,")
+                {
+                    String[] tokens = line.Split(',');
+                    if (tokens[0] == "States")
+                    {
+                        isStateBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Actions")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Operators")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = false;
+                        isOperatorBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Parameters")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = false;
+                        isOperatorBlock = false;
+                        isParameterBlock = true;
+                        continue;
+                    }
+
+                    string name = tokens[0];
+
+                    string x_string = tokens[1];
+                    string y_string = tokens[2];
+
+                    float x = float.Parse(x_string);
+                    float y = float.Parse(y_string);
+                    float z = 0;
+
+                    setProxyPositionOnLoad(name, isStateBlock, isActionBlock, isOperatorBlock, isParameterBlock, x, y, z);
+                }
+            }
+            reader.Close();
+        }
+    }
     ABModel LoadMC()
     {
         ABModel model = new ABModel();
@@ -315,6 +394,19 @@ public class MCEditorManager : MonoBehaviour
         /**** START TODO ****/
         //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path        
         model = ABManager.instance.LoadABModelFromFile(MC_OrigFilePath);
+        /**** END TODO ****/
+
+        return model;
+    }
+    ABModel LoadMCFromTemporary(string cast_name, string id)
+    {
+        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + cast_name + "_" + id + ".csv";
+
+        ABModel model = new ABModel();
+
+        /**** START TODO ****/
+        //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path        
+        model = ABManager.instance.LoadABModelFromFile(csvpath);
         /**** END TODO ****/
 
         return model;
@@ -2201,18 +2293,61 @@ public class MCEditorManager : MonoBehaviour
         using (StreamReader stream = new StreamReader(path))
         {
             string json = stream.ReadToEnd();
-            database = JsonConvert.DeserializeObject<List<Help>>(json);
+            databaseActions = JsonConvert.DeserializeObject<List<Help>>(json);
             stream.Close();
         }
     }
 
     public void LoadParamDatabase()
     {
-        string path = Application.dataPath + @"/Inputs/HelpFiles/" + "parametres" + ".json";
+        List<string> jsonList = new List<string>();
+        jsonList.Add("parametres");
+        jsonList.Add("listeReference");
+        databaseParams = new List<Help>();
+
+        foreach(string jsonFile in jsonList)
+        {
+            string path = Application.dataPath + @"/Inputs/HelpFiles/" + jsonFile + ".json";
+            using (StreamReader stream = new StreamReader(path))
+            {
+                string json = stream.ReadToEnd();                
+                foreach (Help paramHelp in JsonConvert.DeserializeObject<List<Help>>(json))
+                {
+                    databaseParams.Add(paramHelp);
+                }
+                stream.Close();
+            }
+        }
+        
+    }
+
+    public void LoadOperatorDatabase()
+    {
+        /*List<string> jsonList = new List<string>();
+        jsonList.Add("accesseurs");
+        jsonList.Add("agregateur");
+        jsonList.Add("comparateurs");
+        jsonList.Add("Enemy");
+        jsonList.Add("extracteurs");
+        jsonList.Add("filtre");
+        jsonList.Add("Game");
+        jsonList.Add("inverseur");
+        jsonList.Add("logique");
+        jsonList.Add("mathematique");
+        jsonList.Add("Ressources");
+        jsonList.Add("Self");
+        jsonList.Add("tableau");
+        jsonList.Add("Trace");*/
+        databaseOperators = new List<Help>();
+
+        string path = Application.dataPath + @"/Inputs/HelpFiles/" + "operateurs" + ".json";
         using (StreamReader stream = new StreamReader(path))
         {
             string json = stream.ReadToEnd();
-            database = JsonConvert.DeserializeObject<List<Help>>(json);
+            foreach (Help paramHelp in JsonConvert.DeserializeObject<List<Help>>(json))
+            {
+                databaseOperators.Add(paramHelp);
+            }
             stream.Close();
         }
     }
@@ -2232,71 +2367,89 @@ public class MCEditorManager : MonoBehaviour
         clone.transform.position = new Vector3(position.x, position.y, -1);
         if (type.Contains("Action"))
         {
-            FeelActionToolTip(clone, proxy);
+            FillActionToolTip(clone, ((ProxyABState)proxy).AbState);
         }
         else if (type.Contains("Param"))
         {
-            FeelParamToolTip(clone, proxy);
+            FillParamToolTip(clone, (IABParam)((ProxyABParam)proxy).AbParam);
         }
         else if (type.Contains("Operator"))
         {
-            FeelOperatorToolTip(clone);
+            FillOperatorToolTip(clone, (IABOperator)((ProxyABOperator)proxy).AbOperator);
         }
         return clone;
     }
 
-    private void FeelActionToolTip(GameObject toolTip, MCEditor_Proxy proxy)
+    public GameObject instantiateToolTip(Vector3 position, GameObject toolTip_prefab, System.Object item)
     {
-        //TODO : Use HelpManager
-        LoadActionDatabase();
+        GameObject clone = Instantiate(toolTip_prefab);
+        clone.transform.SetParent(this.transform);
+        clone.transform.position = new Vector3(0, 0, -1);
+        if (item is ABAction)
+        {
+            FillActionToolTip(clone, (ABState) item);
+        }
+        else if (item is IABParam)
+        {
+            FillParamToolTip(clone, (IABParam)item);
+        }
+        else if (item is IABOperator)
+        {
+            FillOperatorToolTip(clone, (IABOperator)item);
+        }
+        return clone;
+    }
+
+    private void FillActionToolTip(GameObject toolTip, ABState proxy)
+    {                
         int index = -1;
-        for (int i = 0; i < database.Count; i++)
+        for (int i = 0; i < databaseActions.Count; i++)
         {            
-            if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Goto"))
+            if (proxy.Action.GetType().ToString().Contains("Goto"))
             {
-                if (database[i].Title == "goto")
+                if (databaseActions[i].Title == "goto")
                 {
                     index = i;
                 }                    
             }
-            else if(((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Strike"))
+            else if(proxy.Action.GetType().ToString().Contains("Strike"))
             {
-                if (database[i].Title == "strike")
+                if (databaseActions[i].Title == "strike")
                 {
                     index = i;
                 }                    
             }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Pick"))
+            else if (proxy.Action.GetType().ToString().Contains("Pick"))
             {
-                if (database[i].Title == "pick")
+                if (databaseActions[i].Title == "pick")
                 {
                     index = i;
                 }
             }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Drop"))
+            else if (proxy.Action.GetType().ToString().Contains("Drop"))
             {
-                if (database[i].Title == "drop")
+                if (databaseActions[i].Title == "drop")
                 {
                     index = i;
                 }
             }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Lay"))
+            else if (proxy.Action.GetType().ToString().Contains("Lay"))
             {
-                if (database[i].Title == "lay")
+                if (databaseActions[i].Title == "lay")
                 {
                     index = i;
                 }                    
             }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Trace"))
+            else if (proxy.Action.GetType().ToString().Contains("Trace"))
             {
-                if (database[i].Title == "trace")
+                if (databaseActions[i].Title == "trace")
                 {
                     index = i;
                 }                    
             }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Roaming"))
+            else if (proxy.Action.GetType().ToString().Contains("Roaming"))
             {
-                if (database[i].Title == "roaming")
+                if (databaseActions[i].Title == "roaming")
                 {
                     index = i;
                 }                    
@@ -2305,57 +2458,54 @@ public class MCEditorManager : MonoBehaviour
         if(index > -1)
         {            
             Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = database[index].Title;
-            TextFields[1].text = "Value In";
-            TextFields[2].text = database[index].GetContentText();
+            TextFields[0].text = databaseActions[index].Title;            
+            TextFields[1].text = databaseActions[index].GetContentText();
         }        
     }
 
-    private void FeelParamToolTip(GameObject toolTip, MCEditor_Proxy proxy)
-    {
-        //TODO : Use HelpManager
-        LoadParamDatabase();
+    private void FillParamToolTip(GameObject toolTip, IABParam proxy)
+    {                
         int index = -1;
-        for (int i = 0; i < database.Count; i++)
+        for (int i = 0; i < databaseParams.Count; i++)
         {            
             if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Scal"))
             {
-                if (database[i].Title == "Scalaire")
+                if (databaseParams[i].Title == "Scalaire")
                 {
                     index = i;                    
                 }                 
             }
             else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Bool"))
             {
-                if (database[i].Title == "Booléen")
+                if (databaseParams[i].Title == "Booléen")
                 {
                     index = i;
                 }
             }
             else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Color"))
             {
-                if (database[i].Title == "Couleur")
+                if (databaseParams[i].Title == "Couleur")
                 {
                     index = i;
                 }
             }
             else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Vec"))
             {
-                if (database[i].Title == "Vecteur")
+                if (databaseParams[i].Title == "Vecteur")
                 {
                     index = i;
                 }
             }
             else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Text") || ((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Txt"))
             {
-                if (database[i].Title == "Texte")
+                if (databaseParams[i].Title == "Texte")
                 {
                     index = i;
                 }
             }
             else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Ref"))
             {
-                if (database[i].Title == "Référence")
+                if (databaseParams[i].Title == "Référence")
                 {
                     index = i;
                 }
@@ -2364,14 +2514,29 @@ public class MCEditorManager : MonoBehaviour
         if(index > -1)
         {            
             Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = database[index].Title;
-            TextFields[1].text = database[index].GetContentText();
+            TextFields[0].text = databaseParams[index].Title;
+            TextFields[1].text = databaseParams[index].GetContentText();
         }        
     }
 
-    private void FeelOperatorToolTip(GameObject toolTip)
+    private void FillOperatorToolTip(GameObject toolTip, IABOperator proxy)
     {
+        int index = -1;
+        for (int i = 0; i < databaseOperators.Count; i++)
+        {
+            if (((SubHelp)databaseParams[i].Content).SubTitle.Contains(""))
+            {
 
+            }
+        }
+        if (index > -1)
+        {
+            Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
+            TextFields[0].text = ((SubHelp)databaseParams[index].Content).SubTitle;
+            TextFields[1].text = "ValueIn"; //databaseParams[index].Title;
+            TextFields[2].text = "ValueOut"; //databaseParams[index].Title;
+            TextFields[3].text = databaseParams[index].GetContentText();                
+        }
     }
     #endregion
 }
