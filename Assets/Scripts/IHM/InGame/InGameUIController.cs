@@ -471,6 +471,8 @@ public class InGameUIController : MonoBehaviour {
                 }
                 J1_Resources.text = "Resources : " + gameManager.sumResources(PlayerAuthority.Player1);
                 J2_Resources.text = "Resources : " + gameManager.sumResources(PlayerAuthority.Player2);
+
+                PauseGame();
             }
         }
        
