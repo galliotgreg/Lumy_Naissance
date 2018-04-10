@@ -258,7 +258,7 @@ public class InGameUIController : MonoBehaviour {
     private DateTime tsNegativeJ2;
     private DateTime tsPositiveJ2;
 
-
+    private bool panelOpened = true;
 
     #region Instance
     /// <summary>
@@ -416,8 +416,16 @@ public class InGameUIController : MonoBehaviour {
         {
             foreach (GameObject panel in openClosePanelList)
             {
-                panel.GetComponent<OpenClosePanel>().OpenClose();
+                if (panelOpened)
+                {
+                    panel.GetComponent<OpenClosePanel>().CloseGlobal();
+                }
+                else
+                {
+                    panel.GetComponent<OpenClosePanel>().OpenGlobal();
+                }
             }
+            panelOpened = !panelOpened;
         }
     }
 
@@ -463,6 +471,8 @@ public class InGameUIController : MonoBehaviour {
                 }
                 J1_Resources.text = "Resources : " + gameManager.sumResources(PlayerAuthority.Player1);
                 J2_Resources.text = "Resources : " + gameManager.sumResources(PlayerAuthority.Player2);
+
+                PauseGame();
             }
         }
        
