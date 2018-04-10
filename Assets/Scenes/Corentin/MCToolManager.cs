@@ -117,8 +117,27 @@ public class MCToolManager : MonoBehaviour
 
     private void Update()
     {
-        allUnits = FindObjectsOfType<MCEditor_Proxy>();
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            CurrentTool = ToolType.Selection;
+            btn_Selection.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
+            SelectionSquare.instance.enabled = true;
+            isMouseDragging = false;
+            CancelInventory();
 
+        }
+        else if(Input.GetKeyDown(KeyCode.Z))
+        {
+            CurrentTool = ToolType.Hand;
+            btn_Main.GetComponent<ChangeCursorToHand>().OnClickChangeCursor();
+            neverCalculated = true;
+            SelectionSquare.instance.enabled = false;
+            SelectionSquare.instance.MultipleSelection = false;
+            selectionEnCours = false;
+            CancelInventory();
+        }
+
+        allUnits = FindObjectsOfType<MCEditor_Proxy>();
         //Mouse Button Press Down
         if (Input.GetMouseButtonDown(0) && !selectionEnCours)
         {
@@ -431,7 +450,7 @@ public class MCToolManager : MonoBehaviour
             SelectedNodes.Clear();
             //MCEditorManager.instance.SetupModel();
             MCEditorManager.instance.TemporarySetupModel(cast_name, id.ToString());
-            Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
+            //Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
         }
     }
     #endregion
@@ -475,7 +494,7 @@ public class MCToolManager : MonoBehaviour
             SelectedNodes.Clear();
             //MCEditorManager.instance.SetupModel();
             MCEditorManager.instance.TemporarySetupModel(cast_name, id.ToString());
-            Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
+            //Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
         }
     }
     #endregion
@@ -502,7 +521,7 @@ public class MCToolManager : MonoBehaviour
 
 
             MCEditorManager.instance.Temporary_Save_MC_Behavior(cast_name, id.ToString());
-            Debug.Log("SAVE: " + cast_name + "   " + id.ToString());
+            //Debug.Log("SAVE: " + cast_name + "   " + id.ToString());
             saved = true;
             hasBeenAdded = true;
         }
