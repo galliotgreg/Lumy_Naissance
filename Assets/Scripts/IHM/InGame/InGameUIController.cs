@@ -374,7 +374,7 @@ public class InGameUIController : MonoBehaviour {
         }
     }
     private bool statePlayPause = true;
-    private void PauseGame()
+    public void PauseGame()
     {
         Image pp = playPause.GetComponent<Image>();
         if (statePlayPause)
@@ -1091,7 +1091,7 @@ public class InGameUIController : MonoBehaviour {
         alreadyClosed = true; 
     }
 
-    private void OpenOptionsDebug() {
+        public void OpenOptionsDebug() {
 
         if (OperatorHelper.Instance != null)
         {
@@ -1153,6 +1153,7 @@ private void DisplayUnits(Dictionary<string, int> units)
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 //go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
                 go.transform.SetParent(contentParentJ1.transform);
+                go.transform.localScale = new Vector3(1, 1, 1);
             }
         }
     }
@@ -1177,6 +1178,7 @@ private void DisplayUnits(Dictionary<string, int> units)
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 //go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
                 go.transform.SetParent(contentParentJ2.transform);
+                go.transform.localScale = new Vector3(1, 1, 1);
             }
         }
     }

@@ -44,13 +44,19 @@ public class MC_Inventory_Operators : MC_Inventory {
 	}
 
 	#region Filter
+	List<ParamType> currentTypes = new List<ParamType>();
 	protected void loadReturnTypeDropdown(){
 		returnTypeDropdown.ClearOptions ();
+		currentTypes = new List<ParamType>();
 
 		List<string> types = new List<string> ();
 		foreach( ParamType type in System.Enum.GetValues( typeof( ParamType ) ) ){
 			if (type != ParamType.None) {
-				types.Add (type.ToString ());
+				// Check if there are items
+				if( filterReturnType( ABModel.ParamTypeToType( type ), allOperators ).Count > 0 ){
+					currentTypes.Add (type);
+					types.Add (type.ToString ());
+				}
 			}
 		}
 		returnTypeDropdown.AddOptions ( types );
@@ -61,11 +67,14 @@ public class MC_Inventory_Operators : MC_Inventory {
 	}
 
 	public List<IABOperator> filterReturnType( int index, List<IABOperator> operators ){
-		// other types
-		System.Type selectedType = ABModel.ParamTypeToType( (ParamType) System.Enum.GetValues( typeof( ParamType ) ).GetValue( index ) );
+		System.Type selectedType = ABModel.ParamTypeToType( currentTypes[ index ] );
+		Debug.LogError (currentTypes [index].ToString ());
+		return filterReturnType (selectedType, operators);
+	}
+	public List<IABOperator> filterReturnType( System.Type type, List<IABOperator> operators ){
 		List<IABOperator> result = new List<IABOperator>();
 		foreach ( IABOperator oper in operators ) {
-			if( oper.getOutcomeType() == selectedType ){
+			if( oper.getOutcomeType() == type ){
 				result.Add ( oper );
 			}
 		}
@@ -82,7 +91,20 @@ public class MC_Inventory_Operators : MC_Inventory {
 
 	protected override void configItem (MC_InventoryItem item)
 	{
-		item.Text.text = MCEditor_Proxy.getNodeName((ABNode)item.Item);
+		item.TextItem.text = MCEditor_Proxy.getNodeName((ABNode)item.Item);
+		IABOperator op = ((IABOperator)item.Item);
+		// Setting return type as title
+		item.Title = MCEditor_Proxy.getNodeName((ABNode)item.Item);
+		// item.Title = MCEditor_Proxy.typeToString( op.getOutcomeType() );
+		// Setting param type as subtitle
+		string subTitle = "";
+		for(int i=0; i<op.Inputs.Length; i++){
+			subTitle += (i>0?"\n":"") + MCEditor_Proxy.typeToString( op.getIncomeType(i) );
+			if (ABStar<ABBool>.isStar (op.getIncomeType (i))) {
+				break;
+			}
+		}
+		item.SubTitle = subTitle;
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Operator;
 	}

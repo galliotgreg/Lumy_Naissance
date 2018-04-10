@@ -34,15 +34,23 @@ public class MCEditor_ProxyIcon_Manager : MonoBehaviour {
 		if (item is ABState) {
 			ABState state = (ABState)item;
 
-			if( state.Action != null ){
+			if (state.Action != null) {
 				string prefix = "Action/Action_";
-				imageFileName = prefix + getAction(state.Action.Type);
+				imageFileName = prefix + getAction (state.Action.Type);
 			}
 		} else if (item is IABOperator) {
-			string prefix = "Operator/Operator_";
 			IABOperator operat = (IABOperator)item;
+			// Macro
+			if( ABMacroOperator<ABBool>.isMacro( operat.GetType() )){
+				string prefix = "MacroOperator/Macro_";
 
-			imageFileName = prefix + getOperatorCategorie(operat.OpType);
+				imageFileName = prefix + getMacroOperator(operat);
+			}
+			else{
+				string prefix = "Operator/Operator_";
+
+				imageFileName = prefix + getOperatorCategorie(operat.OpType);
+			}
 		} else if (item is IABParam) {
 			string prefix = "Parameter/Parameter_";
 			IABParam param = (IABParam)item;
@@ -195,13 +203,10 @@ public class MCEditor_ProxyIcon_Manager : MonoBehaviour {
 		return "";
 	}
 
-	/*string getMacroOperatorCategorie( ABMacroOperatorFactory op ){
-		switch (op) {
-		case OperatorType.:
-			return "And";
-		}
-		return "";
-	}*/
+	string getMacroOperator( IABOperator op ){
+		int macroIndex = op.SymbolName.LastIndexOf ("_macro");
+		return op.SymbolName.Substring (0, macroIndex);
+	}
 	#endregion
 
 	// Use this for initialization

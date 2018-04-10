@@ -14,7 +14,7 @@ public class SetPlayerLight : MonoBehaviour {
     void Update()
     {
         Light light = GetComponent<Light>();
-        Color color = Color.white;
+        Color color = new Color32(88, 255, 255, 255);
 
         if (transform.parent != null)
         {
@@ -25,7 +25,7 @@ public class SetPlayerLight : MonoBehaviour {
             }
             if (agent.Home != null && agent.Authority == PlayerAuthority.Player2)
             {
-                color = new Color32(230, 60, 250, 255);
+                color = new Color32(255, 99, 246, 255);
             }
         }
         light.color = color;

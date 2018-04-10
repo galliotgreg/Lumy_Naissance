@@ -342,6 +342,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void OnDestroy()
     {
+        ABManager.instance.Reset(false);
         SceneManager.UnloadScene("MapSwarmEdit");
     }
 
