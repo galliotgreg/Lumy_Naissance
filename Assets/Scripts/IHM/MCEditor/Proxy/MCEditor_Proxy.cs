@@ -10,7 +10,37 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
     protected float timeOnHoverWait = 1.5f;
     protected bool toolTipIsCreated = false;    
 
-    public List<Pin> AllPins{
+	[SerializeField]
+	protected UnityEngine.UI.Text text;
+	[SerializeField]
+	protected UnityEngine.UI.Image image;
+
+	public UnityEngine.UI.Text Text {
+		get {
+			return text;
+		}
+		set {
+			text = value;
+		}
+	}
+
+	public Sprite Image {
+		get {
+			return image.sprite;
+		}
+		set {
+			image.sprite = value;
+
+			// Choose the element which will be activated
+			if (value == null) {
+				image.gameObject.SetActive (false);
+			} else {
+				text.gameObject.SetActive (false);
+			}
+		}
+	}
+
+	public List<Pin> AllPins{
 		get{
 			return new List<Pin> (this.gameObject.GetComponentsInChildren<Pin> ());
 		}
@@ -57,20 +87,17 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
     #region VIEW METHODS
     public void SetNodeName(ABNode node)
 	{
-		UnityEngine.UI.Text operatorName = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
-		operatorName.text = getNodeName( node );
+		SetProxyName( getNodeName( node ) );
 	}
 
     public void SetMacroNodeName(ABNode node)
     {
-        UnityEngine.UI.Text operatorName = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
-        string temp = ((IABOperator)(node)).ViewName;        
-        operatorName.text = temp;
+		SetProxyName( ((IABOperator)(node)).ViewName );
     }
 
     public void SetProxyName(string name)
 	{
-		UnityEngine.UI.Text text = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
+		UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text> ();
 		text.text = name;
 	}
 
