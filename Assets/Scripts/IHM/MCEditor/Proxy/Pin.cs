@@ -74,7 +74,7 @@ public class Pin : DragSelectableProxyGameObject {
 
     // Use this for initialization
     protected void Start () {
-		trackingCamera = ( MCEditor_BringToFront_Camera.CanvasCamera != null ? MCEditor_BringToFront_Camera.CanvasCamera : NavigationManager.instance.Camera );        
+		trackingCamera = ( MCEditor_BringToFront_Camera.CanvasCamera != null ? MCEditor_BringToFront_Camera.CanvasCamera : NavigationManager.instance.GetCurrentCamera());        
 	}
 
 	// Update is called once per frame

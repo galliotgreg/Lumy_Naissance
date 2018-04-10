@@ -132,7 +132,7 @@ public class LumyEditorManager : MonoBehaviour
 
     private AgentComponent FindCompoOnCursor()
     {
-        Ray ray = NavigationManager.instance.Camera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = NavigationManager.instance.GetCurrentCamera().ScreenPointToRay(Input.mousePosition);
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo))
         {

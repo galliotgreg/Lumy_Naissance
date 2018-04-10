@@ -9,7 +9,7 @@ public class DemoScene : MonoBehaviour
 
     private void Start()
     {
-        Transform camT = NavigationManager.instance.Camera.transform;
+        Transform camT = NavigationManager.instance.GetCurrentCamera().transform;
         btn45.onClick.AddListener(() => SetXRotation(camT, 45f));
         btn90.onClick.AddListener(() => SetXRotation(camT, 90f));
     }

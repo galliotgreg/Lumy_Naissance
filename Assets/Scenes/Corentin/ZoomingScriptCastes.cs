@@ -14,10 +14,10 @@ public class ZoomingScriptCastes : MonoBehaviour
     {
         if (SceneManager.GetSceneByName("CastesScene").isLoaded)
         {
-            float prev_size = NavigationManager.instance.Camera.fieldOfView;
+            float prev_size = NavigationManager.instance.GetCurrentCamera().fieldOfView;
             float new_size = prev_size + Input.GetAxis("Mouse ScrollWheel") * sensitivity;
             new_size = Mathf.Clamp(new_size, minFoV, maxFoV);
-            NavigationManager.instance.Camera.fieldOfView = new_size;
+            NavigationManager.instance.GetCurrentCamera().fieldOfView = new_size;
         } 
     }
 }

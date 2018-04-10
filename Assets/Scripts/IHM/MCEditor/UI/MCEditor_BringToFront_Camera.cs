@@ -14,8 +14,8 @@ public class MCEditor_BringToFront_Camera : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        canvasCam.transform.position = NavigationManager.instance.Camera.transform.position;
-        canvasCam.transform.position = NavigationManager.instance.Camera.transform.position; 
+       // canvasCam.transform.position = Camera.main.transform.position;
+        canvasCam.transform.position = NavigationManager.instance.GetCurrentCamera().transform.position; 
         CanvasCamera = canvasCam;
 
 		canvas.planeDistance = Mathf.Abs( canvasCam.transform.position.z / 2 );
