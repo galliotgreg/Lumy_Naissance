@@ -288,7 +288,6 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void Start()
     {
-        AppContextManager.instance.LoadPlayerSpecies("XXX_specie", "XXX_specie");
         SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
@@ -608,7 +607,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     void Update()
     {
-        if (/*GameObject.Find("Liste_Actions")*/GameManager.instance != null)
+        if (GameManager.instance != null)
         {
             isSceneLoaded = true;
         }
@@ -638,8 +637,32 @@ public class SwarmEditUIController : MonoBehaviour
             return;
         }
 
+        RefreashInGame();
+    }
+
+    private void RefreashInGame()
+    {
+        //Setup Player Folders
+        string specieName = AppContextManager.instance.ActiveSpecie.Name;
+        string castName = AppContextManager.instance.ActiveCast.Name;
+        AppContextManager.instance.LoadPlayerSpecies(specieName, "XXX_specie");
+
+        //Erase Player 1 prysme
+        string p1PrismeFilePath = AppContextManager.instance.Player1FolderPath
+            + AppContextManager.instance.PRYSME_FILE_NAME
+            + AppContextManager.instance.CSV_EXT;
+        string templatePrysmeFilePath = AppContextManager.instance.TemplateFolderPath
+            + AppContextManager.instance.PRYSME_FILE_NAME
+            + AppContextManager.instance.CSV_EXT;
+        File.Delete(p1PrismeFilePath);
+        File.Copy(templatePrysmeFilePath, p1PrismeFilePath);
+
+        //ResetGame Manager
+        GameManager.instance.ResetGame();
+
+        //Replace old Lumy by new one
         GameObject oldEditedInGameLumy = editedInGameLumy;
-        LayLumyInGame("origin");
+        LayLumyInGame(castName);
         if (oldEditedInGameLumy != null)
         {
             Unit_GameObj_Manager.instance.KillUnit(oldEditedInGameLumy.GetComponent<AgentEntity>());

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraSwarmEdit : MonoBehaviour {
     private GameObject target;
+    private GameObject hearth;
 
     public GameObject Target
     {
@@ -15,6 +16,7 @@ public class CameraSwarmEdit : MonoBehaviour {
         set
         {
             target = value;
+            hearth = target.transform.Find("Hearth").gameObject;
         }
     }
 
@@ -25,12 +27,12 @@ public class CameraSwarmEdit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (target != null)
+		if (hearth != null)
         {
             this.transform.position = new Vector3(
-                target.transform.position.x, 
-                this.transform.position.y, 
-                target.transform.position.z);
+                hearth.transform.position.x, 
+                this.transform.position.y,
+                hearth.transform.position.z);
         }
 	}
 }
