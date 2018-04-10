@@ -35,16 +35,19 @@ public class MCEditor_ProxyIcon_Manager : MonoBehaviour {
 			ABState state = (ABState)item;
 
 			if( state.Action != null ){
-				imageFileName = state.Action.Type.ToString ();
+				string prefix = "Action/Action_";
+				imageFileName = prefix + getAction(state.Action.Type);
 			}
 		} else if (item is IABOperator) {
 			string prefix = "Operator/Operator_";
 			IABOperator operat = (IABOperator)item;
 
-			imageFileName = prefix+getOperatorCategorie(operat.OpType);
+			imageFileName = prefix + getOperatorCategorie(operat.OpType);
 		} else if (item is IABParam) {
+			string prefix = "Parameter/Parameter_";
 			IABParam param = (IABParam)item;
-			imageFileName = param.Identifier;
+
+			imageFileName = prefix + getParam(param);
 		}
 
 		return getItemImage ( imageFileName );
@@ -59,6 +62,21 @@ public class MCEditor_ProxyIcon_Manager : MonoBehaviour {
 	}
 
 	#region DICTIONARIES
+	string getAction( ActionType action ){
+		return action.ToString();
+	}
+
+	string getParam( IABParam param ){
+		if (param is ABColorParam) {
+			ABColor color = ((ABColorParam)param).Value;
+			return "Color_" + color.Value.ToString();
+		}
+		else if (param is ABTextParam) {
+			return "Text";
+		}
+		return "";
+	}
+
 	string getOperatorCategorie( OperatorType op ){
 		switch (op) {
 		case OperatorType.Bool_And_Bool_Bool:
@@ -176,6 +194,14 @@ public class MCEditor_ProxyIcon_Manager : MonoBehaviour {
 		}
 		return "";
 	}
+
+	/*string getMacroOperatorCategorie( ABMacroOperatorFactory op ){
+		switch (op) {
+		case OperatorType.:
+			return "And";
+		}
+		return "";
+	}*/
 	#endregion
 
 	// Use this for initialization

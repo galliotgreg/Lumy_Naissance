@@ -47,6 +47,8 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private GameObject editedLumy;
 
+    private GameObject editedInGameLumy;
+
     /// <summary>
     /// Empty lumy prefab
     /// </summary>
@@ -282,16 +284,20 @@ public class SwarmEditUIController : MonoBehaviour
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
 
+    private GameObject renderingCamera;
+
     private void Start()
     {
+        AppContextManager.instance.LoadPlayerSpecies("XXX_specie", "XXX_specie");
+        SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
-        //SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
     }
+
 
     private void OnDestroy()
     {
-        //SceneManager.UnloadScene("MapSwarmEdit");
+        SceneManager.UnloadScene("MapSwarmEdit");
     }
 
     #region Stats Button Listener
@@ -602,15 +608,16 @@ public class SwarmEditUIController : MonoBehaviour
 
     void Update()
     {
-        if (GameObject.Find("Liste_Actions") != null)
+        if (/*GameObject.Find("Liste_Actions")*/GameManager.instance != null)
         {
             isSceneLoaded = true;
         }
 
         if (isSceneLoaded && !isFirstRefreashed)
         {
-            RefreshView();
             isFirstRefreashed = true;
+            renderingCamera = GameObject.FindGameObjectWithTag("RenderCamera");
+            RefreshView();
         } 
     }
 
@@ -625,6 +632,46 @@ public class SwarmEditUIController : MonoBehaviour
         RefreashLumyStats();
         RefreshStatBars();
         StatsButtonListener();
+
+        if (!isFirstRefreashed)
+        {
+            return;
+        }
+
+        GameObject oldEditedInGameLumy = editedInGameLumy;
+        LayLumyInGame("origin");
+        if (oldEditedInGameLumy != null)
+        {
+            Unit_GameObj_Manager.instance.KillUnit(oldEditedInGameLumy.GetComponent<AgentEntity>());
+        }
+    }
+
+    private void LayLumyInGame(string castName)
+    {
+        GameObject editedLumyPrefab = GameManager.instance.GetUnitTemplate(
+                        PlayerAuthority.Player1, castName);
+        HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
+
+        //find spawn pos
+        Vector3 spawnPos = homeScript.transform.position;
+        Quaternion spawnRot = Quaternion.identity;
+        if (editedInGameLumy != null)
+        {
+            spawnPos = editedInGameLumy.transform.position;
+            spawnRot = editedInGameLumy.transform.rotation;
+        }
+
+        editedInGameLumy = Instantiate(editedLumyPrefab, spawnPos, spawnRot);
+        editedInGameLumy.SetActive(true);
+        AgentEntity editedLumyEntity = editedInGameLumy.GetComponent<AgentEntity>();
+        editedInGameLumy.transform.parent = GameManager.instance.transform;
+        editedInGameLumy.name = editedLumyEntity.CastName;
+        editedLumyEntity.GameParams =
+        GameManager.instance.GameParam.GetComponent<GameParamsScript>();
+
+        Unit_GameObj_Manager.instance.addUnit(editedLumyEntity, homeScript);
+
+        renderingCamera.GetComponent<CameraSwarmEdit>().Target = editedInGameLumy;
     }
 
     /// <summary>
@@ -725,7 +772,7 @@ public class SwarmEditUIController : MonoBehaviour
             //Set Position
             rectTransform.localPosition = new Vector3(
                 200f,
-                -i * (rectTransform.rect.height + 20f) - 20f,
+                -i * (rectTransform.rect.height + 20f) - 70f,
                 0f);
             rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
@@ -795,6 +842,8 @@ public class SwarmEditUIController : MonoBehaviour
         //Destroy last Lumy
         if (editedLumy != null)
         {
+            editedLumy.GetComponent<AgentEntity>().enabled = false;
+            editedLumy.SetActive(false);
             Destroy(editedLumy);
         }
 
@@ -904,6 +953,7 @@ public class SwarmEditUIController : MonoBehaviour
     }
     #endregion
 
+    #region Display Actions
     /// <summary>
     /// Find actions used in the mc of the current cast and show this in the actions list canvas
     /// </summary>
@@ -938,7 +988,7 @@ public class SwarmEditUIController : MonoBehaviour
                 }
             }
 
-            int i = 1;
+            //int i = 1;
             
             /* Greg's code for text display :
              * 
@@ -975,6 +1025,8 @@ public class SwarmEditUIController : MonoBehaviour
                 text.color = new Color32(70, 70, 70, 255);
             }
             
+            //Set Panel color
+            imageAction[0].color = new Color32(255, 255, 255, 255);
             //Set title color
             textAction[0].color = new Color32(255, 255, 255, 255);
 
@@ -1013,12 +1065,10 @@ public class SwarmEditUIController : MonoBehaviour
                 }
 
             }
-
-           
-
             reader.Close();
         }
     }
+    #endregion
 
     /// <summary>
     /// Load the selected lumy given its cast name
@@ -1029,6 +1079,8 @@ public class SwarmEditUIController : MonoBehaviour
         //Destroy last Lumy
         if (editedLumy != null)
         {
+            editedLumy.GetComponent<AgentEntity>().enabled = false;
+            editedLumy.SetActive(false);
             Destroy(editedLumy);
         }
 
@@ -1090,6 +1142,9 @@ public class SwarmEditUIController : MonoBehaviour
         //Layout
         editedLumy.transform.position = new Vector3(-6f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+
+        //Hide
+        editedLumy.SetActive(false);
     }
 
     /// <summary>

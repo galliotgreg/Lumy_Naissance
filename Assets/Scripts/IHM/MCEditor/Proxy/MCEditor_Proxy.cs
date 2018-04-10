@@ -11,9 +11,9 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
     protected bool toolTipIsCreated = false;    
 
 	[SerializeField]
-	UnityEngine.UI.Text text;
+	protected UnityEngine.UI.Text text;
 	[SerializeField]
-	UnityEngine.UI.Image image;
+	protected UnityEngine.UI.Image image;
 
 	public UnityEngine.UI.Text Text {
 		get {
@@ -23,13 +23,13 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 			text = value;
 		}
 	}
+
 	public Sprite Image {
 		get {
 			return image.sprite;
 		}
 		set {
 			image.sprite = value;
-			image.preserveAspect = true;
 
 			// Choose the element which will be activated
 			if (value == null) {
@@ -87,20 +87,17 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
     #region VIEW METHODS
     public void SetNodeName(ABNode node)
 	{
-		UnityEngine.UI.Text operatorName = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
-		operatorName.text = getNodeName( node );
+		SetProxyName( getNodeName( node ) );
 	}
 
     public void SetMacroNodeName(ABNode node)
     {
-        UnityEngine.UI.Text operatorName = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
-        string temp = ((IABOperator)(node)).ViewName;        
-        operatorName.text = temp;
+		SetProxyName( ((IABOperator)(node)).ViewName );
     }
 
     public void SetProxyName(string name)
 	{
-		UnityEngine.UI.Text text = this.gameObject.GetComponentInChildren<UnityEngine.UI.Text>();
+		UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text> ();
 		text.text = name;
 	}
 

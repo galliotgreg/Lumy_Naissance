@@ -22,6 +22,7 @@ public class ABMacroOperator<T> : ABOperator<T>
 
         set
         {
+			//Debug.LogError ("Class = "+value);
             className = value;
         }
     }
@@ -35,6 +36,7 @@ public class ABMacroOperator<T> : ABOperator<T>
 
         set
         {
+			//Debug.LogError ("View = "+value);
             viewName = value;
         }
     }
@@ -48,6 +50,7 @@ public class ABMacroOperator<T> : ABOperator<T>
 
         set
         {
+			//Debug.LogError ("Symbol = "+value);
             symbolName = value;
         }
     }

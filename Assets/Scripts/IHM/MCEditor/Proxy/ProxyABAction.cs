@@ -31,8 +31,8 @@ set
 			return name;
 		}
 		set {
-			UnityEngine.UI.Text stateName = this.GetComponentInChildren<UnityEngine.UI.Text>();
-			stateName.text = value;
+			UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text> ();
+			text.text = value;
 			abState.Name = value;
 			name = value;
 		}
@@ -48,6 +48,9 @@ public ABState AbState
 	set
 	{
 		abState = value;
+		if (value != null) {
+			Name = value.Name;
+		}
 	}
 }
 
@@ -142,10 +145,7 @@ public static ProxyABAction instantiate( ABState state, Vector3 position, Transf
 	result.IsLoaded = true;
 	result.transform.position = position;
 
-	UnityEngine.UI.Text actionName = result.GetComponentInChildren<UnityEngine.UI.Text>();
-	actionName.text = state.Name;
-
-	result.GetComponent<ProxyABAction>().AbState = state;
+	result.AbState = state;
 
 	// Create Pins
 	if (state.Action.Parameters != null) {

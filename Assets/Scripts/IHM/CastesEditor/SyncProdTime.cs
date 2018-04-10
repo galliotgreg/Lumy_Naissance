@@ -13,6 +13,6 @@ public class SyncProdTime : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = SwarmEditUIController.instance.ProdTime.ToString();
+        text.text = SwarmEditUIController.instance.ProdTime.ToString() + " s";
     }
 }
