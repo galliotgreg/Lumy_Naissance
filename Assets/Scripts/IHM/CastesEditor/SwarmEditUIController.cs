@@ -47,6 +47,8 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private GameObject editedLumy;
 
+    private GameObject editedInGameLumy;
+
     /// <summary>
     /// Empty lumy prefab
     /// </summary>
@@ -72,6 +74,9 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private GameObject editSwarmDialog;
 
+    [SerializeField]
+    private Button editSwarmImageButton;
+
     /// <summary>
     /// The btn prefab for swarm selection 
     /// </summary>
@@ -91,6 +96,12 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private GameObject prysmePanel;
 
+    [SerializeField]
+    private Button editCastImageButton;
+
+    [SerializeField]
+    private GameObject castImageDialog;
+
     /// <summary>
     /// The name of the current lumy on the main panel
     /// </summary>
@@ -103,6 +114,12 @@ public class SwarmEditUIController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject renameLumyDialog;
+
+    /// <summary>
+    /// Swarm Image panel
+    /// </summary>
+    [SerializeField]
+    private GameObject swarmImageDialog;
 
     /// <summary>
     /// The new name of the lumy
@@ -142,10 +159,27 @@ public class SwarmEditUIController : MonoBehaviour
     private GameObject lumysScrollContent;
 
     /// <summary>
+    /// The canvas listing all images set in LumyPictFactory
+    /// </summary>
+    [Header("Select Swarm Images Scroll")]
+    [SerializeField]
+    private GameObject swarmImageScrollContent;
+
+    [Header("Select Cast Images Scroll")]
+    [SerializeField]
+    private GameObject castImageScrollContent;
+
+    /// <summary>
     /// Instancied prefab for each lumys on the lumy scroll content
     /// </summary>
     [SerializeField]
     private GameObject lumyButtonPrefab;
+
+    /// <summary>
+    /// Instancied prefab for image on the swarm images scroll content
+    /// </summary>
+    [SerializeField]
+    private GameObject swarmImageButtonPrefab;
 
     /// <summary>
     /// Set the margin beetween each lumy select button
@@ -153,6 +187,17 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private float lumyYMarginLayout = 35f;
 
+    /// <summary>
+    /// Set the margin beetween each lumy select button
+    /// </summary>
+    [SerializeField]
+    private float swarmImagesYMarginLayout;
+
+    [Header("Basic Layer Prefabs")]
+    [SerializeField]
+    private GameObject swarmPrefabsToDestroyPanel;
+    [SerializeField]
+    private GameObject castPrefabsToDestroyPanel;
     /// <summary>
     /// Elements needed for stat bars display
     /// </summary>
@@ -177,6 +222,9 @@ public class SwarmEditUIController : MonoBehaviour
   
     private List<GameObject> barLeftStatsList;
     private List<GameObject> barRightStatsList;
+
+    private GameObject[] swarmImagesArray;
+    private GameObject[] castImagesArray;
 
     /// <summary>
     /// Increase / Decrease stats Button
@@ -282,16 +330,19 @@ public class SwarmEditUIController : MonoBehaviour
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
 
+    private GameObject renderingCamera;
+
     private void Start()
     {
+        SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
-        //SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
     }
+
 
     private void OnDestroy()
     {
-        //SceneManager.UnloadScene("MapSwarmEdit");
+        SceneManager.UnloadScene("MapSwarmEdit");
     }
 
     #region Stats Button Listener
@@ -600,17 +651,248 @@ public class SwarmEditUIController : MonoBehaviour
     }
     #endregion
 
+    #region Set Swarm Image
+    public void OpenSwarmImageDialog()
+    {
+        swarmImageDialog.SetActive(!swarmImageDialog.activeSelf);
+        RefreshView();
+    }
+
+    private void RefreshSwarmImageScroll()
+    {
+        //Delete Prefabs
+        IList<GameObject> prefabsChilds = new List<GameObject>();
+        if (swarmPrefabsToDestroyPanel.transform.childCount != 0)
+        {
+            for (int i = 0; i < swarmPrefabsToDestroyPanel.transform.childCount; i++)
+            {
+                prefabsChilds.Add(swarmPrefabsToDestroyPanel.transform.GetChild(i).gameObject);
+            }
+            if (prefabsChilds != null)
+            {
+                foreach (GameObject child in prefabsChilds)
+                {
+                    Destroy(child);
+                }
+            }
+        }
+
+        //Instantiate Picts
+        swarmImagesArray = LumyPictFactory.instance.InstanciateAllPicts();
+ 
+        foreach (GameObject image in swarmImagesArray)
+        {
+            image.transform.SetParent(swarmPrefabsToDestroyPanel.transform);
+        }
+
+        //Remove old buttons
+        IList<GameObject> childs = new List<GameObject>();
+        for (int i = 0; i < swarmImageScrollContent.transform.childCount; i++)
+        {
+            childs.Add(swarmImageScrollContent.transform.GetChild(i).gameObject);
+        }
+        foreach (GameObject child in childs)
+        {
+            Destroy(child);
+        }
+
+        //Set scrollRect size
+        RectTransform rec = swarmImageScrollContent.transform.GetComponent<RectTransform>();
+        rec.sizeDelta = new Vector2(rec.sizeDelta.x, swarmImagesArray.Length * (swarmImageButtonPrefab.GetComponent<RectTransform>().sizeDelta.y + 20f) + 20f);
+
+        //Create new buttons
+        float yLeft = -66f;
+        float yMid = -66f;
+        float yRight = -66f;
+        float scalFactor = 0.01f;
+
+        foreach (GameObject image in swarmImagesArray)
+        {
+            //Create Button
+            GameObject button = Instantiate(swarmImageButtonPrefab, Vector3.zero, Quaternion.identity);
+
+            //LButton Layout
+            Vector3 pos = swarmImageScrollContent.transform.position;
+            float nbImageLeftColumn = Mathf.Ceil(swarmImagesArray.Length/3f);
+            //Left Column
+            if (System.Array.IndexOf(swarmImagesArray, image) < nbImageLeftColumn)
+            {
+                pos += new Vector3(-135f * scalFactor, yLeft * scalFactor, 0f);
+                //button
+                button.transform.position = pos;
+                button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
+                yLeft -= swarmImagesYMarginLayout;
+                button.transform.SetParent(swarmImageScrollContent.transform);
+               
+                //Change button material
+                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+            }
+            //Mid Column
+            else if( nbImageLeftColumn <= System.Array.IndexOf(swarmImagesArray, image)  && System.Array.IndexOf(swarmImagesArray, image) < 2f * nbImageLeftColumn)
+            {
+                pos += new Vector3( 25f * scalFactor, yMid * scalFactor, 0f);
+                button.transform.position = pos;
+                button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
+                yMid -= swarmImagesYMarginLayout;
+                button.transform.SetParent(swarmImageScrollContent.transform);
+
+                //Change button material
+                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+            }
+            //RightColumn
+            else
+            {
+                pos += new Vector3( 183f * scalFactor, yRight * scalFactor, 0f);
+                button.transform.position = pos;
+                button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
+                yRight -= swarmImagesYMarginLayout;
+                button.transform.SetParent(swarmImageScrollContent.transform);
+
+                //Change button material
+                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+            }
+
+            //Set swarm image
+            int index = System.Array.IndexOf(swarmImagesArray, image);
+            button.GetComponent<Button>().onClick.AddListener(delegate {SetSwarmImage(index); });
+        }
+
+    }
+    private void SetSwarmImage(int index)
+    {
+        AppContextManager.instance.ActiveSpecie.PictId = index;
+        editSwarmImageButton.GetComponent<Image>().material = swarmImagesArray[index].GetComponent<MeshRenderer>().material;
+        RefreshView();
+    }
+    #endregion
+
+    #region Set Cast Image
+
+    public void OpenCastImageDialog()
+    {
+        castImageDialog.SetActive(!castImageDialog.activeSelf);
+        RefreshView();
+    }
+
+    private void RefreshCastImageScroll()
+    {
+        //Delete Prefabs
+        IList<GameObject> prefabsChilds = new List<GameObject>();
+        if (castPrefabsToDestroyPanel.transform.childCount != 0)
+        {
+            for (int i = 0; i < castPrefabsToDestroyPanel.transform.childCount; i++)
+            {
+                prefabsChilds.Add(castPrefabsToDestroyPanel.transform.GetChild(i).gameObject);
+            }
+            if (prefabsChilds != null)
+            {
+                foreach (GameObject child in prefabsChilds)
+                {
+                    Destroy(child);
+                }
+            }
+        }
+       
+        //instantiate Picts
+        castImagesArray = LumyPictFactory.instance.InstanciateAllPicts();
+        foreach (GameObject image in castImagesArray)
+        {
+            image.transform.SetParent(swarmPrefabsToDestroyPanel.transform);
+        }
+
+        //Remove old buttons
+        IList<GameObject> childs = new List<GameObject>();
+        for (int i = 0; i < castImageScrollContent.transform.childCount; i++)
+        {
+            childs.Add(castImageScrollContent.transform.GetChild(i).gameObject);
+        }
+        foreach (GameObject child in childs)
+        {
+            Destroy(child);
+        }
+
+        //Set scrollRect size
+        RectTransform rec = castImageScrollContent.transform.GetComponent<RectTransform>();
+        rec.sizeDelta = new Vector2(rec.sizeDelta.x, castImagesArray.Length * (swarmImageButtonPrefab.GetComponent<RectTransform>().sizeDelta.y + 20f) + 20f);
+
+        //Create new buttons
+        float yLeft = -66f;
+        float yMid = -66f;
+        float yRight = -66f;
+        float scalFactor = 0.01f;
+
+        foreach (GameObject image in castImagesArray)
+        {
+            //Create Button
+            GameObject button = Instantiate(swarmImageButtonPrefab, Vector3.zero, Quaternion.identity);
+
+            //LButton Layout
+            Vector3 pos = castImageScrollContent.transform.position;
+            float nbImageLeftColumn = Mathf.Ceil(castImagesArray.Length / 3f);
+            //Left Column
+            if (System.Array.IndexOf(castImagesArray, image) < nbImageLeftColumn)
+            {
+                pos += new Vector3(-135f * scalFactor, yLeft * scalFactor, 0f);
+                //button
+                button.transform.position = pos;
+                button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
+                yLeft -= swarmImagesYMarginLayout;
+                button.transform.SetParent(castImageScrollContent.transform);
+
+                //Change button material
+                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+            }
+            //Mid Column
+            else if (nbImageLeftColumn <= System.Array.IndexOf(castImagesArray, image) && System.Array.IndexOf(castImagesArray, image) < 2f * nbImageLeftColumn)
+            {
+                pos += new Vector3(25f * scalFactor, yMid * scalFactor, 0f);
+                button.transform.position = pos;
+                button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
+                yMid -= swarmImagesYMarginLayout;
+                button.transform.SetParent(castImageScrollContent.transform);
+
+                //Change button material
+                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+            }
+            //RightColumn
+            else
+            {
+                pos += new Vector3(183f * scalFactor, yRight * scalFactor, 0f);
+                button.transform.position = pos;
+                button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
+                yRight -= swarmImagesYMarginLayout;
+                button.transform.SetParent(castImageScrollContent.transform);
+
+                //Change button material
+                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+            }
+
+            //Set cast image
+            int index = System.Array.IndexOf(castImagesArray, image);
+            button.GetComponent<Button>().onClick.AddListener(delegate { SetCastImage(index); });
+        }
+    }
+
+    private void SetCastImage(int index)
+    {
+        AppContextManager.instance.ActiveCast.PictId = index;
+        editCastImageButton.GetComponent<Image>().material = castImagesArray[index].GetComponent<MeshRenderer>().material;
+        RefreshView();
+    }
+    #endregion
+
     void Update()
     {
-        if (GameObject.Find("Liste_Actions") != null)
+        if (GameManager.instance != null)
         {
             isSceneLoaded = true;
         }
 
         if (isSceneLoaded && !isFirstRefreashed)
         {
-            RefreshView();
             isFirstRefreashed = true;
+            renderingCamera = GameObject.FindGameObjectWithTag("RenderCamera");
+            RefreshView();
         } 
     }
 
@@ -619,12 +901,101 @@ public class SwarmEditUIController : MonoBehaviour
     {
         RefreashSwarmScroll();
         RefreashLumysScroll();
+        RefreshSwarmImageScroll();
+        RefreshCastImageScroll();
         RefreshLumyAppearenceFromData();
         RefreshLumyInfo();
         RefreshSwarmInfo();
         RefreashLumyStats();
         RefreshStatBars();
         StatsButtonListener();
+
+        if (!isFirstRefreashed)
+        {
+            return;
+        }
+
+        RefreashInGame();
+    }
+
+    private void RefreashInGame()
+    {
+        //Setup Player Folders
+        string specieName = AppContextManager.instance.ActiveSpecie.Name;
+        string castName = AppContextManager.instance.ActiveCast.Name;
+        AppContextManager.instance.LoadPlayerSpecies(specieName, "XXX_specie");
+
+        //Erase Player 1 prysme
+        string p1PrismeFilePath = AppContextManager.instance.Player1FolderPath
+            + AppContextManager.instance.PRYSME_FILE_NAME
+            + AppContextManager.instance.CSV_EXT;
+        string templatePrysmeFilePath = AppContextManager.instance.TemplateFolderPath
+            + AppContextManager.instance.PRYSME_FILE_NAME
+            + AppContextManager.instance.CSV_EXT;
+        File.Delete(p1PrismeFilePath);
+        File.Copy(templatePrysmeFilePath, p1PrismeFilePath);
+
+        //ResetGame Manager
+        GameManager.instance.ResetGame();
+
+        //Replace old Lumy by new one
+        GameObject oldEditedInGameLumy = editedInGameLumy;
+        LayLumyInGame(castName);
+        if (oldEditedInGameLumy != null)
+        {
+            Unit_GameObj_Manager.instance.KillUnit(oldEditedInGameLumy.GetComponent<AgentEntity>());
+        }
+    }
+
+    private void LayLumyInGame(string castName)
+    {
+        //find spawn pos
+        HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
+        Vector3 spawnPos = homeScript.transform.position;
+        Quaternion spawnRot = Quaternion.identity;
+        if (editedInGameLumy != null)
+        {
+            spawnPos = editedInGameLumy.transform.position;
+            spawnRot = editedInGameLumy.transform.rotation;
+        }
+
+        //Retreive lumy prefab
+        GameObject editedLumyPrefab = GameManager.instance.GetUnitTemplate(
+                        PlayerAuthority.Player1, castName);
+
+        //Pop Lumy in game
+        editedInGameLumy = Instantiate(editedLumyPrefab, spawnPos, spawnRot);
+        editedInGameLumy.SetActive(true);
+        AgentEntity editedLumyEntity = editedInGameLumy.GetComponent<AgentEntity>();
+        editedInGameLumy.transform.parent = GameManager.instance.transform;
+        editedInGameLumy.name = editedLumyEntity.CastName;
+        editedLumyEntity.GameParams =
+        GameManager.instance.GameParam.GetComponent<GameParamsScript>();
+        Unit_GameObj_Manager.instance.addUnit(editedLumyEntity, homeScript);
+
+        //Hide lumy on menu scene
+        int minimapLayer = LayerMask.NameToLayer("swarmeditminimap");
+        GameObject hearth = editedInGameLumy.transform.Find("Hearth").gameObject;
+        GameObject picto = hearth.transform.GetChild(0).gameObject;
+        hearth.layer = minimapLayer;
+        picto.layer = minimapLayer;
+        GameObject head = editedInGameLumy.transform.Find("Head").gameObject;
+        for (int i = 0; i < head.transform.childCount; i++)
+        {
+            GameObject compo = head.transform.GetChild(i).gameObject;
+            compo.layer = minimapLayer;
+        }
+        GameObject tail = editedInGameLumy.transform.Find("Tail").gameObject;
+        for (int i = 0; i < tail.transform.childCount; i++)
+        {
+            GameObject compo = tail.transform.GetChild(i).gameObject;
+            compo.layer = minimapLayer;
+        }
+        GameObject canvas = editedInGameLumy.transform.Find("Self/Canvas").gameObject;
+        Destroy(canvas);
+
+        //Set camera
+        renderingCamera.GetComponent<CameraSwarmEdit>().Target = editedInGameLumy;
     }
 
     /// <summary>
@@ -746,12 +1117,17 @@ public class SwarmEditUIController : MonoBehaviour
         prodTime = GetProdTime();
         getCost(); 
         LoadCastActions();
+
+        //Cast Image
+        editCastImageButton.GetComponent<Image>().material = castImagesArray[AppContextManager.instance.ActiveCast.PictId].GetComponent<MeshRenderer>().material;
     }
 
     private void RefreshSwarmInfo()
     {
         swarmPanelSwarmName.text = AppContextManager.instance.ActiveSpecie.Name;
-       
+
+        //Swarm Image
+        editSwarmImageButton.GetComponent<Image>().material = swarmImagesArray[AppContextManager.instance.ActiveSpecie.PictId].GetComponent<MeshRenderer>().material;
     }
 
     private void RefreashLumysScroll()
@@ -795,6 +1171,8 @@ public class SwarmEditUIController : MonoBehaviour
         //Destroy last Lumy
         if (editedLumy != null)
         {
+            editedLumy.GetComponent<AgentEntity>().enabled = false;
+            editedLumy.SetActive(false);
             Destroy(editedLumy);
         }
 
@@ -1030,6 +1408,8 @@ public class SwarmEditUIController : MonoBehaviour
         //Destroy last Lumy
         if (editedLumy != null)
         {
+            editedLumy.GetComponent<AgentEntity>().enabled = false;
+            editedLumy.SetActive(false);
             Destroy(editedLumy);
         }
 
@@ -1091,6 +1471,9 @@ public class SwarmEditUIController : MonoBehaviour
         //Layout
         editedLumy.transform.position = new Vector3(-6f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+
+        //Hide
+        editedLumy.SetActive(false);
     }
 
     /// <summary>

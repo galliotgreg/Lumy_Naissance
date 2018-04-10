@@ -162,6 +162,14 @@ public class MCEditorManager : MonoBehaviour
         LoadMC_Position();
     }
 
+    public void TemporarySetupModel(string cast_name, string id)
+    {
+        abModel = LoadMCFromTemporary(cast_name, id);
+        LoadProxyStates();
+        LoadProxyTransitions();
+        LoadMC_PositionFromTemporary(cast_name, id);
+    }
+
     void setProxyPositionOnLoad(string nameProxy, bool isStateBlock, bool isActionBlock, bool isOperatorBlock, bool isParameterBlock, float x, float y, float z)
     {
 
@@ -313,7 +321,72 @@ public class MCEditorManager : MonoBehaviour
             reader.Close();
         }
     }
+    public void LoadMC_PositionFromTemporary(string cast_name, string id)
+    {
+        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + cast_name + "_POSITION_" + id + ".csv";
+        //string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";
+        if (File.Exists(csvpath))
+        {
+            StreamReader reader = new StreamReader(csvpath);
 
+            List<string> lines = new List<string>();
+
+            bool isStateBlock = false;
+            bool isActionBlock = false;
+            bool isOperatorBlock = false;
+            bool isParameterBlock = false;
+
+            while (reader.Peek() >= 0)
+            {
+                lines.Add(reader.ReadLine());
+            }
+            foreach (string line in lines)
+            {
+                if (line != ",,")
+                {
+                    String[] tokens = line.Split(',');
+                    if (tokens[0] == "States")
+                    {
+                        isStateBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Actions")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Operators")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = false;
+                        isOperatorBlock = true;
+                        continue;
+                    }
+                    else if (tokens[0] == "Parameters")
+                    {
+                        isStateBlock = false;
+                        isActionBlock = false;
+                        isOperatorBlock = false;
+                        isParameterBlock = true;
+                        continue;
+                    }
+
+                    string name = tokens[0];
+
+                    string x_string = tokens[1];
+                    string y_string = tokens[2];
+
+                    float x = float.Parse(x_string);
+                    float y = float.Parse(y_string);
+                    float z = 0;
+
+                    setProxyPositionOnLoad(name, isStateBlock, isActionBlock, isOperatorBlock, isParameterBlock, x, y, z);
+                }
+            }
+            reader.Close();
+        }
+    }
     ABModel LoadMC()
     {
         ABModel model = new ABModel();
@@ -321,6 +394,19 @@ public class MCEditorManager : MonoBehaviour
         /**** START TODO ****/
         //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path        
         model = ABManager.instance.LoadABModelFromFile(MC_OrigFilePath);
+        /**** END TODO ****/
+
+        return model;
+    }
+    ABModel LoadMCFromTemporary(string cast_name, string id)
+    {
+        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + cast_name + "_" + id + ".csv";
+
+        ABModel model = new ABModel();
+
+        /**** START TODO ****/
+        //TODO : Récuperer le ABModel en Utilisant le AppContextManager et remplacer path        
+        model = ABManager.instance.LoadABModelFromFile(csvpath);
         /**** END TODO ****/
 
         return model;

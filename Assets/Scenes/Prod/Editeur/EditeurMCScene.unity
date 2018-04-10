@@ -778,6 +778,7 @@ RectTransform:
   - {fileID: 182037716}
   - {fileID: 751028276}
   - {fileID: 1596266288}
+  - {fileID: 2009740107}
   m_Father: {fileID: 1725846085}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1217,7 +1218,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1789716051}
   m_HandleRect: {fileID: 1789716050}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1367,7 +1368,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2110574396}
   m_HandleRect: {fileID: 2110574395}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3107,6 +3108,7 @@ GameObject:
   - component: {fileID: 474254146}
   - component: {fileID: 474254145}
   - component: {fileID: 474254144}
+  - component: {fileID: 474254147}
   m_Layer: 5
   m_Name: btn_Coller
   m_TagString: Untagged
@@ -3171,7 +3173,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 474254145}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 474254147}
+        m_MethodName: OnClickChangeCursor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &474254145
@@ -3207,6 +3220,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 474254142}
+--- !u!114 &474254147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 474254142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24dfe7d7a511c14aa967e65440f0002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorMode: 1
+  hotSpot: {x: 0, y: 0}
 --- !u!1 &491039523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3461,6 +3487,16 @@ Prefab:
       propertyPath: centerZone
       value: 
       objectReference: {fileID: 1988578283}
+    - target: {fileID: 114132284455055260, guid: 05159a591f7774c44b566ccb7764a2a5,
+        type: 2}
+      propertyPath: btn_Copier
+      value: 
+      objectReference: {fileID: 756242307}
+    - target: {fileID: 114132284455055260, guid: 05159a591f7774c44b566ccb7764a2a5,
+        type: 2}
+      propertyPath: btn_Coller
+      value: 
+      objectReference: {fileID: 474254144}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 05159a591f7774c44b566ccb7764a2a5, type: 2}
   m_IsPrefabParent: 0
@@ -4628,7 +4664,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 999505069}
   m_HandleRect: {fileID: 999505068}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4977,6 +5013,7 @@ GameObject:
   - component: {fileID: 756242309}
   - component: {fileID: 756242308}
   - component: {fileID: 756242307}
+  - component: {fileID: 756242310}
   m_Layer: 5
   m_Name: btn_Copier
   m_TagString: Untagged
@@ -5041,7 +5078,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 756242308}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 756242310}
+        m_MethodName: OnClickChangeCursor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &756242308
@@ -5077,6 +5125,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 756242305}
+--- !u!114 &756242310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 756242305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24dfe7d7a511c14aa967e65440f0002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorMode: 1
+  hotSpot: {x: 0, y: 0}
 --- !u!1 &778112230
 GameObject:
   m_ObjectHideFlags: 0
@@ -6042,7 +6103,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 393822061}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9975,84 +10036,33 @@ Prefab:
       propertyPath: tuto
       value: 
       objectReference: {fileID: 102977109}
-    - target: {fileID: 114704303337167144, guid: ee580f777fb40004086d0e73eb35eccf,
+    - target: {fileID: 1673314678289630, guid: ee580f777fb40004086d0e73eb35eccf, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224731489739543042, guid: ee580f777fb40004086d0e73eb35eccf,
         type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114295007770929662, guid: ee580f777fb40004086d0e73eb35eccf,
+      propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 224731489739543042, guid: ee580f777fb40004086d0e73eb35eccf,
         type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114487355949568234, guid: ee580f777fb40004086d0e73eb35eccf,
+      propertyPath: m_AnchoredPosition.y
+      value: -150
+      objectReference: {fileID: 0}
+    - target: {fileID: 224669683583870202, guid: ee580f777fb40004086d0e73eb35eccf,
         type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114631377377890054, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114289477992077078, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114093319970100944, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114078212022848734, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114311313786480912, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114094755912411242, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114815100199580182, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114131998128663092, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114846175999854266, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
-    - target: {fileID: 114801922804966790, guid: ee580f777fb40004086d0e73eb35eccf,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188,
-        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1044525117473490, guid: ee580f777fb40004086d0e73eb35eccf, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392738390909368, guid: ee580f777fb40004086d0e73eb35eccf, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee580f777fb40004086d0e73eb35eccf, type: 2}
   m_IsPrefabParent: 0
@@ -10390,6 +10400,7 @@ GameObject:
   - component: {fileID: 1655602942}
   - component: {fileID: 1655602941}
   - component: {fileID: 1655602940}
+  - component: {fileID: 1655602943}
   m_Layer: 5
   m_Name: btn_Redo
   m_TagString: Untagged
@@ -10454,7 +10465,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1655602941}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1655602943}
+        m_MethodName: OnClickChangeCursor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1655602941
@@ -10490,6 +10512,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1655602938}
+--- !u!114 &1655602943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1655602938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24dfe7d7a511c14aa967e65440f0002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorMode: 1
+  hotSpot: {x: 0, y: 0}
 --- !u!1 &1656340684
 GameObject:
   m_ObjectHideFlags: 0
@@ -10995,7 +11030,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2026384698}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11651,6 +11686,7 @@ GameObject:
   - component: {fileID: 1791283087}
   - component: {fileID: 1791283086}
   - component: {fileID: 1791283085}
+  - component: {fileID: 1791283088}
   m_Layer: 5
   m_Name: btn_Undo
   m_TagString: Untagged
@@ -11715,7 +11751,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1791283086}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1791283088}
+        m_MethodName: OnClickChangeCursor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1791283086
@@ -11751,6 +11798,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1791283083}
+--- !u!114 &1791283088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1791283083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24dfe7d7a511c14aa967e65440f0002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorMode: 1
+  hotSpot: {x: 0, y: 0}
 --- !u!1 &1830976876
 GameObject:
   m_ObjectHideFlags: 0
@@ -12796,6 +12856,124 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1988578280}
+--- !u!1001 &2009740106
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 149024345}
+    m_Modifications:
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -16.765625
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 416.90002
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 433.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1393150829061430, guid: db2b2a18293baec49ac32f5748742cb9, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114190703911889092, guid: db2b2a18293baec49ac32f5748742cb9,
+        type: 2}
+      propertyPath: tuto
+      value: 
+      objectReference: {fileID: 1291393498}
+    - target: {fileID: 1952175179740310, guid: db2b2a18293baec49ac32f5748742cb9, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: db2b2a18293baec49ac32f5748742cb9, type: 2}
+  m_IsPrefabParent: 0
+--- !u!224 &2009740107 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
+    type: 2}
+  m_PrefabInternal: {fileID: 2009740106}
 --- !u!1 &2026384697
 GameObject:
   m_ObjectHideFlags: 0
@@ -13614,7 +13792,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1699626239}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13945,7 +14123,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 245449303}
   m_HandleRect: {fileID: 245449302}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

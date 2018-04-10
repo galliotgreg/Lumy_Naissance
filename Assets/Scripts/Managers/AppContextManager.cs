@@ -287,6 +287,10 @@ public class AppContextManager : MonoBehaviour
 
         //Copy files
         di = new DirectoryInfo(SpeciesFolderPath + player1SpecieName + "/");
+        if (player1SpecieName == TEMPLATE_SPECIE_FILE_NAME)
+        {
+            di = new DirectoryInfo(TemplateFolderPath);
+        }
         foreach (FileInfo file in di.GetFiles())
         {
             File.Copy(
@@ -294,6 +298,10 @@ public class AppContextManager : MonoBehaviour
             Player1FolderPath + file.Name);
         }
         di = new DirectoryInfo(SpeciesFolderPath + player2SpecieName + "/");
+        if (player2SpecieName == TEMPLATE_SPECIE_FILE_NAME)
+        {
+            di = new DirectoryInfo(TemplateFolderPath);
+        }
         foreach (FileInfo file in di.GetFiles())
         {
             File.Copy(
