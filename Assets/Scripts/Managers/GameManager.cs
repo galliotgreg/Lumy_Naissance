@@ -161,10 +161,32 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         ABManager.instance.Reset(true);
         SetupMatch();
+    }
 
+    private void Flush()
+    {
+        foreach (GameObject template in p1_unitTemplates)
+        {
+            Destroy(template);
+        }
+        foreach (GameObject template in p2_unitTemplates)
+        {
+            Destroy(template);
+        }
+        Destroy(gameParam);
+    }
 
+    public void ResetGame()
+    {
+        Flush();
+        Init();
     }
 
     public void Update()
