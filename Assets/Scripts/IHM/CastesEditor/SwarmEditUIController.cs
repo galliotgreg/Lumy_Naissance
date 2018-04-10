@@ -327,6 +327,7 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private bool isInGameUnloaded = false;
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
 
@@ -334,7 +335,6 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void Start()
     {
-        SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
     }
@@ -884,7 +884,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.instance != null)
+        if (GameManager.instance == null)
+        {
+            SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
+            isInGameUnloaded = true;
+        }
+
+        if (isInGameUnloaded && GameManager.instance != null)
         {
             isSceneLoaded = true;
         }
