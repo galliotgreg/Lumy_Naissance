@@ -48,6 +48,8 @@ public class NavigationManager : MonoBehaviour {
     private bool zoomOnCanvas = true;
     private bool fadeToBlack = false;
 
+    
+
     // Use this for initialization
     void Start () {
         StartCoroutine(InitSceneLayers());
@@ -59,7 +61,12 @@ public class NavigationManager : MonoBehaviour {
     }
     public Camera GetCurrentCamera()
     {
-        return this.camera;
+        if(this.camera != null)
+        {
+            return this.camera;
+        }
+        this.camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        return this.camera; 
     }
 
 
@@ -331,22 +338,32 @@ public class NavigationManager : MonoBehaviour {
     {
         // Trouver la caméra prioritaire
         Camera[] camList = Camera.allCameras;
+        
+        if(camList.Length <=0)
+        {
+            Debug.LogError("No Camera Present In Scene");
+            return; 
+        }
+
+
         foreach (Camera c in camList)
         {
-            if (Camera.allCamerasCount >= 2)
+            if (c.tag == "MainCamera" && c.name != "Main Camera")
             {
-                if (c.name != "Main Camera" && c.tag == "MainCamera")
+                if (camera != null)
                 {
                     camera.GetComponent<AudioListener>().enabled = false;
-                    camera = c;
-                    camera.GetComponent<AudioListener>().enabled = true;
                 }
-            }
-            else
-            {
                 camera = c;
                 camera.GetComponent<AudioListener>().enabled = true;
+                return; 
             }
         }
+        if(camera != null)
+        {
+            camera.GetComponent<AudioListener>().enabled = false;
+        }
+        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        camera.GetComponent<AudioListener>().enabled = true;
     }
 }
