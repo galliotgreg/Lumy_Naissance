@@ -1265,6 +1265,9 @@ public class SwarmEditUIController : MonoBehaviour
         //Layout
         editedLumy.transform.position = new Vector3(-1.5f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+
+        //Unset Agent tag to be ignored by ABManager.UregisterAgent()
+        editedLumy.tag = "Untagged";
     }
     #endregion
 
