@@ -23,7 +23,7 @@ public class SetPlayerColor : MonoBehaviour {
             }
             if (agent.Home != null && agent.Authority == PlayerAuthority.Player2)
             {
-                color = new Color32(230, 60, 250, 255);
+                color = new Color32(255, 99, 246, 255);
             }
         }
         meshRenderer.material.SetColor("_TintColor", color);
