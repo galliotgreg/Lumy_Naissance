@@ -85,7 +85,7 @@ public class MC_Inventory_Params : MC_Inventory {
 			}
 			item.TextItem.text = ProxyABParam.GetViewValue ((IABParam)item.Item);
 		}
-		item.SubTitle = ProxyABParam.GetViewValue ((IABParam)item.Item);
+		item.AddContent( ProxyABParam.GetViewValue ((IABParam)item.Item) );
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Param;
 	}
