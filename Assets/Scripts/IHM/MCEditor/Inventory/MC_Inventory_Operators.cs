@@ -101,14 +101,12 @@ public class MC_Inventory_Operators : MC_Inventory {
 		item.Title = MCEditor_Proxy.getNodeName((ABNode)item.Item);
 		// item.Title = MCEditor_Proxy.typeToString( op.getOutcomeType() );
 		// Setting param type as subtitle
-		string subTitle = "";
 		for(int i=0; i<op.Inputs.Length; i++){
-			subTitle += (i>0?"\n":"") + MCEditor_Proxy.typeToString( op.getIncomeType(i) );
+			item.AddContent (op.getIncomeType (i));
 			if (ABStar<ABBool>.isStar (op.getIncomeType (i))) {
 				break;
 			}
 		}
-		item.SubTitle = subTitle;
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Operator;
 	}

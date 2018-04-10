@@ -27,7 +27,9 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator, IPointerEnt
 	[SerializeField]
 	UnityEngine.UI.Text title;
 	[SerializeField]
-	UnityEngine.UI.Text subTitle;
+	Transform content;
+	[SerializeField]
+	MC_Inventory_Item_Info infoPrefab;
 
 	// Use this for initialization
 	protected void Start () {
@@ -96,18 +98,16 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator, IPointerEnt
 		}
 	}
 
-	public string SubTitle {
-		get {
-			return subTitle.text;
-		}
-		set {
-			subTitle.text = value;
-
-			if (value == "") {
-				subTitle.transform.parent.gameObject.GetComponent<RectTransform> ().anchorMin = new Vector2 (1,0);
-				itemImage.transform.parent.gameObject.GetComponent<RectTransform> ().anchorMax = new Vector2 (1,itemImage.transform.parent.gameObject.GetComponent<RectTransform> ().anchorMax.y);
-			}
-		}
+	public void AddContent( System.Type type ){
+		AddContent( MC_Inventory_Item_Info.instantiate( type, infoPrefab, content.transform ) );
+	}
+	public void AddContent( string text ){
+		AddContent( MC_Inventory_Item_Info.instantiate( text, infoPrefab, content.transform ) );
+	}
+	void AddContent( MC_Inventory_Item_Info info ){
+		// show the gameobject that was hidden
+		content.GetComponent<RectTransform> ().anchorMin = new Vector2 (0.6f,content.GetComponent<RectTransform> ().anchorMin.y);
+		itemImage.transform.parent.gameObject.GetComponent<RectTransform> ().anchorMax = new Vector2 (0.6f,itemImage.transform.parent.gameObject.GetComponent<RectTransform> ().anchorMax.y);
 	}
 
 	[SerializeField]

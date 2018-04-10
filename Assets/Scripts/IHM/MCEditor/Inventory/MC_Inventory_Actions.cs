@@ -53,7 +53,7 @@ public class MC_Inventory_Actions : MC_Inventory {
 	{
 		item.TextItem.text = ((ABState)item.Item).Name;
 		item.Title = "Action";
-		item.SubTitle = ((ABState)item.Item).Name;
+		item.AddContent( ((ABState)item.Item).Name );
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Action;
 	}
