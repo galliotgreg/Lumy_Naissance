@@ -344,6 +344,9 @@ public class CostManager : MonoBehaviour
                 }
             }
             return cost;
+        } else if (node == null)
+        {
+            return 0;
         }
 
         throw new NotSupportedException("Trying to acces a ABNode that is not a ABNode");
