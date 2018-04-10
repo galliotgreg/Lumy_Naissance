@@ -10,7 +10,7 @@ public class PanelManager : MonoBehaviour
     public HelpDatabase help;
 
     [SerializeField]
-    string JSON_name = "";
+    string JSON_name = "Generalites";
 
 
     [Header("Explanation Panel")]
@@ -47,6 +47,8 @@ public class PanelManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            HelpManager.instance.UpdateDatabase(JSON_name);
+            RefreshHelpScroll();
             AutomaticSelectHelp();
         }
 
@@ -108,7 +110,7 @@ public class PanelManager : MonoBehaviour
         mainPanelScrollHelpContent.GetComponentInChildren<Text>().text = HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
         //button_text.transform.SetParent(mainPanelScrollHelpContent.transform);
         // helpSelectionButton.transform.SetParent(mainPanelScrollHelpContent.transform);
-        RectTransform rec = mainPanelScrollHelpContent.transform.GetComponent<RectTransform>();
+       // RectTransform rec = mainPanelScrollHelpContent.transform.GetComponent<RectTransform>();
        // rec.transform.localScale = new Vector2(rec.sizeDelta.x, rec.sizeDelta.y + 5f);
     }
 
@@ -137,7 +139,9 @@ public class PanelManager : MonoBehaviour
     {
 
         mainPanelHelpTitle.text = HelpManager.instance.help.GetFirstfromList().Title;
-        mainPanelHelpContent.text = HelpManager.instance.help.GetFirstfromList().GetContentText();
+       // mainPanelHelpContent.text = HelpManager.instance.help.GetFirstfromList().GetContentText();
+        RefreshExplanationText(mainPanelHelpTitle.text);
+
         string imagename = HelpManager.instance.help.GetFirstfromList().Image;
         if (imagename != "")
         {
@@ -155,7 +159,6 @@ public class PanelManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
     }
 
     // Update is called once per frame
