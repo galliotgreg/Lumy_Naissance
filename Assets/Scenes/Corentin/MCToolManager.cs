@@ -402,16 +402,16 @@ public class MCToolManager : MonoBehaviour
             string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
             string sourcePosition = sourceFilePath + "_POSITION_" + id.ToString() + ".csv";
             string sourceBehavior = sourceFilePath + "_" + id.ToString() + ".csv";
-            //Backup Behavior Files
+            /*//Backup Behavior Files
             File.Delete(destinationFolderPath + cast_name + ".csv");
             File.Delete(destinationFolderPath + cast_name + ".csv.meta");
             File.Copy(sourceBehavior, destinationFolderPath + cast_name + ".csv");
 
-            // Backup Position Files
+            //Backup Position Files
             File.Delete(destinationFolderPath + cast_name + "_POSITION.csv");
             File.Delete(destinationFolderPath + cast_name + "_POSITION.csv.meta");
             File.Copy(sourcePosition, destinationFolderPath + cast_name + "_POSITION.csv");
-
+            */
             List<MCEditor_Proxy> allProxies = new List<MCEditor_Proxy>();
             MCEditor_Proxy initToDestroy = null;
             foreach (MCEditor_Proxy b in allUnits)
@@ -429,7 +429,8 @@ public class MCToolManager : MonoBehaviour
             MCEditorManager.instance.forcedeleteProxy((ProxyABState)initToDestroy);
 
             SelectedNodes.Clear();
-            MCEditorManager.instance.SetupModel();
+            //MCEditorManager.instance.SetupModel();
+            MCEditorManager.instance.TemporarySetupModel(cast_name, id.ToString());
             Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
         }
     }
@@ -447,13 +448,13 @@ public class MCToolManager : MonoBehaviour
             string sourcePosition = sourceFilePath + "_POSITION_" + id.ToString() + ".csv";
             string sourceBehavior = sourceFilePath + "_" + id.ToString() + ".csv";
 
-            File.Delete(destinationFolderPath + cast_name + "_POSITION.csv");
+            /*File.Delete(destinationFolderPath + cast_name + "_POSITION.csv");
             File.Delete(destinationFolderPath + cast_name + "_POSITION.csv.meta");
             File.Copy(sourcePosition, destinationFolderPath + cast_name + "_POSITION.csv");
 
             File.Delete(destinationFolderPath + cast_name + ".csv");
             File.Delete(destinationFolderPath + cast_name + ".csv.meta");
-            File.Copy(sourceBehavior, destinationFolderPath + cast_name + ".csv");
+            File.Copy(sourceBehavior, destinationFolderPath + cast_name + ".csv");*/
 
             List<MCEditor_Proxy> allProxies = new List<MCEditor_Proxy>();
             MCEditor_Proxy initToDestroy = null;
@@ -472,7 +473,8 @@ public class MCToolManager : MonoBehaviour
             MCEditorManager.instance.forcedeleteProxy((ProxyABState)initToDestroy);
 
             SelectedNodes.Clear();
-            MCEditorManager.instance.SetupModel();
+            //MCEditorManager.instance.SetupModel();
+            MCEditorManager.instance.TemporarySetupModel(cast_name, id.ToString());
             Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
         }
     }
