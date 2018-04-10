@@ -21,7 +21,7 @@ public class ResourceScript : MonoBehaviour {
     [SerializeField]
     private Color32 color;
 
-    private List<Transform> spawnPoints;
+    private List<Transform> spawnPoints = new List<Transform>();
 
     #endregion
     #region Accesseur
