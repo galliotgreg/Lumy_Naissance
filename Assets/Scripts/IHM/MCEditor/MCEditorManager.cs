@@ -2597,22 +2597,64 @@ public class MCEditorManager : MonoBehaviour
     }
 
     private void FillOperatorToolTip(GameObject toolTip, IABOperator proxy)
-    {
-        int index = -1;
-        for (int i = 0; i < databaseOperators.Count; i++)
-        {
-            if (((SubHelp)databaseOperators[i].Content).SubTitle.Contains(""))
-            {
+    {        
+        string proxyType = ((IABOperator)proxy).ClassName.Substring(3, ((IABOperator)proxy).ClassName.Length - 12);
+        string proxyCompositeType = proxyType.Split('_')[1];
+        bool isMacro = false;
+        bool isContainingArg = false;
 
-            }
-        }
-        if (index > -1)
+        foreach (Help categorie in databaseOperators)
         {
-            Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = ((SubHelp)databaseOperators[index].Content).SubTitle;
-            TextFields[1].text = "ValueIn"; //databaseParams[index].Title;
-            TextFields[2].text = "ValueOut"; //databaseParams[index].Title;
-            TextFields[3].text = databaseOperators[index].GetContentText();                
+            foreach(SubHelp opeDescription in categorie.Content)
+            {
+                if(opeDescription.SubTitle== proxyType || opeDescription.SubTitle.ToLower() == proxyCompositeType.ToLower())
+                {
+                    Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
+                    TextFields[0].text = opeDescription.SubTitle;
+                    string[] tabSplit = opeDescription.Content.Split('\n');
+                    int nbArg = 0;
+
+                    //Retour
+                    TextFields[1].text = tabSplit[0];
+
+                    //Symbol
+                    if (tabSplit[1].Contains("Symbole")){
+                        TextFields[2].text = tabSplit[1];
+                    }
+                    else
+                    {
+                        TextFields[2].text = "Macro Operateur";
+                        isMacro = true;
+                    }                    
+                    //Arguments
+                    TextFields[3].text = "";
+                    foreach (string arg in tabSplit)
+                    {
+                        if (arg.Contains("Argument"))
+                        {
+                            nbArg++;
+                            TextFields[3].text += " " + arg;
+                            isContainingArg = true;
+                        }
+                    }
+                    //Description
+                    if (isMacro)
+                    {
+                        if (isContainingArg)
+                        {
+                            TextFields[4].text = tabSplit[1 + nbArg];
+                        }
+                        else
+                        {
+                            TextFields[4].text = tabSplit[1];
+                        }                        
+                    }
+                    else
+                    {
+                        TextFields[4].text = tabSplit[2 + nbArg];
+                    }                        
+                }
+            }
         }
     }
     #endregion
