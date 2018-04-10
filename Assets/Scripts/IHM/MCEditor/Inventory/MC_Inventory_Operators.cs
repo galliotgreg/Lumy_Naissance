@@ -25,6 +25,11 @@ public class MC_Inventory_Operators : MC_Inventory {
 				}
 			}
 		}
+
+		allOperators.Sort (delegate(IABOperator x, IABOperator y) {
+			return MCEditor_ProxyIcon_Manager.getOperatorCategorie(x.OpType).CompareTo( MCEditor_ProxyIcon_Manager.getOperatorCategorie(y.OpType) );
+		});
+
 		setItems ( listToObject<IABOperator>( allOperators ));
 
 		loadReturnTypeDropdown ();
@@ -68,7 +73,6 @@ public class MC_Inventory_Operators : MC_Inventory {
 
 	public List<IABOperator> filterReturnType( int index, List<IABOperator> operators ){
 		System.Type selectedType = ABModel.ParamTypeToType( currentTypes[ index ] );
-		Debug.LogError (currentTypes [index].ToString ());
 		return filterReturnType (selectedType, operators);
 	}
 	public List<IABOperator> filterReturnType( System.Type type, List<IABOperator> operators ){
