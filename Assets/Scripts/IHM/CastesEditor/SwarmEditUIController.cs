@@ -47,6 +47,8 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private GameObject editedLumy;
 
+    private GameObject editedInGameLumy;
+
     /// <summary>
     /// Empty lumy prefab
     /// </summary>
@@ -282,10 +284,12 @@ public class SwarmEditUIController : MonoBehaviour
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
 
+    private GameObject renderingCamera;
+
     private void Start()
     {
-        //AppContextManager.instance.LoadPlayerSpecies("XXX_specie", "XXX_specie");
-        //SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
+        AppContextManager.instance.LoadPlayerSpecies("XXX_specie", "XXX_specie");
+        SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
     }
@@ -293,7 +297,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void OnDestroy()
     {
-        //SceneManager.UnloadScene("MapSwarmEdit");
+        SceneManager.UnloadScene("MapSwarmEdit");
     }
 
     #region Stats Button Listener
@@ -611,8 +615,9 @@ public class SwarmEditUIController : MonoBehaviour
 
         if (isSceneLoaded && !isFirstRefreashed)
         {
-            RefreshView();
             isFirstRefreashed = true;
+            renderingCamera = GameObject.FindGameObjectWithTag("RenderCamera");
+            RefreshView();
         } 
     }
 
@@ -628,21 +633,45 @@ public class SwarmEditUIController : MonoBehaviour
         RefreshStatBars();
         StatsButtonListener();
 
-        if (isSceneLoaded)
+        if (!isFirstRefreashed)
         {
-            GameObject editedLumyPrefab = GameManager.instance.GetUnitTemplate(
-                PlayerAuthority.Player1, "origin");
-            HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
-            editedLumy = Instantiate(editedLumyPrefab);
-            editedLumy.SetActive(true);
-            AgentEntity editedLumyEntity = editedLumy.GetComponent<AgentEntity>();
-            editedLumy.transform.parent = GameManager.instance.transform;
-            editedLumy.name = editedLumyEntity.CastName;
-            editedLumyEntity.GameParams =
-            GameManager.instance.GameParam.GetComponent<GameParamsScript>();
-
-            Unit_GameObj_Manager.instance.addUnit(editedLumyEntity, homeScript);
+            return;
         }
+
+        GameObject oldEditedInGameLumy = editedInGameLumy;
+        LayLumyInGame("origin");
+        if (oldEditedInGameLumy != null)
+        {
+            Unit_GameObj_Manager.instance.KillUnit(oldEditedInGameLumy.GetComponent<AgentEntity>());
+        }
+    }
+
+    private void LayLumyInGame(string castName)
+    {
+        GameObject editedLumyPrefab = GameManager.instance.GetUnitTemplate(
+                        PlayerAuthority.Player1, castName);
+        HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
+
+        //find spawn pos
+        Vector3 spawnPos = homeScript.transform.position;
+        Quaternion spawnRot = Quaternion.identity;
+        if (editedInGameLumy != null)
+        {
+            spawnPos = editedInGameLumy.transform.position;
+            spawnRot = editedInGameLumy.transform.rotation;
+        }
+
+        editedInGameLumy = Instantiate(editedLumyPrefab, spawnPos, spawnRot);
+        editedInGameLumy.SetActive(true);
+        AgentEntity editedLumyEntity = editedInGameLumy.GetComponent<AgentEntity>();
+        editedInGameLumy.transform.parent = GameManager.instance.transform;
+        editedInGameLumy.name = editedLumyEntity.CastName;
+        editedLumyEntity.GameParams =
+        GameManager.instance.GameParam.GetComponent<GameParamsScript>();
+
+        Unit_GameObj_Manager.instance.addUnit(editedLumyEntity, homeScript);
+
+        renderingCamera.GetComponent<CameraSwarmEdit>().Target = editedInGameLumy;
     }
 
     /// <summary>
@@ -813,6 +842,8 @@ public class SwarmEditUIController : MonoBehaviour
         //Destroy last Lumy
         if (editedLumy != null)
         {
+            editedLumy.GetComponent<AgentEntity>().enabled = false;
+            editedLumy.SetActive(false);
             Destroy(editedLumy);
         }
 
@@ -1048,6 +1079,8 @@ public class SwarmEditUIController : MonoBehaviour
         //Destroy last Lumy
         if (editedLumy != null)
         {
+            editedLumy.GetComponent<AgentEntity>().enabled = false;
+            editedLumy.SetActive(false);
             Destroy(editedLumy);
         }
 
@@ -1109,6 +1142,9 @@ public class SwarmEditUIController : MonoBehaviour
         //Layout
         editedLumy.transform.position = new Vector3(-6f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+
+        //Hide
+        editedLumy.SetActive(false);
     }
 
     /// <summary>
