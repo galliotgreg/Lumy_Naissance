@@ -11,6 +11,7 @@ public class InGameUIController : MonoBehaviour {
     /// The static instance of the Singleton for external access
     /// </summary>
     public static InGameUIController instance = null;
+    public static OpenClosePanel instanceOpenClose = null;
 
     private float startTime = 2.0f;
     private bool winState = false;
@@ -21,6 +22,7 @@ public class InGameUIController : MonoBehaviour {
     private AgentScript self;
     private Color color; 
     GameManager gameManager;
+    GameObject[] openClosePanelList;
     private int indiceFocus = 0; 
 
     #region UIVariables
@@ -256,7 +258,7 @@ public class InGameUIController : MonoBehaviour {
     private DateTime tsNegativeJ2;
     private DateTime tsPositiveJ2;
 
-
+    private bool panelOpened = true;
 
     #region Instance
     /// <summary>
@@ -340,6 +342,8 @@ public class InGameUIController : MonoBehaviour {
         //Get gameManager Instance 
         gameManager = GameManager.instance;
 
+        openClosePanelList = GameObject.FindGameObjectsWithTag("Panel");
+
         Camera camera = NavigationManager.instance.GetCurrentCamera();
         canvas.worldCamera = camera;
         //Init all Listener
@@ -406,8 +410,23 @@ public class InGameUIController : MonoBehaviour {
     /// </summary>
     private void CheckKeys()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            exitMenu.SetActive(!exitMenu.activeSelf);
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        // exitMenu.SetActive(!exitMenu.activeSelf);
+        if (Input.GetMouseButtonDown(1))
+        {
+            foreach (GameObject panel in openClosePanelList)
+            {
+                if (panelOpened)
+                {
+                    panel.GetComponent<OpenClosePanel>().CloseGlobal();
+                }
+                else
+                {
+                    panel.GetComponent<OpenClosePanel>().OpenGlobal();
+                }
+            }
+            panelOpened = !panelOpened;
+        }
     }
 
     #region WinConditions
@@ -452,6 +471,8 @@ public class InGameUIController : MonoBehaviour {
                 }
                 J1_Resources.text = "Resources : " + gameManager.sumResources(PlayerAuthority.Player1);
                 J2_Resources.text = "Resources : " + gameManager.sumResources(PlayerAuthority.Player2);
+
+                PauseGame();
             }
         }
        
