@@ -51,7 +51,9 @@ public class MC_Inventory_Actions : MC_Inventory {
 
 	protected override void configItem (MC_InventoryItem item)
 	{
-		item.Text.text = ((ABState)item.Item).Name;
+		item.TextItem.text = ((ABState)item.Item).Name;
+		item.Title = "Action";
+		item.SubTitle = ((ABState)item.Item).Name;
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Action;
 	}
