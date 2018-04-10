@@ -15,7 +15,7 @@ public class IKAnkorMotion : MonoBehaviour {
         {
             Vector2 screenPos = 
                 new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            Vector2 pos = Camera.main.ScreenToWorldPoint(screenPos);
+            Vector2 pos = NavigationManager.instance.Camera.ScreenToWorldPoint(screenPos);
             this.transform.position = new Vector3(pos.x, pos.y, 0f);
         }
     }

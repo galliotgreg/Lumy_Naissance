@@ -48,6 +48,19 @@ public class NavigationManager : MonoBehaviour {
     private bool zoomOnCanvas = true;
     private bool fadeToBlack = false;
 
+    public Camera Camera
+    {
+        get
+        {
+            return camera;
+        }
+
+        set
+        {
+            camera = value;
+        }
+    }
+
     // Use this for initialization
     void Start () {
         StartCoroutine(InitSceneLayers());
@@ -59,7 +72,7 @@ public class NavigationManager : MonoBehaviour {
     }
     public Camera GetCurrentCamera()
     {
-        return this.camera;
+        return this.Camera;
     }
 
 
@@ -255,7 +268,7 @@ public class NavigationManager : MonoBehaviour {
         canvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
 
         // Mettre à jour la caméra du canvas
-        canvas.GetComponent<Canvas>().worldCamera = camera;
+        canvas.GetComponent<Canvas>().worldCamera = Camera;
 
         // Mettre à jour les indicateurs
         addToPreviousList = true;
@@ -331,22 +344,33 @@ public class NavigationManager : MonoBehaviour {
     {
         // Trouver la caméra prioritaire
         Camera[] camList = Camera.allCameras;
+        
+        if(camList.Length <=0)
+        {
+            Debug.LogError("No Camera Present In Scene");
+            return; 
+        }
+
+        if (camList.Length == 1)
+        {
+            Camera = camList[0];
+            Camera.GetComponent<AudioListener>().enabled = true;
+            return; 
+        }
+
         foreach (Camera c in camList)
         {
-            if (Camera.allCamerasCount >= 2)
+            if (c.tag == "MainCamera")
             {
-                if (c.name != "Main Camera" && c.tag == "MainCamera")
-                {
-                    camera.GetComponent<AudioListener>().enabled = false;
-                    camera = c;
-                    camera.GetComponent<AudioListener>().enabled = true;
-                }
-            }
-            else
-            {
-                camera = c;
-                camera.GetComponent<AudioListener>().enabled = true;
+                Camera.GetComponent<AudioListener>().enabled = false;
+                Camera = c;
+                Camera.GetComponent<AudioListener>().enabled = true;
+                return; 
             }
         }
+
+        Camera.GetComponent<AudioListener>().enabled = false;
+        Camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        Camera.GetComponent<AudioListener>().enabled = true;
     }
 }
