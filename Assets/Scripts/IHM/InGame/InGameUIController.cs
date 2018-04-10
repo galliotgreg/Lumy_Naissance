@@ -223,11 +223,19 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private float waitingTime = 1f;
 
+    #region Bottom Left panel
+    [SerializeField]
+    private GameObject statGrid;
+    [SerializeField]
+    private GameObject statPrysmeJ1;
+    [SerializeField]
+    private GameObject StatPrysmeJ2;
+    #endregion
     //button valid debugg params
     [SerializeField]
     private Button valider;
 
-    #region 
+    #region MiniMap
 
     [Header("Minimap")]
     //Icon minimap materials
@@ -1145,6 +1153,7 @@ private void DisplayUnits(Dictionary<string, int> units)
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 //go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
                 go.transform.SetParent(contentParentJ1.transform);
+                go.transform.localScale = new Vector3(1, 1, 1);
             }
         }
     }
@@ -1169,6 +1178,7 @@ private void DisplayUnits(Dictionary<string, int> units)
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 //go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
                 go.transform.SetParent(contentParentJ2.transform);
+                go.transform.localScale = new Vector3(1, 1, 1);
             }
         }
     }
@@ -1341,8 +1351,6 @@ private void DisplayInSight() {
         updateFocus(agentList);
     }
 
-
-
     public void ColorPlayer(AgentScript agentScript)
     {
         if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1)
@@ -1359,7 +1367,30 @@ private void DisplayInSight() {
         }
     }
 
+    #region Bottom Left Panel Actions
+    public void ShowStatLumy()
+    {
+        statGrid.SetActive(true);
+        statPrysmeJ1.SetActive(false);
+        StatPrysmeJ2.SetActive(false);
+    }
+    public void ShowStatPrysme(PlayerAuthority player)
+    {
+        if (player == PlayerAuthority.Player1)
+        {
+            statGrid.SetActive(false);
+            statPrysmeJ1.SetActive(true);
+            StatPrysmeJ2.SetActive(false);
+        }
 
+        if (player == PlayerAuthority.Player2)
+        {
+            statGrid.SetActive(false);
+            statPrysmeJ1.SetActive(false);
+            StatPrysmeJ2.SetActive(true);
+        }
+    }
+    #endregion
 
 }
 
