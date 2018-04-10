@@ -9,7 +9,7 @@ public class OpenClosePanel : MonoBehaviour
     public GameObject panelInfo;
     public Button btn_panelInfo;
 
-    bool isOpen = true;
+    public bool isOpen = true;
 
     public Vector2 closed = new Vector2(0f, 0f);
     public Vector2 open = new Vector2(-300f, 0f);
@@ -52,6 +52,21 @@ public class OpenClosePanel : MonoBehaviour
             Open();
             btn_panelInfo.GetComponent<RectTransform>().localPosition = open;
         }
+    }
+
+    public void OpenGlobal()
+    {
+        panelInfo.SetActive(true);
+        btn_panelInfo.GetComponent<RectTransform>().localPosition = open;
+        isOpen = true;
+    }
+
+    public void CloseGlobal()
+    {
+
+        panelInfo.SetActive(false);
+        btn_panelInfo.GetComponent<RectTransform>().localPosition = closed;
+        isOpen = false;
     }
 
 
