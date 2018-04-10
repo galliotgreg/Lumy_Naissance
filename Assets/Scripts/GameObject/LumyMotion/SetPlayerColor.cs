@@ -12,7 +12,7 @@ public class SetPlayerColor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-        Color color = Color.white;
+        Color color = new Color32(88, 255, 255, 255);
 
         if (transform.parent != null)
         {
@@ -23,7 +23,7 @@ public class SetPlayerColor : MonoBehaviour {
             }
             if (agent.Home != null && agent.Authority == PlayerAuthority.Player2)
             {
-                color = new Color32(230, 60, 250, 255);
+                color = new Color32(255, 99, 246, 255);
             }
         }
         meshRenderer.material.SetColor("_TintColor", color);
