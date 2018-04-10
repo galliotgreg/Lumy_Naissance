@@ -17,10 +17,17 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator, IPointerEnt
 
     protected GameObject toolTip;
 
-    [SerializeField]
-	UnityEngine.UI.Text text;
 	[SerializeField]
-	UnityEngine.UI.Image image;
+	UnityEngine.UI.Image itemImage;
+	[SerializeField]
+	UnityEngine.UI.Text textItem;
+	[SerializeField]
+	UnityEngine.UI.Image imageItem;
+
+	[SerializeField]
+	UnityEngine.UI.Text title;
+	[SerializeField]
+	UnityEngine.UI.Text subTitle;
 
 	// Use this for initialization
 	protected void Start () {
@@ -39,7 +46,7 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator, IPointerEnt
 		set {
 			item = value;
 
-			Image = MCEditor_ProxyIcon_Manager.instance.getItemImage (value);
+			ImageItem = MCEditor_ProxyIcon_Manager.instance.getItemImage (value);
 		}
 	}
 
@@ -52,30 +59,53 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator, IPointerEnt
 		}
 	}
 
-	public UnityEngine.UI.Text Text {
+	public UnityEngine.UI.Text TextItem {
 		get {
-			return text;
+			return textItem;
 		}
 		set {
-			text = value;
+			textItem = value;
 		}
 	}
 
-	public Sprite Image {
+	public Sprite ImageItem {
 		get {
-			return image.sprite;
+			return imageItem.sprite;
 		}
 		set {
-			image.sprite = value;
+			imageItem.sprite = value;
 
 			// Choose the element which will be activated
 			if (value == null) {
-				image.gameObject.SetActive (false);
+				imageItem.gameObject.SetActive (false);
 
 				//image.type = UnityEngine.UI.Image.Type.Sliced;
 				//image.preserveAspect = true;
 			} else {
-				text.gameObject.SetActive (false);
+				textItem.gameObject.SetActive (false);
+			}
+		}
+	}
+
+	public string Title {
+		get {
+			return title.text;
+		}
+		set {
+			title.text = value;
+		}
+	}
+
+	public string SubTitle {
+		get {
+			return subTitle.text;
+		}
+		set {
+			subTitle.text = value;
+
+			if (value == "") {
+				subTitle.transform.parent.gameObject.GetComponent<RectTransform> ().anchorMin = new Vector2 (1,0);
+				itemImage.transform.parent.gameObject.GetComponent<RectTransform> ().anchorMax = new Vector2 (1,itemImage.transform.parent.gameObject.GetComponent<RectTransform> ().anchorMax.y);
 			}
 		}
 	}

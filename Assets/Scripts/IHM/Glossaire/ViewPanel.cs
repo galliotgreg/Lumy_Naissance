@@ -8,14 +8,12 @@ public class ViewPanel : MonoBehaviour
 
     public GameObject subMenu;
     [SerializeField]
-    public string JSON_file = "parametres";
+    public string JSON_file = "Generalites";
 
     // Use this for initialization
     void Start()
     {
         this.gameObject.GetComponent<Button>().onClick.AddListener(SwitchMenu);
-        HelpManager.instance.UpdateDatabase(JSON_file);
-        PanelManager.instance.RefreshHelpScroll();
 
     }
 
