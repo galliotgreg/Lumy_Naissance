@@ -334,7 +334,6 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void Start()
     {
-        AppContextManager.instance.LoadPlayerSpecies("XXX_specie", "XXX_specie");
         SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
@@ -884,7 +883,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     void Update()
     {
-        if (/*GameObject.Find("Liste_Actions")*/GameManager.instance != null)
+        if (GameManager.instance != null)
         {
             isSceneLoaded = true;
         }
@@ -916,8 +915,32 @@ public class SwarmEditUIController : MonoBehaviour
             return;
         }
 
+        RefreashInGame();
+    }
+
+    private void RefreashInGame()
+    {
+        //Setup Player Folders
+        string specieName = AppContextManager.instance.ActiveSpecie.Name;
+        string castName = AppContextManager.instance.ActiveCast.Name;
+        AppContextManager.instance.LoadPlayerSpecies(specieName, "XXX_specie");
+
+        //Erase Player 1 prysme
+        string p1PrismeFilePath = AppContextManager.instance.Player1FolderPath
+            + AppContextManager.instance.PRYSME_FILE_NAME
+            + AppContextManager.instance.CSV_EXT;
+        string templatePrysmeFilePath = AppContextManager.instance.TemplateFolderPath
+            + AppContextManager.instance.PRYSME_FILE_NAME
+            + AppContextManager.instance.CSV_EXT;
+        File.Delete(p1PrismeFilePath);
+        File.Copy(templatePrysmeFilePath, p1PrismeFilePath);
+
+        //ResetGame Manager
+        GameManager.instance.ResetGame();
+
+        //Replace old Lumy by new one
         GameObject oldEditedInGameLumy = editedInGameLumy;
-        LayLumyInGame("origin");
+        LayLumyInGame(castName);
         if (oldEditedInGameLumy != null)
         {
             Unit_GameObj_Manager.instance.KillUnit(oldEditedInGameLumy.GetComponent<AgentEntity>());
@@ -926,11 +949,8 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void LayLumyInGame(string castName)
     {
-        GameObject editedLumyPrefab = GameManager.instance.GetUnitTemplate(
-                        PlayerAuthority.Player1, castName);
-        HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
-
         //find spawn pos
+        HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
         Vector3 spawnPos = homeScript.transform.position;
         Quaternion spawnRot = Quaternion.identity;
         if (editedInGameLumy != null)
@@ -939,6 +959,11 @@ public class SwarmEditUIController : MonoBehaviour
             spawnRot = editedInGameLumy.transform.rotation;
         }
 
+        //Retreive lumy prefab
+        GameObject editedLumyPrefab = GameManager.instance.GetUnitTemplate(
+                        PlayerAuthority.Player1, castName);
+
+        //Pop Lumy in game
         editedInGameLumy = Instantiate(editedLumyPrefab, spawnPos, spawnRot);
         editedInGameLumy.SetActive(true);
         AgentEntity editedLumyEntity = editedInGameLumy.GetComponent<AgentEntity>();
@@ -946,9 +971,30 @@ public class SwarmEditUIController : MonoBehaviour
         editedInGameLumy.name = editedLumyEntity.CastName;
         editedLumyEntity.GameParams =
         GameManager.instance.GameParam.GetComponent<GameParamsScript>();
-
         Unit_GameObj_Manager.instance.addUnit(editedLumyEntity, homeScript);
 
+        //Hide lumy on menu scene
+        int minimapLayer = LayerMask.NameToLayer("swarmeditminimap");
+        GameObject hearth = editedInGameLumy.transform.Find("Hearth").gameObject;
+        GameObject picto = hearth.transform.GetChild(0).gameObject;
+        hearth.layer = minimapLayer;
+        picto.layer = minimapLayer;
+        GameObject head = editedInGameLumy.transform.Find("Head").gameObject;
+        for (int i = 0; i < head.transform.childCount; i++)
+        {
+            GameObject compo = head.transform.GetChild(i).gameObject;
+            compo.layer = minimapLayer;
+        }
+        GameObject tail = editedInGameLumy.transform.Find("Tail").gameObject;
+        for (int i = 0; i < tail.transform.childCount; i++)
+        {
+            GameObject compo = tail.transform.GetChild(i).gameObject;
+            compo.layer = minimapLayer;
+        }
+        GameObject canvas = editedInGameLumy.transform.Find("Self/Canvas").gameObject;
+        Destroy(canvas);
+
+        //Set camera
         renderingCamera.GetComponent<CameraSwarmEdit>().Target = editedInGameLumy;
     }
 
