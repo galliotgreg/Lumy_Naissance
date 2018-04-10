@@ -60,7 +60,7 @@ public class CameraRay : MonoBehaviour {
                 {
                     self.gameObject.transform.GetChild(2).gameObject.SetActive(false);
                 }
-
+                //TODO Instantiate Canvas or Visual Selection for Feedback
                 AgentEntity entity = hit.transform.GetComponent<HomeScript>().Prysme;
                 self = hit.transform.GetComponent<HomeScript>().Prysme.Context.Self.GetComponent<AgentScript>(); 
                 //Enable MC Debugger
@@ -75,7 +75,7 @@ public class CameraRay : MonoBehaviour {
                 {
                     self.gameObject.transform.GetChild(2).gameObject.SetActive(false);
                 }
-
+                //TODO Instantiate Canvas or Visual Selection for Feedback
                 AgentEntity entity = hit.transform.GetComponent<HomeScript>().Prysme;
                 self = hit.transform.GetComponent<HomeScript>().Prysme.Context.Self.GetComponent<AgentScript>();
                 //Enable MC Debugger
