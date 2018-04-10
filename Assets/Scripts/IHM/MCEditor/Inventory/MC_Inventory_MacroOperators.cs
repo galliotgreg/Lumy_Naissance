@@ -42,14 +42,12 @@ public class MC_Inventory_MacroOperators : MC_Inventory_Operators {
 		//item.Title = MCEditor_Proxy.typeToString( op.getOutcomeType() );
 		item.Title = op.ViewName;
 		// Setting param type as subtitle
-		string subTitle = "";
 		for(int i=0; i<op.Inputs.Length; i++){
-			subTitle += (i>0?"\n":"") + MCEditor_Proxy.typeToString( op.getIncomeType(i) );
+			item.AddContent( op.getIncomeType(i) );
 			if (ABStar<ABBool>.isStar (op.getIncomeType (i))) {
 				break;
 			}
 		}
-		item.SubTitle = subTitle;
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.MacroOperator;
 	}

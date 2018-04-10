@@ -29,7 +29,6 @@ public class MC_Inventory_States : MC_Inventory {
 	{
 		item.TextItem.text = ((ABState)item.Item).Name;
 		item.Title = "State";
-		item.SubTitle = "";
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.State;
 	}
