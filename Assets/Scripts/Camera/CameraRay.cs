@@ -65,7 +65,9 @@ public class CameraRay : MonoBehaviour {
                 self = hit.transform.GetComponent<HomeScript>().Prysme.Context.Self.GetComponent<AgentScript>(); 
                 //Enable MC Debugger
                 MC_Debugger_Manager.instance.activateDebugger(entity);
-                EnableUI(self); 
+                EnableUI(self);
+                InGameUIController.instance.ShowStatPrysme(PlayerAuthority.Player1);
+
             }
 
             //Hit PrysmeJ2
@@ -81,6 +83,7 @@ public class CameraRay : MonoBehaviour {
                 //Enable MC Debugger
                 MC_Debugger_Manager.instance.activateDebugger(entity);
                 EnableUI(self);
+                InGameUIController.instance.ShowStatPrysme(PlayerAuthority.Player2);
             }
 
             //If nothing is Hit
@@ -96,7 +99,8 @@ public class CameraRay : MonoBehaviour {
                 //Disable Showing in UI
                 InGameUIController.instance.UnitSelected = false;
           
-                InGameUIController.instance.Self = null; 
+                InGameUIController.instance.Self = null;
+                InGameUIController.instance.ShowStatLumy();
             }
         }
 

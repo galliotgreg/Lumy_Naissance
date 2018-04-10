@@ -1366,27 +1366,27 @@ private void DisplayInSight() {
     }
 
     #region Bottom Left Panel Actions
-    private void ShowStatLumy()
+    public void ShowStatLumy()
     {
         statGrid.SetActive(true);
         statPrysmeJ1.SetActive(false);
         StatPrysmeJ2.SetActive(false);
     }
-    private void ShowStatPrysme()
+    public void ShowStatPrysme(PlayerAuthority player)
     {
-        //if (/*SI PRYSME J1*/)
-        //{
-        //    statGrid.SetActive(false);
-        //    statPrysmeJ1.SetActive(true);
-        //    StatPrysmeJ2.SetActive(false);
-        //}
+        if (player == PlayerAuthority.Player1)
+        {
+            statGrid.SetActive(false);
+            statPrysmeJ1.SetActive(true);
+            StatPrysmeJ2.SetActive(false);
+        }
 
-        //if (/*SI PRYSME J2*/)
-        //{
-        //    statGrid.SetActive(false);
-        //    statPrysmeJ1.SetActive(false);
-        //    StatPrysmeJ2.SetActive(true);
-        //}
+        if (player == PlayerAuthority.Player2)
+        {
+            statGrid.SetActive(false);
+            statPrysmeJ1.SetActive(false);
+            StatPrysmeJ2.SetActive(true);
+        }
     }
     #endregion
 
