@@ -109,7 +109,7 @@ public class PanelManager : MonoBehaviour
         //button_text.transform.SetParent(mainPanelScrollHelpContent.transform);
         // helpSelectionButton.transform.SetParent(mainPanelScrollHelpContent.transform);
         RectTransform rec = mainPanelScrollHelpContent.transform.GetComponent<RectTransform>();
-        //rec.transform.localScale = new Vector2(rec.sizeDelta.x, rec.sizeDelta.y + 20f);
+       // rec.transform.localScale = new Vector2(rec.sizeDelta.x, rec.sizeDelta.y + 5f);
     }
 
     public void SelectHelp(string title)
