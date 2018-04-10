@@ -43,8 +43,6 @@ public class MCToolManager : MonoBehaviour
         Hand,
         Undo,
         Redo,
-        Copier,
-        Coller,
         None
     };
 
@@ -65,10 +63,6 @@ public class MCToolManager : MonoBehaviour
     private Button btn_Undo;
     [SerializeField]
     private Button btn_Redo;
-    [SerializeField]
-    private Button btn_Copier;
-    [SerializeField]
-    private Button btn_Coller;
 
     [SerializeField]
     DropArea centerZone;
@@ -78,7 +72,7 @@ public class MCToolManager : MonoBehaviour
     private Vector3 mpos;
     private bool neverCalculated;
     List<Vector3> DistanceList = new List<Vector3>();
-    List<GameObject> CopyNodes = new List<GameObject>();
+
 
     int id = -1;
     int idmax = 0;
@@ -109,8 +103,6 @@ public class MCToolManager : MonoBehaviour
         btn_Main.onClick.AddListener(() => { CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; });
         btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); ToolUndo(); });
         btn_Redo.onClick.AddListener(() => { CurrentTool = ToolType.Redo; CancelInventory(); ToolRedo(); });
-        btn_Copier.onClick.AddListener(() => { CurrentTool = ToolType.Copier; CancelInventory(); ToolCopier(); });
-        btn_Coller.onClick.AddListener(() => { CurrentTool = ToolType.Coller; CancelInventory(); ToolColler(); });
         DeleteTemporary_Backup();
         sourceFilePath = Application.dataPath + @"/Inputs/TemporaryBackup/" + cast_name;
     }
@@ -182,7 +174,7 @@ public class MCToolManager : MonoBehaviour
                                 foreach (GameObject b in SelectedNodes)
                                 {
                                     DistanceList.Add(b.transform.position - mpos);
-
+                                    
                                 }
                             }
                         }
@@ -199,10 +191,10 @@ public class MCToolManager : MonoBehaviour
             }
         }
 
-        // Stop Selection when the mouse goes into the inventory 
-        // Attention : it is necessary to remove the raycast target property of the selection square 
-        // Attention : it is necessary to implement the "stop drawing" the selection square 
-        /*if (Input.GetMouseButton (0) && selectionEnCours && !centerZone.CanDrop) { 
+		// Stop Selection when the mouse goes into the inventory 
+		// Attention : it is necessary to remove the raycast target property of the selection square 
+		// Attention : it is necessary to implement the "stop drawing" the selection square 
+		/*if (Input.GetMouseButton (0) && selectionEnCours && !centerZone.CanDrop) { 
 	      isMouseDragging = false; 
 	      selectionEnCours = false; 
 	      SelectionSquare.instance.enabled = false; 
@@ -217,10 +209,10 @@ public class MCToolManager : MonoBehaviour
             saved = false;
         }
 
-        if (CurrentTool == ToolType.Hand)
+        if (CurrentTool == ToolType.Hand )
         {
             if (isMouseDragging)
-            {
+            {        
                 ToolMain();
             }
             else
@@ -242,8 +234,7 @@ public class MCToolManager : MonoBehaviour
     {
         string backupPath = Application.dataPath + @"/Inputs/TemporaryBackup";
         string[] filesPath = Directory.GetFiles(backupPath, "*.csv", SearchOption.TopDirectoryOnly);
-        foreach (string filepath in filesPath)
-        {
+        foreach (string filepath in filesPath){
             File.Delete(filepath);
             File.Delete(filepath + ".meta");
         }
@@ -269,35 +260,35 @@ public class MCToolManager : MonoBehaviour
         /*//Mouse moving
         if (isMouseDragging)
         {*/
-        //tracking mouse pos
-        Vector3 currentScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -GameObject.Find("Camera").GetComponent<Camera>().transform.position.z);
+            //tracking mouse pos
+            Vector3 currentScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -GameObject.Find("Camera").GetComponent<Camera>().transform.position.z);
 
-        //converting screen pos => world pos.
-        Vector3 currentPosition = GameObject.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(currentScreenSpace);
+            //converting screen pos => world pos.
+            Vector3 currentPosition = GameObject.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(currentScreenSpace);
 
-        if (SelectedNodes != null && SelectedNodes.Count == 0)
-        {
-            getTarget.transform.position = currentPosition;
-        }
-
-        else
-        {
-            if (SelectedNodes != null && SelectedNodes.Contains(getTarget))
+            if (SelectedNodes != null && SelectedNodes.Count == 0)
             {
-                int i = 0;
-                foreach (GameObject b in SelectedNodes)
-                {
-                    //update targets current postions.
-                    if (DistanceList[i].x < 0 || DistanceList[i].y < 0)
-                    {
-                        DistanceList[i].Set(DistanceList[i].x * -1.0f, DistanceList[i].y * -1.0f, DistanceList[i].z);
-                    }
-                    b.transform.position = currentPosition + DistanceList[i];
-                    i++;
+                getTarget.transform.position = currentPosition;
+            }
 
+            else
+            {
+                if (SelectedNodes != null && SelectedNodes.Contains(getTarget))
+                {
+                    int i = 0;
+                    foreach (GameObject b in SelectedNodes)
+                    {
+                        //update targets current postions.
+                        if (DistanceList[i].x < 0 || DistanceList[i].y < 0)
+                        {
+                            DistanceList[i].Set(DistanceList[i].x * -1.0f, DistanceList[i].y * -1.0f, DistanceList[i].z);
+                        }
+                        b.transform.position = currentPosition + DistanceList[i];
+                        i++;
+
+                    }
                 }
             }
-        }
         //}
     }
 
@@ -321,41 +312,6 @@ public class MCToolManager : MonoBehaviour
             }
         }
     }
-    #endregion
-
-    #region COPIER/COLLER
-    void ToolCopier()
-    {
-        CopyNodes = SelectedNodes;
-    }
-
-    void ToolColler()
-    {
-        Vector3 CopyPos = new Vector3();
-        Vector3 Offset = new Vector3(1.5f, -1.5f, 0.0f);
-
-        foreach (GameObject b in CopyNodes)
-        {
-            CopyPos = b.transform.position + Offset;
-            if (b.GetComponent<ProxyABParam>())
-            {
-                IABParam newParam = b.GetComponent<ProxyABParam>().AbParam;
-                ProxyABParam result = MCEditor_Proxy_Factory.instantiateParam(newParam, false);
-                result.gameObject.transform.position = b.gameObject.transform.position + Offset;
-            }
-            if (b.GetComponent<ProxyABOperator>())
-            {
-                IABOperator newOperator = b.GetComponent<ProxyABOperator>().AbOperator;
-                ProxyABOperator result = MCEditor_Proxy_Factory.instantiateOperator(newOperator, false);
-                result.gameObject.transform.position = b.gameObject.transform.position + Offset;
-            }
-        }
-        CopyNodes.Clear();
-        SelectedNodes.Clear();
-        hasBeenAdded = false;
-        TemporarySave();
-    }
-
     #endregion
 
     #region DELETE
@@ -411,7 +367,7 @@ public class MCToolManager : MonoBehaviour
             File.Delete(destinationFolderPath + cast_name + "_POSITION.csv");
             File.Delete(destinationFolderPath + cast_name + "_POSITION.csv.meta");
             File.Copy(sourcePosition, destinationFolderPath + cast_name + "_POSITION.csv");
-
+            
             List<MCEditor_Proxy> allProxies = new List<MCEditor_Proxy>();
             MCEditor_Proxy initToDestroy = null;
             foreach (MCEditor_Proxy b in allUnits)
@@ -441,9 +397,9 @@ public class MCToolManager : MonoBehaviour
         string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
 
         id++;
-        if (id <= idmax)
+        if (id <=  idmax )
         {
-
+            
             string sourcePosition = sourceFilePath + "_POSITION_" + id.ToString() + ".csv";
             string sourceBehavior = sourceFilePath + "_" + id.ToString() + ".csv";
 
