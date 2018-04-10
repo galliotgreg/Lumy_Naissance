@@ -356,6 +356,8 @@ public class ABManager : MonoBehaviour
     /// <param name="agent"></param>
     public void UnregisterAgent(AgentEntity agent)
     {
+        if (!agent.isActiveAndEnabled) return;
+            
         foreach (ABInstance instance in instances)
         {
             if (instance.AgentId == agent.Id)
