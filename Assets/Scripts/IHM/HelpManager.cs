@@ -12,7 +12,7 @@ public class HelpManager : MonoBehaviour {
     public HelpDatabase help;
 
     [SerializeField]
-    string JSON_name = "";
+    string JSON_name = "Generalites";
 
     /// <summary>
     /// Enforce Singleton properties
@@ -24,7 +24,7 @@ public class HelpManager : MonoBehaviour {
         {
             instance = this;
             help = new HelpDatabase();
-            help.LoadDatabase(JSON_name);
+            
         }
 
         //Enforce the unicity of the Singleton
@@ -46,7 +46,7 @@ public class HelpManager : MonoBehaviour {
         }
     }
 
-    public void UpdateDatabase(string JSON_name = "definition")
+    public void UpdateDatabase(string JSON_name)
     {
         this.JSON_name = JSON_name;
         help.LoadDatabase(JSON_name);
@@ -56,7 +56,7 @@ public class HelpManager : MonoBehaviour {
 
     {
         string[] listTitle = new string[help.GetLength()];
-        for(int i = 0; i< help.GetLength();i++)
+        for (int i = 0; i< help.GetLength();i++)
         {
             listTitle[i] = help.FetchHelpByID(i).Title;
         }
@@ -66,8 +66,8 @@ public class HelpManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
