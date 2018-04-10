@@ -1,16 +1,12 @@
 // Shader created with Shader Forge v1.37 
 // Shader Forge (c) Neat Corporation / Joachim Holmer - http://www.acegikmo.com/shaderforge/
 // Note: Manually altering this data may prevent you from opening it in Shader Forge
-/*SF_DATA;ver:1.37;sub:START;pass:START;ps:flbk:,iptp:0,cusa:False,bamd:0,cgin:,lico:1,lgpr:1,limd:3,spmd:1,trmd:0,grmd:0,uamb:True,mssp:True,bkdf:True,hqlp:False,rprd:True,enco:False,rmgx:True,imps:True,rpth:0,vtps:0,hqsc:True,nrmq:1,nrsp:0,vomd:0,spxs:False,tesm:0,olmd:1,culm:0,bsrc:0,bdst:1,dpts:2,wrdp:False,dith:0,atcv:False,rfrpo:True,rfrpn:Refraction,coma:15,ufog:True,aust:True,igpj:True,qofs:0,qpre:3,rntp:2,fgom:False,fgoc:False,fgod:False,fgor:False,fgmd:0,fgcr:0.5,fgcg:0.5,fgcb:0.5,fgca:1,fgde:0.01,fgrn:0,fgrf:300,stcl:False,stva:128,stmr:255,stmw:255,stcp:6,stps:0,stfa:0,stfz:0,ofsf:0,ofsu:0,f2p0:False,fnsp:False,fnfb:False,fsmp:False;n:type:ShaderForge.SFN_Final,id:2865,x:32719,y:32712,varname:node_2865,prsc:2|diff-5171-RGB,spec-8431-OUT,gloss-8057-OUT,alpha-5171-A;n:type:ShaderForge.SFN_Color,id:5171,x:32318,y:32942,ptovrint:False,ptlb:node_5171,ptin:_node_5171,varname:node_5171,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,c1:1,c2:1,c3:1,c4:0.4;n:type:ShaderForge.SFN_Fresnel,id:5468,x:31730,y:33391,varname:node_5468,prsc:2|EXP-361-OUT;n:type:ShaderForge.SFN_Multiply,id:9105,x:32234,y:33198,varname:node_9105,prsc:2|B-5468-OUT;n:type:ShaderForge.SFN_Slider,id:361,x:31411,y:33612,ptovrint:False,ptlb:node_361,ptin:_node_361,varname:node_361,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:1.091428,max:5;n:type:ShaderForge.SFN_Vector1,id:9788,x:31521,y:33309,varname:node_9788,prsc:2,v1:1;n:type:ShaderForge.SFN_Vector1,id:9234,x:32117,y:33559,varname:node_9234,prsc:2,v1:0.5;n:type:ShaderForge.SFN_Multiply,id:4155,x:32302,y:33431,varname:node_4155,prsc:2|A-7767-OUT,B-9234-OUT;n:type:ShaderForge.SFN_OneMinus,id:7767,x:31931,y:33578,varname:node_7767,prsc:2|IN-5468-OUT;n:type:ShaderForge.SFN_Slider,id:8431,x:32166,y:32600,ptovrint:False,ptlb:node_361_copy,ptin:_node_361_copy,varname:_node_361_copy,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:0.3878362,max:1;n:type:ShaderForge.SFN_Clamp01,id:8057,x:32255,y:32774,varname:node_8057,prsc:2|IN-2925-OUT;n:type:ShaderForge.SFN_Subtract,id:2925,x:32068,y:32774,varname:node_2925,prsc:2|A-21-OUT,B-3659-OUT;n:type:ShaderForge.SFN_Slider,id:21,x:31752,y:32610,ptovrint:False,ptlb:node_361_copy_copy,ptin:_node_361_copy_copy,varname:_node_361_copy_copy,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:0.8842804,max:1;n:type:ShaderForge.SFN_Fresnel,id:86,x:31502,y:32624,varname:node_86,prsc:2|EXP-5139-OUT;n:type:ShaderForge.SFN_Multiply,id:3659,x:31752,y:32757,varname:node_3659,prsc:2|A-86-OUT,B-7784-OUT;n:type:ShaderForge.SFN_Slider,id:5139,x:31033,y:32629,ptovrint:False,ptlb:node_361_copy_copy_copy,ptin:_node_361_copy_copy_copy,varname:_node_361_copy_copy_copy,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:1.302108,max:5;n:type:ShaderForge.SFN_Slider,id:7784,x:31058,y:32854,ptovrint:False,ptlb:node_361_copy_copy_copy_copy,ptin:_node_361_copy_copy_copy_copy,varname:_node_361_copy_copy_copy_copy,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:0.7982773,max:1;proporder:5171-361-8431-21-5139-7784;pass:END;sub:END;*/
+/*SF_DATA;ver:1.37;sub:START;pass:START;ps:flbk:,iptp:0,cusa:False,bamd:0,cgin:,lico:1,lgpr:1,limd:3,spmd:1,trmd:1,grmd:1,uamb:True,mssp:True,bkdf:True,hqlp:False,rprd:True,enco:False,rmgx:True,imps:True,rpth:0,vtps:0,hqsc:True,nrmq:1,nrsp:0,vomd:0,spxs:False,tesm:0,olmd:1,culm:2,bsrc:0,bdst:7,dpts:2,wrdp:False,dith:0,atcv:False,rfrpo:True,rfrpn:Refraction,coma:15,ufog:True,aust:True,igpj:True,qofs:0,qpre:3,rntp:2,fgom:False,fgoc:False,fgod:False,fgor:False,fgmd:0,fgcr:0.5,fgcg:0.5,fgcb:0.5,fgca:1,fgde:0.01,fgrn:0,fgrf:300,stcl:False,stva:128,stmr:255,stmw:255,stcp:6,stps:0,stfa:0,stfz:0,ofsf:0,ofsu:0,f2p0:False,fnsp:False,fnfb:False,fsmp:False;n:type:ShaderForge.SFN_Final,id:2865,x:32719,y:32712,varname:node_2865,prsc:2|diff-8356-OUT,spec-7612-OUT,gloss-7523-OUT,emission-7346-OUT,alpha-5111-OUT;n:type:ShaderForge.SFN_Slider,id:358,x:31722,y:32957,ptovrint:False,ptlb:TansparancyAmount,ptin:_TansparancyAmount,varname:node_358,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:2.860157,max:5;n:type:ShaderForge.SFN_Vector1,id:8356,x:32318,y:32594,varname:node_8356,prsc:2,v1:0.03;n:type:ShaderForge.SFN_Vector1,id:7612,x:32293,y:32668,varname:node_7612,prsc:2,v1:1;n:type:ShaderForge.SFN_Vector1,id:7523,x:32318,y:32783,varname:node_7523,prsc:2,v1:0.2;n:type:ShaderForge.SFN_Fresnel,id:5111,x:31879,y:33129,varname:node_5111,prsc:2|EXP-358-OUT;n:type:ShaderForge.SFN_Multiply,id:7346,x:32383,y:32906,varname:node_7346,prsc:2|A-4083-RGB,B-5111-OUT;n:type:ShaderForge.SFN_Color,id:4083,x:32017,y:32788,ptovrint:False,ptlb:node_4083,ptin:_node_4083,varname:node_4083,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,c1:0.02205884,c2:0.02205884,c3:0.02205884,c4:1;proporder:358-4083;pass:END;sub:END;*/
 
-Shader "Shader Forge/SphereMC1" {
+Shader "Shader Forge/SphereMC4" {
     Properties {
-        _node_5171 ("node_5171", Color) = (1,1,1,0.4)
-        _node_361 ("node_361", Range(0, 5)) = 1.091428
-        _node_361_copy ("node_361_copy", Range(0, 1)) = 0.3878362
-        _node_361_copy_copy ("node_361_copy_copy", Range(0, 1)) = 0.8842804
-        _node_361_copy_copy_copy ("node_361_copy_copy_copy", Range(0, 5)) = 1.302108
-        _node_361_copy_copy_copy_copy ("node_361_copy_copy_copy_copy", Range(0, 1)) = 0.7982773
+        _TansparancyAmount ("TansparancyAmount", Range(0, 5)) = 2.860157
+        _node_4083 ("node_4083", Color) = (0.02205884,0.02205884,0.02205884,1)
         [HideInInspector]_Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
     }
     SubShader {
@@ -24,6 +20,8 @@ Shader "Shader Forge/SphereMC1" {
             Tags {
                 "LightMode"="ForwardBase"
             }
+            Blend One OneMinusSrcAlpha
+            Cull Off
             ZWrite Off
             
             CGPROGRAM
@@ -43,11 +41,8 @@ Shader "Shader Forge/SphereMC1" {
             #pragma multi_compile_fog
             #pragma only_renderers d3d9 d3d11 glcore gles 
             #pragma target 3.0
-            uniform float4 _node_5171;
-            uniform float _node_361_copy;
-            uniform float _node_361_copy_copy;
-            uniform float _node_361_copy_copy_copy;
-            uniform float _node_361_copy_copy_copy_copy;
+            uniform float _TansparancyAmount;
+            uniform float4 _node_4083;
             struct VertexInput {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
@@ -89,8 +84,11 @@ Shader "Shader Forge/SphereMC1" {
                 UNITY_TRANSFER_FOG(o,o.pos);
                 return o;
             }
-            float4 frag(VertexOutput i) : COLOR {
+            float4 frag(VertexOutput i, float facing : VFACE) : COLOR {
+                float isFrontFace = ( facing >= 0 ? 1 : 0 );
+                float faceSign = ( facing >= 0 ? 1 : -1 );
                 i.normalDir = normalize(i.normalDir);
+                i.normalDir *= faceSign;
                 float3x3 tangentTransform = float3x3( i.tangentDir, i.bitangentDir, i.normalDir);
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
                 float3 normalDirection = i.normalDir;
@@ -104,9 +102,8 @@ Shader "Shader Forge/SphereMC1" {
                 float Pi = 3.141592654;
                 float InvPi = 0.31830988618;
 ///////// Gloss:
-                float node_3659 = (pow(1.0-max(0,dot(normalDirection, viewDirection)),_node_361_copy_copy_copy)*_node_361_copy_copy_copy_copy);
-                float gloss = saturate((_node_361_copy_copy-node_3659));
-                float perceptualRoughness = 1.0 - saturate((_node_361_copy_copy-node_3659));
+                float gloss = 1.0 - 0.2; // Convert roughness to gloss
+                float perceptualRoughness = 0.2;
                 float roughness = perceptualRoughness * perceptualRoughness;
                 float specPow = exp2( gloss * 10.0 + 1.0 );
 /////// GI Data:
@@ -152,9 +149,10 @@ Shader "Shader Forge/SphereMC1" {
 ////// Specular:
                 float NdotL = saturate(dot( normalDirection, lightDirection ));
                 float LdotH = saturate(dot(lightDirection, halfDirection));
-                float3 specularColor = _node_361_copy;
+                float3 specularColor = 1.0;
                 float specularMonochrome;
-                float3 diffuseColor = _node_5171.rgb; // Need this for specular when using metallic
+                float node_8356 = 0.03;
+                float3 diffuseColor = float3(node_8356,node_8356,node_8356); // Need this for specular when using metallic
                 diffuseColor = DiffuseAndSpecularFromMetallic( diffuseColor, specularColor, specularColor, specularMonochrome );
                 specularMonochrome = 1.0-specularMonochrome;
                 float NdotV = abs(dot( normalDirection, viewDirection ));
@@ -192,9 +190,12 @@ Shader "Shader Forge/SphereMC1" {
                 float3 indirectDiffuse = float3(0,0,0);
                 indirectDiffuse += gi.indirect.diffuse;
                 float3 diffuse = (directDiffuse + indirectDiffuse) * diffuseColor;
+////// Emissive:
+                float node_5111 = pow(1.0-max(0,dot(normalDirection, viewDirection)),_TansparancyAmount);
+                float3 emissive = (_node_4083.rgb*node_5111);
 /// Final Color:
-                float3 finalColor = diffuse + specular;
-                fixed4 finalRGBA = fixed4(finalColor,_node_5171.a);
+                float3 finalColor = diffuse * node_5111 + specular + emissive;
+                fixed4 finalRGBA = fixed4(finalColor,node_5111);
                 UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
                 return finalRGBA;
             }
@@ -206,6 +207,7 @@ Shader "Shader Forge/SphereMC1" {
                 "LightMode"="ForwardAdd"
             }
             Blend One One
+            Cull Off
             ZWrite Off
             
             CGPROGRAM
@@ -226,11 +228,8 @@ Shader "Shader Forge/SphereMC1" {
             #pragma multi_compile_fog
             #pragma only_renderers d3d9 d3d11 glcore gles 
             #pragma target 3.0
-            uniform float4 _node_5171;
-            uniform float _node_361_copy;
-            uniform float _node_361_copy_copy;
-            uniform float _node_361_copy_copy_copy;
-            uniform float _node_361_copy_copy_copy_copy;
+            uniform float _TansparancyAmount;
+            uniform float4 _node_4083;
             struct VertexInput {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
@@ -263,8 +262,11 @@ Shader "Shader Forge/SphereMC1" {
                 TRANSFER_VERTEX_TO_FRAGMENT(o)
                 return o;
             }
-            float4 frag(VertexOutput i) : COLOR {
+            float4 frag(VertexOutput i, float facing : VFACE) : COLOR {
+                float isFrontFace = ( facing >= 0 ? 1 : 0 );
+                float faceSign = ( facing >= 0 ? 1 : -1 );
                 i.normalDir = normalize(i.normalDir);
+                i.normalDir *= faceSign;
                 float3x3 tangentTransform = float3x3( i.tangentDir, i.bitangentDir, i.normalDir);
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
                 float3 normalDirection = i.normalDir;
@@ -277,17 +279,17 @@ Shader "Shader Forge/SphereMC1" {
                 float Pi = 3.141592654;
                 float InvPi = 0.31830988618;
 ///////// Gloss:
-                float node_3659 = (pow(1.0-max(0,dot(normalDirection, viewDirection)),_node_361_copy_copy_copy)*_node_361_copy_copy_copy_copy);
-                float gloss = saturate((_node_361_copy_copy-node_3659));
-                float perceptualRoughness = 1.0 - saturate((_node_361_copy_copy-node_3659));
+                float gloss = 1.0 - 0.2; // Convert roughness to gloss
+                float perceptualRoughness = 0.2;
                 float roughness = perceptualRoughness * perceptualRoughness;
                 float specPow = exp2( gloss * 10.0 + 1.0 );
 ////// Specular:
                 float NdotL = saturate(dot( normalDirection, lightDirection ));
                 float LdotH = saturate(dot(lightDirection, halfDirection));
-                float3 specularColor = _node_361_copy;
+                float3 specularColor = 1.0;
                 float specularMonochrome;
-                float3 diffuseColor = _node_5171.rgb; // Need this for specular when using metallic
+                float node_8356 = 0.03;
+                float3 diffuseColor = float3(node_8356,node_8356,node_8356); // Need this for specular when using metallic
                 diffuseColor = DiffuseAndSpecularFromMetallic( diffuseColor, specularColor, specularColor, specularMonochrome );
                 specularMonochrome = 1.0-specularMonochrome;
                 float NdotV = abs(dot( normalDirection, viewDirection ));
@@ -314,10 +316,65 @@ Shader "Shader Forge/SphereMC1" {
                 float3 directDiffuse = ((1 +(fd90 - 1)*nlPow5) * (1 + (fd90 - 1)*nvPow5) * NdotL) * attenColor;
                 float3 diffuse = directDiffuse * diffuseColor;
 /// Final Color:
-                float3 finalColor = diffuse + specular;
-                fixed4 finalRGBA = fixed4(finalColor * _node_5171.a,0);
+                float node_5111 = pow(1.0-max(0,dot(normalDirection, viewDirection)),_TansparancyAmount);
+                float3 finalColor = diffuse * node_5111 + specular;
+                fixed4 finalRGBA = fixed4(finalColor,0);
                 UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
                 return finalRGBA;
+            }
+            ENDCG
+        }
+        Pass {
+            Name "ShadowCaster"
+            Tags {
+                "LightMode"="ShadowCaster"
+            }
+            Offset 1, 1
+            Cull Off
+            
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #define UNITY_PASS_SHADOWCASTER
+            #define SHOULD_SAMPLE_SH ( defined (LIGHTMAP_OFF) && defined(DYNAMICLIGHTMAP_OFF) )
+            #define _GLOSSYENV 1
+            #include "UnityCG.cginc"
+            #include "Lighting.cginc"
+            #include "UnityPBSLighting.cginc"
+            #include "UnityStandardBRDF.cginc"
+            #pragma fragmentoption ARB_precision_hint_fastest
+            #pragma multi_compile_shadowcaster
+            #pragma multi_compile LIGHTMAP_OFF LIGHTMAP_ON
+            #pragma multi_compile DIRLIGHTMAP_OFF DIRLIGHTMAP_COMBINED DIRLIGHTMAP_SEPARATE
+            #pragma multi_compile DYNAMICLIGHTMAP_OFF DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma only_renderers d3d9 d3d11 glcore gles 
+            #pragma target 3.0
+            struct VertexInput {
+                float4 vertex : POSITION;
+                float2 texcoord1 : TEXCOORD1;
+                float2 texcoord2 : TEXCOORD2;
+            };
+            struct VertexOutput {
+                V2F_SHADOW_CASTER;
+                float2 uv1 : TEXCOORD1;
+                float2 uv2 : TEXCOORD2;
+                float4 posWorld : TEXCOORD3;
+            };
+            VertexOutput vert (VertexInput v) {
+                VertexOutput o = (VertexOutput)0;
+                o.uv1 = v.texcoord1;
+                o.uv2 = v.texcoord2;
+                o.posWorld = mul(unity_ObjectToWorld, v.vertex);
+                o.pos = UnityObjectToClipPos( v.vertex );
+                TRANSFER_SHADOW_CASTER(o)
+                return o;
+            }
+            float4 frag(VertexOutput i, float facing : VFACE) : COLOR {
+                float isFrontFace = ( facing >= 0 ? 1 : 0 );
+                float faceSign = ( facing >= 0 ? 1 : -1 );
+                float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
+                SHADOW_CASTER_FRAGMENT(i)
             }
             ENDCG
         }
@@ -347,11 +404,8 @@ Shader "Shader Forge/SphereMC1" {
             #pragma multi_compile_fog
             #pragma only_renderers d3d9 d3d11 glcore gles 
             #pragma target 3.0
-            uniform float4 _node_5171;
-            uniform float _node_361_copy;
-            uniform float _node_361_copy_copy;
-            uniform float _node_361_copy_copy_copy;
-            uniform float _node_361_copy_copy_copy_copy;
+            uniform float _TansparancyAmount;
+            uniform float4 _node_4083;
             struct VertexInput {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
@@ -374,21 +428,25 @@ Shader "Shader Forge/SphereMC1" {
                 o.pos = UnityMetaVertexPosition(v.vertex, v.texcoord1.xy, v.texcoord2.xy, unity_LightmapST, unity_DynamicLightmapST );
                 return o;
             }
-            float4 frag(VertexOutput i) : SV_Target {
+            float4 frag(VertexOutput i, float facing : VFACE) : SV_Target {
+                float isFrontFace = ( facing >= 0 ? 1 : 0 );
+                float faceSign = ( facing >= 0 ? 1 : -1 );
                 i.normalDir = normalize(i.normalDir);
+                i.normalDir *= faceSign;
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
                 float3 normalDirection = i.normalDir;
                 UnityMetaInput o;
                 UNITY_INITIALIZE_OUTPUT( UnityMetaInput, o );
                 
-                o.Emission = 0;
+                float node_5111 = pow(1.0-max(0,dot(normalDirection, viewDirection)),_TansparancyAmount);
+                o.Emission = (_node_4083.rgb*node_5111);
                 
-                float3 diffColor = _node_5171.rgb;
+                float node_8356 = 0.03;
+                float3 diffColor = float3(node_8356,node_8356,node_8356);
                 float specularMonochrome;
                 float3 specColor;
-                diffColor = DiffuseAndSpecularFromMetallic( diffColor, _node_361_copy, specColor, specularMonochrome );
-                float node_3659 = (pow(1.0-max(0,dot(normalDirection, viewDirection)),_node_361_copy_copy_copy)*_node_361_copy_copy_copy_copy);
-                float roughness = 1.0 - saturate((_node_361_copy_copy-node_3659));
+                diffColor = DiffuseAndSpecularFromMetallic( diffColor, 1.0, specColor, specularMonochrome );
+                float roughness = 0.2;
                 o.Albedo = diffColor + specColor * roughness * roughness * 0.5;
                 
                 return UnityMetaFragment( o );
