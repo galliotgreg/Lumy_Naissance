@@ -85,8 +85,8 @@ public class MC_Inventory_Operators : MC_Inventory {
 		item.TextItem.text = MCEditor_Proxy.getNodeName((ABNode)item.Item);
 		IABOperator op = ((IABOperator)item.Item);
 		// Setting return type as title
-		// item.Title = MCEditor_Proxy.getNodeName((ABNode)item.Item);
-		item.Title = MCEditor_Proxy.typeToString( op.getOutcomeType() );
+		item.Title = MCEditor_Proxy.getNodeName((ABNode)item.Item);
+		// item.Title = MCEditor_Proxy.typeToString( op.getOutcomeType() );
 		// Setting param type as subtitle
 		string subTitle = "";
 		for(int i=0; i<op.Inputs.Length; i++){
