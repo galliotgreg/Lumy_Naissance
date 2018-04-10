@@ -374,7 +374,7 @@ public class InGameUIController : MonoBehaviour {
         }
     }
     private bool statePlayPause = true;
-    private void PauseGame()
+    public void PauseGame()
     {
         Image pp = playPause.GetComponent<Image>();
         if (statePlayPause)
@@ -1091,7 +1091,7 @@ public class InGameUIController : MonoBehaviour {
         alreadyClosed = true; 
     }
 
-    private void OpenOptionsDebug() {
+        public void OpenOptionsDebug() {
 
         if (OperatorHelper.Instance != null)
         {
