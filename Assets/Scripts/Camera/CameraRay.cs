@@ -35,6 +35,7 @@ public class CameraRay : MonoBehaviour {
         //Draw A ray and test if not on UI 
         if (Physics.Raycast(ray, out hit, 100.0f) && (!EventSystem.current.IsPointerOverGameObject(fingerID)))
         {
+            //Hit a LumyComponents
             if (hit.transform.name == "EmptyComponentPrefab(Clone)") //If the hit is an EmptyComponentPrefab
             {
                 if (self != null) {
@@ -43,22 +44,46 @@ public class CameraRay : MonoBehaviour {
                 }
                 GameObject parent = hit.transform.parent.parent.gameObject;           
                 self = parent.GetComponent<AgentContext>().Self.GetComponent<AgentScript>();
-
-                
+ 
                 self.gameObject.transform.GetChild(2).gameObject.SetActive(true); //Enable Canvas
 
                 //Enable MC Debugger
                 MC_Debugger_Manager.instance.activateDebugger(parent.GetComponent<AgentEntity>());
-                
-                //Set Color 
-                InGameUIController.instance.ColorPlayer(self);
-
-               //Enable showing in UI
-               InGameUIController.instance.UnitSelected = true;
-                //Set the self in UI
-                InGameUIController.instance.Self = self; 
-               InGameUIController.instance.unitCost(); 
+                EnableUI(self);
+               
             }
+
+            //Hit PrysmeJ1
+            else if(hit.transform.name == "p1_hive")
+            {
+                if(self!= null)
+                {
+                    self.gameObject.transform.GetChild(2).gameObject.SetActive(false);
+                }
+
+                AgentEntity entity = hit.transform.GetComponent<HomeScript>().Prysme;
+                self = hit.transform.GetComponent<HomeScript>().Prysme.Context.Self.GetComponent<AgentScript>(); 
+                //Enable MC Debugger
+                MC_Debugger_Manager.instance.activateDebugger(entity);
+                EnableUI(self); 
+            }
+
+            //Hit PrysmeJ2
+            else if(hit.transform.name == "p2_hive")
+            {
+                if (self != null)
+                {
+                    self.gameObject.transform.GetChild(2).gameObject.SetActive(false);
+                }
+
+                AgentEntity entity = hit.transform.GetComponent<HomeScript>().Prysme;
+                self = hit.transform.GetComponent<HomeScript>().Prysme.Context.Self.GetComponent<AgentScript>();
+                //Enable MC Debugger
+                MC_Debugger_Manager.instance.activateDebugger(entity);
+                EnableUI(self);
+            }
+
+            //If nothing is Hit
             else
             {   
                 if(self != null) {
@@ -74,12 +99,25 @@ public class CameraRay : MonoBehaviour {
                 InGameUIController.instance.Self = null; 
             }
         }
+
        
+    }
+
+    private void EnableUI(AgentScript self) 
+    {
+        //Set Color 
+        InGameUIController.instance.ColorPlayer(self);
+        //Enable showing in UI
+        InGameUIController.instance.UnitSelected = true;
+        //Set the self in UI
+        InGameUIController.instance.Self = self;
+        InGameUIController.instance.unitCost();
     }
 
 
 
 
-   
+
+
 }
 

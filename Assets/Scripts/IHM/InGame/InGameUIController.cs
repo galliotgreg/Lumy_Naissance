@@ -223,11 +223,19 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private float waitingTime = 1f;
 
+    #region Bottom Left panel
+    [SerializeField]
+    private GameObject statGrid;
+    [SerializeField]
+    private GameObject statPrysmeJ1;
+    [SerializeField]
+    private GameObject StatPrysmeJ2;
+    #endregion
     //button valid debugg params
     [SerializeField]
     private Button valider;
 
-    #region 
+    #region MiniMap
 
     [Header("Minimap")]
     //Icon minimap materials
@@ -1341,8 +1349,6 @@ private void DisplayInSight() {
         updateFocus(agentList);
     }
 
-
-
     public void ColorPlayer(AgentScript agentScript)
     {
         if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1)
@@ -1359,7 +1365,30 @@ private void DisplayInSight() {
         }
     }
 
+    #region Bottom Left Panel Actions
+    private void ShowStatLumy()
+    {
+        statGrid.SetActive(true);
+        statPrysmeJ1.SetActive(false);
+        StatPrysmeJ2.SetActive(false);
+    }
+    private void ShowStatPrysme()
+    {
+        //if (/*SI PRYSME J1*/)
+        //{
+        //    statGrid.SetActive(false);
+        //    statPrysmeJ1.SetActive(true);
+        //    StatPrysmeJ2.SetActive(false);
+        //}
 
+        //if (/*SI PRYSME J2*/)
+        //{
+        //    statGrid.SetActive(false);
+        //    statPrysmeJ1.SetActive(false);
+        //    StatPrysmeJ2.SetActive(true);
+        //}
+    }
+    #endregion
 
 }
 
