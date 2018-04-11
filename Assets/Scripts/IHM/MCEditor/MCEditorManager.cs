@@ -135,7 +135,7 @@ public class MCEditorManager : MonoBehaviour
     private void Update()
     {
         /**START TEST SAVE**/
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
         {
             Save_MC();
         }
@@ -144,8 +144,7 @@ public class MCEditorManager : MonoBehaviour
             this.deleteSelectedTransition();
             MCToolManager.instance.hasBeenAdded = false;
             MCToolManager.instance.TemporarySave();
-        }
-        
+        }        
     }
 
     private void OnDestroy()
