@@ -2335,7 +2335,7 @@ public class MCEditorManager : MonoBehaviour
         clone.transform.position = new Vector3(position.x, position.y, -1);
         if (type.Contains("Action"))
         {
-            FillActionToolTip(clone, ((ProxyABState)proxy).AbState);
+            FillActionToolTip(clone, ((ProxyABAction)proxy).AbState);
         }
         else if (type.Contains("Param"))
         {
