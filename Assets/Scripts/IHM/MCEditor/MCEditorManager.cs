@@ -135,7 +135,7 @@ public class MCEditorManager : MonoBehaviour
     private void Update()
     {
         /**START TEST SAVE**/
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
         {
             Save_MC();
         }
@@ -2428,7 +2428,7 @@ public class MCEditorManager : MonoBehaviour
         clone.transform.position = new Vector3(position.x, position.y, -1);
         if (type.Contains("Action"))
         {
-            FillActionToolTip(clone, ((ProxyABState)proxy).AbState);
+            FillActionToolTip(clone, ((ProxyABAction)proxy).AbState);
         }
         else if (type.Contains("Param"))
         {
