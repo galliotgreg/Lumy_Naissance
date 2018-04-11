@@ -73,6 +73,11 @@ public class PartiePersoUIController : MonoBehaviour {
     List<Text> player1StatsNamesList;
     [SerializeField]
     List<Text> player2StatsNamesList;
+    [SerializeField]
+    private Image pictoSwarmP1;
+    [SerializeField]
+    private Image pictoSwarmP2;
+
 
     private List<Text> player1PercentageToDestroyList = new List<Text>();
     private List<Text> player2PercentageToDestroyList = new List<Text>();
@@ -505,7 +510,21 @@ public class PartiePersoUIController : MonoBehaviour {
      
         //Compute and display stats
         ComputePlayer2Stats();
+
+        //DisplayPictoNueeP2();
  
+    }
+
+    private void DisplayPictoNueeP2()
+    {
+        GameObject[] swarmPictos = LumyPictFactory.instance.InstanciateAllPicts();
+        // Get prefab material
+        Material mat = swarmPictos[AppContextManager.instance.ActiveSpecie.PictId].GetComponent<MeshRenderer>().material;
+        Texture2D texturPicto = (Texture2D) mat.mainTexture;
+        Sprite spritePicto = Sprite.Create(texturPicto, new Rect(0.0f, 0.0f, texturPicto.width, texturPicto.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+        pictoSwarmP2.sprite = spritePicto;
+
     }
 
     private void ClearPlayer2View()

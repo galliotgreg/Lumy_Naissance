@@ -358,7 +358,7 @@ public class AppContextManager : MonoBehaviour
         activeSpecie.Name = name;
     }
 
-    private void SaveSpecie()
+    public void SaveSpecie()
     {
         //Read old file
         StreamReader reader = new StreamReader(activeSpecieFilePath);

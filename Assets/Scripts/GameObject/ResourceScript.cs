@@ -21,7 +21,9 @@ public class ResourceScript : MonoBehaviour {
     [SerializeField]
     private Color32 color;
 
-    private List<Transform> spawnPoints = new List<Transform>();
+    [SerializeField]
+    private List<Transform> spawnPoints;
+
 
     #endregion
     #region Accesseur
@@ -66,6 +68,19 @@ public class ResourceScript : MonoBehaviour {
             stock = value;
         }
     }
+
+    public List<Transform> SpawnPoints
+    {
+        get
+        {
+            return spawnPoints;
+        }
+
+        set
+        {
+            spawnPoints = value;
+        }
+    }
     #endregion
 
     void Awake(){
@@ -74,11 +89,8 @@ public class ResourceScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        spawnPoints = new List<Transform>();
-        randomizeLoccation(); 
 		this.Location = positionFromTransform ();
-        
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -93,26 +105,4 @@ public class ResourceScript : MonoBehaviour {
 		return new Vector2(transform.position.x, transform.position.z);
 	}
 
-    private void randomizeLoccation()
-    { 
-        GameObject[] go = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        if(go.Length <=0)
-        {
-            return; 
-        }
-        for(int i=0; i<go.Length; i++)
-        {
-            if(go[i].transform.IsChildOf(this.transform))
-            {
-                spawnPoints.Add(go[i].transform);
-            }     
-        }
-        if (spawnPoints.Count <= 0)
-        {
-            return;
-        }
-
-        int index = Random.Range(0, spawnPoints.Count - 1);
-        this.transform.position = spawnPoints[index].position; 
-    }
 }
