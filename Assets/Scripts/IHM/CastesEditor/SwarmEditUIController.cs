@@ -765,6 +765,7 @@ public class SwarmEditUIController : MonoBehaviour
         AppContextManager.instance.ActiveSpecie.PictId = index;
         editSwarmImageButton.GetComponent<Image>().material = swarmImagesArray[index].GetComponent<MeshRenderer>().material;
         swarmImageDialog.SetActive(!swarmImageDialog.activeSelf);
+        SaveSwarm();
         RefreshView();
     }
     #endregion
