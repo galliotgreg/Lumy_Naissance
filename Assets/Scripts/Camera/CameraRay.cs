@@ -36,7 +36,7 @@ public class CameraRay : MonoBehaviour {
         if (Physics.Raycast(ray, out hit, 100.0f) && (!EventSystem.current.IsPointerOverGameObject(fingerID)))
         {
             //Hit a LumyComponents
-            if (hit.transform.name == "EmptyComponentPrefab(Clone)") //If the hit is an EmptyComponentPrefab
+           if (hit.transform.name == "EmptyComponentPrefab(Clone)") //If the hit is an EmptyComponentPrefab
             {
                 if (self != null) {
                     //Disable SelectionShader
@@ -50,6 +50,7 @@ public class CameraRay : MonoBehaviour {
                 //Enable MC Debugger
                 MC_Debugger_Manager.instance.activateDebugger(parent.GetComponent<AgentEntity>());
                 EnableUI(self);
+                 InGameUIController.instance.ShowStatLumy();
                
             }
 
@@ -85,7 +86,6 @@ public class CameraRay : MonoBehaviour {
                 EnableUI(self);
                 InGameUIController.instance.ShowStatPrysme(PlayerAuthority.Player2);
             }
-
             //If nothing is Hit
             else
             {   
