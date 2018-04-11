@@ -1484,6 +1484,11 @@ public class SwarmEditUIController : MonoBehaviour
         editedLumy.SetActive(false);
     }
 
+    public void SaveSwarm()
+    {
+        AppContextManager.instance.SaveSpecie();
+    }
+
     /// <summary>
     /// Persist the changes on the selected lumy
     /// </summary>
