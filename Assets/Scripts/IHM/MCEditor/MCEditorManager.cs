@@ -40,12 +40,12 @@ public class MCEditorManager : MonoBehaviour
     private List<ProxyABTransition> proxyTransitions;
     private List<Pin> pins; //ProxyABGateOperator    
     private List<ProxyABOperator> proxyOperators;
-    private List<ProxyABParam> proxyParams;        
+    private List<ProxyABParam> proxyParams;
     private Text toolTipText;
 
     //ToolTip
     private List<Help> databaseOperators = new List<Help>();
-    private List<Help> databaseActions_Params = new List<Help>();    
+    private List<Help> databaseActions_Params = new List<Help>();
 
     //[SerializeField]
     private string MC_OrigFilePath;
@@ -98,7 +98,7 @@ public class MCEditorManager : MonoBehaviour
         toolTipText = GetComponentInChildren<Text>();
 
         LoadActions_ParamsDatabase();
-        LoadOperatorDatabase();        
+        LoadOperatorDatabase();
 
 
         /**START DO NOT COMMIT**/
@@ -145,7 +145,7 @@ public class MCEditorManager : MonoBehaviour
             MCToolManager.instance.hasBeenAdded = false;
             MCToolManager.instance.TemporarySave();
         }
-        
+
     }
 
     private void OnDestroy()
@@ -257,7 +257,7 @@ public class MCEditorManager : MonoBehaviour
 
     public void LoadMC_Position()
     {
-        string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";        
+        string path = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";
         if (File.Exists(path))
         {
             StreamReader reader = new StreamReader(path);
@@ -313,7 +313,7 @@ public class MCEditorManager : MonoBehaviour
                     float x = float.Parse(x_string);
                     float y = float.Parse(y_string);
                     float z = 0;
-                    
+
                     setProxyPositionOnLoad(name, isStateBlock, isActionBlock, isOperatorBlock, isParameterBlock, x, y, z);
                 }
             }
@@ -686,6 +686,8 @@ public class MCEditorManager : MonoBehaviour
     }
     void Save_MC_Position()
     {
+        SortOperatorProxies();
+
         string csvpath = MC_OrigFilePath.Split('.')[0] + "_POSITION.csv";
         StringBuilder csvcontent = new StringBuilder();
         List<StringBuilder> syntTrees = new List<StringBuilder>();
@@ -749,6 +751,97 @@ public class MCEditorManager : MonoBehaviour
             File.AppendAllText(csvpath, csvcontent.ToString());
         }
         Debug.Log("Save MC Position");
+    }
+
+    private void SortOperatorProxies()
+    {
+        List<ProxyABOperator> proxyOperatorsTMP = new List<ProxyABOperator>();
+        List<ProxyABParam> proxyParamsTMP = new List<ProxyABParam>();
+
+        //Fetch action trees nodes
+        foreach (ABState state in abModel.States)
+        {
+            if (state.Action != null)
+            {
+                if (state.Action.Parameters != null)
+                {
+                    for (int i = 0; i < state.Action.Parameters.Length; i++)
+                    {
+                        if (state.Action.Parameters[i].Inputs[0] != null)
+                        {
+                            foreach (ABNode node in state.Action.Parameters[i].Inputs)
+                            {
+                                RecSweepTree(node, proxyOperatorsTMP, proxyParamsTMP);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //Fetch transition trees nodes
+        foreach (ABTransition trans in abModel.Transitions)
+        {
+            if (trans.Condition != null)
+            {
+                if (trans.Condition.Inputs[0] != null)
+                {
+                    foreach (ABNode node in trans.Condition.Inputs)
+                    {
+                        RecSweepTree(node, proxyOperatorsTMP, proxyParamsTMP);
+                    }
+                }
+
+            }
+        }
+
+        proxyOperators.Clear();
+        proxyParams.Clear();
+        proxyOperators.AddRange(proxyOperatorsTMP);
+        proxyParams.AddRange(proxyParamsTMP);
+    }
+
+    void RecSweepTree(ABNode node, List<ProxyABOperator> proxyOperatorsTMP, List<ProxyABParam> proxyParamsTMP)
+    {
+        if (node is IABOperator)
+        {
+            ProxyABOperator proxyNode = FindProxyOperatorFromABOperator(node);
+            proxyOperatorsTMP.Add(proxyNode);
+
+            foreach (ABNode input in ((IABOperator)node).Inputs)
+            {
+                RecSweepTree(input, proxyOperatorsTMP, proxyParamsTMP);
+            }
+        }
+        else if (node is IABParam)
+        {
+            ProxyABParam proxyNode = FindProxyParamFromABParam(node);
+            proxyParamsTMP.Add(proxyNode);
+        }
+    }
+
+    private ProxyABOperator FindProxyOperatorFromABOperator(ABNode node)
+    {
+        foreach (ProxyABOperator proxyOperator in proxyOperators)
+        {
+            if (proxyOperator.AbOperator == node)
+            {
+                return proxyOperator;
+            }
+        }
+        throw new NotSupportedException();
+    }
+
+    private ProxyABParam FindProxyParamFromABParam(ABNode node)
+    {
+        foreach (ProxyABParam proxyParam in proxyParams)
+        {
+            if (proxyParam.AbParam == node)
+            {
+                return proxyParam;
+            }
+        }
+        throw new NotSupportedException();
     }
 
     public void Temporary_Save_MC_Position(string cast_name, string id)
@@ -815,7 +908,7 @@ public class MCEditorManager : MonoBehaviour
         {
             File.AppendAllText(csvpath, csvcontent.ToString());
         }
-        
+
         Debug.Log("Temporary Saved MC Position");
     }
     public void Temporary_Save_MC_Behavior(string cast_name, string id)
@@ -901,7 +994,7 @@ public class MCEditorManager : MonoBehaviour
             File.AppendAllText(csvpath, content.ToString());
         }
         Debug.Log("Save MC");
-        Temporary_Save_MC_Position(cast_name ,id);
+        Temporary_Save_MC_Position(cast_name, id);
     }
     public void Save_MC()
     {
@@ -1293,7 +1386,7 @@ public class MCEditorManager : MonoBehaviour
         ProxyABParam endParamParent;
 
         startActionParent = start.GetComponentInParent<ProxyABAction>();
-        endParamParent = end.GetComponentInParent<ProxyABParam>();        
+        endParamParent = end.GetComponentInParent<ProxyABParam>();
         startActionParent.AbState.Action.Parameters[start.Pin_order.OrderPosition - 1].Inputs[0] = (ABNode)endParamParent.AbParam;
     }
 
@@ -1317,7 +1410,7 @@ public class MCEditorManager : MonoBehaviour
             {
                 incomeOpeParent.Inputs[availeblePin] = (ABNode)outcomeOpeParent.AbOperator;
             }
-            
+
             ((ABNode)outcomeOpeParent.AbOperator).Output = (ABNode)incomeOpeParent.AbOperator;
         }
     }
@@ -1333,14 +1426,14 @@ public class MCEditorManager : MonoBehaviour
         int availeblePin = opeParent.GetAvailablePinEnter();
         if (availeblePin != -1)
         {
-            if(opeParent.Inputs.Length <= 3)
+            if (opeParent.Inputs.Length <= 3)
             {
                 opeParent.Inputs[ope.Pin_order.OrderPosition - 1] = (ABNode)paramParent.AbParam;
             }
             else
             {
                 opeParent.Inputs[availeblePin] = (ABNode)paramParent.AbParam;
-            }            
+            }
         }
         opeParent.CurPinIn++;
         ((ABNode)paramParent.AbParam).Output = (ABNode)opeParent.AbOperator;
@@ -1401,20 +1494,20 @@ public class MCEditorManager : MonoBehaviour
         bool activateTypeValidation = true; // Flag used to activate TYPE VALIDATION
 
         // Verify if Pin has already a transition (only ABStar is accepted)
-        if (
-            // Start
-            (
-                start.AssociatedTransitions.Count > 0 &&                                                                                                                                    // Existing Transition
-                !(start.Pin_Type == Pin.PinType.OperatorIn && ABStar<ABBool>.isStar(((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType(start.Pin_order.OrderPosition - 1)))  // ABStar
-            ) ||
-            (
-                end.AssociatedTransitions.Count > 0 &&                                                                                                                                  // Existing Transition
-                !(end.Pin_Type == Pin.PinType.OperatorIn && ABStar<ABBool>.isStar(((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType(end.Pin_order.OrderPosition - 1)))    // ABStar
-            )
-        )
-        {
-            invalidTransition_HasTransition = true;
-        }
+        //if (
+        //    // Start
+        //    (
+        //        start.AssociatedTransitions.Count > 0 &&                                                                                                                                    // Existing Transition
+        //        !(start.Pin_Type == Pin.PinType.OperatorIn && ABStar<ABBool>.isStar(((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType(start.Pin_order.OrderPosition - 1)))  // ABStar
+        //    ) ||
+        //    (
+        //        end.AssociatedTransitions.Count > 0 &&                                                                                                                                  // Existing Transition
+        //        !(end.Pin_Type == Pin.PinType.OperatorIn && ABStar<ABBool>.isStar(((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType(end.Pin_order.OrderPosition - 1)))    // ABStar
+        //    )
+        //)
+        //{
+        //    invalidTransition_HasTransition = true;
+        //}
 
         if (!invalidTransition_HasTransition)
         {
@@ -1698,7 +1791,7 @@ public class MCEditorManager : MonoBehaviour
         {
             // create transition proxy
             ProxyABTransition trans = MCEditor_Proxy_Factory.instantiateTransition(start, end, false);
-            
+
 
             // Associate transition
             if (createdTransition != null)
@@ -1759,9 +1852,9 @@ public class MCEditorManager : MonoBehaviour
     {
 
     }
-	public void exchangeTransitionPosition(ABTransition transitionA, ABTransition transitionB)
+    public void exchangeTransitionPosition(ABTransition transitionA, ABTransition transitionB)
     {
-		abModel.exchangeTransitionPositions (transitionA, transitionB);
+        abModel.exchangeTransitionPositions(transitionA, transitionB);
     }
 
     void Move()
@@ -2092,7 +2185,7 @@ public class MCEditorManager : MonoBehaviour
             {
                 if (!(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut || transition.StartPosition.Pin_Type == Pin.PinType.Param)
                     && !(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut || transition.EndPosition.Pin_Type == Pin.PinType.Param))
-                {                    
+                {
                     AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
                     // Update Pins
                     if (transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut)
@@ -2124,7 +2217,7 @@ public class MCEditorManager : MonoBehaviour
             // Destroy( transition.Condition.gameObject );
             // Destroy Object
             Destroy(transition.gameObject);
-            
+
         }
     }
 
@@ -2165,7 +2258,7 @@ public class MCEditorManager : MonoBehaviour
 
     public void forcedeleteProxy(ProxyABState _state)
     {
-        
+
         ABState state = AbModel.getState(_state.AbState.Id);
 
         // remove transitions
@@ -2180,7 +2273,7 @@ public class MCEditorManager : MonoBehaviour
         }
 
         Destroy(_state.gameObject);
-        
+
     }
     public void deleteProxy(ProxyABAction _action)
     {
@@ -2372,14 +2465,14 @@ public class MCEditorManager : MonoBehaviour
     }
 
     private void FillActionToolTip(GameObject toolTip, ABState proxy)
-    {                
+    {
         int index_i = -1;
         int index_j = -1;
         for (int i = 0; i < databaseActions_Params.Count; i++)
         {
             if (databaseActions_Params[i].Title == "Actions")
-            {                                
-                for(int j = 0; j < databaseActions_Params[i].Content.Count; j++)
+            {
+                for (int j = 0; j < databaseActions_Params[i].Content.Count; j++)
                 {
                     if (proxy.Action.GetType().ToString().Contains("Goto"))
                     {
@@ -2438,14 +2531,14 @@ public class MCEditorManager : MonoBehaviour
                         }
                     }
                 }
-            }            
+            }
         }
-        if(index_i > -1 && index_j > -1)
-        {            
+        if (index_i > -1 && index_j > -1)
+        {
             Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;            
+            TextFields[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
             TextFields[1].text = databaseActions_Params[index_i].Content[index_j].Content;
-        }        
+        }
     }
 
     private void FillRefToolTip(GameObject toolTip, IABParam proxy)
@@ -2527,7 +2620,7 @@ public class MCEditorManager : MonoBehaviour
     }
 
     private void FillParamToolTip(GameObject toolTip, IABParam proxy)
-    {                
+    {
         int index_i = -1;
         int index_j = -1;
 
@@ -2587,7 +2680,7 @@ public class MCEditorManager : MonoBehaviour
                 }
             }
         }
-                          
+
         if (index_i > -1 && index_j > -1)
         {
             Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
@@ -2597,7 +2690,7 @@ public class MCEditorManager : MonoBehaviour
     }
 
     private void FillOperatorToolTip(GameObject toolTip, IABOperator proxy)
-    {        
+    {
         string proxyType = ((IABOperator)proxy).ClassName.Substring(3, ((IABOperator)proxy).ClassName.Length - 12);
         string proxyCompositeType = proxyType.Split('_')[1];
         bool isMacro = false;
@@ -2605,9 +2698,9 @@ public class MCEditorManager : MonoBehaviour
 
         foreach (Help categorie in databaseOperators)
         {
-            foreach(SubHelp opeDescription in categorie.Content)
+            foreach (SubHelp opeDescription in categorie.Content)
             {
-                if(opeDescription.SubTitle== proxyType || opeDescription.SubTitle.ToLower() == proxyCompositeType.ToLower())
+                if (opeDescription.SubTitle == proxyType || opeDescription.SubTitle.ToLower() == proxyCompositeType.ToLower())
                 {
                     Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
                     TextFields[0].text = opeDescription.SubTitle;
@@ -2618,14 +2711,15 @@ public class MCEditorManager : MonoBehaviour
                     TextFields[1].text = tabSplit[0];
 
                     //Symbol
-                    if (tabSplit[1].Contains("Symbole")){
+                    if (tabSplit[1].Contains("Symbole"))
+                    {
                         TextFields[2].text = tabSplit[1];
                     }
                     else
                     {
                         TextFields[2].text = "Macro Operateur";
                         isMacro = true;
-                    }                    
+                    }
                     //Arguments
                     TextFields[3].text = "";
                     foreach (string arg in tabSplit)
@@ -2647,12 +2741,12 @@ public class MCEditorManager : MonoBehaviour
                         else
                         {
                             TextFields[4].text = tabSplit[1];
-                        }                        
+                        }
                     }
                     else
                     {
                         TextFields[4].text = tabSplit[2 + nbArg];
-                    }                        
+                    }
                 }
             }
         }
