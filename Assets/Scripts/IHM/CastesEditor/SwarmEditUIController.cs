@@ -676,10 +676,10 @@ public class SwarmEditUIController : MonoBehaviour
                 }
             }
         }
-
+        
         //Instantiate Picts
         swarmImagesArray = LumyPictFactory.instance.InstanciateAllPicts();
- 
+
         foreach (GameObject image in swarmImagesArray)
         {
             image.transform.SetParent(swarmPrefabsToDestroyPanel.transform);
@@ -711,9 +711,10 @@ public class SwarmEditUIController : MonoBehaviour
             //Create Button
             GameObject button = Instantiate(swarmImageButtonPrefab, Vector3.zero, Quaternion.identity);
 
+
             //LButton Layout
             Vector3 pos = swarmImageScrollContent.transform.position;
-            float nbImageLeftColumn = Mathf.Ceil(swarmImagesArray.Length/3f);
+            float nbImageLeftColumn = Mathf.Ceil(swarmImagesArray.Length / 3f);
             //Left Column
             if (System.Array.IndexOf(swarmImagesArray, image) < nbImageLeftColumn)
             {
@@ -723,38 +724,41 @@ public class SwarmEditUIController : MonoBehaviour
                 button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
                 yLeft -= swarmImagesYMarginLayout;
                 button.transform.SetParent(swarmImageScrollContent.transform);
-               
+
                 //Change button material
-                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+                //button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
             }
             //Mid Column
-            else if( nbImageLeftColumn <= System.Array.IndexOf(swarmImagesArray, image)  && System.Array.IndexOf(swarmImagesArray, image) < 2f * nbImageLeftColumn)
+            else if (nbImageLeftColumn <= System.Array.IndexOf(swarmImagesArray, image) && System.Array.IndexOf(swarmImagesArray, image) < 2f * nbImageLeftColumn)
             {
-                pos += new Vector3( 25f * scalFactor, yMid * scalFactor, 0f);
+                pos += new Vector3(25f * scalFactor, yMid * scalFactor, 0f);
                 button.transform.position = pos;
                 button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
                 yMid -= swarmImagesYMarginLayout;
                 button.transform.SetParent(swarmImageScrollContent.transform);
 
                 //Change button material
-                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+                //button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
             }
             //RightColumn
             else
             {
-                pos += new Vector3( 183f * scalFactor, yRight * scalFactor, 0f);
+                pos += new Vector3(183f * scalFactor, yRight * scalFactor, 0f);
                 button.transform.position = pos;
                 button.transform.localScale = new Vector3(scalFactor, scalFactor, scalFactor);
                 yRight -= swarmImagesYMarginLayout;
                 button.transform.SetParent(swarmImageScrollContent.transform);
 
                 //Change button material
-                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+                //button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
             }
+
 
             //Set swarm image
             int index = System.Array.IndexOf(swarmImagesArray, image);
+            Debug.Log(image.name + index);
             button.GetComponent<Button>().onClick.AddListener(delegate {SetSwarmImage(index); });
+            
         }
 
     }
@@ -762,6 +766,7 @@ public class SwarmEditUIController : MonoBehaviour
     {
         AppContextManager.instance.ActiveSpecie.PictId = index;
         editSwarmImageButton.GetComponent<Image>().material = swarmImagesArray[index].GetComponent<MeshRenderer>().material;
+        swarmImageDialog.SetActive(!swarmImageDialog.activeSelf);
         RefreshView();
     }
     #endregion
@@ -797,7 +802,7 @@ public class SwarmEditUIController : MonoBehaviour
         castImagesArray = LumyPictFactory.instance.InstanciateAllPicts();
         foreach (GameObject image in castImagesArray)
         {
-            image.transform.SetParent(swarmPrefabsToDestroyPanel.transform);
+            image.transform.SetParent(castPrefabsToDestroyPanel.transform);
         }
 
         //Remove old buttons
@@ -825,7 +830,8 @@ public class SwarmEditUIController : MonoBehaviour
         {
             //Create Button
             GameObject button = Instantiate(swarmImageButtonPrefab, Vector3.zero, Quaternion.identity);
-
+            
+            
             //LButton Layout
             Vector3 pos = castImageScrollContent.transform.position;
             float nbImageLeftColumn = Mathf.Ceil(castImagesArray.Length / 3f);
@@ -840,7 +846,7 @@ public class SwarmEditUIController : MonoBehaviour
                 button.transform.SetParent(castImageScrollContent.transform);
 
                 //Change button material
-                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+                //button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
             }
             //Mid Column
             else if (nbImageLeftColumn <= System.Array.IndexOf(castImagesArray, image) && System.Array.IndexOf(castImagesArray, image) < 2f * nbImageLeftColumn)
@@ -852,7 +858,7 @@ public class SwarmEditUIController : MonoBehaviour
                 button.transform.SetParent(castImageScrollContent.transform);
 
                 //Change button material
-                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+                //button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
             }
             //RightColumn
             else
@@ -864,8 +870,9 @@ public class SwarmEditUIController : MonoBehaviour
                 button.transform.SetParent(castImageScrollContent.transform);
 
                 //Change button material
-                button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
+                //button.GetComponent<Image>().material = image.GetComponent<MeshRenderer>().material;
             }
+            
 
             //Set cast image
             int index = System.Array.IndexOf(castImagesArray, image);
@@ -877,6 +884,8 @@ public class SwarmEditUIController : MonoBehaviour
     {
         AppContextManager.instance.ActiveCast.PictId = index;
         editCastImageButton.GetComponent<Image>().material = castImagesArray[index].GetComponent<MeshRenderer>().material;
+        SaveLumy(AppContextManager.instance.ActiveCast);
+        castImageDialog.SetActive(!castImageDialog.activeSelf);
         RefreshView();
     }
     #endregion
