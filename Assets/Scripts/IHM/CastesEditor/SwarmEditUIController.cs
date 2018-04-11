@@ -97,6 +97,9 @@ public class SwarmEditUIController : MonoBehaviour
     private GameObject prysmePanel;
 
     [SerializeField]
+    private GameObject lumyHublot;
+
+    [SerializeField]
     private Button editCastImageButton;
 
     [SerializeField]
@@ -497,9 +500,9 @@ public class SwarmEditUIController : MonoBehaviour
                 barLeftStatsList[10].GetComponent<Image>().color = statsColor;
                 break;
             case 3:
-                barLeftStatsList[9].SetActive(true);
-                barLeftStatsList[10].SetActive(true);
-                barLeftStatsList[11].SetActive(true);
+                barLeftStatsList[9].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[10].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[11].GetComponent<Image>().color = statsColor;
                 break;
             default:
                 break;
@@ -626,7 +629,7 @@ public class SwarmEditUIController : MonoBehaviour
         barLeftStatsList = new List<GameObject>();
         barRightStatsList = new List<GameObject>();
 
-        //Display Right Bars
+        //Display Left Bars
         //Instantiate 4 rows
         for (int i = 0; i < 4; i++)
         {   //Instantiate 1 Prefab
@@ -1688,6 +1691,7 @@ public class SwarmEditUIController : MonoBehaviour
         editedLumy.SetActive(false);
         lumyPanel.SetActive(false);
         prysmePanel.SetActive(true);
+        lumyHublot.SetActive(false);
     }
 
     private void SetLumyPanel()
@@ -1695,6 +1699,7 @@ public class SwarmEditUIController : MonoBehaviour
         editedLumy.SetActive(true);
         lumyPanel.SetActive(true);
         prysmePanel.SetActive(false);
+        lumyHublot.SetActive(true);
     }
 
     public void SelectLumy(string lumyName)
