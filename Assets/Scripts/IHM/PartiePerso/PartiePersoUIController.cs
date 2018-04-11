@@ -414,6 +414,7 @@ public class PartiePersoUIController : MonoBehaviour {
 
             //Set Text
             text.text = speciesNames[i];
+            text.color = new Color32(255, 255, 255, 255);
 
             //Set Position
             rectTransform.localPosition = new Vector3(
@@ -474,8 +475,8 @@ public class PartiePersoUIController : MonoBehaviour {
         GameObject[] swarmPictos = LumyPictFactory.instance.InstanciateAllPicts();
 
         // Get prefab Texture
-        Material mat = swarmPictos[AppContextManager.instance.ActiveSpecie.PictId].GetComponent<MeshRenderer>().material;
-        Texture2D texturPicto = (Texture2D)mat.mainTexture;
+        Material mat = swarmPictos[player1Specie.PictId].GetComponent<MeshRenderer>().material;
+        Texture2D texturPicto = (Texture2D) mat.mainTexture;
         Sprite spritePicto = Sprite.Create(texturPicto, new Rect(0.0f, 0.0f, texturPicto.width, texturPicto.height), new Vector2(0.5f, 0.5f), 100.0f);
         //Display Swarm Picto
         pictoSwarmP1.gameObject.SetActive(true);
@@ -540,7 +541,7 @@ public class PartiePersoUIController : MonoBehaviour {
         GameObject[] swarmPictos = LumyPictFactory.instance.InstanciateAllPicts();
         
         // Get prefab Texture
-        Material mat = swarmPictos[AppContextManager.instance.ActiveSpecie.PictId].GetComponent<MeshRenderer>().material;
+        Material mat = swarmPictos[player2Specie.PictId].GetComponent<MeshRenderer>().material;
         Texture2D texturPicto = (Texture2D) mat.mainTexture;
         Sprite spritePicto = Sprite.Create(texturPicto, new Rect(0.0f, 0.0f, texturPicto.width, texturPicto.height), new Vector2(0.5f, 0.5f), 100.0f);
         //Display Swarm Picto
