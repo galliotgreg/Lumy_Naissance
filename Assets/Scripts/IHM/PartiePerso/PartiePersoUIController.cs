@@ -414,6 +414,7 @@ public class PartiePersoUIController : MonoBehaviour {
 
             //Set Text
             text.text = speciesNames[i];
+            text.color = new Color32(255, 255, 255, 255);
 
             //Set Position
             rectTransform.localPosition = new Vector3(
