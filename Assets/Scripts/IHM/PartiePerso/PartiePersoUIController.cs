@@ -73,6 +73,11 @@ public class PartiePersoUIController : MonoBehaviour {
     List<Text> player1StatsNamesList;
     [SerializeField]
     List<Text> player2StatsNamesList;
+    [SerializeField]
+    private Image pictoSwarmP1;
+    [SerializeField]
+    private Image pictoSwarmP2;
+
 
     private List<Text> player1PercentageToDestroyList = new List<Text>();
     private List<Text> player2PercentageToDestroyList = new List<Text>();
@@ -409,6 +414,7 @@ public class PartiePersoUIController : MonoBehaviour {
 
             //Set Text
             text.text = speciesNames[i];
+            text.color = new Color32(255, 255, 255, 255);
 
             //Set Position
             rectTransform.localPosition = new Vector3(
@@ -460,7 +466,27 @@ public class PartiePersoUIController : MonoBehaviour {
         
         //Compute and display stats
         ComputePlayer1Stats();
-      
+
+        DisplayPictoNueeP1();
+    }
+
+    private void DisplayPictoNueeP1()
+    {
+        GameObject[] swarmPictos = LumyPictFactory.instance.InstanciateAllPicts();
+
+        // Get prefab Texture
+        Material mat = swarmPictos[player1Specie.PictId].GetComponent<MeshRenderer>().material;
+        Texture2D texturPicto = (Texture2D) mat.mainTexture;
+        Sprite spritePicto = Sprite.Create(texturPicto, new Rect(0.0f, 0.0f, texturPicto.width, texturPicto.height), new Vector2(0.5f, 0.5f), 100.0f);
+        //Display Swarm Picto
+        pictoSwarmP1.gameObject.SetActive(true);
+        pictoSwarmP1.sprite = spritePicto;
+
+        foreach (GameObject picto in swarmPictos)
+        {
+            Destroy(picto);
+        }
+
     }
 
     private void ClearPlayer1View()
@@ -505,7 +531,28 @@ public class PartiePersoUIController : MonoBehaviour {
      
         //Compute and display stats
         ComputePlayer2Stats();
+
+        DisplayPictoNueeP2();
  
+    }
+
+    private void DisplayPictoNueeP2()
+    {
+        GameObject[] swarmPictos = LumyPictFactory.instance.InstanciateAllPicts();
+        
+        // Get prefab Texture
+        Material mat = swarmPictos[player2Specie.PictId].GetComponent<MeshRenderer>().material;
+        Texture2D texturPicto = (Texture2D) mat.mainTexture;
+        Sprite spritePicto = Sprite.Create(texturPicto, new Rect(0.0f, 0.0f, texturPicto.width, texturPicto.height), new Vector2(0.5f, 0.5f), 100.0f);
+        //Display Swarm Picto
+        pictoSwarmP2.gameObject.SetActive(true);
+        pictoSwarmP2.sprite = spritePicto;
+
+        foreach(GameObject picto in swarmPictos)
+        {
+            Destroy(picto);
+        }
+
     }
 
     private void ClearPlayer2View()

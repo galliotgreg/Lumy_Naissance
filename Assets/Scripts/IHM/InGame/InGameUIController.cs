@@ -762,24 +762,9 @@ public class InGameUIController : MonoBehaviour {
         newAmountColorJ2[1] = oldAmountColorJ2[1];
         newAmountColorJ2[2] = oldAmountColorJ2[2];
     }
-
-
     private void UnitStats()
     {
-
         GameObject[] allUnits = GameObject.FindGameObjectsWithTag("Agent");
-
-        if (self == null)
-        {
-            cleanUnitStats();
-            foreach (GameObject agent in allUnits)
-            {
-                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            }
-
-            return;
-        }
-
         foreach (GameObject agent in allUnits)
         {
             if (agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>() != self)
@@ -791,6 +776,7 @@ public class InGameUIController : MonoBehaviour {
                 agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
             }
         }
+
         //Get Stats from Self
         string vitality = self.Vitality.ToString();
         string visionRange = self.VisionRange.ToString();
@@ -885,6 +871,18 @@ public class InGameUIController : MonoBehaviour {
     /// </summary>
     private void cleanUnitStats()
     {
+        GameObject[] allUnits = GameObject.FindGameObjectsWithTag("Agent");
+
+        if (self == null)
+        {
+            foreach (GameObject agent in allUnits)
+            {
+                agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            }
+
+            return;
+        }
+
         //Clean Stats 
         vitalityText.color = Color.white;
         strenghtText.color = Color.white;
