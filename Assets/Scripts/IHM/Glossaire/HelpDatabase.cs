@@ -111,7 +111,7 @@ public class HelpDatabase : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        LoadDatabase();
+       // LoadDatabase();
     }
 
     public Help GetFirstfromList()
@@ -149,7 +149,7 @@ public class HelpDatabase : MonoBehaviour
     }
 
 
-    public void LoadDatabase(string namefile = "parametres")
+    public void LoadDatabase(string namefile)
     {
         string path = Application.dataPath + @"/Inputs/HelpFiles/"+ namefile +".json";
         using (StreamReader stream = new StreamReader(path))

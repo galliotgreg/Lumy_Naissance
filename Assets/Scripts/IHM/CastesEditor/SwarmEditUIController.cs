@@ -327,6 +327,7 @@ public class SwarmEditUIController : MonoBehaviour
         }
     }
 
+    private bool isInGameUnloaded = false;
     private bool isSceneLoaded = false;
     private bool isFirstRefreashed = false;
 
@@ -334,7 +335,6 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void Start()
     {
-        SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
         DisplayStatBars();
         RefreshView();
     }
@@ -342,6 +342,7 @@ public class SwarmEditUIController : MonoBehaviour
 
     private void OnDestroy()
     {
+        ABManager.instance.Reset(false);
         SceneManager.UnloadScene("MapSwarmEdit");
     }
 
@@ -892,7 +893,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.instance != null)
+        if (GameManager.instance == null)
+        {
+            SceneManager.LoadScene("MapSwarmEdit", LoadSceneMode.Additive);
+            isInGameUnloaded = true;
+        }
+
+        if (isInGameUnloaded && GameManager.instance != null)
         {
             isSceneLoaded = true;
         }
@@ -1267,6 +1274,9 @@ public class SwarmEditUIController : MonoBehaviour
         //Layout
         editedLumy.transform.position = new Vector3(-1.5f, -3f, 0f);
         editedLumy.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+
+        //Unset Agent tag to be ignored by ABManager.UregisterAgent()
+        editedLumy.tag = "Untagged";
     }
     #endregion
 

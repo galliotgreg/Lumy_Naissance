@@ -202,4 +202,8 @@ public class ABMacroOperator<T> : ABOperator<T>
 	}
 
 	#endregion
+
+	public static bool isMacro( System.Type type ){
+		return (type.IsGenericType && type.GetGenericTypeDefinition () == typeof(ABMacroOperator<>));
+	}
 }

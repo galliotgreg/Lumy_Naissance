@@ -63,14 +63,29 @@ public class MC_Inventory_Params : MC_Inventory {
 	protected override void configItem (MC_InventoryItem item)
 	{
 		if (item.Item is ABScalParam) {
-			item.Text.text = "Scalar";
+			item.TextItem.text = "Scalar";
+			item.Title = item.TextItem.text;
 		} else if (item.Item is ABVecParam) {
-			item.Text.text = "Vec";
+			item.TextItem.text = "Vec";
+			item.Title = item.TextItem.text;
 		} else if (item.Item is ABTextParam) {
-			item.Text.text = "Text";
+			item.TextItem.text = "Text";
+			item.Title = item.TextItem.text;
 		} else {
-			item.Text.text = ProxyABParam.GetViewValue ((IABParam)item.Item);
+			if (item.Item is ABBoolParam) {
+				item.Title = "Bool";
+			} else if (item.Item is ABColorParam) {
+				item.Title = "Color";
+			} else if (item.Item is ABRefParam) {
+				item.Title = "Reference";
+			} else if (item.Item is ABTableParam<ABRef>) {
+				item.Title = "Array of References";
+			} else {
+				item.Title = "";
+			}
+			item.TextItem.text = ProxyABParam.GetViewValue ((IABParam)item.Item);
 		}
+		item.AddContent( ProxyABParam.GetViewValue ((IABParam)item.Item) );
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.Param;
 	}

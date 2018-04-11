@@ -199,8 +199,14 @@ public class GameManager : MonoBehaviour {
         //Pause Method
 	    if(Input.GetKeyDown(KeyCode.P))
         {
-            PauseGame(); 
-        }   
+            //PauseGame(); 
+            InGameUIController.instance.PauseGame();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            InGameUIController.instance.OpenOptionsDebug();
+            InGameUIController.instance.PauseGame();
+        }
         
 
     }

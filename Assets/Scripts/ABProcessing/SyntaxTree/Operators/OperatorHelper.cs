@@ -202,6 +202,11 @@ public class OperatorHelper : MonoBehaviour
             throw new System.NotSupportedException();
         }
 
+        if(reference == null)
+        {
+            Debug.Log("");
+        }
+
         return reference;
     }
 

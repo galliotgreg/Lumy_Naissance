@@ -27,7 +27,8 @@ public class MC_Inventory_States : MC_Inventory {
 
 	protected override void configItem (MC_InventoryItem item)
 	{
-		item.Text.text = ((ABState)item.Item).Name;
+		item.TextItem.text = ((ABState)item.Item).Name;
+		item.Title = "State";
 
 		((MC_Inventory_NodeItem)item).ItemType = MC_Inventory_NodeItem.NodeItemType.State;
 	}

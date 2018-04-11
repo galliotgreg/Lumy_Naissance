@@ -44,7 +44,8 @@ public class MCEditorManager : MonoBehaviour
     private Text toolTipText;
 
     //ToolTip
-    private List<Help> database = new List<Help>();
+    private List<Help> databaseOperators = new List<Help>();
+    private List<Help> databaseActions_Params = new List<Help>();    
 
     //[SerializeField]
     private string MC_OrigFilePath;
@@ -95,6 +96,10 @@ public class MCEditorManager : MonoBehaviour
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
         toolTipText = GetComponentInChildren<Text>();
+
+        LoadActions_ParamsDatabase();
+        LoadOperatorDatabase();        
+
 
         /**START DO NOT COMMIT**/
         if (AppContextManager.instance.PrysmeEdit)
@@ -475,8 +480,6 @@ public class MCEditorManager : MonoBehaviour
 
                 if (inputNode == null)
                 {
-                    Debug.Log("Il y avait un break ici avant");
-                    //break;
                 }
 
                 Pin end = RecNodeSynthTree(inputNode);
@@ -2089,8 +2092,7 @@ public class MCEditorManager : MonoBehaviour
             {
                 if (!(transition.StartPosition.Pin_Type == Pin.PinType.OperatorIn || transition.StartPosition.Pin_Type == Pin.PinType.OperatorOut || transition.StartPosition.Pin_Type == Pin.PinType.Param)
                     && !(transition.EndPosition.Pin_Type == Pin.PinType.OperatorIn || transition.EndPosition.Pin_Type == Pin.PinType.OperatorOut || transition.EndPosition.Pin_Type == Pin.PinType.Param))
-                {
-                    Debug.Log(transition.Transition);
+                {                    
                     AbModel.UnlinkStates(transition.Transition.Start.Name, transition.Transition.End.Name);
                     // Update Pins
                     if (transition.StartPosition.ProxyParent is ProxyABState && transition.StartPosition.Pin_Type == Pin.PinType.TransitionOut)
@@ -2281,24 +2283,39 @@ public class MCEditorManager : MonoBehaviour
 
     #region ToolTips
 
-    public void LoadActionDatabase()
+    public void LoadActions_ParamsDatabase()
     {
-        string path = Application.dataPath + @"/Inputs/HelpFiles/" + "actions" + ".json";
+        string path = Application.dataPath + @"/Inputs/HelpFiles/" + "Modele_Comportemental" + ".json";
         using (StreamReader stream = new StreamReader(path))
         {
             string json = stream.ReadToEnd();
-            database = JsonConvert.DeserializeObject<List<Help>>(json);
+            databaseActions_Params = JsonConvert.DeserializeObject<List<Help>>(json);
             stream.Close();
         }
     }
 
-    public void LoadParamDatabase()
+    public void LoadOperatorDatabase()
     {
-        string path = Application.dataPath + @"/Inputs/HelpFiles/" + "parametres" + ".json";
+        databaseOperators = new List<Help>();
+
+        string path = Application.dataPath + @"/Inputs/HelpFiles/" + "Liste_operateurs" + ".json";
         using (StreamReader stream = new StreamReader(path))
         {
             string json = stream.ReadToEnd();
-            database = JsonConvert.DeserializeObject<List<Help>>(json);
+            foreach (Help paramHelp in JsonConvert.DeserializeObject<List<Help>>(json))
+            {
+                databaseOperators.Add(paramHelp);
+            }
+            stream.Close();
+        }
+        path = Application.dataPath + @"/Inputs/HelpFiles/" + "Liste_composites" + ".json";
+        using (StreamReader stream = new StreamReader(path))
+        {
+            string json = stream.ReadToEnd();
+            foreach (Help paramHelp in JsonConvert.DeserializeObject<List<Help>>(json))
+            {
+                databaseOperators.Add(paramHelp);
+            }
             stream.Close();
         }
     }
@@ -2318,146 +2335,327 @@ public class MCEditorManager : MonoBehaviour
         clone.transform.position = new Vector3(position.x, position.y, -1);
         if (type.Contains("Action"))
         {
-            FeelActionToolTip(clone, proxy);
+            FillActionToolTip(clone, ((ProxyABState)proxy).AbState);
         }
         else if (type.Contains("Param"))
         {
-            FeelParamToolTip(clone, proxy);
+            FillParamToolTip(clone, (IABParam)((ProxyABParam)proxy).AbParam);
         }
         else if (type.Contains("Operator"))
         {
-            FeelOperatorToolTip(clone);
+            FillOperatorToolTip(clone, (IABOperator)((ProxyABOperator)proxy).AbOperator);
         }
         return clone;
     }
 
-    private void FeelActionToolTip(GameObject toolTip, MCEditor_Proxy proxy)
+    public GameObject instantiateToolTip(Vector3 position, GameObject toolTip_prefab, System.Object item)
     {
-        //TODO : Use HelpManager
-        LoadActionDatabase();
-        int index = -1;
-        for (int i = 0; i < database.Count; i++)
-        {            
-            if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Goto"))
-            {
-                if (database[i].Title == "goto")
-                {
-                    index = i;
-                }                    
-            }
-            else if(((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Strike"))
-            {
-                if (database[i].Title == "strike")
-                {
-                    index = i;
-                }                    
-            }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Pick"))
-            {
-                if (database[i].Title == "pick")
-                {
-                    index = i;
-                }
-            }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Drop"))
-            {
-                if (database[i].Title == "drop")
-                {
-                    index = i;
-                }
-            }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Lay"))
-            {
-                if (database[i].Title == "lay")
-                {
-                    index = i;
-                }                    
-            }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Trace"))
-            {
-                if (database[i].Title == "trace")
-                {
-                    index = i;
-                }                    
-            }
-            else if (((ProxyABAction)proxy).AbState.Action.GetType().ToString().Contains("Roaming"))
-            {
-                if (database[i].Title == "roaming")
-                {
-                    index = i;
-                }                    
-            }
+        GameObject clone = Instantiate(toolTip_prefab);
+        clone.transform.SetParent(this.transform);
+        clone.transform.position = new Vector3(0, 0, -1);
+        if (item is ABState)
+        {
+            if (((ABState)item).Action != null)
+                FillActionToolTip(clone, (ABState)item);
+            else
+                return new GameObject();
         }
-        if(index > -1)
+        else if (item is IABParam)
+        {
+            FillParamToolTip(clone, (IABParam)item);
+        }
+        else if (item is IABOperator)
+        {
+            FillOperatorToolTip(clone, (IABOperator)item);
+        }
+        return clone;
+    }
+
+    private void FillActionToolTip(GameObject toolTip, ABState proxy)
+    {                
+        int index_i = -1;
+        int index_j = -1;
+        for (int i = 0; i < databaseActions_Params.Count; i++)
+        {
+            if (databaseActions_Params[i].Title == "Actions")
+            {                                
+                for(int j = 0; j < databaseActions_Params[i].Content.Count; j++)
+                {
+                    if (proxy.Action.GetType().ToString().Contains("Goto"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "goto")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (proxy.Action.GetType().ToString().Contains("Strike"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "strike")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (proxy.Action.GetType().ToString().Contains("Pick"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "pick")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (proxy.Action.GetType().ToString().Contains("Drop"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "drop")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (proxy.Action.GetType().ToString().Contains("Lay"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "lay")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (proxy.Action.GetType().ToString().Contains("Trace"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "trace")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (proxy.Action.GetType().ToString().Contains("Roaming"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "random roaming")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                }
+            }            
+        }
+        if(index_i > -1 && index_j > -1)
         {            
             Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = database[index].Title;
-            TextFields[1].text = "Value In";
-            TextFields[2].text = database[index].GetContentText();
+            TextFields[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;            
+            TextFields[1].text = databaseActions_Params[index_i].Content[index_j].Content;
         }        
     }
 
-    private void FeelParamToolTip(GameObject toolTip, MCEditor_Proxy proxy)
+    private void FillRefToolTip(GameObject toolTip, IABParam proxy)
     {
-        //TODO : Use HelpManager
-        LoadParamDatabase();
-        int index = -1;
-        for (int i = 0; i < database.Count; i++)
-        {            
-            if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Scal"))
+        int index_j = -1;
+        int index_i = -1;
+
+        for (int i = 0; i < databaseActions_Params.Count; i++)
+        {
+            if (databaseActions_Params[i].Title == "Références")
             {
-                if (database[i].Title == "Scalaire")
+                for (int j = 0; j < databaseActions_Params[i].Content.Count; j++)
                 {
-                    index = i;                    
-                }                 
-            }
-            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Bool"))
-            {
-                if (database[i].Title == "Booléen")
-                {
-                    index = i;
-                }
-            }
-            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Color"))
-            {
-                if (database[i].Title == "Couleur")
-                {
-                    index = i;
-                }
-            }
-            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Vec"))
-            {
-                if (database[i].Title == "Vecteur")
-                {
-                    index = i;
-                }
-            }
-            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Text") || ((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Txt"))
-            {
-                if (database[i].Title == "Texte")
-                {
-                    index = i;
-                }
-            }
-            else if (((ProxyABParam)proxy).AbParam.GetType().ToString().Contains("Ref"))
-            {
-                if (database[i].Title == "Référence")
-                {
-                    index = i;
+                    if (((IABParam)proxy).Identifier.Contains("game"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Game")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (((IABParam)proxy).Identifier.Contains("home"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Home")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (((IABParam)proxy).Identifier.Contains("self"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Self")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (((IABParam)proxy).Identifier.Contains("allies"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Allies[]")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (((IABParam)proxy).Identifier.Contains("enemies"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Enemies[]")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (((IABParam)proxy).Identifier.Contains("trace"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Trace[]")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
+                    else if (((IABParam)proxy).Identifier.Contains("resources"))
+                    {
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Ressources[]")
+                        {
+                            index_j = j;
+                            index_i = i;
+                        }
+                    }
                 }
             }
         }
-        if(index > -1)
-        {            
+        if (index_i > -1 && index_j > -1)
+        {
             Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = database[index].Title;
-            TextFields[1].text = database[index].GetContentText();
-        }        
+            TextFields[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
+            TextFields[1].text = databaseActions_Params[index_i].Content[index_j].Content;
+        }
     }
 
-    private void FeelOperatorToolTip(GameObject toolTip)
-    {
+    private void FillParamToolTip(GameObject toolTip, IABParam proxy)
+    {                
+        int index_i = -1;
+        int index_j = -1;
 
+        if (proxy.GetType().ToString().Contains("Ref"))
+        {
+            FillRefToolTip(toolTip, proxy);
+        }
+        else
+        {
+            for (int i = 0; i < databaseActions_Params.Count; i++)
+            {
+                if (databaseActions_Params[i].Title == "Paramètres")
+                {
+                    for (int j = 0; j < databaseActions_Params[i].Content.Count; j++)
+                    {
+                        if (proxy.GetType().ToString().Contains("Scal"))
+                        {
+                            if (databaseActions_Params[i].Content[j].SubTitle == "Scalaire")
+                            {
+                                index_j = j;
+                                index_i = i;
+                            }
+                        }
+                        else if (proxy.GetType().ToString().Contains("Bool"))
+                        {
+                            if (databaseActions_Params[i].Content[j].SubTitle == "Booléen")
+                            {
+                                index_j = j;
+                                index_i = i;
+                            }
+                        }
+                        else if (proxy.GetType().ToString().Contains("Color"))
+                        {
+                            if (databaseActions_Params[i].Content[j].SubTitle == "Couleur")
+                            {
+                                index_j = j;
+                                index_i = i;
+                            }
+                        }
+                        else if (proxy.GetType().ToString().Contains("Vec"))
+                        {
+                            if (databaseActions_Params[i].Content[j].SubTitle == "Vecteur")
+                            {
+                                index_j = j;
+                                index_i = i;
+                            }
+                        }
+                        else if (proxy.GetType().ToString().Contains("Text") || (proxy.GetType().ToString().Contains("Txt")))
+                        {
+                            if (databaseActions_Params[i].Content[j].SubTitle == "Texte")
+                            {
+                                index_j = j;
+                                index_i = i;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+                          
+        if (index_i > -1 && index_j > -1)
+        {
+            Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
+            TextFields[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
+            TextFields[1].text = databaseActions_Params[index_i].Content[index_j].Content;
+        }
+    }
+
+    private void FillOperatorToolTip(GameObject toolTip, IABOperator proxy)
+    {        
+        string proxyType = ((IABOperator)proxy).ClassName.Substring(3, ((IABOperator)proxy).ClassName.Length - 12);
+        string proxyCompositeType = proxyType.Split('_')[1];
+        bool isMacro = false;
+        bool isContainingArg = false;
+
+        foreach (Help categorie in databaseOperators)
+        {
+            foreach(SubHelp opeDescription in categorie.Content)
+            {
+                if(opeDescription.SubTitle== proxyType || opeDescription.SubTitle.ToLower() == proxyCompositeType.ToLower())
+                {
+                    Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
+                    TextFields[0].text = opeDescription.SubTitle;
+                    string[] tabSplit = opeDescription.Content.Split('\n');
+                    int nbArg = 0;
+
+                    //Retour
+                    TextFields[1].text = tabSplit[0];
+
+                    //Symbol
+                    if (tabSplit[1].Contains("Symbole")){
+                        TextFields[2].text = tabSplit[1];
+                    }
+                    else
+                    {
+                        TextFields[2].text = "Macro Operateur";
+                        isMacro = true;
+                    }                    
+                    //Arguments
+                    TextFields[3].text = "";
+                    foreach (string arg in tabSplit)
+                    {
+                        if (arg.Contains("Argument"))
+                        {
+                            nbArg++;
+                            TextFields[3].text += " " + arg;
+                            isContainingArg = true;
+                        }
+                    }
+                    //Description
+                    if (isMacro)
+                    {
+                        if (isContainingArg)
+                        {
+                            TextFields[4].text = tabSplit[1 + nbArg];
+                        }
+                        else
+                        {
+                            TextFields[4].text = tabSplit[1];
+                        }                        
+                    }
+                    else
+                    {
+                        TextFields[4].text = tabSplit[2 + nbArg];
+                    }                        
+                }
+            }
+        }
     }
     #endregion
 }

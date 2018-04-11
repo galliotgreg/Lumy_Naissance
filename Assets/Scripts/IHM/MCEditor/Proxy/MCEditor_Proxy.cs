@@ -139,6 +139,28 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
         return newOpeName;
     }
+
+	public static string typeToString( System.Type type ){
+		if( type == typeof(ABBool) ) 	return "Bool";
+		if( type == typeof(ABScalar) )	return "Scalar";
+		if( type == typeof(ABText) )	return "Text";
+		if( type == typeof(ABVec) )		return "Vec";
+		if( type == typeof(ABColor) )	return "Color";
+		if( type == typeof(ABRef) ) 	return "Ref";
+		if( type == typeof(ABTable<ABBool>) )	return "Bool[]";
+		if( type == typeof(ABTable<ABScalar>) )	return "Scalar[]";
+		if( type == typeof(ABTable<ABText>) )	return "Text[]";
+		if( type == typeof(ABTable<ABVec>) )	return "Vec[]";
+		if( type == typeof(ABTable<ABColor>) )	return "Color[]";
+		if( type == typeof(ABTable<ABRef>) )	return "Ref[]";
+		if( type == typeof(ABStar<ABBool>) )	return "Bool*";
+		if( type == typeof(ABStar<ABScalar>) )	return "Scalar*";
+		if( type == typeof(ABStar<ABText>) )	return "Text*";
+		if( type == typeof(ABStar<ABVec>) )		return "Vec*";
+		if( type == typeof(ABStar<ABColor>) )	return "Color*";
+		if( type == typeof(ABStar<ABRef>) )		return "Ref*";
+		return "";
+	}
 	#endregion
 
 	public static MCEditor_Proxy doubleClicked = null;

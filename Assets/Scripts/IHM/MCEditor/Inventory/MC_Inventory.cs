@@ -8,10 +8,19 @@ public abstract class MC_Inventory : MonoBehaviour {
 	protected void Start () {
 		
 	}
-	
+
 	// Update is called once per frame
 	protected void Update () {
-		
+		// Adjust content's cell size
+		/*float maxHeight = 0;
+		for (int i = 0; i < container.transform.childCount; i++) {
+			float h = container.transform.GetChild (i).GetComponent<RectTransform> ().rect.height;
+			if (h > maxHeight) {
+				maxHeight = h;
+			}
+		}
+		UnityEngine.UI.GridLayoutGroup grid = container.GetComponent<UnityEngine.UI.GridLayoutGroup> ();
+		grid.cellSize = new Vector2 (grid.cellSize.x, maxHeight);*/
 	}
 
 	[SerializeField]
