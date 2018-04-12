@@ -106,12 +106,8 @@ public class PanelManager : MonoBehaviour
     public void RefreshExplanationText(string title)
     {
         
-
-        mainPanelScrollHelpContent.GetComponentInChildren<Text>().text = HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
-        //button_text.transform.SetParent(mainPanelScrollHelpContent.transform);
-        // helpSelectionButton.transform.SetParent(mainPanelScrollHelpContent.transform);
-       // RectTransform rec = mainPanelScrollHelpContent.transform.GetComponent<RectTransform>();
-       // rec.transform.localScale = new Vector2(rec.sizeDelta.x, rec.sizeDelta.y + 5f);
+        // TODO FIND A WAY TO REMOVE \n
+        mainPanelScrollHelpContent.GetComponentInChildren<Text>().text = "\n" + HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
     }
 
     public void SelectHelp(string title)

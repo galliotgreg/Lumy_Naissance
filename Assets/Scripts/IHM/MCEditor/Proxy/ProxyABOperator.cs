@@ -192,9 +192,9 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 
         //TODO : REFACTO avec interface IABMacroOperator
         if (operatorObj.GetType().ToString().Contains("Macro")){
-            Renderer rend = result.GetComponent<Renderer>();
+            /*Renderer rend = result.GetComponent<Renderer>();
             rend.material.shader = Shader.Find("Specular");
-            rend.material.SetColor("_SpecColor", Color.red);
+            rend.material.SetColor("_SpecColor", Color.red);*/
             result.isMacroComposant = true;
         }
 
