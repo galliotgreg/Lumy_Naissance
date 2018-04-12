@@ -94,7 +94,13 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 	void setColor( Color color ){
 		if (colorRenderer != null) {
 			colorRenderer.material.color = color;
-		}
+		} else
+        {
+            MeshRenderer internRendering = transform.Find("InternSphere").gameObject.GetComponent<MeshRenderer>();
+            MeshRenderer externRendering = transform.Find("ExternSphere").gameObject.GetComponent<MeshRenderer>();
+            internRendering.material.SetColor("_Color", color);
+            externRendering.material.SetColor("_node_4083", color);
+        }
 	}
 
     public Color GetColor()
