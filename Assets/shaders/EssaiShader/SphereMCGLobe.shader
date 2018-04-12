@@ -1,7 +1,7 @@
 // Shader created with Shader Forge v1.37 
 // Shader Forge (c) Neat Corporation / Joachim Holmer - http://www.acegikmo.com/shaderforge/
 // Note: Manually altering this data may prevent you from opening it in Shader Forge
-/*SF_DATA;ver:1.37;sub:START;pass:START;ps:flbk:,iptp:0,cusa:False,bamd:0,cgin:,lico:1,lgpr:1,limd:3,spmd:1,trmd:1,grmd:1,uamb:True,mssp:True,bkdf:True,hqlp:False,rprd:True,enco:False,rmgx:True,imps:True,rpth:0,vtps:0,hqsc:True,nrmq:1,nrsp:0,vomd:0,spxs:False,tesm:0,olmd:1,culm:2,bsrc:0,bdst:7,dpts:2,wrdp:False,dith:0,atcv:False,rfrpo:True,rfrpn:Refraction,coma:15,ufog:True,aust:True,igpj:True,qofs:0,qpre:3,rntp:2,fgom:False,fgoc:False,fgod:False,fgor:False,fgmd:0,fgcr:0.5,fgcg:0.5,fgcb:0.5,fgca:1,fgde:0.01,fgrn:0,fgrf:300,stcl:False,stva:128,stmr:255,stmw:255,stcp:6,stps:0,stfa:0,stfz:0,ofsf:0,ofsu:0,f2p0:False,fnsp:False,fnfb:False,fsmp:False;n:type:ShaderForge.SFN_Final,id:2865,x:32719,y:32712,varname:node_2865,prsc:2|diff-8356-OUT,spec-7612-OUT,gloss-7523-OUT,emission-7346-OUT,alpha-5111-OUT;n:type:ShaderForge.SFN_Slider,id:358,x:31722,y:32957,ptovrint:False,ptlb:TansparancyAmount,ptin:_TansparancyAmount,varname:node_358,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:2.860157,max:5;n:type:ShaderForge.SFN_Vector1,id:8356,x:32318,y:32594,varname:node_8356,prsc:2,v1:0.03;n:type:ShaderForge.SFN_Vector1,id:7612,x:32293,y:32668,varname:node_7612,prsc:2,v1:1;n:type:ShaderForge.SFN_Vector1,id:7523,x:32318,y:32783,varname:node_7523,prsc:2,v1:0.2;n:type:ShaderForge.SFN_Fresnel,id:5111,x:31879,y:33129,varname:node_5111,prsc:2|EXP-358-OUT;n:type:ShaderForge.SFN_Multiply,id:7346,x:32383,y:32906,varname:node_7346,prsc:2|A-4083-RGB,B-5111-OUT;n:type:ShaderForge.SFN_Color,id:4083,x:32017,y:32788,ptovrint:False,ptlb:node_4083,ptin:_node_4083,varname:node_4083,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,c1:0.02205884,c2:0.02205884,c3:0.02205884,c4:1;proporder:358-4083;pass:END;sub:END;*/
+/*SF_DATA;ver:1.37;sub:START;pass:START;ps:flbk:,iptp:0,cusa:False,bamd:0,cgin:,lico:1,lgpr:1,limd:3,spmd:1,trmd:1,grmd:1,uamb:True,mssp:True,bkdf:True,hqlp:False,rprd:True,enco:False,rmgx:True,imps:True,rpth:0,vtps:0,hqsc:True,nrmq:1,nrsp:0,vomd:0,spxs:False,tesm:0,olmd:1,culm:2,bsrc:0,bdst:7,dpts:2,wrdp:False,dith:0,atcv:False,rfrpo:True,rfrpn:Refraction,coma:15,ufog:True,aust:True,igpj:True,qofs:0,qpre:3,rntp:2,fgom:False,fgoc:False,fgod:False,fgor:False,fgmd:0,fgcr:0.5,fgcg:0.5,fgcb:0.5,fgca:1,fgde:0.01,fgrn:0,fgrf:300,stcl:False,stva:128,stmr:255,stmw:255,stcp:6,stps:0,stfa:0,stfz:0,ofsf:0,ofsu:0,f2p0:False,fnsp:False,fnfb:False,fsmp:False;n:type:ShaderForge.SFN_Final,id:2865,x:32719,y:32712,varname:node_2865,prsc:2|diff-8356-OUT,spec-7612-OUT,gloss-7523-OUT,emission-7346-OUT,alpha-5111-OUT;n:type:ShaderForge.SFN_Slider,id:358,x:31722,y:32957,ptovrint:False,ptlb:TansparancyAmount,ptin:_TansparancyAmount,varname:node_358,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:2.860157,max:5;n:type:ShaderForge.SFN_Vector1,id:8356,x:32318,y:32594,varname:node_8356,prsc:2,v1:0.03;n:type:ShaderForge.SFN_Vector1,id:7612,x:32275,y:32669,varname:node_7612,prsc:2,v1:0.5;n:type:ShaderForge.SFN_Vector1,id:7523,x:32318,y:32783,varname:node_7523,prsc:2,v1:0;n:type:ShaderForge.SFN_Fresnel,id:5111,x:31879,y:33129,varname:node_5111,prsc:2|EXP-358-OUT;n:type:ShaderForge.SFN_Multiply,id:7346,x:32383,y:32906,varname:node_7346,prsc:2|A-4083-RGB,B-5111-OUT;n:type:ShaderForge.SFN_Color,id:4083,x:32017,y:32788,ptovrint:False,ptlb:node_4083,ptin:_node_4083,varname:node_4083,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,c1:0.02205884,c2:0.02205884,c3:0.02205884,c4:1;proporder:358-4083;pass:END;sub:END;*/
 
 Shader "Shader Forge/SphereMC4" {
     Properties {
@@ -102,8 +102,8 @@ Shader "Shader Forge/SphereMC4" {
                 float Pi = 3.141592654;
                 float InvPi = 0.31830988618;
 ///////// Gloss:
-                float gloss = 1.0 - 0.2; // Convert roughness to gloss
-                float perceptualRoughness = 0.2;
+                float gloss = 1.0 - 0.0; // Convert roughness to gloss
+                float perceptualRoughness = 0.0;
                 float roughness = perceptualRoughness * perceptualRoughness;
                 float specPow = exp2( gloss * 10.0 + 1.0 );
 /////// GI Data:
@@ -149,7 +149,7 @@ Shader "Shader Forge/SphereMC4" {
 ////// Specular:
                 float NdotL = saturate(dot( normalDirection, lightDirection ));
                 float LdotH = saturate(dot(lightDirection, halfDirection));
-                float3 specularColor = 1.0;
+                float3 specularColor = 0.5;
                 float specularMonochrome;
                 float node_8356 = 0.03;
                 float3 diffuseColor = float3(node_8356,node_8356,node_8356); // Need this for specular when using metallic
@@ -279,14 +279,14 @@ Shader "Shader Forge/SphereMC4" {
                 float Pi = 3.141592654;
                 float InvPi = 0.31830988618;
 ///////// Gloss:
-                float gloss = 1.0 - 0.2; // Convert roughness to gloss
-                float perceptualRoughness = 0.2;
+                float gloss = 1.0 - 0.0; // Convert roughness to gloss
+                float perceptualRoughness = 0.0;
                 float roughness = perceptualRoughness * perceptualRoughness;
                 float specPow = exp2( gloss * 10.0 + 1.0 );
 ////// Specular:
                 float NdotL = saturate(dot( normalDirection, lightDirection ));
                 float LdotH = saturate(dot(lightDirection, halfDirection));
-                float3 specularColor = 1.0;
+                float3 specularColor = 0.5;
                 float specularMonochrome;
                 float node_8356 = 0.03;
                 float3 diffuseColor = float3(node_8356,node_8356,node_8356); // Need this for specular when using metallic
@@ -445,8 +445,8 @@ Shader "Shader Forge/SphereMC4" {
                 float3 diffColor = float3(node_8356,node_8356,node_8356);
                 float specularMonochrome;
                 float3 specColor;
-                diffColor = DiffuseAndSpecularFromMetallic( diffColor, 1.0, specColor, specularMonochrome );
-                float roughness = 0.2;
+                diffColor = DiffuseAndSpecularFromMetallic( diffColor, 0.5, specColor, specularMonochrome );
+                float roughness = 0.0;
                 o.Albedo = diffColor + specColor * roughness * roughness * 0.5;
                 
                 return UnityMetaFragment( o );
