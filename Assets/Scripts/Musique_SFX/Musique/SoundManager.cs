@@ -24,8 +24,11 @@ public class SoundManager : MonoBehaviour
 
     //Menu
     public AudioClip[] introThemeClips;
-    public AudioClip[] mainThemeClips; // Menu Principal, Partie Perso, Option
-    public AudioClip[] glossaireThemeClips;
+    public AudioClip[] mainThemeClips; // Vidé (si j'essaie de le supprimer ça fait poper une erreur)
+    public AudioClip[] menuprincipalThemeClips; // Menu Principal
+    public AudioClip[] partiepersoThemeClips; // Partie Perso
+    public AudioClip[] optionsThemeClips; // Options
+    public AudioClip[] glossaireThemeClips; // Glossaire
     public AudioClip[] editorThemeClips; // MC, Nuee
                                          //InGame
     public AudioClip[] inGameMap1ThemeClips;
@@ -87,27 +90,83 @@ public class SoundManager : MonoBehaviour
     public void PlayMainTheme()
     {
         //RandomizeClips(mainThemeClips, musicSource);
-        musicSource.clip = mainThemeClips[0];
-        musicSource.Play();
-
-        StartCoroutine(WaitAndPlay(mainThemeClips[0], mainThemeClips[1], musicSource));
+        
         musicSource.loop = true;
     }
+
+    public void PlayMenuPrincipalTheme()
+    {
+        string thisScene = NavigationManager.instance.GetCurrentScene();
+
+        musicSource.loop = false;
+
+        musicSource.clip = menuprincipalThemeClips[0];
+        musicSource.Play();
+
+        StartCoroutine(WaitAndPlay(menuprincipalThemeClips[0], menuprincipalThemeClips[1], musicSource, thisScene));
+    }
+
+    public void PlayPartiePersoTheme()
+    {
+        string thisScene = NavigationManager.instance.GetCurrentScene();
+
+        musicSource.loop = false;
+
+        musicSource.clip = partiepersoThemeClips[0];
+        musicSource.Play();
+
+        StartCoroutine(WaitAndPlay(partiepersoThemeClips[0], partiepersoThemeClips[1], musicSource, thisScene));
+    }
+
+    public void PlayOptionsTheme()
+    {
+        string thisScene = NavigationManager.instance.GetCurrentScene();
+
+        musicSource.loop = false;
+
+        musicSource.clip = optionsThemeClips[0];
+        musicSource.Play();
+
+        StartCoroutine(WaitAndPlay(optionsThemeClips[0], optionsThemeClips[1], musicSource, thisScene));
+    }
+
     public void PlayGlossaireTheme()
     {
-        RandomizeClips(glossaireThemeClips, musicSource);
+        string thisScene = NavigationManager.instance.GetCurrentScene();
+
+        musicSource.loop = false;
+
+        musicSource.clip = glossaireThemeClips[0];
+        musicSource.Play();
+
+        StartCoroutine(WaitAndPlay(glossaireThemeClips[0], glossaireThemeClips[1], musicSource, thisScene));
     }
+
     public void PlayEditorTheme()
     {
-        RandomizeClips(editorThemeClips, musicSource);
+        // Ajouter if scene d'avant != MC/Nuée, faire la fonction, sinon ne rien faire
+
+        string thisScene = NavigationManager.instance.GetCurrentScene();
+
+        musicSource.loop = false;
+
+        musicSource.clip = editorThemeClips[0];
+        musicSource.Play();
+
+        StartCoroutine(WaitAndPlay(editorThemeClips[0], editorThemeClips[1], musicSource, thisScene));
     }
-    public void PlayInGameMap1Theme()
+
+    public void PlayInGameMap1Theme()   // Ajouter choix 3 5 7 min
     {
-        RandomizeClips(inGameMap1ThemeClips, musicSource);
+        musicSource.clip = inGameMap1ThemeClips[0];
+        musicSource.Play();
     }
-    public void PlayInGameMap2Theme()
+    public void PlayInGameMap2Theme()   // Ajouter choix 3 5 7 min  +  Changer pour ingame2 ?
     {
-        RandomizeClips(inGameMap2ThemeClips, musicSource);
+        musicSource.loop = true;        // Enlever quand on aura ajouté la verison 7 minutes, ou les 3 versions
+
+        musicSource.clip = inGameMap1ThemeClips[0];
+        musicSource.Play();
     }
     public void PlayCreditsTheme()
     {
@@ -234,10 +293,22 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    private IEnumerator WaitAndPlay(AudioClip clip, AudioClip waitingClip, AudioSource source)
+    private IEnumerator WaitAndPlay(AudioClip clip, AudioClip waitingClip, AudioSource source, string initialScene)
     {
         yield return new WaitForSeconds(clip.length);
-        source.clip = waitingClip;
-        source.Play();
+
+        string currentScene = NavigationManager.instance.GetCurrentScene();
+
+        if (currentScene == initialScene)
+        {
+            source.clip = waitingClip;
+            source.Play();
+            source.loop = true;
+            Debug.Log("Voici le bon loop, c'est parti !");
+        }
+        else
+        {
+            Debug.Log("Too late, loop du passé, on a changé de scène");
+        }
     }
 }
