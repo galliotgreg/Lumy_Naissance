@@ -17,6 +17,8 @@ public class Tutoriel : MonoBehaviour
     [SerializeField]
     private Button tuto;
     [SerializeField]
+    private Button tutoPratique;
+    [SerializeField]
     private GameObject panelInfobulles;
     [SerializeField]
     private Text txt_currentInfo;
@@ -76,7 +78,7 @@ public class Tutoriel : MonoBehaviour
         close.onClick.AddListener(Close);
         dontShowAgain.onValueChanged.AddListener(delegate{ToggleKey(dontShowAgain);});
         tuto.onClick.AddListener(OpenTuto);
-   
+        tutoPratique.onClick.AddListener(Close);
     }
   
 
@@ -162,6 +164,11 @@ public class Tutoriel : MonoBehaviour
         panelInfobulles.SetActive(false);
         
         isTutoOpen = false;
+
+        if (!SwapManager.instance.getTutorielState(keyTuto))
+        {
+            dontShowAgain.gameObject.SetActive(false);
+        }
 
     }
 
