@@ -30,6 +30,7 @@ public class SoundManager : MonoBehaviour
                                          //InGame
     public AudioClip[] inGameMap1ThemeClips;
     public AudioClip[] inGameMap2ThemeClips;
+    public AudioClip[] optionCreditThemeClips;
 
     /*** FX ***/
 
@@ -107,6 +108,10 @@ public class SoundManager : MonoBehaviour
     public void PlayInGameMap2Theme()
     {
         RandomizeClips(inGameMap2ThemeClips, musicSource);
+    }
+    public void PlayCreditsTheme()
+    {
+        RandomizeClips(optionCreditThemeClips, musicSource);
     }
     #endregion
 
