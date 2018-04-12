@@ -64,6 +64,8 @@ public class PartiePersoUIController : MonoBehaviour {
     [SerializeField]
     Button swapSceneButton;
     [SerializeField]
+    Button swapSceneButton2;
+    [SerializeField]
     private Image statBarPrefab;
     [SerializeField]
     private Image bckStatBarPrefab;
@@ -351,7 +353,8 @@ public class PartiePersoUIController : MonoBehaviour {
 
     private void ButtonListener ()
     {
-        swapSceneButton.onClick.AddListener(swapSceneOnClick); 
+        swapSceneButton.onClick.AddListener(swapSceneOnClick);
+        swapSceneButton2.onClick.AddListener(swapSceneOnClick);
     }
 
     private void swapSceneOnClick()

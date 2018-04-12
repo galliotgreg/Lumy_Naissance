@@ -1168,8 +1168,12 @@ public class SwarmEditUIController : MonoBehaviour
             Destroy(child);
         }
 
+        // Set ScrollRect sizes
+        RectTransform rec = lumysScrollContent.transform.GetComponent<RectTransform>();
+        rec.sizeDelta = new Vector2(rec.sizeDelta.x, AppContextManager.instance.ActiveSpecie.Casts.Count * (lumyButtonPrefab.GetComponent<RectTransform>().sizeDelta.y + 20f));
+
         //Create new buttons
-        float y = -5f;
+        float y = -40f;
         float scalFactor = 0.01f;
         foreach (KeyValuePair<string, Cast> lumy
             in AppContextManager.instance.ActiveSpecie.Casts)
