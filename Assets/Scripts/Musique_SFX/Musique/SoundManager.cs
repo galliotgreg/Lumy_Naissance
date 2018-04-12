@@ -30,9 +30,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] optionsThemeClips; // Options
     public AudioClip[] glossaireThemeClips; // Glossaire
     public AudioClip[] editorThemeClips; // MC, Nuee
-                                         //InGame
+    public AudioClip[] optionCreditThemeClips; // Crédits
+    //InGame
     public AudioClip[] inGameMap1ThemeClips;
-    public AudioClip[] inGameMap2ThemeClips;
+    public AudioClip[] inGameMap2ThemeClips;    
 
     /*** FX ***/
 
@@ -155,18 +156,29 @@ public class SoundManager : MonoBehaviour
         StartCoroutine(WaitAndPlay(editorThemeClips[0], editorThemeClips[1], musicSource, thisScene));
     }
 
-    public void PlayInGameMap1Theme()   // Ajouter choix 3 5 7 min
+    public void PlayCreditsTheme()
     {
-        musicSource.clip = inGameMap1ThemeClips[0];
+        musicSource.loop = true;
+
+        musicSource.clip = optionCreditThemeClips[0];
         musicSource.Play();
     }
-    public void PlayInGameMap2Theme()   // Ajouter choix 3 5 7 min  +  Changer pour ingame2 ?
+
+    public void PlayInGameMap1Theme()   // Ajouter choix 3 5 7 min
     {
-        musicSource.loop = true;        // Enlever quand on aura ajouté la verison 7 minutes, ou les 3 versions
+        musicSource.loop = true;
 
         musicSource.clip = inGameMap1ThemeClips[0];
         musicSource.Play();
     }
+    public void PlayInGameMap2Theme()   // Ajouter choix 3 5 7 min  +  Changer pour ingame2
+    {
+        musicSource.loop = true;
+
+        musicSource.clip = inGameMap1ThemeClips[0];
+        musicSource.Play();
+    }
+    
     #endregion
 
     #region SFX Functions   
@@ -299,11 +311,6 @@ public class SoundManager : MonoBehaviour
             source.clip = waitingClip;
             source.Play();
             source.loop = true;
-            Debug.Log("Voici le bon loop, c'est parti !");
-        }
-        else
-        {
-            Debug.Log("Too late, loop du passé, on a changé de scène");
         }
     }
 }

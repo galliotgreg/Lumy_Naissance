@@ -15,6 +15,8 @@ public class TutorielPratique : MonoBehaviour
     [SerializeField]
     private Button close;
     [SerializeField]
+    private Button tutoPratique;
+    [SerializeField]
     private Button tuto;
     [SerializeField]
     private GameObject panelInfobulles;
@@ -52,8 +54,8 @@ public class TutorielPratique : MonoBehaviour
         next.onClick.AddListener(Next);
         previous.onClick.AddListener(Prev);
         close.onClick.AddListener(Close);
-        tuto.onClick.AddListener(OpenTuto);
-   
+        tutoPratique.onClick.AddListener(OpenTuto);
+        tuto.onClick.AddListener(Close);
     }
   
 
@@ -71,7 +73,7 @@ public class TutorielPratique : MonoBehaviour
         {
             Debug.LogError("closeButton not initialized");
         }
-        if (tuto == null)
+        if (tutoPratique == null)
         {
             Debug.LogError("TutoButton not initialized");
         }
