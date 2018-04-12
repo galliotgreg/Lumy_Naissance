@@ -40,6 +40,18 @@ public class SwarmEditUIController : MonoBehaviour
     /// </summary>
     private LumyStatsInfo lumyStats = new LumyStatsInfo();
 
+    [Header("Confirmation panels")]
+    [SerializeField]
+    private GameObject resetConfirmationPanel;
+    [SerializeField]
+    private GameObject delSwarmConfirmationPanel;
+    [SerializeField]
+    private GameObject delCastConfirmationPanel;
+    [SerializeField]
+    private Text swarmName;
+    [SerializeField]
+    private Text castName;
+
     /// <summary>
     /// The swarm scroll selection content
     /// </summary>
@@ -219,7 +231,11 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private float statBarYPos;
     [SerializeField]
-    private Color32 statsColor;
+    private Color32 statsBlueColor;
+    [SerializeField]
+    private Color32 statsRedColor;
+    [SerializeField]
+    private Color32 statsGreenColor;
     [SerializeField]
     private Color32 statsBaseColor;
   
@@ -412,16 +428,16 @@ public class SwarmEditUIController : MonoBehaviour
         switch (LumyStats.Strength)
         {
             case 1:
-                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[0].GetComponent<Image>().color = statsRedColor;
                 break;
             case 2:
-                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[1].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[0].GetComponent<Image>().color = statsRedColor;
+                barLeftStatsList[1].GetComponent<Image>().color = statsRedColor;
                 break;
             case 3:
-                barLeftStatsList[0].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[1].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[2].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[0].GetComponent<Image>().color = statsRedColor;
+                barLeftStatsList[1].GetComponent<Image>().color = statsRedColor;
+                barLeftStatsList[2].GetComponent<Image>().color = statsRedColor;
                 break;
             default:
                 break;
@@ -439,16 +455,16 @@ public class SwarmEditUIController : MonoBehaviour
         switch (LumyStats.VisionRange)
         {
             case 1:
-                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[3].GetComponent<Image>().color = statsGreenColor;
                 break;
             case 2:
-                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[4].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[3].GetComponent<Image>().color = statsGreenColor;
+                barLeftStatsList[4].GetComponent<Image>().color = statsGreenColor;
                 break;
             case 3:
-                barLeftStatsList[3].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[4].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[5].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[3].GetComponent<Image>().color = statsGreenColor;
+                barLeftStatsList[4].GetComponent<Image>().color = statsGreenColor;
+                barLeftStatsList[5].GetComponent<Image>().color = statsGreenColor;
                 break;
             default:
                 break;
@@ -466,16 +482,16 @@ public class SwarmEditUIController : MonoBehaviour
         switch (LumyStats.PickRange)
         {
             case 1:
-                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[6].GetComponent<Image>().color = statsBlueColor;
                 break;
             case 2:
-                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[7].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[6].GetComponent<Image>().color = statsBlueColor;
+                barLeftStatsList[7].GetComponent<Image>().color = statsBlueColor;
                 break;
             case 3:
-                barLeftStatsList[6].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[7].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[8].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[6].GetComponent<Image>().color = statsBlueColor;
+                barLeftStatsList[7].GetComponent<Image>().color = statsBlueColor;
+                barLeftStatsList[8].GetComponent<Image>().color = statsBlueColor;
                 break;
             default:
                 break;
@@ -493,16 +509,16 @@ public class SwarmEditUIController : MonoBehaviour
         switch (LumyStats.AtkRange)
         {
             case 1:
-                barLeftStatsList[9].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[9].GetComponent<Image>().color = statsRedColor;
                 break;
             case 2:
-                barLeftStatsList[9].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[10].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[9].GetComponent<Image>().color = statsRedColor;
+                barLeftStatsList[10].GetComponent<Image>().color = statsRedColor;
                 break;
             case 3:
-                barLeftStatsList[9].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[10].GetComponent<Image>().color = statsColor;
-                barLeftStatsList[11].GetComponent<Image>().color = statsColor;
+                barLeftStatsList[9].GetComponent<Image>().color = statsRedColor;
+                barLeftStatsList[10].GetComponent<Image>().color = statsRedColor;
+                barLeftStatsList[11].GetComponent<Image>().color = statsRedColor;
                 break;
             default:
                 break;
@@ -521,16 +537,16 @@ public class SwarmEditUIController : MonoBehaviour
         switch (LumyStats.Vitality)
         {
             case 1:
-                barRightStatsList[0].GetComponent<Image>().color = statsColor;
+                barRightStatsList[0].GetComponent<Image>().color = statsGreenColor;
                 break;
             case 2:
-                barRightStatsList[0].GetComponent<Image>().color = statsColor;
-                barRightStatsList[1].GetComponent<Image>().color = statsColor;
+                barRightStatsList[0].GetComponent<Image>().color = statsGreenColor;
+                barRightStatsList[1].GetComponent<Image>().color = statsGreenColor;
                 break;
             case 3:
-                barRightStatsList[0].GetComponent<Image>().color = statsColor;
-                barRightStatsList[1].GetComponent<Image>().color = statsColor;
-                barRightStatsList[2].GetComponent<Image>().color = statsColor;
+                barRightStatsList[0].GetComponent<Image>().color = statsGreenColor;
+                barRightStatsList[1].GetComponent<Image>().color = statsGreenColor;
+                barRightStatsList[2].GetComponent<Image>().color = statsGreenColor;
                 break;
             default:
                 break;
@@ -548,16 +564,16 @@ public class SwarmEditUIController : MonoBehaviour
         switch (LumyStats.Stamina)
         {
             case 1:
-                barRightStatsList[3].GetComponent<Image>().color = statsColor;
+                barRightStatsList[3].GetComponent<Image>().color = statsBlueColor;
                 break;
             case 2:
-                barRightStatsList[3].GetComponent<Image>().color = statsColor;
-                barRightStatsList[4].GetComponent<Image>().color = statsColor;
+                barRightStatsList[3].GetComponent<Image>().color = statsBlueColor;
+                barRightStatsList[4].GetComponent<Image>().color = statsBlueColor;
                 break;
             case 3:
-                barRightStatsList[3].GetComponent<Image>().color = statsColor;
-                barRightStatsList[4].GetComponent<Image>().color = statsColor;
-                barRightStatsList[5].GetComponent<Image>().color = statsColor;
+                barRightStatsList[3].GetComponent<Image>().color = statsBlueColor;
+                barRightStatsList[4].GetComponent<Image>().color = statsBlueColor;
+                barRightStatsList[5].GetComponent<Image>().color = statsBlueColor;
                 break;
             default:
                 break;
@@ -575,16 +591,16 @@ public class SwarmEditUIController : MonoBehaviour
         switch (LumyStats.MoveSpeed)
         {
             case 1:
-                barRightStatsList[6].GetComponent<Image>().color = statsColor;
+                barRightStatsList[6].GetComponent<Image>().color = statsGreenColor;
                 break;
             case 2:
-                barRightStatsList[6].GetComponent<Image>().color = statsColor;
-                barRightStatsList[7].GetComponent<Image>().color = statsColor;
+                barRightStatsList[6].GetComponent<Image>().color = statsGreenColor;
+                barRightStatsList[7].GetComponent<Image>().color = statsGreenColor;
                 break;
             case 3:
-                barRightStatsList[6].GetComponent<Image>().color = statsColor;
-                barRightStatsList[7].GetComponent<Image>().color = statsColor;
-                barRightStatsList[8].GetComponent<Image>().color = statsColor;
+                barRightStatsList[6].GetComponent<Image>().color = statsGreenColor;
+                barRightStatsList[7].GetComponent<Image>().color = statsGreenColor;
+                barRightStatsList[8].GetComponent<Image>().color = statsGreenColor;
                 break;
             default:
                 break;
@@ -602,16 +618,16 @@ public class SwarmEditUIController : MonoBehaviour
         switch (LumyStats.ActSpeed)
         {
             case 1:
-                barRightStatsList[9].GetComponent<Image>().color = statsColor;
+                barRightStatsList[9].GetComponent<Image>().color = statsBlueColor;
                 break;
             case 2:
-                barRightStatsList[9].GetComponent<Image>().color = statsColor;
-                barRightStatsList[10].GetComponent<Image>().color = statsColor;
+                barRightStatsList[9].GetComponent<Image>().color = statsBlueColor;
+                barRightStatsList[10].GetComponent<Image>().color = statsBlueColor;
                 break;
             case 3:
-                barRightStatsList[9].GetComponent<Image>().color = statsColor;
-                barRightStatsList[10].GetComponent<Image>().color = statsColor;
-                barRightStatsList[11].GetComponent<Image>().color = statsColor;
+                barRightStatsList[9].GetComponent<Image>().color = statsBlueColor;
+                barRightStatsList[10].GetComponent<Image>().color = statsBlueColor;
+                barRightStatsList[11].GetComponent<Image>().color = statsBlueColor;
                 break;
             default:
                 break;
@@ -1358,6 +1374,9 @@ public class SwarmEditUIController : MonoBehaviour
             {
                 image.color = new Color32(70,70,70,255);
             }
+
+            //Set Panel Color
+            imageAction[0].color = new Color32(0, 0, 0, 0);
            
             // Find Action Lumy canvas and put the right text in actions list
             Text[] textAction = listActionsCanvas.GetComponentsInChildren<Text>();
@@ -1366,43 +1385,38 @@ public class SwarmEditUIController : MonoBehaviour
                 text.color = new Color32(70, 70, 70, 255);
             }
             
-            //Set Panel color
-            imageAction[0].color = new Color32(255, 255, 255, 255);
-            //Set title color
-            textAction[0].color = new Color32(255, 255, 255, 255);
-
             foreach (string actionText in actionsList)
             {
       
                 if (String.Compare(actionText,"goto") == 0)
                 {
                     imageAction[1].color = new Color32(255, 255, 255, 255);
-                    textAction[1].color = new Color32(255, 255, 255, 255);
+                    textAction[0].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "strike") == 0)
                 {
                     imageAction[2].color = new Color32(255, 255, 255, 255);
-                    textAction[2].color = new Color32(255, 255, 255, 255);
+                    textAction[1].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "pick") == 0)
                 {
                     imageAction[3].color = new Color32(255, 255, 255, 255);
-                    textAction[3].color = new Color32(255, 255, 255, 255);
+                    textAction[2].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "roaming") == 0)
                 {
                     imageAction[4].color = new Color32(255, 255, 255, 255);
-                    textAction[4].color = new Color32(255, 255, 255, 255);
+                    textAction[3].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "trace") == 0)
                 {
                     imageAction[5].color = new Color32(255, 255, 255, 255);
-                    textAction[5].color = new Color32(255, 255, 255, 255);
+                    textAction[4].color = new Color32(255, 255, 255, 255);
                 }
                 if (String.Compare(actionText, "drop") == 0)
                 {
                     imageAction[6].color = new Color32(255, 255, 255, 255);
-                    textAction[6].color = new Color32(255, 255, 255, 255);
+                    textAction[5].color = new Color32(255, 255, 255, 255);
                 }
 
             }
@@ -1706,6 +1720,50 @@ public class SwarmEditUIController : MonoBehaviour
         lumyPanel.SetActive(true);
         prysmePanel.SetActive(false);
         lumyHublot.SetActive(true);
+    }
+
+    //Confirmation panels
+    public void ToggleResetConfirmationPanel()
+    {
+        List<GameObject> confirmationPanelsList = new List<GameObject>();
+        confirmationPanelsList.Add(resetConfirmationPanel);
+        confirmationPanelsList.Add(delSwarmConfirmationPanel);
+        confirmationPanelsList.Add(delCastConfirmationPanel);
+        //Active Reset Panel
+        confirmationPanelsList[0].SetActive(!confirmationPanelsList[0].activeSelf);
+        //Desactive other confirmation panels
+        confirmationPanelsList[1].SetActive(false);
+        confirmationPanelsList[2].SetActive(false);
+    }
+
+    public void ToggleDelSwarmConfirmationPanel()
+    {
+        List<GameObject> confirmationPanelsList = new List<GameObject>();
+        confirmationPanelsList.Add(resetConfirmationPanel);
+        confirmationPanelsList.Add(delSwarmConfirmationPanel);
+        confirmationPanelsList.Add(delCastConfirmationPanel);
+        //Active Delete Swarm Panel
+        confirmationPanelsList[1].SetActive(!confirmationPanelsList[1].activeSelf);
+        //Desactive other confirmation panels
+        confirmationPanelsList[0].SetActive(false);
+        confirmationPanelsList[2].SetActive(false);
+        //Get Swarm name
+        swarmName.text = AppContextManager.instance.ActiveSpecie.Name;
+    }
+
+    public void ToggleDelCastConfirmationPanel()
+    {
+        List<GameObject> confirmationPanelsList = new List<GameObject>();
+        confirmationPanelsList.Add(resetConfirmationPanel);
+        confirmationPanelsList.Add(delSwarmConfirmationPanel);
+        confirmationPanelsList.Add(delCastConfirmationPanel);
+        //Active Delete Cast Panel
+        confirmationPanelsList[2].SetActive(!confirmationPanelsList[2].activeSelf);
+        //Desactive other confirmation panels
+        confirmationPanelsList[0].SetActive(false);
+        confirmationPanelsList[1].SetActive(false);
+        //Get Cast name
+        castName.text = AppContextManager.instance.ActiveCast.Name;
     }
 
     public void SelectLumy(string lumyName)
