@@ -166,14 +166,7 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
     }
 	
 	// Update is called once per frame
-	void Update () {
-        if (timeOnHover > 0 
-            && timeOnHover + timeOnHoverWait < Time.time && !toolTipIsCreated 
-            && !(MCToolManager.instance.CurrentTool == MCToolManager.ToolType.Hand))
-        {
-            toolTipIsCreated = true;
-            toolTip = MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, this.GetType().ToString(), this);
-        }
+	void Update () {         
     }
 
 	public ABNode getParamOperator( int index ){

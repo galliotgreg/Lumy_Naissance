@@ -100,56 +100,13 @@ public class MCEditor_DialogBoxManager : MonoBehaviour {
 		return (MCEditor_DialogBox_ChangePin)MCEditor_DialogBox_ChangePin.instantiate( pin, changePin_Prefab, pos3D, container );
 	}
 
-    public GameObject instantiateToolTip(Vector3 position, string type, MCEditor_Proxy proxy)
-    {
-        GameObject prefab;
-        if (type.Contains("Action"))
-        {
-            prefab = toolTip_action_prefab;
-        }
-        else if (type.Contains("Param"))
-        {
-            prefab = toolTip_param_prefab;
-        }
-        else if (type.Contains("Operator"))
-        {
-            prefab = toolTip_operator_prefab;
-        }
-        else
-        {
-            Debug.LogWarning("Type de Noeud inconnu : "+type);
-            return prefab = new GameObject();
-        }
-        return MCEditorManager.instance.instantiateToolTip(position, prefab, type, proxy);        
+    public void instantiateToolTip(Vector3 position, string type, MCEditor_Proxy proxy)
+    {        
+        MCEditorManager.instance.instantiateToolTip(position, type, proxy);        
     }
 
-    public GameObject instantiateToolTip(Vector3 position, System.Object item)
-    {
-        GameObject prefab;
-        if (item is ABState)
-        {
-            if(((ABState)item).Action != null)
-            {
-                prefab = toolTip_action_prefab;
-            } else
-            {
-                Debug.LogWarning("State node" + item);
-                return prefab = new GameObject();
-            }                
-        }
-        else if (item is IABParam)
-        {
-            prefab = toolTip_param_prefab;
-        }
-        else if (item is IABOperator)
-        {
-            prefab = toolTip_operator_prefab;
-        }
-        else
-        {
-            Debug.LogWarning("Type de Noeud inconnu : " + item);
-            return prefab = new GameObject();
-        }
-        return MCEditorManager.instance.instantiateToolTip(position, prefab, item);
+    public void instantiateToolTip(Vector3 position, System.Object item)
+    {        
+        MCEditorManager.instance.instantiateToolTip(position, item);
     }
 }
