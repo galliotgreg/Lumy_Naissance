@@ -39,6 +39,8 @@ public class SpawnPoints : MonoBehaviour {
         {
             MineraiJ1.gameObject.transform.position = MineraiJ1.SpawnPoints[chooseSpawnPoint].position;
             MineraiJ2.gameObject.transform.position = MineraiJ2.SpawnPoints[chooseSpawnPoint].position;
+            
+
         }
         else
         {
