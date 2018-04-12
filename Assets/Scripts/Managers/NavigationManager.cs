@@ -245,6 +245,46 @@ public class NavigationManager : MonoBehaviour {
                 yield return true;
             }
 
+        // Jouer la musique correspondant à la scène
+        switch (currentScene)
+        {
+            case "MenuPrincipalScene":
+                Debug.Log("Menu Principal !");
+                SoundManager.instance.PlayMenuPrincipalTheme();
+                break;
+            case "PartiePersoScene":
+                Debug.Log("Partie Personnalisée");
+                SoundManager.instance.PlayPartiePersoTheme();
+                break;
+            case "EditeurCastesScene":
+                Debug.Log("Editeur de Castes !");
+                SoundManager.instance.PlayEditorTheme();
+                break;
+            case "EditeurMCScene":
+                Debug.Log("Editeur de MC !");
+                SoundManager.instance.PlayEditorTheme();
+                break;
+            case "OptionScene":
+                Debug.Log("Options !");
+                SoundManager.instance.PlayOptionsTheme();
+                break;
+            case "GlossaireScene":
+                Debug.Log("Glossaire !");
+                SoundManager.instance.PlayGlossaireTheme();
+                break;
+            case "MapTutoInteResized":
+                Debug.Log("Map Tuto Inte Resized !");
+                SoundManager.instance.PlayInGameMap1Theme();
+                break;
+            case "Map2.1":
+                Debug.Log("Map 2 point 1");
+                SoundManager.instance.PlayInGameMap2Theme();
+                break;
+            default:
+                Debug.Log("PAS DE SCENE ?!");
+                break;
+        }
+
         // Faire apparaître le canvas en fondu
         /*canvas.GetComponent<CanvasGroup>().alpha = 0f;
         alpha = canvas.GetComponent<CanvasGroup>().alpha;
