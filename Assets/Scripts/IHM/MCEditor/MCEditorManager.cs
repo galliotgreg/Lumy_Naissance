@@ -1795,7 +1795,8 @@ public class MCEditorManager : MonoBehaviour
         {
             // create transition proxy
             ProxyABTransition trans = MCEditor_Proxy_Factory.instantiateTransition(start, end, false);
-
+            //Play FX
+            SoundManager.instance.PlayTransitionOKSFX();
 
             // Associate transition
             if (createdTransition != null)
