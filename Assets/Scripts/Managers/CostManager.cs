@@ -64,9 +64,24 @@ public class CostManager : MonoBehaviour
 
         //Handle Component Cost
         FloatResourceCost compoCost = ComputeCompoCost(agentComponents);
+        if (compoCost.Red == 0 && compoCost.Green == 0 && compoCost.Blue == 0)
+        {
+            resultCost.Resources[ABColor.Color.Red.ToString()] = int.MaxValue;
+            resultCost.Resources[ABColor.Color.Green.ToString()] = int.MaxValue;
+            resultCost.Resources[ABColor.Color.Blue.ToString()] = int.MaxValue;
+            return resultCost;
+        }
 
         //Handle Behavior Cost
         float behaviorCost = ComputeBehaviorCost(behaviorModel);
+        if (behaviorCost < 0)
+        {
+            resultCost.Resources[ABColor.Color.Red.ToString()] = int.MaxValue;
+            resultCost.Resources[ABColor.Color.Green.ToString()] = int.MaxValue;
+            resultCost.Resources[ABColor.Color.Blue.ToString()] = int.MaxValue;
+            return resultCost;
+        }
+
         //Merge costs
         string[] keys = new string[3];
         int ind = 0;
@@ -195,6 +210,10 @@ public class CostManager : MonoBehaviour
     public float ComputeProdTime(AgentComponent[] agentComponent)
     {        
         int nbComposants = agentComponent.Length;
+        if (nbComposants == 2)
+        {
+            return float.PositiveInfinity;
+        }
         return 1.25f * nbComposants;
     }
 

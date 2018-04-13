@@ -63,6 +63,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] onOverButtonClips;
     public AudioClip[] onClickButtonClips;
     public AudioClip[] onLoadingSceneClips; // Sound for the transition between 2 menus
+    public AudioClip[] addSwarmClips;
+    public AudioClip[] removeSwarmClips;
     #endregion
 
 
@@ -273,6 +275,15 @@ public class SoundManager : MonoBehaviour
     {
         RandomizeClips(onLoadingSceneClips, menuFxSource, true, true);
     }
+    public void PlayAddSwarmSFX()
+    {
+        RandomizeClips(addSwarmClips, menuFxSource, true, true);
+    }
+    public void PlayRemoveSwarmSFX()
+    {
+        RandomizeClips(removeSwarmClips, menuFxSource, true, true);
+    }
+
     #endregion
 
     #endregion

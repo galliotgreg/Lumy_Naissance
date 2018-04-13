@@ -135,12 +135,12 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator, IPointerEnt
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        toolTip = MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, item);
+        MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, item);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Destroy(toolTip.gameObject);
+
     }
 
     #endregion

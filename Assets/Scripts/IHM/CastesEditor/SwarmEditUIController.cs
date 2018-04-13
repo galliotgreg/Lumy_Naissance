@@ -355,6 +355,8 @@ public class SwarmEditUIController : MonoBehaviour
     private void Start()
     {
         DisplayStatBars();
+        RefreshSwarmImageScroll();
+        RefreshCastImageScroll();
         RefreshView();
     }
 
@@ -926,8 +928,8 @@ public class SwarmEditUIController : MonoBehaviour
     {
         RefreashSwarmScroll();
         RefreashLumysScroll();
-        RefreshSwarmImageScroll();
-        RefreshCastImageScroll();
+        //RefreshSwarmImageScroll();
+        //RefreshCastImageScroll();
         RefreshLumyAppearenceFromData();
         RefreshLumyInfo();
         RefreshSwarmInfo();
