@@ -40,6 +40,7 @@ public class NavigationManager : MonoBehaviour {
     public float zoomEndDistance = 0.0f;
     public float zoomStep = 0.1f;
     public float fadeStep = 0.05f;
+    private int wCount = 0;
 
     private bool layerUnloaded = true;
     private bool layerLoaded = true;
@@ -53,6 +54,12 @@ public class NavigationManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         StartCoroutine(InitSceneLayers());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+            wCount++;
     }
 
     public string GetCurrentScene()
@@ -169,8 +176,13 @@ public class NavigationManager : MonoBehaviour {
                 yield return true;
             }
 
+        // Afficher le texte de chargement
+        GameObject loadText = GameObject.Find("LoadingText");
+        setWText(loadText);
+        loadText.GetComponent<Text>().color = new Color(1f, 1f, 1f, 1f);
+
         // Attendre la fin du chargement de la scène de destination
-        
+
         AsyncOperation load = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
         while (!load.isDone)
         {
@@ -236,6 +248,10 @@ public class NavigationManager : MonoBehaviour {
         }
         
         currentScene = nextScene;
+
+        // Cacher le texte de chargement
+        loadText.GetComponent<Text>().color = new Color(1f, 1f, 1f, 0f);
+        loadText.GetComponent<Text>().text = "Chargement...";
 
         // Fondre depuis le noir
         while (darkAlpha > 0f)
@@ -305,6 +321,7 @@ public class NavigationManager : MonoBehaviour {
         canvas.GetComponent<Canvas>().worldCamera = camera;
 
         // Mettre à jour les indicateurs
+        wCount = 0;
         addToPreviousList = true;
         lastPanelLoaded = null;
         sceneLoaded = true;
@@ -372,6 +389,12 @@ public class NavigationManager : MonoBehaviour {
         // Arrêter la coroutine
         StopCoroutine(ActivatePanelCo(nextScene, panelName));
         yield return true;
+    }
+
+    void setWText(GameObject text)
+    {
+        if (wCount >= 29)
+            text.GetComponent<Text>().text = "WAIT4BABA...";
     }
 
     void findPriorityCamera()

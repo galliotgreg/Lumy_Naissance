@@ -202,6 +202,80 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 999
   m_TargetDisplay: 0
+--- !u!1 &82693847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 82693848}
+  - component: {fileID: 82693850}
+  - component: {fileID: 82693849}
+  m_Layer: 0
+  m_Name: LoadingText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &82693848
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 82693847}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1106732076}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 697.3, y: -479.2}
+  m_SizeDelta: {x: 482.1, y: 78.3}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &82693849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 82693847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188, type: 3}
+    m_FontSize: 64
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 6
+    m_MaxSize: 64
+    m_Alignment: 2
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Chargement...
+--- !u!222 &82693850
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 82693847}
 --- !u!1 &195347048
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +384,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 82693848}
   m_Father: {fileID: 43723877}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -636,7 +711,7 @@ Prefab:
         type: 2}
       propertyPath: partiepersoThemeClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: c5948531e52d14d4dbea062e792fdf6f, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 114577754801024440, guid: e5eb5fc4b74cd95439bf5b20378a6aed,
         type: 2}
       propertyPath: optionsThemeClips.Array.data[0]
@@ -651,32 +726,32 @@ Prefab:
         type: 2}
       propertyPath: glossaireThemeClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 1c361d5608358f24ba4c50c73c79d7e9, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 114577754801024440, guid: e5eb5fc4b74cd95439bf5b20378a6aed,
         type: 2}
       propertyPath: glossaireThemeClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: ab22d5cc35c0b7a4cb9c6f9a77bba633, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 114577754801024440, guid: e5eb5fc4b74cd95439bf5b20378a6aed,
         type: 2}
       propertyPath: editorThemeClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 6b18c77800b556845a300346004ac891, type: 3}
+      objectReference: {fileID: 8300000, guid: ac4a0909d11a15646be8f9e3b02c06a2, type: 3}
     - target: {fileID: 114577754801024440, guid: e5eb5fc4b74cd95439bf5b20378a6aed,
         type: 2}
       propertyPath: editorThemeClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: 23c0f5010f7c7c444872f601116d0ef8, type: 3}
+      objectReference: {fileID: 8300000, guid: 2ea31b7a91c8430488e560e17e9ed1db, type: 3}
     - target: {fileID: 114577754801024440, guid: e5eb5fc4b74cd95439bf5b20378a6aed,
         type: 2}
       propertyPath: inGameMap1ThemeClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 6712c254042c85740bfaabbf90a8839e, type: 3}
+      objectReference: {fileID: 8300000, guid: 92aa88e7844252d45854813e9bb461ac, type: 3}
     - target: {fileID: 114577754801024440, guid: e5eb5fc4b74cd95439bf5b20378a6aed,
         type: 2}
       propertyPath: inGameMap2ThemeClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 6712c254042c85740bfaabbf90a8839e, type: 3}
+      objectReference: {fileID: 8300000, guid: 92aa88e7844252d45854813e9bb461ac, type: 3}
     - target: {fileID: 114577754801024440, guid: e5eb5fc4b74cd95439bf5b20378a6aed,
         type: 2}
       propertyPath: optionCreditThemeClips.Array.data[0]
