@@ -42,6 +42,8 @@ public class MCEditorManager : MonoBehaviour
     private List<ProxyABOperator> proxyOperators;
     private List<ProxyABParam> proxyParams;
     private Text toolTipText;
+    private GameObject panelToolTip;
+    private Text[] toolTipTextTab;
 
     //ToolTip
     private List<Help> databaseOperators = new List<Help>();
@@ -96,6 +98,8 @@ public class MCEditorManager : MonoBehaviour
         actionsDictionnary = new Dictionary<ABState, ProxyABAction>();
         statesDictionnary = new Dictionary<ABState, ProxyABState>();
         toolTipText = GetComponentInChildren<Text>();
+        panelToolTip = GameObject.Find("PanelVoletGaucheToolTip");
+        toolTipTextTab = panelToolTip.GetComponentsInChildren<Text>();
 
         LoadActions_ParamsDatabase();
         LoadOperatorDatabase();
@@ -2421,50 +2425,52 @@ public class MCEditorManager : MonoBehaviour
     }
 
     // ToolTip for Node
-    public GameObject instantiateToolTip(Vector3 position, GameObject toolTip_prefab, string type, MCEditor_Proxy proxy)
+    public void instantiateToolTip(Vector3 position, string type, MCEditor_Proxy proxy)
     {
-        GameObject clone = Instantiate(toolTip_prefab);
-        clone.transform.SetParent(this.transform);
-        clone.transform.position = new Vector3(position.x, position.y, -1);
+        toolTipTextTab[0].text = "";
+        toolTipTextTab[1].text = "";
+        toolTipTextTab[2].text = "";
+        toolTipTextTab[3].text = "";
+        toolTipTextTab[4].text = "";
+
         if (type.Contains("Action"))
         {
-            FillActionToolTip(clone, ((ProxyABAction)proxy).AbState);
+            FillActionToolTip(((ProxyABAction)proxy).AbState);
         }
         else if (type.Contains("Param"))
         {
-            FillParamToolTip(clone, (IABParam)((ProxyABParam)proxy).AbParam);
+            FillParamToolTip((IABParam)((ProxyABParam)proxy).AbParam);
         }
         else if (type.Contains("Operator"))
         {
-            FillOperatorToolTip(clone, (IABOperator)((ProxyABOperator)proxy).AbOperator);
+            FillOperatorToolTip((IABOperator)((ProxyABOperator)proxy).AbOperator);
         }
-        return clone;
     }
 
-    public GameObject instantiateToolTip(Vector3 position, GameObject toolTip_prefab, System.Object item)
+    public void instantiateToolTip(Vector3 position, System.Object item)
     {
-        GameObject clone = Instantiate(toolTip_prefab);
-        clone.transform.SetParent(this.transform);
-        clone.transform.position = new Vector3(0, 0, -1);
+        toolTipTextTab[0].text = "";
+        toolTipTextTab[1].text = "";
+        toolTipTextTab[2].text = "";
+        toolTipTextTab[3].text = "";
+        toolTipTextTab[4].text = "";
+
         if (item is ABState)
         {
             if (((ABState)item).Action != null)
-                FillActionToolTip(clone, (ABState)item);
-            else
-                return new GameObject();
+                FillActionToolTip((ABState)item);
         }
         else if (item is IABParam)
         {
-            FillParamToolTip(clone, (IABParam)item);
+            FillParamToolTip((IABParam)item);
         }
         else if (item is IABOperator)
         {
-            FillOperatorToolTip(clone, (IABOperator)item);
+            FillOperatorToolTip((IABOperator)item);
         }
-        return clone;
     }
 
-    private void FillActionToolTip(GameObject toolTip, ABState proxy)
+    private void FillActionToolTip(ABState proxy)
     {
         int index_i = -1;
         int index_j = -1;
@@ -2534,14 +2540,13 @@ public class MCEditorManager : MonoBehaviour
             }
         }
         if (index_i > -1 && index_j > -1)
-        {
-            Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
-            TextFields[1].text = databaseActions_Params[index_i].Content[index_j].Content;
+        {            
+            toolTipTextTab[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
+            toolTipTextTab[1].text = databaseActions_Params[index_i].Content[index_j].Content;
         }
     }
 
-    private void FillRefToolTip(GameObject toolTip, IABParam proxy)
+    private void FillRefToolTip(IABParam proxy)
     {
         int index_j = -1;
         int index_i = -1;
@@ -2613,20 +2618,19 @@ public class MCEditorManager : MonoBehaviour
         }
         if (index_i > -1 && index_j > -1)
         {
-            Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
-            TextFields[1].text = databaseActions_Params[index_i].Content[index_j].Content;
+            toolTipTextTab[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
+            toolTipTextTab[1].text = databaseActions_Params[index_i].Content[index_j].Content;
         }
     }
 
-    private void FillParamToolTip(GameObject toolTip, IABParam proxy)
+    private void FillParamToolTip(IABParam proxy)
     {
         int index_i = -1;
         int index_j = -1;
 
         if (proxy.GetType().ToString().Contains("Ref"))
         {
-            FillRefToolTip(toolTip, proxy);
+            FillRefToolTip(proxy);
         }
         else
         {
@@ -2683,13 +2687,12 @@ public class MCEditorManager : MonoBehaviour
 
         if (index_i > -1 && index_j > -1)
         {
-            Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-            TextFields[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
-            TextFields[1].text = databaseActions_Params[index_i].Content[index_j].Content;
+            toolTipTextTab[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
+            toolTipTextTab[1].text = databaseActions_Params[index_i].Content[index_j].Content;
         }
     }
 
-    private void FillOperatorToolTip(GameObject toolTip, IABOperator proxy)
+    private void FillOperatorToolTip(IABOperator proxy)
     {
         string proxyType = ((IABOperator)proxy).ClassName.Substring(3, ((IABOperator)proxy).ClassName.Length - 12);
         string proxyCompositeType = proxyType.Split('_')[1];
@@ -2702,32 +2705,31 @@ public class MCEditorManager : MonoBehaviour
             {
                 if (opeDescription.SubTitle == proxyType || opeDescription.SubTitle.ToLower() == proxyCompositeType.ToLower())
                 {
-                    Text[] TextFields = toolTip.GetComponentsInChildren<Text>();
-                    TextFields[0].text = opeDescription.SubTitle;
+                    toolTipTextTab[0].text = opeDescription.SubTitle;
                     string[] tabSplit = opeDescription.Content.Split('\n');
                     int nbArg = 0;
 
                     //Retour
-                    TextFields[1].text = tabSplit[0];
+                    toolTipTextTab[1].text = tabSplit[0];
 
                     //Symbol
                     if (tabSplit[1].Contains("Symbole"))
                     {
-                        TextFields[2].text = tabSplit[1];
+                        toolTipTextTab[2].text = tabSplit[1];
                     }
                     else
                     {
-                        TextFields[2].text = "Macro Operateur";
+                        toolTipTextTab[2].text = "Macro Operateur";
                         isMacro = true;
                     }
                     //Arguments
-                    TextFields[3].text = "";
+                    toolTipTextTab[3].text = "";
                     foreach (string arg in tabSplit)
                     {
                         if (arg.Contains("Argument"))
                         {
                             nbArg++;
-                            TextFields[3].text += " " + arg;
+                            toolTipTextTab[3].text += " " + arg;
                             isContainingArg = true;
                         }
                     }
@@ -2736,16 +2738,16 @@ public class MCEditorManager : MonoBehaviour
                     {
                         if (isContainingArg)
                         {
-                            TextFields[4].text = tabSplit[1 + nbArg];
+                            toolTipTextTab[4].text = tabSplit[1 + nbArg];
                         }
                         else
                         {
-                            TextFields[4].text = tabSplit[1];
+                            toolTipTextTab[4].text = tabSplit[1];
                         }
                     }
                     else
                     {
-                        TextFields[4].text = tabSplit[2 + nbArg];
+                        toolTipTextTab[4].text = tabSplit[2 + nbArg];
                     }
                 }
             }
