@@ -79,6 +79,10 @@ public class PartiePersoUIController : MonoBehaviour {
     private Image pictoSwarmP1;
     [SerializeField]
     private Image pictoSwarmP2;
+    [SerializeField]
+    private GameObject selectionSwarmP1Panel;
+    [SerializeField]
+    private GameObject selectionSwarmP2Panel;
 
 
     private List<Text> player1PercentageToDestroyList = new List<Text>();
@@ -493,7 +497,13 @@ public class PartiePersoUIController : MonoBehaviour {
     }
 
     private void ClearPlayer1View()
-    {   
+    {
+        //Hide Swarm selection panel
+        if (selectionSwarmP1Panel != null)
+        {
+            selectionSwarmP1Panel.SetActive(false);
+        }
+   
         //Clear percentage
         if (player1PercentageToDestroyList != null)
         {
@@ -560,6 +570,12 @@ public class PartiePersoUIController : MonoBehaviour {
 
     private void ClearPlayer2View()
     {
+        //Hide Swarm selection panel
+        if (selectionSwarmP2Panel != null)
+        {
+            selectionSwarmP2Panel.SetActive(false);
+        }
+
         //Clear percentage
         if (player2PercentageToDestroyList != null)
         {
