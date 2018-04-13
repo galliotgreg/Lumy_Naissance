@@ -47,7 +47,6 @@ public class Tutoriel : MonoBehaviour
         foreach (GameObject info in panelList)
         {
             info.SetActive(false);
-           
         }
 
         ButtonListener(); 
@@ -78,7 +77,9 @@ public class Tutoriel : MonoBehaviour
         close.onClick.AddListener(Close);
         dontShowAgain.onValueChanged.AddListener(delegate{ToggleKey(dontShowAgain);});
         tuto.onClick.AddListener(OpenTuto);
+		if(tutoPratique != null) {
         tutoPratique.onClick.AddListener(Close);
+		}
     }
   
 
@@ -164,7 +165,7 @@ public class Tutoriel : MonoBehaviour
         panelInfobulles.SetActive(false);
         
         isTutoOpen = false;
-
+        //Hide Toggle if dontShowAgain selected
         if (!SwapManager.instance.getTutorielState(keyTuto))
         {
             dontShowAgain.gameObject.SetActive(false);

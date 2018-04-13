@@ -79,8 +79,6 @@ public class GameManager : MonoBehaviour {
 
     private Specie p1_specie;
     private Specie p2_specie;
-    
-    private int totalCost = 0;
 
     #region Accesseur
     public GameObject P1_home
@@ -247,10 +245,12 @@ public class GameManager : MonoBehaviour {
 
         if (timerLeft <= 0) {
             gameNotOver = false;
+            int scoreJ1 = (int) Score(PlayerAuthority.Player1);
+            int scoreJ2 = (int) Score(PlayerAuthority.Player2); 
 
-            if (Score(PlayerAuthority.Player1) > Score(PlayerAuthority.Player2))
+            if (scoreJ1 >scoreJ2)
                 winnerPlayer = Winner.Player1E;
-            else if (Score(PlayerAuthority.Player2) > Score(PlayerAuthority.Player1))
+            else if (scoreJ2 > scoreJ1)
                 winnerPlayer = Winner.Player2E;
             else
                 winnerPlayer = Winner.Equality;
@@ -258,12 +258,13 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    private float Score(PlayerAuthority authority) {
-        return sumResources(authority) + totalCost;
+    public float Score(PlayerAuthority authority) {
+        return sumResources(authority) + SumProdCost(authority);
     }
 
-    private void SumProdCost(PlayerAuthority authority) {
+    public float SumProdCost(PlayerAuthority authority) {
 
+        float costProd = 0; 
         GameObject[] units = GameObject.FindGameObjectsWithTag("Agent");
         List<GameObject> playerUnits = new List<GameObject>();
 
@@ -275,11 +276,12 @@ public class GameManager : MonoBehaviour {
 
         foreach (GameObject unit in playerUnits) {
 
-            Dictionary<string, int> costs = unit.GetComponent<AgentScript>().ProdCost;
+            Dictionary<string, int> costs = unit.transform.FindChild("Self").GetComponent<AgentScript>().ProdCost;
             foreach (KeyValuePair<string, int> cost in costs) {
-                totalCost += cost.Value;
+                costProd += cost.Value;
             }
         }
+        return costProd; 
     }
 
     private void SetupMatch()

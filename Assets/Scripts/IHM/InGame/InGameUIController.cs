@@ -87,6 +87,10 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private Text J2_Resources;
     [SerializeField]
+    private Text J1_unitCost;
+    [SerializeField]
+    private Text J2_unitCost;
+    [SerializeField]
     private Text J1_EnemiesDetruis;
     [SerializeField]
     private Text J2_EnemiesDetruis;
@@ -106,6 +110,10 @@ public class InGameUIController : MonoBehaviour {
     private Image J1_ressourcesSlider;
     [SerializeField]
     private Image J2_ressourcesSlider;
+    [SerializeField]
+    private Image J1_unitCostSlider;
+    [SerializeField]
+    private Image J2_unitCostSlider;
     [SerializeField]
     private Image J1_enemiesDestroyedSlider;
     [SerializeField]
@@ -535,6 +543,8 @@ public class InGameUIController : MonoBehaviour {
 
                 J1_Nuee.text = SwapManager.instance.GetPlayer1Name();
                 J2_Nuee.text = SwapManager.instance.GetPlayer2Name();
+                J1_unitCost.text = gameManager.Score(PlayerAuthority.Player1).ToString();
+                J2_unitCost.text = gameManager.Score(PlayerAuthority.Player2).ToString();
                 J1_Resources.text = gameManager.sumResources(PlayerAuthority.Player1).ToString();
                 J2_Resources.text = gameManager.sumResources(PlayerAuthority.Player2).ToString();
                 J1_EnemiesDetruis.text = Unit_GameObj_Manager.instance.unitPlayer2Destroyed.ToString();
@@ -546,6 +556,8 @@ public class InGameUIController : MonoBehaviour {
 
                 J1_ressourcesSlider.fillAmount = (gameManager.sumResources(PlayerAuthority.Player1) + SwapManager.instance.GetPlayerResources()) / (SwapManager.instance.GetPlayerStock() *3);
                 J2_ressourcesSlider.fillAmount = (gameManager.sumResources(PlayerAuthority.Player2) + SwapManager.instance.GetPlayerResources()) / (SwapManager.instance.GetPlayerStock() *3);
+                J1_unitCostSlider.fillAmount = (float)gameManager.Score(PlayerAuthority.Player1) / (float)(gameManager.Score(PlayerAuthority.Player1) + gameManager.Score(PlayerAuthority.Player2));
+                J2_unitCostSlider.fillAmount = (float)gameManager.Score(PlayerAuthority.Player2) / (float)(gameManager.Score(PlayerAuthority.Player1) + gameManager.Score(PlayerAuthority.Player2));
                 J1_enemiesDestroyedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer2Destroyed / (float)Unit_GameObj_Manager.instance.unitPlayer2Created;
                 J2_enemiesDestroyedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer1Destroyed / (float)Unit_GameObj_Manager.instance.unitPlayer1Created;
                 J1_unitCreatedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer1Created / (float)(Unit_GameObj_Manager.instance.unitPlayer1Created + Unit_GameObj_Manager.instance.unitPlayer2Created);
