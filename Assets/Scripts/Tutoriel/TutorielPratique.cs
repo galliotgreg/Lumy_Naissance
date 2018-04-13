@@ -55,7 +55,9 @@ public class TutorielPratique : MonoBehaviour
         previous.onClick.AddListener(Prev);
         close.onClick.AddListener(Close);
         tutoPratique.onClick.AddListener(OpenTuto);
-        tuto.onClick.AddListener(Close);
+		if (tuto != null) {
+			tuto.onClick.AddListener (Close);
+		}
     }
   
 
