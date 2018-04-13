@@ -77,6 +77,10 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private Text victory;
     [SerializeField]
+    private Image J1_Icon;
+    [SerializeField]
+    private Image J2_Icon;
+    [SerializeField]
     private Text winCondition;
     [SerializeField]
     private Text J1_Resources;
@@ -485,29 +489,50 @@ public class InGameUIController : MonoBehaviour {
             {
                 winState = true;
                 victoryMenu.SetActive(true);
-                if (winner == GameManager.Winner.Player1R)
+                if (winner == GameManager.Winner.Player1E)
                 {
                     victory.text = SwapManager.instance.GetPlayer1Name();
-                    winCondition.text = "Avantage à la ressources";
+                    winCondition.text = "Victoire Economique";
                 }
-                if (winner == GameManager.Winner.Player2R) {
+                if (winner == GameManager.Winner.Player2E) {
 
                     victory.text = SwapManager.instance.GetPlayer2Name();
-                    winCondition.text = "Avantage à la ressources";
+                    winCondition.text = "Victoire Economique";
                 }
                 if (winner == GameManager.Winner.Player1Q) {
                     victory.text = SwapManager.instance.GetPlayer1Name();
-                    winCondition.text = "Destruction du prysme adverse";
+                    winCondition.text = "Domination";
                 }
                 if (winner == GameManager.Winner.Player2Q) {
                     victory.text = SwapManager.instance.GetPlayer2Name();
-                    winCondition.text = "Destruction du prysme adverse";
+                    winCondition.text = "Domination";
                 }
                 if (winner == GameManager.Winner.Equality)
                 {
                     victory.text = "Egalité ! ";
                     winCondition.text = "";
                 }
+
+                GameObject[] swarmPictos = LumyPictFactory.instance.InstanciateAllPicts();
+                //Get J1 swarm picto
+                Material materialJ1 = swarmPictos[GameManager.instance.P1_specie.PictId].GetComponent<MeshRenderer>().material;
+                Texture2D texturePictoJ1 = (Texture2D)materialJ1.mainTexture;
+                Sprite spritePictoJ1 = Sprite.Create(texturePictoJ1, new Rect(0.0f, 0.0f, texturePictoJ1.width, texturePictoJ1.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+                J1_Icon.sprite = spritePictoJ1;
+
+                //Get J2 swarm picto
+                Material materialJ2 = swarmPictos[GameManager.instance.P2_specie.PictId].GetComponent<MeshRenderer>().material;
+                Texture2D texturePictoJ2 = (Texture2D)materialJ2.mainTexture;
+                Sprite spritePictoJ2 = Sprite.Create(texturePictoJ2, new Rect(0.0f, 0.0f, texturePictoJ2.width, texturePictoJ2.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+                J2_Icon.sprite = spritePictoJ2;
+
+                //Destroy pictPrefabs
+                foreach(GameObject pict in swarmPictos) {
+                    Destroy(pict);
+                }
+
                 J1_Nuee.text = SwapManager.instance.GetPlayer1Name();
                 J2_Nuee.text = SwapManager.instance.GetPlayer2Name();
                 J1_Resources.text = gameManager.sumResources(PlayerAuthority.Player1).ToString();
