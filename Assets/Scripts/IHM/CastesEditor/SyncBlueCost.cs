@@ -13,6 +13,13 @@ public class SyncBlueCost : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = SwarmEditUIController.instance.BlueCost.ToString();
+        if (SwarmEditUIController.instance.BlueCost == int.MaxValue)
+        {
+            text.text = "-";
+        }
+        else
+        {
+            text.text = SwarmEditUIController.instance.BlueCost.ToString();
+        }
     }
 }
