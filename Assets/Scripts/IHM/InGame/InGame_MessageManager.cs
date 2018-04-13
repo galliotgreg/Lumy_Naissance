@@ -125,30 +125,41 @@ public class InGame_MessageManager : MonoBehaviour {
 
 	#region Activate/Deactivate
 	public void show(){
-		Logger.SetActive (true);
-		activateButton.gameObject.SetActive (false);
+        if(Logger.active == false)
+        {
+            Logger.SetActive(true);
 
-		// close all messages
-		deactivateAll();
+            //activateButton.gameObject.SetActive (false);
 
-		UpdateAmount ();
-	}
-	public void hide(){
-		Logger.SetActive (false);
-		activateButton.gameObject.SetActive (true);
+            // close all messages
+            deactivateAll();
 
-		UpdateAmount ();
-	}
+            UpdateAmount();
+
+        }
+        else
+        {
+            Logger.SetActive(false);
+           // activateButton.gameObject.SetActive(true);
+
+            UpdateAmount();
+        }
+
+
+    }
+	
 	#endregion
 
 	// Use this for initialization
 	void Start () {
 		activateButton.onClick.AddListener (show);
-		deactivateButton.onClick.AddListener (hide);
+		//deactivateButton.onClick.AddListener (hide);
 		closeMessageButton.onClick.AddListener (deactivateAll);
 
-		hide ();
-	}
+        Logger.SetActive(false);
+        // activateButton.gameObject.SetActive(true);
+        UpdateAmount();
+    }
 	
 	// Update is called once per frame
 	void Update () {
