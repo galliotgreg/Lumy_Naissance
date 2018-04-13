@@ -35,10 +35,17 @@ public class ImportController : MonoBehaviour {
     }
     public static void ResetSpecie()
     {
-        
         string filePath = Application.dataPath + @"/Inputs/Species";
         string name = "";
 
+        //Free Specie folder
+        string[] dirs = Directory.GetDirectories(filePath);
+        foreach (string dir in dirs)
+        {
+            Directory.Delete(dir, true);
+        }
+
+        //Extract files
         string backupPath = Application.dataPath + @"/Inputs/Backup";
         string[] filesPath = Directory.GetFiles(backupPath, "*.zip", SearchOption.TopDirectoryOnly);
         foreach (string filepath in filesPath)
@@ -52,8 +59,10 @@ public class ImportController : MonoBehaviour {
                 ZipUtil.Unzip(filepath, new_folder);
             }
         }
-        AppContextManager.instance.UpdateSpeciesFoldersNames();
 
+        name = (Path.GetFileName(filesPath[0])).Split('.')[0];
+        AppContextManager.instance.UpdateSpeciesFoldersNames();
+        SwarmEditUIController.instance.SelectSwarm(name);
     }
 }
 
