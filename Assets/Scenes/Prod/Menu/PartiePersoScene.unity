@@ -765,6 +765,7 @@ RectTransform:
   m_Children:
   - {fileID: 473562053}
   - {fileID: 748458720}
+  - {fileID: 491336832}
   m_Father: {fileID: 1725846085}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2821,6 +2822,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1 &491336831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 491336832}
+  - component: {fileID: 491336833}
+  m_Layer: 5
+  m_Name: Tutoriel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &491336832
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 491336831}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 149024345}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &491336833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 491336831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7595e6c7d2b1df24a8c71ecd4e6c1260, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  next: {fileID: 748458724}
+  previous: {fileID: 748458723}
+  close: {fileID: 748458722}
+  tuto: {fileID: 848141824}
+  tutoPratique: {fileID: 0}
+  panelInfobulles: {fileID: 748458728}
+  txt_currentInfo: {fileID: 748458721}
+  panelList:
+  - {fileID: 748458727}
+  - {fileID: 748458726}
+  - {fileID: 748458725}
+  keyTuto: tutoAffrontement
+  dontShowAgain: {fileID: 646156405}
 --- !u!1 &517994037
 GameObject:
   m_ObjectHideFlags: 0
@@ -4280,6 +4339,54 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1760864709412280, guid: 23debd34d84a9a044840e5015b8786d0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224746538351883854, guid: 23debd34d84a9a044840e5015b8786d0,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 136
+      objectReference: {fileID: 0}
+    - target: {fileID: 1046797278000606, guid: 23debd34d84a9a044840e5015b8786d0, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1802788742570822, guid: 23debd34d84a9a044840e5015b8786d0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224268411448197174, guid: 23debd34d84a9a044840e5015b8786d0,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 136
+      objectReference: {fileID: 0}
+    - target: {fileID: 224481254702223448, guid: 23debd34d84a9a044840e5015b8786d0,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 83.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114017812360033108, guid: 23debd34d84a9a044840e5015b8786d0,
+        type: 2}
+      propertyPath: m_Text
+      value: "<b> Prysme </b>\n\nLes Prysmes engendrent les Lumys conform\xE9ment
+        \xE0 l'agencement de leur mod\xE8le comportemental.\n\nUn Prysme est dot\xE9
+        d'une barre de vie et peut \xEAtre attaqu\xE9 par les Lumys du Prysme adverse."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114667128645477012, guid: 23debd34d84a9a044840e5015b8786d0,
+        type: 2}
+      propertyPath: m_Text
+      value: "<b> Conditions de victoire : </b>\r\n\nPour gagner une partie il faut
+        :\n\n\t- Erradiquer le Prysme adverse.\n\n\t- Obtenir le plus grand nombre
+        de ressources \xE0 la fin du temps imparti."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114145399251363208, guid: 23debd34d84a9a044840e5015b8786d0,
+        type: 2}
+      propertyPath: m_Text
+      value: "<b>Ressources</b>\n\nDes ressources sont dispos\xE9es de fa\xE7on \xE9parse
+        sur le champs de bataille.\n\r\nR\xE9colter ses ressources permet de produire
+        plus de Lumys en fonction du co\xFBt des stats de celui-ci.\r"
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114970608982399556, guid: 23debd34d84a9a044840e5015b8786d0, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 23debd34d84a9a044840e5015b8786d0, type: 2}
@@ -4333,30 +4440,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1854352669262988, guid: 23debd34d84a9a044840e5015b8786d0,
     type: 2}
   m_PrefabInternal: {fileID: 748458719}
---- !u!114 &748458729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 748458728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7595e6c7d2b1df24a8c71ecd4e6c1260, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  next: {fileID: 748458724}
-  previous: {fileID: 748458723}
-  close: {fileID: 748458722}
-  tuto: {fileID: 848141824}
-  tutoPratique: {fileID: 0}
-  panelInfobulles: {fileID: 748458728}
-  txt_currentInfo: {fileID: 748458721}
-  panelList:
-  - {fileID: 748458727}
-  - {fileID: 748458726}
-  - {fileID: 748458725}
-  keyTuto: TutoAffrontementKey
-  dontShowAgain: {fileID: 646156405}
 --- !u!1 &773982806
 GameObject:
   m_ObjectHideFlags: 0

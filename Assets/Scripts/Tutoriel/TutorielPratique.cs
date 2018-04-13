@@ -138,7 +138,7 @@ public class TutorielPratique : MonoBehaviour
 
     public void OpenTuto()
     {
-        panelInfobulles.SetActive(true);
+        panelInfobulles.SetActive(!panelInfobulles.activeSelf);
         previous.GetComponent<Button>().gameObject.SetActive(false);
         currentInfo = 0;
         panelList[currentInfo].SetActive(true);    
