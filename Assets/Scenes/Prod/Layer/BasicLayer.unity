@@ -202,6 +202,80 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 999
   m_TargetDisplay: 0
+--- !u!1 &82693847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 82693848}
+  - component: {fileID: 82693850}
+  - component: {fileID: 82693849}
+  m_Layer: 0
+  m_Name: LoadingText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &82693848
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 82693847}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1106732076}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 697.3, y: -479.2}
+  m_SizeDelta: {x: 482.1, y: 78.3}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &82693849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 82693847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188, type: 3}
+    m_FontSize: 64
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 6
+    m_MaxSize: 64
+    m_Alignment: 2
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Chargement...
+--- !u!222 &82693850
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 82693847}
 --- !u!1 &195347048
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +384,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 82693848}
   m_Father: {fileID: 43723877}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -956,7 +1031,7 @@ Prefab:
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.size
-      value: 5
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 4350643373003976, guid: 51a755cafd2d6cd4cbc973f45c566cd8, type: 2}
       propertyPath: m_LocalPosition.x
@@ -994,7 +1069,7 @@ Prefab:
         type: 2}
       propertyPath: pictPrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 484df6d2a383aeb4eb5b9f6966c052bd,
+      objectReference: {fileID: 1789474194780762, guid: 0a0f0b082cc007e4b9930420fa2aa866,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
@@ -1024,73 +1099,133 @@ Prefab:
         type: 2}
       propertyPath: pictPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8c2a173d4bf7d85498a9a995795ee7da,
+      objectReference: {fileID: 1789474194780762, guid: bf6b5dadf63c6c148a1fd79eec53ffca,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[6]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 0157661535c10224ea07f54ef06dddb0,
+      objectReference: {fileID: 1789474194780762, guid: af3bb36220cd8b94bad6647639c6cafa,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[7]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: 675ca7391bddbce42bfd8a32047323a3,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[8]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: 1ef1b7fc5d037da4996eefe237da8391,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[9]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: 9b3e1e0719dc0c141aa8e8371c927aa8,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[10]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: aa51d36f2b78d31449d67a2189682a77,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[11]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: 1c75bd46f0422d042a7d589e94632a14,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[12]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: 5905a22d6fbed7e41ac3bde6911255c1,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[13]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: 7cb11b7bc946f4d469a638dce2f8756b,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[14]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: ac3ed6b6a618ae74eb9e657ab6a62a0a,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[15]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: f3a29730b20351040ac98810806afe92,
         type: 2}
     - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
         type: 2}
       propertyPath: pictPrefabs.Array.data[16]
       value: 
-      objectReference: {fileID: 1789474194780762, guid: 8448727046e1973448dc63b465641057,
+      objectReference: {fileID: 1789474194780762, guid: 0407ec3166c9be34d9b0bb40ac9ab97e,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[17]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: 16967d35ae3ec594cabf4ac960cce306,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[18]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: 22c9dcad701c1dd468f10c6d80c892cb,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[19]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: 7cf9a98964f7f6e4ca0454600de6d29a,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[20]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: 484df6d2a383aeb4eb5b9f6966c052bd,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[21]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: f3dfd365891c43c4585fc5058ac0c515,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[22]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: 1978358e5b0b7c64cbec03415edce05e,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[23]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: f19a73e80b34b494c913e6a9efd438cd,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[24]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: 8c09037f9120de043b0576bdf3e4bb8c,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[25]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: 56dfaa6f742979a41b295d87e9fe2378,
+        type: 2}
+    - target: {fileID: 114265725281115418, guid: 51a755cafd2d6cd4cbc973f45c566cd8,
+        type: 2}
+      propertyPath: pictPrefabs.Array.data[26]
+      value: 
+      objectReference: {fileID: 1789474194780762, guid: 4c8f616a9f7694a46817c187bde415a5,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 51a755cafd2d6cd4cbc973f45c566cd8, type: 2}

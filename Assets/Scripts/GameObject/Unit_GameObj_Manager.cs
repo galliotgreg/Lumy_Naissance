@@ -10,7 +10,11 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	public static Unit_GameObj_Manager instance = null;
     public GameObject Deathexplosion;
 
-    
+    public int unitPlayer1Created = 0;
+    public int unitPlayer2Created = 0;
+    public int unitPlayer1Destroyed = 0;
+    public int unitPlayer2Destroyed = 0;
+
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -86,7 +90,18 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 	public void addUnit( AgentEntity unit, HomeScript home ){
 		home.addUnitToHome (unit);
+        incrementUnitCreation(home);
 	}
+
+    public void incrementUnitCreation(HomeScript home) {
+        if (home.Authority == PlayerAuthority.Player1) {
+            unitPlayer1Created++;
+        }
+        else if (home.Authority == PlayerAuthority.Player2) {
+            unitPlayer2Created++;
+        }
+    }
+
 	public bool pickResource( ResourceScript resource ){
         if (resource.Stock >1)
         {
@@ -243,7 +258,19 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
         homes[ unit.Authority ].removeUnit( unit );
 		GameObject.Destroy( unit.gameObject );
+
+        incrementKilledEntity(unit);
+
 	}
+
+    public void incrementKilledEntity(AgentEntity unit) {
+        if(unit.Authority == PlayerAuthority.Player1) {
+            unitPlayer1Destroyed++;
+        }
+        else if(unit.Authority == PlayerAuthority.Player2) {
+            unitPlayer2Destroyed++;
+        }
+    }
 
 	public bool destroyTrace( TraceScript trace ){
 		if ( this.traces.ContainsKey (trace.Authority) ) {

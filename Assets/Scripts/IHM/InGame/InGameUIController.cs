@@ -77,9 +77,47 @@ public class InGameUIController : MonoBehaviour {
     [SerializeField]
     private Text victory;
     [SerializeField]
+    private Image J1_Icon;
+    [SerializeField]
+    private Image J2_Icon;
+    [SerializeField]
+    private Text winCondition;
+    [SerializeField]
     private Text J1_Resources;
     [SerializeField]
     private Text J2_Resources;
+    [SerializeField]
+    private Text J1_EnemiesDetruis;
+    [SerializeField]
+    private Text J2_EnemiesDetruis;
+    [SerializeField]
+    private Text J1_AlliesCrees;
+    [SerializeField]
+    private Text J2_AlliesCrees;
+    [SerializeField]
+    private Text J1_AlliesDetruits;
+    [SerializeField]
+    private Text J2_AlliesDetruits;
+    [SerializeField]
+    private Text J1_Nuee;
+    [SerializeField]
+    private Text J2_Nuee;
+    [SerializeField]
+    private Image J1_ressourcesSlider;
+    [SerializeField]
+    private Image J2_ressourcesSlider;
+    [SerializeField]
+    private Image J1_enemiesDestroyedSlider;
+    [SerializeField]
+    private Image J2_enemiesDestroyedSlider;
+    [SerializeField]
+    private Image J1_unitCreatedSlider;
+    [SerializeField]
+    private Image J2_unitCreatedSlider;
+    [SerializeField]
+    private Image J1_unitDestoyedSlider;
+    [SerializeField]
+    private Image J2_unitDestoyedSlider;
     [SerializeField]
     private Button Caste_Menu;
     [SerializeField]
@@ -337,8 +375,7 @@ public class InGameUIController : MonoBehaviour {
     /// <summary>
     /// Init the Controller 
     /// </summary>
-	private void Init()
-    {
+	private void Init() {
         //Get gameManager Instance 
         gameManager = GameManager.instance;
 
@@ -376,6 +413,7 @@ public class InGameUIController : MonoBehaviour {
                 queens.Add(lumy);
             }
         }
+    
     }
     private bool statePlayPause = true;
     public void PauseGame()
@@ -451,26 +489,69 @@ public class InGameUIController : MonoBehaviour {
             {
                 winState = true;
                 victoryMenu.SetActive(true);
-                if (winner == GameManager.Winner.Player1R)
+                if (winner == GameManager.Winner.Player1E)
                 {
-                    victory.text = "Victoire du Joueur 1 : Avantage à la ressources";
+                    victory.text = SwapManager.instance.GetPlayer1Name();
+                    winCondition.text = "Victoire Economique";
                 }
-                if (winner == GameManager.Winner.Player2R)
-                {
-                    victory.text = " Victoire du Joueur 2 : Avantage à la ressources";
+                if (winner == GameManager.Winner.Player2E) {
+
+                    victory.text = SwapManager.instance.GetPlayer2Name();
+                    winCondition.text = "Victoire Economique";
                 }
                 if (winner == GameManager.Winner.Player1Q) {
-                    victory.text = "Victoire du Joueur 1 : Destruction du prysme adverse";
+                    victory.text = SwapManager.instance.GetPlayer1Name();
+                    winCondition.text = "Domination";
                 }
                 if (winner == GameManager.Winner.Player2Q) {
-                    victory.text = " Victoire du Joueur 2 : Destruction du prysme adverse";
+                    victory.text = SwapManager.instance.GetPlayer2Name();
+                    winCondition.text = "Domination";
                 }
                 if (winner == GameManager.Winner.Equality)
                 {
                     victory.text = "Egalité ! ";
+                    winCondition.text = "";
                 }
-                J1_Resources.text = "Resources : " + gameManager.sumResources(PlayerAuthority.Player1);
-                J2_Resources.text = "Resources : " + gameManager.sumResources(PlayerAuthority.Player2);
+
+                GameObject[] swarmPictos = LumyPictFactory.instance.InstanciateAllPicts();
+                //Get J1 swarm picto
+                Material materialJ1 = swarmPictos[GameManager.instance.P1_specie.PictId].GetComponent<MeshRenderer>().material;
+                Texture2D texturePictoJ1 = (Texture2D)materialJ1.mainTexture;
+                Sprite spritePictoJ1 = Sprite.Create(texturePictoJ1, new Rect(0.0f, 0.0f, texturePictoJ1.width, texturePictoJ1.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+                J1_Icon.sprite = spritePictoJ1;
+
+                //Get J2 swarm picto
+                Material materialJ2 = swarmPictos[GameManager.instance.P2_specie.PictId].GetComponent<MeshRenderer>().material;
+                Texture2D texturePictoJ2 = (Texture2D)materialJ2.mainTexture;
+                Sprite spritePictoJ2 = Sprite.Create(texturePictoJ2, new Rect(0.0f, 0.0f, texturePictoJ2.width, texturePictoJ2.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+                J2_Icon.sprite = spritePictoJ2;
+
+                //Destroy pictPrefabs
+                foreach(GameObject pict in swarmPictos) {
+                    Destroy(pict);
+                }
+
+                J1_Nuee.text = SwapManager.instance.GetPlayer1Name();
+                J2_Nuee.text = SwapManager.instance.GetPlayer2Name();
+                J1_Resources.text = gameManager.sumResources(PlayerAuthority.Player1).ToString();
+                J2_Resources.text = gameManager.sumResources(PlayerAuthority.Player2).ToString();
+                J1_EnemiesDetruis.text = Unit_GameObj_Manager.instance.unitPlayer2Destroyed.ToString();
+                J2_EnemiesDetruis.text = Unit_GameObj_Manager.instance.unitPlayer1Destroyed.ToString();
+                J1_AlliesCrees.text = Unit_GameObj_Manager.instance.unitPlayer1Created.ToString();
+                J2_AlliesCrees.text = Unit_GameObj_Manager.instance.unitPlayer2Created.ToString();
+                J1_AlliesDetruits.text = Unit_GameObj_Manager.instance.unitPlayer1Destroyed.ToString();
+                J2_AlliesDetruits.text = Unit_GameObj_Manager.instance.unitPlayer2Destroyed.ToString();
+
+                J1_ressourcesSlider.fillAmount = (gameManager.sumResources(PlayerAuthority.Player1) + SwapManager.instance.GetPlayerResources()) / (SwapManager.instance.GetPlayerStock() *3);
+                J2_ressourcesSlider.fillAmount = (gameManager.sumResources(PlayerAuthority.Player2) + SwapManager.instance.GetPlayerResources()) / (SwapManager.instance.GetPlayerStock() *3);
+                J1_enemiesDestroyedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer2Destroyed / (float)Unit_GameObj_Manager.instance.unitPlayer2Created;
+                J2_enemiesDestroyedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer1Destroyed / (float)Unit_GameObj_Manager.instance.unitPlayer1Created;
+                J1_unitCreatedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer1Created / (float)(Unit_GameObj_Manager.instance.unitPlayer1Created + Unit_GameObj_Manager.instance.unitPlayer2Created);
+                J2_unitCreatedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer2Created / (float)(Unit_GameObj_Manager.instance.unitPlayer1Created + Unit_GameObj_Manager.instance.unitPlayer2Created);
+                J1_unitDestoyedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer1Destroyed / (float)Unit_GameObj_Manager.instance.unitPlayer1Created;
+                J2_unitDestoyedSlider.fillAmount = (float)Unit_GameObj_Manager.instance.unitPlayer2Destroyed / (float)Unit_GameObj_Manager.instance.unitPlayer2Created;
 
                 PauseGame();
             }
