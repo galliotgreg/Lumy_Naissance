@@ -499,8 +499,11 @@ public class PartiePersoUIController : MonoBehaviour {
     private void ClearPlayer1View()
     {
         //Hide Swarm selection panel
-        selectionSwarmP1Panel.SetActive(false);
-
+        if (selectionSwarmP1Panel != null)
+        {
+            selectionSwarmP1Panel.SetActive(false);
+        }
+   
         //Clear percentage
         if (player1PercentageToDestroyList != null)
         {
@@ -568,7 +571,10 @@ public class PartiePersoUIController : MonoBehaviour {
     private void ClearPlayer2View()
     {
         //Hide Swarm selection panel
-        selectionSwarmP2Panel.SetActive(false);
+        if (selectionSwarmP2Panel != null)
+        {
+            selectionSwarmP2Panel.SetActive(false);
+        }
 
         //Clear percentage
         if (player2PercentageToDestroyList != null)
