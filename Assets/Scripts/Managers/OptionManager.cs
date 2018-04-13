@@ -48,7 +48,8 @@ public class OptionManager : MonoBehaviour {
     private Toggle toutDesactiver;
     [SerializeField]
     private Toggle toutActiver;
-
+    [SerializeField]
+    private Slider sliderMovementSensitivity; 
 
     private float rangeVision;
     private float rangePick;
@@ -109,6 +110,22 @@ public class OptionManager : MonoBehaviour {
         toutDesactiver.onValueChanged.AddListener((on) => {allDesactivate();});
 
         toutActiver.onValueChanged.AddListener((on) => {showAll();});
+        if (SwapManager.instance.getPlayerMouseSensitivity() > 0 && SwapManager.instance.getPlayerMouseSensitivity() != null)
+        {
+            sliderMovementSensitivity.value = SwapManager.instance.getPlayerMouseSensitivity();
+        }
+        sliderMovementSensitivity.onValueChanged.AddListener(ChangeSensitivity); 
+    }
+
+    private void ChangeSensitivity(float arg0)
+    {
+        MoveCameraInGame cameraMov = (MoveCameraInGame) GameObject.FindObjectOfType(typeof(MoveCameraInGame));
+        if(cameraMov != null)
+        {
+            cameraMov.SpeedCamera = arg0;
+            SwapManager.instance.setPlayerMouseSensitivity((int) arg0);
+        }
+        
     }
 
     private bool IsInGameSceneLoaded()

@@ -55,7 +55,9 @@ public class TutorielPratique : MonoBehaviour
         previous.onClick.AddListener(Prev);
         close.onClick.AddListener(Close);
         tutoPratique.onClick.AddListener(OpenTuto);
-        tuto.onClick.AddListener(Close);
+		if (tuto != null) {
+			tuto.onClick.AddListener (Close);
+		}
     }
   
 
@@ -136,7 +138,7 @@ public class TutorielPratique : MonoBehaviour
 
     public void OpenTuto()
     {
-        panelInfobulles.SetActive(true);
+        panelInfobulles.SetActive(!panelInfobulles.activeSelf);
         previous.GetComponent<Button>().gameObject.SetActive(false);
         currentInfo = 0;
         panelList[currentInfo].SetActive(true);    

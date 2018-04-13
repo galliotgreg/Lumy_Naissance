@@ -414,9 +414,15 @@ public class MCToolManager : MonoBehaviour
             MCEditorManager.instance.Temporary_Save_MC_Behavior(cast_name, idmax.ToString());
         }*/
 
-
-        if (id >= 0)
+        if (!IdExists(id - 1))
         {
+            return;
+        }
+
+        if (id > 0)
+        {
+
+
             id--;
             string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
             string sourcePosition = sourceFilePath + "_POSITION_" + id.ToString() + ".csv";
@@ -458,6 +464,11 @@ public class MCToolManager : MonoBehaviour
     #region REDO
     private void ToolRedo()
     {
+        if (!IdExists(id + 1))
+        {
+            return;
+        }
+
         string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
 
         id++;
@@ -496,6 +507,12 @@ public class MCToolManager : MonoBehaviour
             MCEditorManager.instance.TemporarySetupModel(cast_name, id.ToString());
             //Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
         }
+    }
+
+    private bool IdExists(int testedId)
+    {
+        string csvpath = Application.dataPath + @"\Inputs/TemporaryBackup/" + cast_name + "_" + testedId + ".csv";
+        return File.Exists(csvpath);
     }
     #endregion
 

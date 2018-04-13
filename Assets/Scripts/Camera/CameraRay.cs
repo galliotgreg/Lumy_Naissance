@@ -38,6 +38,8 @@ public class CameraRay : MonoBehaviour {
             //Hit a LumyComponents
            if (hit.transform.name == "EmptyComponentPrefab(Clone)") //If the hit is an EmptyComponentPrefab
             {
+                //Play FX
+                SoundManager.instance.PlayLumySelectedSFX();
                 if (self != null) {
                     //Disable SelectionShader
                     self.gameObject.transform.GetChild(2).gameObject.SetActive(false); //Disable Canvas
@@ -57,7 +59,9 @@ public class CameraRay : MonoBehaviour {
             //Hit PrysmeJ1
             else if(hit.transform.name == "p1_hive")
             {
-                if(self!= null)
+                //Play FX
+                SoundManager.instance.PlayPrysmeSelectedSFX();
+                if (self!= null)
                 {
                     self.gameObject.transform.GetChild(2).gameObject.SetActive(false);
                 }
@@ -74,6 +78,8 @@ public class CameraRay : MonoBehaviour {
             //Hit PrysmeJ2
             else if(hit.transform.name == "p2_hive")
             {
+                //Play FX
+                SoundManager.instance.PlayPrysmeSelectedSFX();
                 if (self != null)
                 {
                     self.gameObject.transform.GetChild(2).gameObject.SetActive(false);

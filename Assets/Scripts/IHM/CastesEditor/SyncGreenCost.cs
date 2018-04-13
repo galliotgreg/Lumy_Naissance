@@ -13,6 +13,13 @@ public class SyncGreenCost : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = SwarmEditUIController.instance.GreenCost.ToString();
+        if (SwarmEditUIController.instance.GreenCost == int.MaxValue)
+        {
+            text.text = "-";
+        }
+        else
+        {
+            text.text = SwarmEditUIController.instance.GreenCost.ToString();
+        }
     }
 }
