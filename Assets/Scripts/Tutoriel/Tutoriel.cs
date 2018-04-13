@@ -164,7 +164,7 @@ public class Tutoriel : MonoBehaviour
         panelInfobulles.SetActive(false);
         
         isTutoOpen = false;
-
+        //Hide Toggle if dontShowAgain selected
         if (!SwapManager.instance.getTutorielState(keyTuto))
         {
             dontShowAgain.gameObject.SetActive(false);
