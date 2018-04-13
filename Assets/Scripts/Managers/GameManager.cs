@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
     private GameObject p1_queen;
     private GameObject p2_queen;
 
-    public enum Winner { Player1Q, Player2Q, Player1R, Player2R, Equality, None };
+    public enum Winner { Player1Q, Player2Q, Player1E, Player2E, Equality, None };
     private Winner winnerPlayer;
 
     /// <summary>
@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour {
 
     private Specie p1_specie;
     private Specie p2_specie;
+    
+    private int totalCost = 0;
 
     #region Accesseur
     public GameObject P1_home
@@ -158,6 +160,18 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public Specie P1_specie {
+        get {
+            return p1_specie;
+        }
+    }
+
+    public Specie P2_specie {
+        get {
+            return p2_specie;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -230,17 +244,42 @@ public class GameManager : MonoBehaviour {
 
         //WIN CONDITION RESOURCES 
         timerLeft -= Time.deltaTime;
-        if (timerLeft <= 0)
-        {
+
+        if (timerLeft <= 0) {
             gameNotOver = false;
-            if (sumResources(PlayerAuthority.Player1) > sumResources(PlayerAuthority.Player2))
-                winnerPlayer = Winner.Player1R;
-            else if (sumResources(PlayerAuthority.Player2) > sumResources(PlayerAuthority.Player1))
-                winnerPlayer = Winner.Player2R;
+
+            if (Score(PlayerAuthority.Player1) > Score(PlayerAuthority.Player2))
+                winnerPlayer = Winner.Player1E;
+            else if (Score(PlayerAuthority.Player2) > Score(PlayerAuthority.Player1))
+                winnerPlayer = Winner.Player2E;
             else
                 winnerPlayer = Winner.Equality;
         }
 
+    }
+
+    private float Score(PlayerAuthority authority) {
+        return sumResources(authority) + totalCost;
+    }
+
+    private void SumProdCost(PlayerAuthority authority) {
+
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Agent");
+        List<GameObject> playerUnits = new List<GameObject>();
+
+        foreach (GameObject lumy in units) {
+            if (lumy.GetComponent<AgentEntity>().Authority == authority) {
+                playerUnits.Add(lumy);
+            }
+        }
+
+        foreach (GameObject unit in playerUnits) {
+
+            Dictionary<string, int> costs = unit.GetComponent<AgentScript>().ProdCost;
+            foreach (KeyValuePair<string, int> cost in costs) {
+                totalCost += cost.Value;
+            }
+        }
     }
 
     private void SetupMatch()
@@ -315,8 +354,8 @@ public class GameManager : MonoBehaviour {
     #region Create Unit Templates
     private void CreateUnitTemplates()
     {
-        p1_unitTemplates = createTemplates(p1_specie, PlayerAuthority.Player1);
-        p2_unitTemplates = createTemplates(p2_specie, PlayerAuthority.Player2);
+        p1_unitTemplates = createTemplates(P1_specie, PlayerAuthority.Player1);
+        p2_unitTemplates = createTemplates(P2_specie, PlayerAuthority.Player2);
     }
 
     GameObject[] createTemplates(Specie specie, PlayerAuthority authority) {
@@ -397,17 +436,17 @@ public class GameManager : MonoBehaviour {
         p1_hiveScript.Authority = PlayerAuthority.Player1;
         HomeScript p2_hiveScript = p2_home.GetComponent<HomeScript>();
         p2_hiveScript.Authority = PlayerAuthority.Player2;
-        p1_hiveScript.RedResAmout = p1_specie.RedResAmount;
-        p1_hiveScript.GreenResAmout = p1_specie.GreenResAmount;
-        p1_hiveScript.BlueResAmout = p1_specie.BlueResAmount;
-        p2_hiveScript.RedResAmout = p2_specie.RedResAmount;
-        p2_hiveScript.GreenResAmout = p2_specie.GreenResAmount;
-        p2_hiveScript.BlueResAmout = p2_specie.BlueResAmount;
-        foreach (string key in p1_specie.Casts.Keys)
+        p1_hiveScript.RedResAmout = P1_specie.RedResAmount;
+        p1_hiveScript.GreenResAmout = P1_specie.GreenResAmount;
+        p1_hiveScript.BlueResAmout = P1_specie.BlueResAmount;
+        p2_hiveScript.RedResAmout = P2_specie.RedResAmount;
+        p2_hiveScript.GreenResAmout = P2_specie.GreenResAmount;
+        p2_hiveScript.BlueResAmout = P2_specie.BlueResAmount;
+        foreach (string key in P1_specie.Casts.Keys)
         {
             p1_hiveScript.Population.Add(key, 0);
         }
-        foreach (string key in p2_specie.Casts.Keys)
+        foreach (string key in P2_specie.Casts.Keys)
         {
             p2_hiveScript.Population.Add(key, 0);
         }
