@@ -77,7 +77,8 @@ public class Tutoriel : MonoBehaviour
         close.onClick.AddListener(Close);
         dontShowAgain.onValueChanged.AddListener(delegate{ToggleKey(dontShowAgain);});
         tuto.onClick.AddListener(OpenTuto);
-		if(tutoPratique != null) {
+
+        if (tutoPratique != null) {
         tutoPratique.onClick.AddListener(Close);
 		}
     }
@@ -175,7 +176,7 @@ public class Tutoriel : MonoBehaviour
 
     public void OpenTuto()
     {
-        panelInfobulles.SetActive(true);
+        panelInfobulles.SetActive(!panelInfobulles.activeSelf);
         previous.GetComponent<Button>().gameObject.SetActive(false);
         currentInfo = 0;
         panelList[currentInfo].SetActive(true);    
