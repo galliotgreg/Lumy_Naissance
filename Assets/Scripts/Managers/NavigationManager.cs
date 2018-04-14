@@ -49,7 +49,10 @@ public class NavigationManager : MonoBehaviour {
     private bool zoomOnCanvas = true;
     private bool fadeToBlack = false;
 
-    
+    // loading text
+    bool isDots1 = true;
+    bool isDots2 = false;
+    bool isDots3 = false;
 
     // Use this for initialization
     void Start () {
@@ -149,6 +152,41 @@ public class NavigationManager : MonoBehaviour {
 
     }
 
+    private string dotLoadingText()
+    {
+        string dots1 = "<color=grey>.</color>..";
+        string dots2 = ".<color=grey>.</color>.";
+        string dots3 = "..<color=grey>.</color>";
+
+        if (isDots1)
+        {
+            isDots1 = false;
+            isDots2 = true;
+            isDots3 = false;
+
+            return dots1;
+        }
+        else if (isDots2)
+        {
+            isDots1 = false;
+            isDots2 = false;
+            isDots3 = true;
+
+            return dots2;
+        }
+        else if (isDots3)
+        {
+            isDots1 = true;
+            isDots2 = false;
+            isDots3 = false;
+
+            return dots3;
+        } else
+        {
+            return "";
+        }
+    }
+
     IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
     {
         GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
@@ -176,16 +214,20 @@ public class NavigationManager : MonoBehaviour {
                 yield return true;
             }
 
-        // Afficher le texte de chargement
+        // Afficher le texte de chargement        
         GameObject loadText = GameObject.Find("LoadingText");
-        setWText(loadText);
+
+        setWText(loadText);        
         loadText.GetComponent<Text>().color = new Color(1f, 1f, 1f, 1f);
+        loadText.GetComponent<Text>().text = "Chargement";
+        
 
         // Attendre la fin du chargement de la scène de destination
 
         AsyncOperation load = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
         while (!load.isDone)
         {
+            loadText.GetComponent<Text>().text = "Chargement" + dotLoadingText();
             yield return null;
         }
 
@@ -214,6 +256,7 @@ public class NavigationManager : MonoBehaviour {
         AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
         while (!unload.isDone)
         {
+            loadText.GetComponent<Text>().text = "Chargement" + dotLoadingText();
             yield return null;
         }
 
@@ -230,6 +273,7 @@ public class NavigationManager : MonoBehaviour {
 
         while (!layerUnloaded)
         {
+            loadText.GetComponent<Text>().text = "Chargement" + dotLoadingText();
             yield return null;
         }
 
@@ -237,6 +281,7 @@ public class NavigationManager : MonoBehaviour {
 
         while (!layerLoaded)
         {
+            loadText.GetComponent<Text>().text = "Chargement" + dotLoadingText();
             yield return null;
         }
 
@@ -251,15 +296,15 @@ public class NavigationManager : MonoBehaviour {
 
         // Cacher le texte de chargement
         loadText.GetComponent<Text>().color = new Color(1f, 1f, 1f, 0f);
-        loadText.GetComponent<Text>().text = "Chargement...";
+        loadText.GetComponent<Text>().text = "Chargement";        
 
         // Fondre depuis le noir
         while (darkAlpha > 0f)
-            {
-                darkAlpha = darkScreen.GetComponent<Image>().color.a;
-                darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a - fadeStep);
-                yield return true;
-            }
+         {
+            darkAlpha = darkScreen.GetComponent<Image>().color.a;
+            darkScreen.GetComponent<Image>().color = new Color(darkImg.color.r, darkImg.color.g, darkImg.color.b, darkImg.color.a - fadeStep);            
+            yield return true;
+        }
 
         // Jouer la musique correspondant à la scène
         switch (currentScene)
