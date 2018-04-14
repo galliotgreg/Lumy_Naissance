@@ -75,6 +75,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] onClickButtonClips;
     #endregion
 
+    public bool isAllreadyPlaying = false;
 
     void Awake()
     {
@@ -299,11 +300,17 @@ public class SoundManager : MonoBehaviour
     {
         RandomizeClips(removeStatSwarmClips, menuFxSource, true, true);
     }
-#endregion
+    #endregion
 
-#endregion
+    #region Options
+    public void PlayFeebackSFXVolumeSFX()
+    {
+        RandomizeClips(addStatSwarmClips, menuFxSource, true);
+    }
+    #endregion
+    #endregion
 
-public void RandomizeClips(AudioClip[] clips, AudioSource aSource, bool isPlayedOneTime = false, bool isPitched = false)
+    public void RandomizeClips(AudioClip[] clips, AudioSource aSource, bool isPlayedOneTime = false, bool isPitched = false)
     {
         int randomIndex = Random.Range(0, clips.Length);
 
