@@ -15,6 +15,9 @@ public class Unit_GameObj_Manager : MonoBehaviour {
     public int unitPlayer1Destroyed = 0;
     public int unitPlayer2Destroyed = 0;
 
+    public int nbLights = 0;
+    public int maxLights = 10;
+
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -88,7 +91,16 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	public void addPrysme( AgentEntity prysme, HomeScript home ){ 
 		home.addPrysmeToHome (prysme); 
 	}
-	public void addUnit( AgentEntity unit, HomeScript home ){
+	public void addUnit( AgentEntity unit, HomeScript home ) {
+        if (nbLights > maxLights)
+        {
+            Light light = unit.transform.Find("Light").GetComponent<Light>();
+            light.enabled = false;
+        } else
+        {
+            nbLights++;
+        }
+
 		home.addUnitToHome (unit);
         incrementUnitCreation(home);
 	}
@@ -258,6 +270,12 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
         homes[ unit.Authority ].removeUnit( unit );
 		GameObject.Destroy( unit.gameObject );
+
+        Light light = unit.transform.Find("Light").GetComponent<Light>();
+        if (light.enabled)
+        {
+            nbLights--;
+        }
 
         incrementKilledEntity(unit);
 
