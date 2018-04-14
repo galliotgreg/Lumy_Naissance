@@ -1284,14 +1284,15 @@ public class InGameUIController : MonoBehaviour {
         }
     }
         public void OpenOptionsDebug() {
-
-        if (OperatorHelper.Instance != null)
+        if(winState == false)
         {
-            OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+            if (OperatorHelper.Instance != null)
+            {
+                OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
+            }
+            CloseAllOthersMsgPanel(panelOptionsDebug);
+            panelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
         }
-        CloseAllOthersMsgPanel(panelOptionsDebug); 
-        panelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
-
     }
 
     private void CheckPause()
@@ -1319,8 +1320,12 @@ public class InGameUIController : MonoBehaviour {
 
 
     void SwitchMenu() {
-        CloseAllOthersMsgPanel(subMenu); 
-        subMenu.SetActive(!subMenu.activeSelf);
+        if(winState == false)
+        {
+            CloseAllOthersMsgPanel(subMenu);
+            subMenu.SetActive(!subMenu.activeSelf);
+        }
+
     }
     #endregion
 
