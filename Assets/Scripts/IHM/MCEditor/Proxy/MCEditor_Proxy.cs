@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class MCEditor_Proxy : MonoBehaviour {
-
-    protected GameObject toolTip;
-    protected float timeOnHover = -1;
-    protected float timeOnHoverWait = 1.5f;
-    protected bool toolTipIsCreated = false;    
+public abstract class MCEditor_Proxy : MonoBehaviour {  
 
 	[SerializeField]
 	protected UnityEngine.UI.Text text;
@@ -62,26 +57,12 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
     private void OnMouseEnter()
     {
-        timeOnHover = Time.time;
-        //toolTip = MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, this.GetType().ToString(), this );
+        MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, this.GetType().ToString(), this );
     }
 
     private void OnMouseExit()
     {
-        timeOnHover = -1;
-        if (toolTipIsCreated)
-        {
-            if (toolTip.GetComponent<MCEditor_DialogBox_ToolTip>())
-            {
-                toolTipIsCreated = false;                
-                toolTip.GetComponent<MCEditor_DialogBox_ToolTip>().Desactivate();
-            }
-            else //Init node case (no tooltip instantiate)
-            {
-                toolTipIsCreated = false;                
-                Destroy(toolTip.gameObject);
-            }
-        }                    
+                  
     }
 
     #region VIEW METHODS
@@ -97,8 +78,18 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
     public void SetProxyName(string name)
 	{
-		UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text> ();
-		text.text = name;
+        GameObject picto = MCPictFactory.instance.InstanciatePict(name);
+        UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text>();
+        if (picto != null)
+        {
+            picto.transform.SetParent(this.transform, false);
+            text.enabled = false;
+        }
+        else
+        {
+            text.text = name;
+            text.enabled = true;
+        }
 	}
 
 	public string GetProxyName()

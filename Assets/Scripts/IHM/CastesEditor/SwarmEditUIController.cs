@@ -117,6 +117,9 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private GameObject castImageDialog;
 
+    [SerializeField]
+    private Image imagePrysme;
+
     /// <summary>
     /// The name of the current lumy on the main panel
     /// </summary>
@@ -355,6 +358,8 @@ public class SwarmEditUIController : MonoBehaviour
     private void Start()
     {
         DisplayStatBars();
+        RefreshSwarmImageScroll();
+        RefreshCastImageScroll();
         RefreshView();
     }
 
@@ -926,8 +931,8 @@ public class SwarmEditUIController : MonoBehaviour
     {
         RefreashSwarmScroll();
         RefreashLumysScroll();
-        RefreshSwarmImageScroll();
-        RefreshCastImageScroll();
+        //RefreshSwarmImageScroll();
+        //RefreshCastImageScroll();
         RefreshLumyAppearenceFromData();
         RefreshLumyInfo();
         RefreshSwarmInfo();
@@ -1669,6 +1674,9 @@ public class SwarmEditUIController : MonoBehaviour
 
         SelectSwarm(folderName);
 
+        //Button Glow
+        imagePrysme.gameObject.SetActive(true);
+      
         //Update IHM
         RefreshView();
         OpenEditSwarmDialog();
@@ -1716,6 +1724,8 @@ public class SwarmEditUIController : MonoBehaviour
         lumyPanel.SetActive(false);
         prysmePanel.SetActive(true);
         lumyHublot.SetActive(false);
+        //End Glow Button
+        imagePrysme.gameObject.SetActive(false);
     }
 
     private void SetLumyPanel()

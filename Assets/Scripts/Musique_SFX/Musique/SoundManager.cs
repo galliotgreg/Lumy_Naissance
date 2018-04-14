@@ -40,31 +40,42 @@ public class SoundManager : MonoBehaviour
     //Tuto
     public AudioClip[] hintClips; // Sound for helping player during tuto
     public AudioClip[] popUpDialogueClips;
+
     //MC Editor
     public AudioClip[] selectNodeClips;
     public AudioClip[] transitionOKClips; // Creation of a valid transition  
     public AudioClip[] LoadingMcClips;
+    
     //InGame
-    public AudioClip[] startGameClips;
+    public AudioClip[] playGameClips;
+    public AudioClip[] pauseGameClips;
+
     public AudioClip[] lumySelectedClips;
+    public AudioClip[] prysmeSelectedClips;
     public AudioClip[] prysmeIsAttackedClips;
     public AudioClip[] swarmIsAttackedClips;
 
     public AudioClip[] victoryResourcesClips;
     public AudioClip[] victoryPrysmeDestroyedClips;
-    public AudioClip[] defeatResourcesClips;
-    public AudioClip[] defeatPrysmeDestroyedClips;
 
     public AudioClip[] lumyMovementClips;
     public AudioClip[] lumyAttackClips;
     public AudioClip[] lumyPickupClips;
     public AudioClip[] lumyDeathClips;
+    
     //Menu
-    public AudioClip[] onOverButtonClips;
-    public AudioClip[] onClickButtonClips;
+    public AudioClip[] onHoverMenuClips;
+    public AudioClip[] onClickMenuClips;
     public AudioClip[] onLoadingSceneClips; // Sound for the transition between 2 menus
+    public AudioClip[] addStatSwarmClips;
+    public AudioClip[] removeStatSwarmClips;
+
+    //General
+    public AudioClip[] onHoverButtonClips;
+    public AudioClip[] onClickButtonClips;
     #endregion
 
+    public bool isAllreadyPlaying = false;
 
     void Awake()
     {
@@ -210,13 +221,17 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region InGame SFX
-    public void PlayStartGameSFX()
+    public void PlayPlayGameSFX()
     {
-        RandomizeClips(startGameClips, inGameFXSource, true, true);
+        RandomizeClips(playGameClips, inGameFXSource, true, true);
     }
     public void PlayLumySelectedSFX()
     {
         RandomizeClips(lumySelectedClips, lumyFxSource, true, true);
+    }
+    public void PlayPrysmeSelectedSFX()
+    {
+        RandomizeClips(prysmeSelectedClips, lumyFxSource, true, true);
     }
     public void PlayPrysmeIsAttackedSFX()
     {
@@ -233,14 +248,6 @@ public class SoundManager : MonoBehaviour
     public void PlayVictoryPrysmeDestroyedSFX()
     {
         RandomizeClips(victoryPrysmeDestroyedClips, menuFxSource, true, true);
-    }
-    public void PlayDefeatResourcesSFX()
-    {
-        RandomizeClips(defeatResourcesClips, menuFxSource, true, true);
-    }
-    public void PlayDefeatPrysmeDestroyedSFX()
-    {
-        RandomizeClips(defeatPrysmeDestroyedClips, menuFxSource, true, true);
     }
     public void PlayLumyMovementSFX()
     {
@@ -261,20 +268,46 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region Menu SFX
-    public void PlayOnOverButtonSFX()
+    public void PlayOnHoverMenuSFX()
     {
-        RandomizeClips(onOverButtonClips, menuFxSource, true, true);
+        RandomizeClips(onHoverMenuClips, menuFxSource, true);
     }
-    public void PlayOnClickButtonSFX()
+    public void PlayOnClickMenuSFX()
     {
-        RandomizeClips(onClickButtonClips, menuFxSource, true, true);
+        RandomizeClips(onClickMenuClips, menuFxSource, true);
     }
     public void PlayOnLoadingSceneSFX()
     {
         RandomizeClips(onLoadingSceneClips, menuFxSource, true, true);
     }
+    public void PlayAddSwarmSFX()
+    {
+        RandomizeClips(addStatSwarmClips, menuFxSource, true);
+    }
+    public void PlayRemoveSwarmSFX()
+    {
+        RandomizeClips(removeStatSwarmClips, menuFxSource, true);
+    }
+
     #endregion
 
+    #region General    
+    public void PlayOnHoverButtonSFX()
+    {
+        RandomizeClips(removeStatSwarmClips, menuFxSource, true, true);
+    }    
+    public void PlayOnClickButtonSFX()
+    {
+        RandomizeClips(removeStatSwarmClips, menuFxSource, true, true);
+    }
+    #endregion
+
+    #region Options
+    public void PlayFeebackSFXVolumeSFX()
+    {
+        RandomizeClips(addStatSwarmClips, menuFxSource, true);
+    }
+    #endregion
     #endregion
 
     public void RandomizeClips(AudioClip[] clips, AudioSource aSource, bool isPlayedOneTime = false, bool isPitched = false)

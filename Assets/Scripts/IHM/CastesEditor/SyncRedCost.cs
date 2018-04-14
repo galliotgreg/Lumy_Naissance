@@ -13,6 +13,13 @@ public class SyncRedCost : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = SwarmEditUIController.instance.RedCost.ToString();
+        if (SwarmEditUIController.instance.RedCost == int.MaxValue)
+        {
+            text.text = "-";
+        }
+        else
+        {
+            text.text = SwarmEditUIController.instance.RedCost.ToString();
+        }
     }
 }
