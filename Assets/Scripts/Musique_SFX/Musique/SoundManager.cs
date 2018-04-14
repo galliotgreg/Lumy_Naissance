@@ -75,6 +75,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] onClickButtonClips;
     #endregion
 
+    public bool isAllreadyPlaying = false;
 
     void Awake()
     {
@@ -269,11 +270,11 @@ public class SoundManager : MonoBehaviour
     #region Menu SFX
     public void PlayOnHoverMenuSFX()
     {
-        RandomizeClips(onHoverMenuClips, menuFxSource, true, true);
+        RandomizeClips(onHoverMenuClips, menuFxSource, true);
     }
     public void PlayOnClickMenuSFX()
     {
-        RandomizeClips(onClickMenuClips, menuFxSource, true, true);
+        RandomizeClips(onClickMenuClips, menuFxSource, true);
     }
     public void PlayOnLoadingSceneSFX()
     {
@@ -281,11 +282,11 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayAddSwarmSFX()
     {
-        RandomizeClips(addStatSwarmClips, menuFxSource, true, true);
+        RandomizeClips(addStatSwarmClips, menuFxSource, true);
     }
     public void PlayRemoveSwarmSFX()
     {
-        RandomizeClips(removeStatSwarmClips, menuFxSource, true, true);
+        RandomizeClips(removeStatSwarmClips, menuFxSource, true);
     }
 
     #endregion
@@ -299,11 +300,17 @@ public class SoundManager : MonoBehaviour
     {
         RandomizeClips(removeStatSwarmClips, menuFxSource, true, true);
     }
-#endregion
+    #endregion
 
-#endregion
+    #region Options
+    public void PlayFeebackSFXVolumeSFX()
+    {
+        RandomizeClips(addStatSwarmClips, menuFxSource, true);
+    }
+    #endregion
+    #endregion
 
-public void RandomizeClips(AudioClip[] clips, AudioSource aSource, bool isPlayedOneTime = false, bool isPitched = false)
+    public void RandomizeClips(AudioClip[] clips, AudioSource aSource, bool isPlayedOneTime = false, bool isPitched = false)
     {
         int randomIndex = Random.Range(0, clips.Length);
 

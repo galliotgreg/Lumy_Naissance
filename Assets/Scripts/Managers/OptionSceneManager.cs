@@ -30,15 +30,15 @@ public class OptionSceneManager : MonoBehaviour {
         windowed.isOn = Screen.fullScreen;
         quality.value = QualitySettings.GetQualityLevel();
 
-        music.value = SoundManager.instance.menuFxSource.volume;
+        music.value = SoundManager.instance.musicSource.volume;
         sfx.value = SoundManager.instance.menuFxSource.volume;
-        general.value = SoundManager.instance.musicSource.volume;
+        general.value = Mathf.Max(SoundManager.instance.musicSource.volume, SoundManager.instance.menuFxSource.volume);
 
         resolution.onValueChanged.AddListener(delegate { SetResolution(); });
         windowed.onValueChanged.AddListener((on) => { SetWindowed(); });
         quality.onValueChanged.AddListener(delegate{ SetQuality(); });
-
-        sfx.onValueChanged.AddListener(delegate { SetVolumeFX(); });
+        
+        //sfx.onValueChanged.AddListener(delegate { SetVolumeFX(); });        
         general.onValueChanged.AddListener(delegate { SetVolumeGeneral(); });
         music.onValueChanged.AddListener(delegate { SetVolumeMusic(); });
     }
@@ -108,26 +108,30 @@ public class OptionSceneManager : MonoBehaviour {
         Debug.Log(QualitySettings.GetQualityLevel());
     }
 
-    private void SetVolumeFX()
-    {        
+    public void SetVolumeFX()
+    {   
         SoundManager.instance.inGameFXSource.volume = sfx.value;
         SoundManager.instance.lumyFxSource.volume = sfx.value;
-        SoundManager.instance.menuFxSource.volume = sfx.value;        
+        SoundManager.instance.menuFxSource.volume = sfx.value;
+
+        SoundManager.instance.PlayFeebackSFXVolumeSFX();     
     }
 
     private void SetVolumeMusic()
-    {        
+    {
         SoundManager.instance.musicSource.volume = music.value;
     }
 
-    private void SetVolumeGeneral()
+    private void SetVolumeGeneral(bool changeOthers = false)
     {
         SoundManager.instance.inGameFXSource.volume = general.value;
         SoundManager.instance.lumyFxSource.volume = general.value;
         SoundManager.instance.menuFxSource.volume = general.value;
         SoundManager.instance.musicSource.volume = general.value;
 
-        sfx.value = general.value;
+        sfx.value = general.value/5.0f;
+        SetVolumeFX();
         music.value = general.value;
+        SetVolumeMusic();
     }
 }
