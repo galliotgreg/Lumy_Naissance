@@ -91,6 +91,11 @@ public class PanelManager : MonoBehaviour
 
             //Set Text
             button_text.text = listNames[i];
+            button_text.fontSize = 20;
+
+            //Set Text rectTransform
+            button_text.GetComponent<RectTransform>().sizeDelta = new Vector2(300f, 40f);
+
             //Set Position
             rectTransform.localPosition = new Vector3(
                 10f,
