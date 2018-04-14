@@ -36,6 +36,11 @@ public class MCPictFactory : MonoBehaviour {
         int pictIndex = pictosIds.IndexOf(id);
         if (pictIndex >= 0)
         {
+            GameObject prefab = pictos[pictIndex];
+            if (prefab == null)
+            {
+                return null;
+            }
             return Instantiate(pictos[pictIndex], Vector3.zero, pictos[pictIndex].transform.rotation);
         }
 
