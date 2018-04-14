@@ -35,7 +35,7 @@ public class ProxyABAction : MCEditor_Proxy
         }
         set
         {
-            GameObject picto = MCPictFactory.instance.InstanciatePict("a");
+            GameObject picto = MCPictFactory.instance.InstanciatePict(abState.Action.Type.ToString());
             UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text>();
             if (picto != null)
             {
