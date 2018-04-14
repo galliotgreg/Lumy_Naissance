@@ -70,6 +70,28 @@ public class InGameUIController : MonoBehaviour {
     private Button Menu_OptionsDebug;
     #endregion
 
+    #region ValidationOnExit
+    [Header("ValidationOnExit")]
+    [SerializeField]
+    private Button Confirm_Exit_MainMenu;
+    [SerializeField]
+    private Button Cancel_Exit_MainMenu; 
+    [SerializeField]
+    private GameObject Panel_Exit_MainMenu;
+    [SerializeField]
+    private Button Confirm_Exit_CasteMenu;
+    [SerializeField]
+    private Button Cancel_Exit_CasteMenu;
+    [SerializeField]
+    private GameObject Panel_Exit_CasteMenu;
+    [SerializeField]
+    private Button Confirm_Exit_PartiePersoMenu;
+    [SerializeField]
+    private Button Cancel_Exit_PartiePersoMenu;
+    [SerializeField]
+    private GameObject Panel_Exit_PartiePersoMenu;
+
+    #endregion
     #region VictoryScreen
     [Header("Victory Screen")]
     [SerializeField]
@@ -392,9 +414,11 @@ public class InGameUIController : MonoBehaviour {
         Camera camera = NavigationManager.instance.GetCurrentCamera();
         canvas.worldCamera = camera;
         //Init all Listener
+
         //Exit Menu
         cancel_ExitMenu.onClick.AddListener(CloseExitMenu);
         quit_ExitMenu.onClick.AddListener(ExitGame);
+
         //Victory Menu 
         Caste_Menu.onClick.AddListener(GoToCasteMenu);
         quitVictory.onClick.AddListener(ExitGame);
@@ -402,12 +426,17 @@ public class InGameUIController : MonoBehaviour {
         Menu_PersonnalizedMap.onClick.AddListener(GoToPersonnalizedMap);
         Menu_Caste.onClick.AddListener(GoToCasteMenu);
         Menu_OptionsDebug.onClick.AddListener(OpenOptionsDebug);
-
         Menu.onClick.AddListener(SwitchMenu);
 
+        //Confirmation Menu 
+        Confirm_Exit_CasteMenu.onClick.AddListener(validateGoToCasteMenu);
+        Cancel_Exit_CasteMenu.onClick.AddListener(unvalidateGoToCasteMenu);
+        Confirm_Exit_MainMenu.onClick.AddListener(validateGoToMainMenu);
+        Cancel_Exit_MainMenu.onClick.AddListener(unvalidatedGoToMainMenu);
+        Confirm_Exit_PartiePersoMenu.onClick.AddListener(validateGoToPersonnalizedMap);
+        Cancel_Exit_PartiePersoMenu.onClick.AddListener(unvalidatedGoToPersonnalisedMap); 
+
         valider.onClick.AddListener(OptionManager.instance.setPlayerPreferencesDebug);
-
-
         playPause.onClick.AddListener(PauseGame);
 
         //Player Species 
@@ -495,6 +524,7 @@ public class InGameUIController : MonoBehaviour {
         {
             if (winner != GameManager.Winner.None)
             {
+                CloseAllOthersMsgPanel(victoryMenu); 
                 winState = true;
                 victoryMenu.SetActive(true);
                 if (winner == GameManager.Winner.Player1E)
@@ -1171,6 +1201,12 @@ public class InGameUIController : MonoBehaviour {
     }
     private void GoToCasteMenu()
     {
+        CloseAllOthersMsgPanel(Panel_Exit_CasteMenu);
+        Panel_Exit_CasteMenu.SetActive(!Panel_Exit_CasteMenu.activeSelf); 
+    }
+
+    private void validateGoToCasteMenu()
+    {
         if (!CheckExitGame())
         {
             return;
@@ -1180,8 +1216,18 @@ public class InGameUIController : MonoBehaviour {
         alreadyClosed = true;
     }
 
+    private void unvalidateGoToCasteMenu ()
+    {
+        Panel_Exit_CasteMenu.SetActive(false); 
+    }
 
     private void GoToMainMenu()
+    {
+        CloseAllOthersMsgPanel(Panel_Exit_MainMenu); 
+        Panel_Exit_MainMenu.SetActive(!Panel_Exit_MainMenu.activeSelf); 
+    }
+
+    private void validateGoToMainMenu()
     {
         if (!CheckExitGame())
         {
@@ -1189,26 +1235,61 @@ public class InGameUIController : MonoBehaviour {
         }
         NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("MenuPrincipalScene");
-        alreadyClosed = true; 
+        alreadyClosed = true;
     }
+
+    private void unvalidatedGoToMainMenu()
+    {
+        Panel_Exit_MainMenu.SetActive(false); 
+    }
+
+
 
     private void GoToPersonnalizedMap()
     {
-        if(!CheckExitGame())
+        CloseAllOthersMsgPanel(Panel_Exit_PartiePersoMenu); 
+        Panel_Exit_PartiePersoMenu.SetActive(!Panel_Exit_PartiePersoMenu.activeSelf); 
+    }
+
+    private void validateGoToPersonnalizedMap()
+    {
+        if (!CheckExitGame())
         {
-            return; 
+            return;
         }
         NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom("PartiePersoScene");
-        alreadyClosed = true; 
+        alreadyClosed = true;
     }
 
+    private void unvalidatedGoToPersonnalisedMap()
+    {
+        Panel_Exit_PartiePersoMenu.SetActive(false); 
+    }
+
+    private void CloseAllOthersMsgPanel(GameObject Panel)
+    {
+        List<GameObject> panels = new List<GameObject>();
+        panels.Add(Panel_Exit_CasteMenu);
+        panels.Add(Panel_Exit_MainMenu);
+        panels.Add(Panel_Exit_PartiePersoMenu);
+        panels.Add(panelOptionsDebug);
+        panels.Add(subMenu); 
+        foreach (GameObject go in panels)
+        {
+            if (go != Panel)
+            {
+                go.SetActive(false);
+            }
+        }
+    }
         public void OpenOptionsDebug() {
 
         if (OperatorHelper.Instance != null)
         {
             OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
         }
+        CloseAllOthersMsgPanel(panelOptionsDebug); 
         panelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
 
     }
@@ -1238,6 +1319,7 @@ public class InGameUIController : MonoBehaviour {
 
 
     void SwitchMenu() {
+        CloseAllOthersMsgPanel(subMenu); 
         subMenu.SetActive(!subMenu.activeSelf);
     }
     #endregion
