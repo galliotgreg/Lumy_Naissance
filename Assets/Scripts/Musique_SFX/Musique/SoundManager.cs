@@ -269,11 +269,11 @@ public class SoundManager : MonoBehaviour
     #region Menu SFX
     public void PlayOnHoverMenuSFX()
     {
-        RandomizeClips(onHoverMenuClips, menuFxSource, true, true);
+        RandomizeClips(onHoverMenuClips, menuFxSource, true);
     }
     public void PlayOnClickMenuSFX()
     {
-        RandomizeClips(onClickMenuClips, menuFxSource, true, true);
+        RandomizeClips(onClickMenuClips, menuFxSource, true);
     }
     public void PlayOnLoadingSceneSFX()
     {
@@ -281,11 +281,11 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayAddSwarmSFX()
     {
-        RandomizeClips(addStatSwarmClips, menuFxSource, true, true);
+        RandomizeClips(addStatSwarmClips, menuFxSource, true);
     }
     public void PlayRemoveSwarmSFX()
     {
-        RandomizeClips(removeStatSwarmClips, menuFxSource, true, true);
+        RandomizeClips(removeStatSwarmClips, menuFxSource, true);
     }
 
     #endregion
