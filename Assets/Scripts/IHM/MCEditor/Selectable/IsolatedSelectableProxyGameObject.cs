@@ -84,8 +84,9 @@ public abstract class IsolatedSelectableProxyGameObject : MonoBehaviour {
 
 	void setColor( Color color ){
 		if (colorRenderer != null) {
-			colorRenderer.material.color = color;
-		}
+            colorRenderer.materials[0].SetColor("_TintColor", color);
+            colorRenderer.materials[1].SetColor("_TintColor", color);
+        }
 	}
 
 	protected void selectGameObject(){
