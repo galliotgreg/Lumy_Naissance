@@ -78,8 +78,18 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
     public void SetProxyName(string name)
 	{
-		UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text> ();
-		text.text = name;
+        GameObject picto = MCPictFactory.instance.InstanciatePict(name);
+        UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text>();
+        if (picto != null)
+        {
+            picto.transform.SetParent(this.transform, false);
+            text.enabled = false;
+        }
+        else
+        {
+            text.text = name;
+            text.enabled = true;
+        }
 	}
 
 	public string GetProxyName()
