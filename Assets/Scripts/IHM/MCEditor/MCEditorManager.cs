@@ -2423,6 +2423,7 @@ public class MCEditorManager : MonoBehaviour
     {
         toolTipText.gameObject.transform.position = new Vector3(pos.x, pos.y, -2);
         toolTipText.text = text;
+        toolTipText.color = Color.white; 
     }
 
     // ToolTip for Node
