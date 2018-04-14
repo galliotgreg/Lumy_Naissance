@@ -41,11 +41,28 @@ public class MoveCameraInGame : MonoBehaviour {
     //Used for Intersection with UI
     private int fingerID = -1;
 
+    public float SpeedCamera
+    {
+        get
+        {
+            return speedCamera;
+        }
+
+        set
+        {
+            speedCamera = value;
+        }
+    }
+
     // Use this for initialization
     void Start () {
        
         initPos = gameObject.transform.position;
-        initRotation = gameObject.transform.eulerAngles; 
+        initRotation = gameObject.transform.eulerAngles;
+        if (SwapManager.instance.getPlayerMouseSensitivity() > 0 && SwapManager.instance.getPlayerMouseSensitivity() != null)
+        {
+           speedCamera = SwapManager.instance.getPlayerMouseSensitivity();
+        }
     }
 
     // Update is called once per frame
@@ -96,21 +113,26 @@ public class MoveCameraInGame : MonoBehaviour {
             bool right = Input.GetKey(KeyCode.RightArrow);
             bool left = Input.GetKey(KeyCode.LeftArrow);
 
-            if (up && cameraPos.z < maxY)
+            bool upZ = Input.GetKey(KeyCode.Z);
+            bool downW = Input.GetKey(KeyCode.S);
+            bool rightD = Input.GetKey(KeyCode.D);
+            bool leftQ = Input.GetKey(KeyCode.Q); 
+
+            if ((up || upZ) && cameraPos.z < maxY)
             {
-                camera.transform.Translate(Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
+                camera.transform.Translate(Vector3.forward * Time.unscaledDeltaTime * SpeedCamera, Space.World);
             }
-            if (down && cameraPos.z > minY)
+            if ((down || downW) && cameraPos.z > minY)
             {
-                camera.transform.Translate(-Vector3.forward * Time.unscaledDeltaTime * speedCamera, Space.World);
+                camera.transform.Translate(-Vector3.forward * Time.unscaledDeltaTime * SpeedCamera, Space.World);
             }
-            if (left && cameraPos.x > minX)
+            if ((left || leftQ) && cameraPos.x > minX)
             {
-                camera.transform.Translate(Vector3.left * Time.unscaledDeltaTime * speedCamera, Space.World);
+                camera.transform.Translate(Vector3.left * Time.unscaledDeltaTime * SpeedCamera, Space.World);
             }
-            if (right && cameraPos.x < maxX)
+            if ((right ||rightD) && cameraPos.x < maxX)
             {
-                camera.transform.Translate(Vector3.right * Time.unscaledDeltaTime * speedCamera, Space.World);
+                camera.transform.Translate(Vector3.right * Time.unscaledDeltaTime * SpeedCamera, Space.World);
             }
         }
     }

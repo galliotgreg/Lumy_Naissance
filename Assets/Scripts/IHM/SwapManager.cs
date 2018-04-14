@@ -24,8 +24,11 @@ public class SwapManager : MonoBehaviour
     private string KeyPlayerToutAfficher = "ToutAfficherKey";
     private string KeyPlayerToutDesactiver = "ToutDesactiverKey";
 
+    private string KeyMouseSensitivity = "SensitivityKey"; 
+
     // The static instance of the Singleton for external access
     public static SwapManager instance = null;
+
 
     // Enforce Singleton properties
     void Awake()
@@ -263,6 +266,17 @@ public class SwapManager : MonoBehaviour
     public string GetPlayer2Name()
     {
         return PlayerPrefs.GetString(keyPlayer2Name);
+    }
+
+    
+    public int getPlayerMouseSensitivity()
+    {
+        return PlayerPrefs.GetInt(KeyMouseSensitivity); 
+    }
+
+    public void setPlayerMouseSensitivity(int value)
+    {
+        PlayerPrefs.SetInt(KeyMouseSensitivity, value); 
     }
 
     #region Get player preferences Debugger
