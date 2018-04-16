@@ -2210,7 +2210,6 @@ public class MCEditorManager : MonoBehaviour
                         }
                     }
                 }
-                abModel.shiftIDTransition(id_transition_to_remove);
             }
             else
             {
