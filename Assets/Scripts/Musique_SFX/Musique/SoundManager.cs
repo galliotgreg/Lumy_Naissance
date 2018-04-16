@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
+    private bool oneIsMain = true;
+    public float fadeOutFactor = 2f;
+    public float fadeInFactor = 50f;
 
     #region Audio Source
     public AudioSource lumyFxSource;
@@ -13,6 +16,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource menuFxSource;
 
     public AudioSource musicSource;
+    public AudioSource musicSource2;
     #endregion
 
     public static SoundManager instance = null;
@@ -110,11 +114,11 @@ public class SoundManager : MonoBehaviour
         string thisScene = NavigationManager.instance.GetCurrentScene();
 
         musicSource.loop = false;
+        musicSource2.loop = false;
 
-        musicSource.clip = menuprincipalThemeClips[0];
-        musicSource.Play();
+        SwapTracks(menuprincipalThemeClips[0]);
 
-        StartCoroutine(WaitAndPlay(menuprincipalThemeClips[0], menuprincipalThemeClips[1], musicSource, thisScene));
+        //StartCoroutine(WaitAndPlay(menuprincipalThemeClips[0], menuprincipalThemeClips[1], musicSource, musicSource2, thisScene));
     }
 
     public void PlayPartiePersoTheme()
@@ -122,11 +126,11 @@ public class SoundManager : MonoBehaviour
         string thisScene = NavigationManager.instance.GetCurrentScene();
 
         musicSource.loop = false;
+        musicSource2.loop = false;
 
-        musicSource.clip = partiepersoThemeClips[0];
-        musicSource.Play();
+        SwapTracks(partiepersoThemeClips[0]);
 
-        StartCoroutine(WaitAndPlay(partiepersoThemeClips[0], partiepersoThemeClips[1], musicSource, thisScene));
+        //StartCoroutine(WaitAndPlay(partiepersoThemeClips[0], partiepersoThemeClips[1], musicSource, musicSource2, thisScene));
     }
 
     public void PlayOptionsTheme()
@@ -134,11 +138,11 @@ public class SoundManager : MonoBehaviour
         string thisScene = NavigationManager.instance.GetCurrentScene();
 
         musicSource.loop = false;
+        musicSource2.loop = false;
 
-        musicSource.clip = optionsThemeClips[0];
-        musicSource.Play();
-
-        StartCoroutine(WaitAndPlay(optionsThemeClips[0], optionsThemeClips[1], musicSource, thisScene));
+        SwapTracks(optionsThemeClips[0]);
+        
+        StartCoroutine(WaitAndPlay(optionsThemeClips[0], optionsThemeClips[1], musicSource, musicSource2, thisScene));
     }
 
     public void PlayGlossaireTheme()
@@ -146,11 +150,11 @@ public class SoundManager : MonoBehaviour
         string thisScene = NavigationManager.instance.GetCurrentScene();
 
         musicSource.loop = false;
+        musicSource2.loop = false;
+        
+        SwapTracks(glossaireThemeClips[0]);
 
-        musicSource.clip = glossaireThemeClips[0];
-        musicSource.Play();
-
-        StartCoroutine(WaitAndPlay(glossaireThemeClips[0], glossaireThemeClips[1], musicSource, thisScene));
+        StartCoroutine(WaitAndPlay(glossaireThemeClips[0], glossaireThemeClips[1], musicSource, musicSource2, thisScene));
     }
 
     public void PlayEditorTheme()
@@ -160,34 +164,31 @@ public class SoundManager : MonoBehaviour
         string thisScene = NavigationManager.instance.GetCurrentScene();
 
         musicSource.loop = false;
+        musicSource2.loop = false;
 
-        musicSource.clip = editorThemeClips[0];
-        musicSource.Play();
+        SwapTracks(editorThemeClips[0]);
 
-        StartCoroutine(WaitAndPlay(editorThemeClips[0], editorThemeClips[1], musicSource, thisScene));
+        StartCoroutine(WaitAndPlay(editorThemeClips[0], editorThemeClips[1], musicSource, musicSource2, thisScene));
     }
 
     public void PlayCreditsTheme()
     {
-        musicSource.loop = true;
+        musicSource.loop = true; // choisir la bonne source à mettre en boucle
 
-        musicSource.clip = optionCreditThemeClips[0];
-        musicSource.Play();
+        SwapTracks(optionCreditThemeClips[0]);
     }
 
     public void PlayInGameMap1Theme()   // Ajouter choix 3 5 7 min
     {
-        musicSource.loop = true;
-
-        musicSource.clip = inGameMap1ThemeClips[0];
-        musicSource.Play();
+        musicSource.loop = true; // choisir la bonne source à mettre en boucle
+        
+        SwapTracks(inGameMap1ThemeClips[0]);
     }
     public void PlayInGameMap2Theme()   // Ajouter choix 3 5 7 min  +  Changer pour ingame2
     {
-        musicSource.loop = true;
+        musicSource.loop = true; // choisir la bonne source à mettre en boucle
 
-        musicSource.clip = inGameMap1ThemeClips[0];
-        musicSource.Play();
+        SwapTracks(inGameMap1ThemeClips[0]);
     }
     
     #endregion
@@ -333,11 +334,22 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    private IEnumerator WaitAndPlay(AudioClip clip, AudioClip waitingClip, AudioSource source, string initialScene)
+    private IEnumerator WaitAndPlay(AudioClip clip, AudioClip waitingClip, AudioSource source1, AudioSource source2, string initialScene)
     {
         yield return new WaitForSeconds(clip.length);
 
         string currentScene = NavigationManager.instance.GetCurrentScene();
+
+        AudioSource source = new AudioSource();
+
+        if (oneIsMain)
+        {
+            source = source1;
+        }
+        if (!oneIsMain)
+        {
+            source = source2;
+        }
 
         if (currentScene == initialScene)
         {
@@ -345,5 +357,63 @@ public class SoundManager : MonoBehaviour
             source.Play();
             source.loop = true;
         }
+    }
+
+    void SwapTracks(AudioClip clip)
+    {
+        AudioSource trackToFade = new AudioSource();
+        AudioSource trackNewMain = new AudioSource();
+
+        if (oneIsMain)
+        {
+            trackToFade = musicSource;
+            trackNewMain = musicSource2;
+        }
+        if (!oneIsMain)
+        {
+            trackToFade = musicSource2;
+            trackNewMain = musicSource;
+        }
+
+
+        trackNewMain.clip = clip;
+        trackNewMain.Play();
+
+        oneIsMain = !oneIsMain;
+
+        StartCoroutine(FadeIn(trackNewMain, fadeInFactor));
+        StartCoroutine(FadeTheFuckOut(trackToFade, fadeOutFactor));
+    }
+
+    //FADE OUT
+    public IEnumerator FadeTheFuckOut(AudioSource audioSource, float FadeTime)
+    {
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume > 0f)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = 0f;
+    }
+
+    //FADE IN
+    public IEnumerator FadeIn(AudioSource audioSource, float FadeTime)
+    {
+        audioSource.volume = 0.01f;
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume < 1)
+        {
+            audioSource.volume += startVolume * Time.deltaTime * FadeTime;
+
+            yield return null;
+        }
+
+        audioSource.volume = 1f;
     }
 }
