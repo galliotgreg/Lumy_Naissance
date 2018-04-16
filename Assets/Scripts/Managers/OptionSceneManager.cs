@@ -29,6 +29,7 @@ public class OptionSceneManager : MonoBehaviour {
     void Start () {
         windowed.isOn = Screen.fullScreen;
         quality.value = QualitySettings.GetQualityLevel();
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreen);
 
         music.value = SoundManager.instance.musicSource.volume;
         sfx.value = SoundManager.instance.menuFxSource.volume;
