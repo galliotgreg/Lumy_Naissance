@@ -212,7 +212,11 @@ public class GameManager : MonoBehaviour {
 	    if(Input.GetKeyDown(KeyCode.Space))
         {
             //PauseGame(); 
-            InGameUIController.instance.PauseGame();
+            if(gameNotOver)
+            {
+                InGameUIController.instance.PauseGame();
+            }
+         
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {

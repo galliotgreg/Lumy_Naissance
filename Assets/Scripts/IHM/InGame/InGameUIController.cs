@@ -1002,8 +1002,6 @@ public class InGameUIController : MonoBehaviour {
             {
                 agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
             }
-
-            return;
         }
 
         //Clean Stats 
@@ -1346,8 +1344,8 @@ private void DisplayUnits(Dictionary<string, int> units)
             {
                 GameObject go = Instantiate(unitGoJ1);
                 castUiList.Add(go);
-                go.transform.GetChild(0).GetComponent<Text>().color = Color.blue;
-                go.transform.GetChild(1).GetComponent<Text>().color = Color.blue;
+                go.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+                go.transform.GetChild(1).GetComponent<Text>().color = Color.white;
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 //go.transform.SetParent(unitGoJ1.transform.parent.gameObject.transform);
@@ -1371,8 +1369,8 @@ private void DisplayUnits(Dictionary<string, int> units)
             if (unit.Value != 0) {
                 GameObject go = Instantiate(unitGoJ2);
                 castUiListJ2.Add(go);
-                go.transform.GetChild(0).GetComponent<Text>().color = Color.red;
-                go.transform.GetChild(1).GetComponent<Text>().color = Color.red;
+                go.transform.GetChild(0).GetComponent<Text>().color = new Color(102f/255f, 27f/255f, 109f/255f);
+                go.transform.GetChild(1).GetComponent<Text>().color = new Color(102f / 255f, 27f / 255f, 109f / 255f);
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 //go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
@@ -1554,11 +1552,11 @@ private void DisplayInSight() {
     {
         if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1)
         {
-            this.color = Color.blue;
+            this.color = Color.white;
         }
         else if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2)
         {
-            this.color = Color.red;
+            this.color = new Color(102f / 255f, 27f / 255f, 109f / 255f);
         }
         else
         {

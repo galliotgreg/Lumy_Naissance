@@ -29,6 +29,7 @@ public class OptionSceneManager : MonoBehaviour {
     void Start () {
         windowed.isOn = Screen.fullScreen;
         quality.value = QualitySettings.GetQualityLevel();
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreen);
 
         music.value = SoundManager.instance.musicSource.volume;
         sfx.value = SoundManager.instance.menuFxSource.volume;
@@ -37,9 +38,7 @@ public class OptionSceneManager : MonoBehaviour {
         resolution.onValueChanged.AddListener(delegate { SetResolution(); });
         windowed.onValueChanged.AddListener((on) => { SetWindowed(); });
         quality.onValueChanged.AddListener(delegate{ SetQuality(); });
-        
-        //sfx.onValueChanged.AddListener(delegate { SetVolumeFX(); });        
-        general.onValueChanged.AddListener(delegate { SetVolumeGeneral(); });
+
         music.onValueChanged.AddListener(delegate { SetVolumeMusic(); });
     }
 	
@@ -122,7 +121,7 @@ public class OptionSceneManager : MonoBehaviour {
         SoundManager.instance.musicSource.volume = music.value;
     }
 
-    private void SetVolumeGeneral(bool changeOthers = false)
+    public void SetVolumeGeneral()
     {
         SoundManager.instance.inGameFXSource.volume = general.value;
         SoundManager.instance.lumyFxSource.volume = general.value;
