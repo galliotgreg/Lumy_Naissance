@@ -79,9 +79,11 @@ public class MCEditor_ProxyIcon_Manager : MonoBehaviour {
 			imageSprite = MCEditor_ProxyIcon_Manager.instance.getItemImage ( ((ProxyABAction)proxy).AbState );
 		} else if( proxy is ProxyABOperator ){
 			imageSprite = MCEditor_ProxyIcon_Manager.instance.getItemImage ( ((ProxyABOperator)proxy).AbOperator );
-		} else if( proxy is ProxyABParam ){
-			imageSprite = MCEditor_ProxyIcon_Manager.instance.getItemImage ( ((ProxyABParam)proxy).AbParam );
 		}
+		// The image for parameters are not accurate because they are capable of distinguish the values (Colors) or show its content (Text)
+		/*else if( proxy is ProxyABParam ){
+			imageSprite = MCEditor_ProxyIcon_Manager.instance.getItemImage ( ((ProxyABParam)proxy).AbParam );
+		}*/
 
 		// Create Material
 		if( imageSprite != null ){
