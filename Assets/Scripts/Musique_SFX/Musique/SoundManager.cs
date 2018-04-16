@@ -118,7 +118,7 @@ public class SoundManager : MonoBehaviour
 
         SwapTracks(menuprincipalThemeClips[0]);
 
-        //StartCoroutine(WaitAndPlay(menuprincipalThemeClips[0], menuprincipalThemeClips[1], musicSource, musicSource2, thisScene));
+        StartCoroutine(WaitAndPlay(menuprincipalThemeClips[0], menuprincipalThemeClips[1], musicSource, musicSource2, thisScene));
     }
 
     public void PlayPartiePersoTheme()
@@ -130,7 +130,7 @@ public class SoundManager : MonoBehaviour
 
         SwapTracks(partiepersoThemeClips[0]);
 
-        //StartCoroutine(WaitAndPlay(partiepersoThemeClips[0], partiepersoThemeClips[1], musicSource, musicSource2, thisScene));
+        StartCoroutine(WaitAndPlay(partiepersoThemeClips[0], partiepersoThemeClips[1], musicSource, musicSource2, thisScene));
     }
 
     public void PlayOptionsTheme()
@@ -173,20 +173,23 @@ public class SoundManager : MonoBehaviour
 
     public void PlayCreditsTheme()
     {
-        musicSource.loop = true; // choisir la bonne source à mettre en boucle
+        musicSource.loop = true;
+        musicSource2.loop = true;
 
         SwapTracks(optionCreditThemeClips[0]);
     }
 
     public void PlayInGameMap1Theme()   // Ajouter choix 3 5 7 min
     {
-        musicSource.loop = true; // choisir la bonne source à mettre en boucle
-        
+        musicSource.loop = true;
+        musicSource2.loop = true;
+
         SwapTracks(inGameMap1ThemeClips[0]);
     }
     public void PlayInGameMap2Theme()   // Ajouter choix 3 5 7 min  +  Changer pour ingame2
     {
-        musicSource.loop = true; // choisir la bonne source à mettre en boucle
+        musicSource.loop = true;
+        musicSource2.loop = true;
 
         SwapTracks(inGameMap1ThemeClips[0]);
     }

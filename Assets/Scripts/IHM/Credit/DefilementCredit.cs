@@ -11,7 +11,7 @@ public class DefilementCredit : MonoBehaviour {
     private GameObject panelDeroulant;
 	// Use this for initialization
 	void Start () {
-        SoundManager.instance.PlayCreditsTheme();
+        
 	}
 	
 	// Update is called once per frame
