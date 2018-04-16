@@ -55,7 +55,39 @@ public class ABModel {
         }
     }
 
-	public ABState getState( int stateID ){
+    public int LastTransitionId
+    {
+        get
+        {
+            return lastTransitionId;
+        }
+
+        set
+        {
+            lastTransitionId = value;
+        }
+    }
+
+    private void CheckIdsConsistency()
+    {
+        for (int i = 0; i < transitions.Count; i++)
+        {
+            if (i != transitions[i].Id)
+            {
+                Debug.LogError("Le MC est incoherant : ieme trans Id is not i");
+            }
+        }
+    }
+
+    private void CheckLastId()
+    {
+        if (lastTransitionId != transitions.Count)
+        {
+            Debug.LogError("Le MC est incoherant : lastTransitionId != transitions.Count <=> " + lastTransitionId + " != " + (transitions.Count));
+        }
+    }
+
+    public ABState getState( int stateID ){
 		foreach( ABState state in states ){
 			if (state.Id == stateID) {
 				return state;
@@ -88,7 +120,6 @@ public class ABModel {
 
     public int LinkStates(string startName, string endName)
     {
-        int id = lastTransitionId++;
         ABState start = FindState(startName);
         ABState end = FindState(endName);
 
@@ -97,10 +128,14 @@ public class ABModel {
             throw new NotSupportedException();
         }
 
+        int id = LastTransitionId++;
         ABTransition transition = new ABTransition(id, start, end);
         transitions.Add(transition);
 
         start.Outcomes.Add(transition);
+
+        CheckIdsConsistency();
+        CheckLastId();
 
         return id;
     }
@@ -117,18 +152,25 @@ public class ABModel {
         }
 
 		ABTransition transition = FindTransition(start,end);
+        if (transition == null)
+        {
+            return false;
+        }
 
-		// Remove from transitions
-		if( !transitions.Remove(transition) ){
-			return false;
-		}
+        int id_transition_to_remove = transition.Id;
 
-		// Remove from start
-		if( start.Outcomes.Remove(transition) ){
-			return false;
-		}
+        // Remove from transitions
+        transitions.Remove(transition);
 
-		return true;
+        // Remove from start
+        start.Outcomes.Remove(transition);
+
+        shiftIDTransition(id_transition_to_remove);
+
+        CheckIdsConsistency();
+        CheckLastId();
+
+        return true;
 	}
 
 	public ABTransition getTransition(int id){
@@ -140,9 +182,9 @@ public class ABModel {
 		return null;
 	}
 
-    public ABTransition shiftIDTransition(int id)
+    private ABTransition shiftIDTransition(int id)
     {
-        lastTransitionId--;
+        LastTransitionId--;
         //decrement the ID of the following transitions
         foreach (ABTransition t in transitions)
         {
