@@ -7,6 +7,10 @@ public class OptionSceneManager : MonoBehaviour {
     public static OptionSceneManager instance = null;
 
     #region UI Variables
+    public Button credits;
+    public Button credits2;
+    public Button options;
+    public Button options2;
     #region Video
     [SerializeField]
     private Dropdown resolution;
@@ -27,6 +31,15 @@ public class OptionSceneManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        Button btn_credits = credits.GetComponent<Button>();
+        Button btn_credits2 = credits2.GetComponent<Button>();
+        Button btn_options = options.GetComponent<Button>();
+        Button btn_options2 = options2.GetComponent<Button>();
+        btn_credits.onClick.AddListener(SoundManager.instance.PlayCreditsTheme);
+        btn_credits2.onClick.AddListener(SoundManager.instance.PlayCreditsTheme);
+        btn_options.onClick.AddListener(SoundManager.instance.PlayOptionsTheme);
+        btn_options2.onClick.AddListener(SoundManager.instance.PlayOptionsTheme);
+
         windowed.isOn = Screen.fullScreen;
         quality.value = QualitySettings.GetQualityLevel();
         Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreen);
