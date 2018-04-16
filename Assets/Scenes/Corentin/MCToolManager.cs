@@ -117,24 +117,62 @@ public class MCToolManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt))
         {
-            CurrentTool = ToolType.Selection;
-            btn_Selection.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
-            SelectionSquare.instance.enabled = true;
-            isMouseDragging = false;
-            CancelInventory();
+            if (Input.GetKeyDown(KeyCode.S)) //Shortcut Selection ctrl + alt + S
+            {
+                CurrentTool = ToolType.Selection;
+                btn_Selection.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
+                SelectionSquare.instance.enabled = true;
+                isMouseDragging = false;
+                CancelInventory();
 
+            }
         }
-        else if(Input.GetKeyDown(KeyCode.Z))
+        else if (Input.GetKey(KeyCode.LeftControl)) //Shortcut Main ctrl+m
         {
-            CurrentTool = ToolType.Hand;
-            btn_Main.GetComponent<ChangeCursorToHand>().OnClickChangeCursor();
-            neverCalculated = true;
-            SelectionSquare.instance.enabled = false;
-            SelectionSquare.instance.MultipleSelection = false;
-            selectionEnCours = false;
-            CancelInventory();
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                CurrentTool = ToolType.Hand;
+                btn_Main.GetComponent<ChangeCursorToHand>().OnClickChangeCursor();
+                neverCalculated = true;
+                SelectionSquare.instance.enabled = false;
+                SelectionSquare.instance.MultipleSelection = false;
+                selectionEnCours = false;
+                CancelInventory();
+            }
+        
+            if (Input.GetKeyDown(KeyCode.Z)) //Shortcut Undo ctrl+z
+            {
+                btn_Undo.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
+                CurrentTool = ToolType.Undo;
+                CancelInventory();
+                ToolUndo();
+            }
+        
+
+            if (Input.GetKeyDown(KeyCode.Y)) //Shortcut Redo ctrl+y
+            {
+                btn_Redo.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
+                CurrentTool = ToolType.Redo;
+                CancelInventory();
+                ToolRedo();
+            }
+
+            if (Input.GetKeyDown(KeyCode.C)) //shortcut Copier ctrl+c
+            {
+                btn_Copier.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
+                CurrentTool = ToolType.Copier;
+                CancelInventory();
+                ToolCopier();
+            }
+            if (Input.GetKeyDown(KeyCode.V)) //shortcut Coller ctrl+v
+            {
+                btn_Coller.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
+                CurrentTool = ToolType.Coller;
+                CancelInventory();
+                ToolColler();
+            }
         }
 
         allUnits = FindObjectsOfType<MCEditor_Proxy>();

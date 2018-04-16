@@ -208,16 +208,32 @@ public class GameManager : MonoBehaviour {
             WinCondition();
         }
 
-        //Pause Method
+        //Pause Method 
 	    if(Input.GetKeyDown(KeyCode.Space))
         {
-            //PauseGame(); 
-            InGameUIController.instance.PauseGame();
+            //Can Pause Game Only if gameNotOver and PanelDebug is not active
+            if (gameNotOver && InGameUIController.instance.PanelOptionsDebug.activeSelf == false)
+            {
+                InGameUIController.instance.PauseGame();
+            }
+         
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            InGameUIController.instance.OpenOptionsDebug();
-            InGameUIController.instance.PauseGame();
+            if(gameNotOver)
+            {
+                InGameUIController.instance.OpenOptionsDebug();
+                if (InGameUIController.instance.StatePlayPause == true)
+                {
+                    InGameUIController.instance.PauseGame();
+                } 
+                else if(InGameUIController.instance.PanelOptionsDebug.activeSelf == false)
+                {
+                    InGameUIController.instance.PauseGame(); 
+                }
+             
+            }
+          
         }
         
 

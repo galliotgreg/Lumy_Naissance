@@ -22,7 +22,8 @@ public class PanelManager : MonoBehaviour
     private Image mainPanelHelpImage;
     [SerializeField]
     private GameObject mainPanelScrollHelpContent;
-
+    [SerializeField]
+    private GameObject ScrollExplanation;
 
     /// <summary>
     /// The help scroll selection content
@@ -110,8 +111,9 @@ public class PanelManager : MonoBehaviour
 
     public void RefreshExplanationText(string title)
     {
-        
+        ScrollExplanation.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
         // TODO FIND A WAY TO REMOVE \n
+
         mainPanelScrollHelpContent.GetComponentInChildren<Text>().text = "\n" + HelpManager.instance.help.FetchHelpByTitle(title).GetContentText();
     }
 
