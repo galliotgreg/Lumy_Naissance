@@ -24,9 +24,9 @@ public class DefilementCredit : MonoBehaviour {
     //Reset Panel Position 
     private void InitialPosition()
     {
-        if(transform.position.y >= 36)
+        if(transform.position.y >= 47)
         {
-            transform.position = new Vector3(0,-30,1);
+            transform.position = new Vector3(0, -40, 1);
         }
     }
     //Move panel to the top
