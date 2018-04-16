@@ -28,6 +28,9 @@ public class MCEditor_ProxyIcon_Manager : MonoBehaviour {
 	[SerializeField]
 	private string iconsFolder = "MCEditor_Proxy_Icons/";
 
+	[SerializeField]
+	private GameObject imagePrefab;
+
 	public Sprite getItemImage( System.Object item ){
 		string imageFileName = "";
 
@@ -67,6 +70,28 @@ public class MCEditor_ProxyIcon_Manager : MonoBehaviour {
 		}catch( System.Exception ex ){
 			return null;
 		}
+	}
+
+	public GameObject getProxyImage( MCEditor_Proxy proxy ){
+		Sprite imageSprite = null;
+
+		if( proxy is ProxyABAction ){
+			imageSprite = MCEditor_ProxyIcon_Manager.instance.getItemImage ( ((ProxyABAction)proxy).AbState );
+		} else if( proxy is ProxyABOperator ){
+			imageSprite = MCEditor_ProxyIcon_Manager.instance.getItemImage ( ((ProxyABOperator)proxy).AbOperator );
+		}
+		// The image for parameters are not accurate because they are capable of distinguish the values (Colors) or show its content (Text)
+		/*else if( proxy is ProxyABParam ){
+			imageSprite = MCEditor_ProxyIcon_Manager.instance.getItemImage ( ((ProxyABParam)proxy).AbParam );
+		}*/
+
+		// Create Material
+		if( imageSprite != null ){
+			GameObject resultObject = Instantiate<GameObject>( imagePrefab, proxy.transform );
+			resultObject.GetComponent<MeshRenderer>().material.mainTexture = imageSprite.texture;
+			return resultObject;
+		}
+		return null;
 	}
 
 	#region DICTIONARIES
