@@ -95,7 +95,7 @@ public class Help
                 }
                 else
                 {
-                    ContentText += "<b><size=28>" + subhelp.SubTitle + "</size></b>\n" + subhelp.Content + "\n\n";
+                    ContentText += "<b><size=28>" + subhelp.SubTitle + "</size></b>\n<size=24>" +  subhelp.Content + "</size>\n\n";
                 }
             }
         }
