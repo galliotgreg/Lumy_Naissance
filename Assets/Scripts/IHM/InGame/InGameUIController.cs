@@ -1002,8 +1002,6 @@ public class InGameUIController : MonoBehaviour {
             {
                 agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
             }
-
-            return;
         }
 
         //Clean Stats 
