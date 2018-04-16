@@ -142,7 +142,7 @@ public class SoundManager : MonoBehaviour
 
         SwapTracks(optionsThemeClips[0]);
         
-        StartCoroutine(WaitAndPlay(optionsThemeClips[0], optionsThemeClips[1], musicSource, musicSource2, thisScene));
+        //StartCoroutine(WaitAndPlay(optionsThemeClips[0], optionsThemeClips[1], musicSource, musicSource2, thisScene));
     }
 
     public void PlayGlossaireTheme()
