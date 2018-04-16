@@ -328,6 +328,8 @@ public class InGameUIController : MonoBehaviour {
 
     private bool panelOpened = true;
 
+    private bool statePlayPause = true;
+
     #region Instance
     /// <summary>
     /// Enforce Singleton properties
@@ -387,6 +389,32 @@ public class InGameUIController : MonoBehaviour {
         set
         {
             color = value;
+        }
+    }
+
+    public GameObject PanelOptionsDebug
+    {
+        get
+        {
+            return panelOptionsDebug;
+        }
+
+        set
+        {
+            panelOptionsDebug = value;
+        }
+    }
+
+    public bool StatePlayPause
+    {
+        get
+        {
+            return statePlayPause;
+        }
+
+        set
+        {
+            statePlayPause = value;
         }
     }
     #endregion
@@ -452,9 +480,10 @@ public class InGameUIController : MonoBehaviour {
         }
     
     }
-    private bool statePlayPause = true;
+ 
     public void PauseGame()
     {
+    
         Image pp = playPause.GetComponent<Image>();
         if (statePlayPause)
         {
@@ -1289,7 +1318,7 @@ public class InGameUIController : MonoBehaviour {
                 OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
             }
             CloseAllOthersMsgPanel(panelOptionsDebug);
-            panelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
+            PanelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
         }
     }
 
