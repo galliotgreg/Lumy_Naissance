@@ -7,8 +7,6 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
 	[SerializeField]
 	protected UnityEngine.UI.Text text;
-	[SerializeField]
-	protected UnityEngine.UI.Image image;
 
 	public UnityEngine.UI.Text Text {
 		get {
@@ -16,22 +14,6 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 		}
 		set {
 			text = value;
-		}
-	}
-
-	public Sprite Image {
-		get {
-			return image.sprite;
-		}
-		set {
-			image.sprite = value;
-
-			// Choose the element which will be activated
-			if (value == null) {
-				image.gameObject.SetActive (false);
-			} else {
-				text.gameObject.SetActive (false);
-			}
 		}
 	}
 
@@ -78,18 +60,25 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 
     public void SetProxyName(string name)
 	{
-        GameObject picto = MCPictFactory.instance.InstanciatePict(name);
-        UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text>();
+		GameObject picto = setImage();
+
+		// Avoid Images on States
+		/*if( ! (this is ProxyABState) ){
+			picto = MCPictFactory.instance.InstanciatePict(name);
+		}*/
+        
         if (picto != null)
         {
-            picto.transform.SetParent(this.transform, false);
-            text.enabled = false;
+			text.gameObject.SetActive (false);
         }
         else
         {
-            text.text = name;
-            text.enabled = true;
-        }
+            Text.text = name;
+       	}
+	}
+
+	public GameObject setImage(){
+		return MCEditor_ProxyIcon_Manager.instance.getProxyImage(this);
 	}
 
 	public string GetProxyName()
