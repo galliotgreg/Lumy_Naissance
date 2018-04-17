@@ -7,12 +7,12 @@ public class OptionSceneManager : MonoBehaviour {
     public static OptionSceneManager instance = null;
 
     #region UI Variables
-    /*
-    public Button credits;
-    public Button credits2;
-    public Button options;
-    public Button options2;
-    */
+    
+    //public Button credits;
+    //public Button credits2;
+    //public Button options;
+    //public Button options2;
+    
     #region Video
     [SerializeField]
     private Dropdown resolution;
