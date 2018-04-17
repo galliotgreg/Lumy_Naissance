@@ -49,7 +49,10 @@ public class OptionManager : MonoBehaviour {
     [SerializeField]
     private Toggle toutActiver;
     [SerializeField]
-    private Slider sliderMovementSensitivity; 
+    private Slider sliderMovementSensitivity;
+
+    [SerializeField]
+    private Button closePanel; 
 
     private float rangeVision;
     private float rangePick;
@@ -114,7 +117,14 @@ public class OptionManager : MonoBehaviour {
         {
             sliderMovementSensitivity.value = SwapManager.instance.getPlayerMouseSensitivity();
         }
-        sliderMovementSensitivity.onValueChanged.AddListener(ChangeSensitivity); 
+        sliderMovementSensitivity.onValueChanged.AddListener(ChangeSensitivity);
+
+        closePanel.onClick.AddListener(quitPause); 
+    }
+
+    private void quitPause()
+    {
+        InGameUIController.instance.PauseGame(); 
     }
 
     private void ChangeSensitivity(float arg0)
