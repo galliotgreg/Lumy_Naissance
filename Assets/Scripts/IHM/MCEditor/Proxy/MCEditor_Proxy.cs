@@ -37,14 +37,25 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 		return result;
 	}
 
+	bool isHover = false;
+	// Update is called once per frame 
+	protected void Update()
+	{
+		// When the moude is hover the Proxy and the moude is in the Interactable Zone, throw tooltip
+		if( isHover && MCEditor_Proxy_Factory.instance.InteractableZone.IsHover ){
+			MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, this.GetType().ToString(), this );
+			isHover = false;
+		}
+	}
+
     private void OnMouseEnter()
     {
-        MCEditor_DialogBoxManager.instance.instantiateToolTip(this.transform.position, this.GetType().ToString(), this );
+		isHover = true;
     }
 
     private void OnMouseExit()
     {
-                  
+		isHover = false;          
     }
 
     #region VIEW METHODS
