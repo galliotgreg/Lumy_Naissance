@@ -102,7 +102,7 @@ public class ProxyABState : MCEditor_Proxy {
 
     // Update is called once per frame
     void Update () {
-        
+		base.Update();
     }
 
 	/// <summary>
