@@ -167,7 +167,7 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 	
 	// Update is called once per frame
 	void Update () {
-
+		base.Update();
     }
 
 	public ABNode getParamOperator( int index ){

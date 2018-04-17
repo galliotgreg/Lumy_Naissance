@@ -17,10 +17,7 @@ public class AgentScript : MonoBehaviour {
     [AttrName(Identifier = "trgPos")]
     [SerializeField]
     private Vector2 trgPos;
-	[AttrName(Identifier = "trgPosValid")]
-	[SerializeField]
-	private bool trgPosValid;
-    [AttrName(Identifier = "vitalityMax")]
+	[AttrName(Identifier = "vitalityMax")]
     [SerializeField]
     private float vitalityMax;
     [AttrName(Identifier = "vitality")]
@@ -108,18 +105,8 @@ public class AgentScript : MonoBehaviour {
         set
         {
             trgPos = value;
-			TrgPosValid = true;
         }
     }
-
-	public bool TrgPosValid {
-		get {
-			return trgPosValid;
-		}
-		set {
-			trgPosValid = value;
-		}
-	}
 
     public float VitalityMax
     {
@@ -344,7 +331,6 @@ public class AgentScript : MonoBehaviour {
     void Start () {
 		this.CurPos = positionFromTransform ();
         TrgPos = CurPos;
-		TrgPosValid = true;
     }
 	
 	// Update is called once per frame

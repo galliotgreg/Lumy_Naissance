@@ -83,6 +83,8 @@ public class PartiePersoUIController : MonoBehaviour {
     private GameObject selectionSwarmP1Panel;
     [SerializeField]
     private GameObject selectionSwarmP2Panel;
+    [SerializeField]
+    private Font percentageFont;
 
 
     private List<Text> player1PercentageToDestroyList = new List<Text>();
@@ -128,7 +130,11 @@ public class PartiePersoUIController : MonoBehaviour {
     [SerializeField]
     private int maxLumy = 250;
 
-    private string sceneTxtField = "MapTutoInteResized"; 
+    private string sceneTxtField = "MapTutoInteResized";
+
+    private bool isOnP1SwarmSelection = false;
+    private bool isOnP2SwarmSelection = false;
+
 
     // Use this for initialization
     void Start () {
@@ -138,6 +144,39 @@ public class PartiePersoUIController : MonoBehaviour {
         InitMenu();
         ButtonListener();
         CheckView();
+    }
+    #region Close panels On click
+    public void CursorEntersP1SelectionPanel()
+    {
+        isOnP1SwarmSelection = true;
+    }
+    public void CursorExitsP1SelectionPanel()
+    {
+        isOnP1SwarmSelection = false;
+    }
+    public void CursorEntersP2SelectionPanel()
+    {
+        isOnP2SwarmSelection = true;
+    }
+    public void CursorExitsP2SelectionPanel()
+    {
+        isOnP2SwarmSelection = false;
+    }
+    #endregion
+
+    private void Update()
+    {
+        //Close P1 selection panel on click
+        if (Input.GetMouseButtonDown(0) && !isOnP1SwarmSelection)
+        {
+            selectionSwarmP1Panel.SetActive(false);
+        }
+        //Close P2 selection panel on click
+        if (Input.GetMouseButtonDown(0) && !isOnP2SwarmSelection)
+        {
+            selectionSwarmP2Panel.SetActive(false);
+        }
+
     }
 
     #region Compute and Display Stats
@@ -251,6 +290,10 @@ public class PartiePersoUIController : MonoBehaviour {
             Text percentage = Instantiate(percentagePrefab, new Vector3(330f, statBar.transform.localPosition.y, 0f), Quaternion.identity);
             percentage.transform.SetParent(GameObject.Find("PanelJoueur1").transform, false);
             percentage.text = Mathf.Floor(statBar.fillAmount*100).ToString() + "%";
+            percentage.font = percentageFont;
+            percentage.rectTransform.localScale = new Vector3(0.5f, 0.5f, 1f);
+            percentage.rectTransform.sizeDelta = new Vector2(150f,50f);
+            percentage.fontSize = 40;
             player1PercentageToDestroyList.Add(percentage);
         }
 

@@ -203,7 +203,6 @@ public class GotoAction : GameAction {
 
 			if(!isCompletePath(position, destination))
             {
-				agentAttr.TrgPosValid = false;
 				destination = targetUnreachable (destination);
             }
            
