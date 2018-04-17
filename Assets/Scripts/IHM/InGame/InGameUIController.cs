@@ -330,6 +330,8 @@ public class InGameUIController : MonoBehaviour {
 
     private bool statePlayPause = true;
 
+    private bool isLumy; 
+
     #region Instance
     /// <summary>
     /// Enforce Singleton properties
@@ -415,6 +417,32 @@ public class InGameUIController : MonoBehaviour {
         set
         {
             statePlayPause = value;
+        }
+    }
+
+    public bool IsLumy
+    {
+        get
+        {
+            return isLumy;
+        }
+
+        set
+        {
+            isLumy = value;
+        }
+    }
+
+    public bool WinState
+    {
+        get
+        {
+            return winState;
+        }
+
+        set
+        {
+            winState = value;
         }
     }
     #endregion
@@ -638,7 +666,13 @@ public class InGameUIController : MonoBehaviour {
     {
         //Get Resources values in game Manager
         if (gameManager == null)
-            return;
+        {
+            return; 
+        }
+        if(winState == true)
+        {
+            return; 
+        }
         //*** UPPER UI *** 
         //Set the resources for each Players
         SetResources();
@@ -1507,6 +1541,10 @@ private void DisplayInSight() {
     /// </summary>
     private void SwitchFocus()
     {
+        if(winState == true)
+        {
+            return; 
+        }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Tab))
         {
             indiceFocus--;
@@ -1553,6 +1591,21 @@ private void DisplayInSight() {
         {
             this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
         }
+        if (self.Cast == "prysme")
+        {
+            if (self.gameObject.GetComponentInParent<AgentContext>().Home.name == "p2_hive")
+            {
+                ShowStatPrysme(PlayerAuthority.Player2);
+            }
+            else
+            {
+                ShowStatPrysme(PlayerAuthority.Player1);
+            }
+        }
+        else
+        {
+            ShowStatLumy();
+        }
         updateFocus(agentList);
     }
 
@@ -1573,6 +1626,21 @@ private void DisplayInSight() {
         else
         {
             this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
+        }
+        if (self.Cast == "prysme")
+        {
+            if (self.gameObject.GetComponentInParent<AgentContext>().Home.name == "p2_hive")
+            {
+                ShowStatPrysme(PlayerAuthority.Player2);
+            }
+            else
+            {
+                ShowStatPrysme(PlayerAuthority.Player1);
+            }
+        }
+        else
+        {
+            ShowStatLumy();
         }
         updateFocus(agentList);
     }

@@ -616,6 +616,11 @@ public class AppContextManager : MonoBehaviour
             ActiveSpecieFolderPath + activeCast.BehaviorModelIdentifier + CSV_EXT,
             ActiveSpecieFolderPath + clone.BehaviorModelIdentifier + CSV_EXT);
 
+        //Copy POSITION files
+        File.Copy(
+            ActiveSpecieFolderPath + activeCast.Name + POSITION_FILES_SUFFIX + CSV_EXT,
+            ActiveSpecieFolderPath + clone.Name + POSITION_FILES_SUFFIX + CSV_EXT);
+
         //Alter Specie file
         SaveSpecie();
     }
