@@ -1512,6 +1512,23 @@ public class MCEditorManager : MonoBehaviour
         //{
         //    invalidTransition_HasTransition = true;
         //}
+        bool isStartStarOp = (start.Pin_Type == Pin.PinType.OperatorIn && ABStar<ABBool>.isStar(((ProxyABOperator)start.ProxyParent).AbOperator.getIncomeType(start.Pin_order.OrderPosition - 1)));
+        bool isEndStarOp = (end.Pin_Type == Pin.PinType.OperatorIn && ABStar<ABBool>.isStar(((ProxyABOperator)end.ProxyParent).AbOperator.getIncomeType(end.Pin_order.OrderPosition - 1)));
+        if (
+           // Start
+           (
+               start.AssociatedTransitions.Count > 0 &&                                                                                                                                    // Existing Transition
+               !(isStartStarOp || start.Pin_Type == Pin.PinType.TransitionIn)  // ABStar
+           ) ||
+           (
+               end.AssociatedTransitions.Count > 0 &&                                                                                                                                  // Existing Transition
+               !(isEndStarOp || end.Pin_Type == Pin.PinType.TransitionIn)    // ABStar
+           )
+       )
+        {
+            invalidTransition_HasTransition = true;
+        }
+
 
         if (!invalidTransition_HasTransition)
         {
