@@ -127,6 +127,9 @@ public class SwarmEditUIController : MonoBehaviour
     [SerializeField]
     private Text swarmPanelSwarmName;
 
+    [SerializeField]
+    private GameObject swarmSelectionPanel;
+
     /// <summary>
     /// The rename lumy panel
     /// </summary>
@@ -283,6 +286,11 @@ public class SwarmEditUIController : MonoBehaviour
     private Button  atkRangePlus;
     [SerializeField]
     private Button atkRangeLess;
+
+    private bool isOnSwarmImagesPanel =false;
+    private bool isOnCastImagesPanel = false;
+    private bool isOnSwarmSelectionPanel = false;
+
 
     public int RedCost
     {
@@ -905,6 +913,36 @@ public class SwarmEditUIController : MonoBehaviour
     }
     #endregion
 
+    #region CloseSelectionPanels
+    //Swarm Panel
+    public void CursorEntersSwarmPanel()
+    {
+        isOnSwarmImagesPanel = true;
+    }
+    public void CursorExitsSwarmPanel()
+    {
+        isOnSwarmImagesPanel = false;
+    }
+    //Cast Panel
+    public void CursorEntersCastPanel()
+    {
+        isOnCastImagesPanel = true;
+    }
+    public void CursorExitsCastPanel()
+    {
+        isOnCastImagesPanel = false;
+    }
+    //Swarm Selection Panel
+    public void CursorEntersSwarmSelectionPanel()
+    {
+        isOnSwarmSelectionPanel = true;
+    }
+    public void CursorExitsSwarmSelectionPanel()
+    {
+        isOnSwarmSelectionPanel = false;
+    }
+    #endregion
+
     void Update()
     {
         if (GameManager.instance == null)
@@ -923,7 +961,22 @@ public class SwarmEditUIController : MonoBehaviour
             isFirstRefreashed = true;
             renderingCamera = GameObject.FindGameObjectWithTag("RenderCamera");
             RefreshView();
-        } 
+        }
+
+        //Close images panels on click
+        if (Input.GetMouseButtonDown(0) && !isOnSwarmImagesPanel)
+        {
+            swarmImageDialog.SetActive(false);
+        }
+        if (Input.GetMouseButtonDown(0) && !isOnCastImagesPanel)
+        {
+            castImageDialog.SetActive(false);
+        }
+        //Close Swarm selection panel on click
+        if (Input.GetMouseButtonDown(0) && !isOnSwarmSelectionPanel)
+        {
+            swarmSelectionPanel.SetActive(false);
+        }
     }
 
     #region Refresh view functions
@@ -1138,6 +1191,8 @@ public class SwarmEditUIController : MonoBehaviour
     public void SelectSwarm(string swarmName)
     {
         AppContextManager.instance.SwitchActiveSpecie(swarmName);
+        //End Prysme Button Glow
+        imagePrysme.gameObject.SetActive(false);
         RefreshView();
     }
 
@@ -1155,7 +1210,7 @@ public class SwarmEditUIController : MonoBehaviour
     private void RefreshSwarmInfo()
     {
         swarmPanelSwarmName.text = AppContextManager.instance.ActiveSpecie.Name;
-
+        
         //Swarm Image
         editSwarmImageButton.GetComponent<Image>().material = swarmImagesArray[AppContextManager.instance.ActiveSpecie.PictId].GetComponent<MeshRenderer>().material;
     }
@@ -1674,9 +1729,6 @@ public class SwarmEditUIController : MonoBehaviour
 
         SelectSwarm(folderName);
 
-        //Button Glow
-        imagePrysme.gameObject.SetActive(true);
-      
         //Update IHM
         RefreshView();
         OpenEditSwarmDialog();
@@ -1724,7 +1776,7 @@ public class SwarmEditUIController : MonoBehaviour
         lumyPanel.SetActive(false);
         prysmePanel.SetActive(true);
         lumyHublot.SetActive(false);
-        //End Glow Button
+        //End Prysme Button Glow
         imagePrysme.gameObject.SetActive(false);
     }
 
@@ -1868,6 +1920,9 @@ public class SwarmEditUIController : MonoBehaviour
         SaveLumy(trgCast);
         RefreshView();
         OpenRenameDialog();
+
+        //Prysme Button Glow
+        imagePrysme.gameObject.SetActive(true);
     }
 
     private bool ValidateName(string newName)
