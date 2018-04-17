@@ -83,6 +83,8 @@ public class PartiePersoUIController : MonoBehaviour {
     private GameObject selectionSwarmP1Panel;
     [SerializeField]
     private GameObject selectionSwarmP2Panel;
+    [SerializeField]
+    private Font percentageFont;
 
 
     private List<Text> player1PercentageToDestroyList = new List<Text>();
@@ -251,6 +253,10 @@ public class PartiePersoUIController : MonoBehaviour {
             Text percentage = Instantiate(percentagePrefab, new Vector3(330f, statBar.transform.localPosition.y, 0f), Quaternion.identity);
             percentage.transform.SetParent(GameObject.Find("PanelJoueur1").transform, false);
             percentage.text = Mathf.Floor(statBar.fillAmount*100).ToString() + "%";
+            percentage.font = percentageFont;
+            percentage.rectTransform.localScale = new Vector3(0.5f, 0.5f, 1f);
+            percentage.rectTransform.sizeDelta = new Vector2(150f,50f);
+            percentage.fontSize = 40;
             player1PercentageToDestroyList.Add(percentage);
         }
 
