@@ -3,7 +3,7 @@
 		"Title": "Généralités",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "L'éditeur de modèle comportemental est l'écran dans lequel vous créez des Modèles comportementaux, ces arbres décisionnels qui vont déterminer le comportement de vos Lumy en fonction du rôle que vous souhaitez qu'ils adoptent durant l'affrontement. \n\nPour ce faire, vous avez à votre disposition une variété d'éléments de logique algorithmique appelés nodes. Il y en a cinq types différents: <color=#adf778ff><b>les Etats, les Actions, les Opérateurs, les Paramètres et les Composites</b></color>. \nC'est en reliant ces nodes par des Transitions que vous créez un modèle comportemental."
+				"Content": "L'éditeur de Modèle Comportemental est l'écran permettant de créer des Modèles Comportementaux, c'est-à-dire des arbres décisionnels qui vont déterminer le comportement de vos Lumys en fonction du rôle que vous souhaitez qu'ils adoptent durant l'affrontement. \n\nPour ce faire, vous avez à votre disposition une variété d'éléments de logique algorithmique, appelés nodes. Il en existe cinq types différents : les <color=#adf778ff><b>états</b></color>, les <color=#adf778ff><b>actions</b></color>, les <color=#adf778ff><b>opérateurs</b></color>, les <color=#adf778ff><b>paramètres</b></color> et les <color=#adf778ff><b>composites</b></color>. \nC'est en reliant ces nodes par des transitions que vous créez un Modèle Comportemental."
 			}
 		],
 		"Image": "",
@@ -14,31 +14,31 @@
 		"Title": "Actions",
 		"Content": [{
 				"SubTitle": "goto",
-				"Content": "L’unité se déplace suivant le tableau de vecteurs donné en argument. Si le tableau de vecteurs ne contient qu'un seul element, l'agent se déplace en evitant les obstacles."
+				"Content": "L’unité se déplace suivant le tableau de vecteurs passé en argument. Si le tableau de vecteurs ne contient qu'un seul élément, l'agent se déplace en évitant les obstacles."
 			},
 			{
 				"SubTitle": "strike",
-				"Content": "L’unité utilise son attaque de base sur la cible donnée en argument."
+				"Content": "L’unité utilise son attaque de base sur la cible passée en argument."
 			},
 			{
 				"SubTitle": "pick",
-				"Content": "L’unité rammasse la ressource donnée en argument."
+				"Content": "L’unité ramasse la ressource passée en argument."
 			},
 			{
 				"SubTitle": "drop",
-				"Content": "L’unité lâche la ressource qu’elle transporte. Si le drop est effectué à proximité du prysme alors la ressource est collectée."
+				"Content": "L’unité lâche la ressource qu’elle transporte. Si le <i>drop</i> est effectué à proximité du Prysme, alors la ressource est collectée."
 			},
 			{
 				"SubTitle": "lay",
-				"Content": "Le prysme génère une unité de la caste désignée par le nom <cast> donné."
+				"Content": "Le prysme génère une unité de la caste désignée par le nom <i><cast></i> donné."
 			},
 			{
 				"SubTitle": "trace",
-				"Content": "L'unité indique des positions afin de tracer un chemin permettant de passer par tous les vecteurs passés en argument. La trace ainsi créée a une durée de vie de 12 secondes, et les différents points créés sont espacés de 1."
+				"Content": "L'unité trace un chemin passant par toutes les positions correspondant aux vecteurs passés en argument. Le chemin ainsi tracé a une durée de vie de 12 secondes, et les différents points qui le composent sont espacés d'une distance de 1."
 			},
 			{
 				"SubTitle": "random roaming",
-				"Content": "L’unité se déplace en premnantun point a la distance donné en deuxième argument sur le conne d'angle passé en premiere argument."
+				"Content": "L’unité se déplace vers un point situé à une distance passée en second argument, choisi dans un champ de vision dont l'angle est passé en premier argument."
 			}
 		],
 		"Image": "",
@@ -46,10 +46,10 @@
 	},
 	{
 		"ID": 2,
-		"Title": "Etats Intermédiaires",
+		"Title": "États Intermédiaires",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "Utilisés pour rendre un modèle comportemental compréhensible, les états intermédiaires n’influent directement sur l'arbre décisionnel mais ils permettent de lo'rganiser. Ce sont des embranchements qui structurent le MC, depuis l'INIT jusqu'aux noeuds d'actions en bout de branches."
+				"Content": "Utilisés pour rendre un Modèle Comportemental compréhensible, les états intermédiaires n’influent pas directement sur l'arbre décisionnel, mais ils permettent de l'organiser. Ce sont des embranchements qui structurent le MC, depuis l'INIT jusqu'aux nœuds d'actions en extrémité de branche."
 			}
 		],
 		"Image": "",
@@ -60,7 +60,7 @@
 		"Title": "Transitions",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "Elément servant à relier les diférent nodes entre eux. la création d'une transition est conditionnée par le type de renvoi et d'entrée des nodes qu'elle relie. Une transition peut uniquement relier :\nDeux états\nUn état et un composite\nUn état et un opérateur\nUn état et un paramètre\nDeux opérateurs\nUn opérateur et un composite\nUn opérateur et un paramètre\nDeux composites\nun Composite et un paramètre"
+				"Content": "Les transitions sont des éléments servant à relier les diférents nodes entre eux. La création d'une transition est conditionnée par le type de sortie et d'entrée des nodes reliés par celle-ci. Une transition peut uniquement relier :\n• Deux états\n• Un état et un composite\n• Un état et un opérateur\n• Un état et un paramètre\n• Deux opérateurs\n• Un opérateur et un composite\n• Un opérateur et un paramètre\n• Deux composites\n• Un composite et un paramètre"
 			}
 		],
 		"Image": "",
@@ -71,7 +71,7 @@
 		"Title": "Opérateurs",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "Les opérateurs sont des fonctions algorithmiques renvoyant un paramètre et prenant jusqu'à trois paramètres en entrée. Ces opérateur servent à constituer les arbres syntaxiques. Il existe dix grands types d'opérateurs :\nLogique\nDéfinition\nMathématique\nComparateur\nAccesseur\nExtracteur\nAgregateur\nFiltre\nTableau\nInverseur"
+				"Content": "Les opérateurs sont des fonctions algorithmiques renvoyant un paramètre, et prenant jusqu'à trois paramètres en entrée. Ces opérateurs servent à constituer les arbres syntaxiques. Il en existe dix grands types :\n• Logique\n• Définition\n• Mathématique\n• Comparateur\n• Accesseur\n• Extracteur\n• Agregateur\n• Filtre\n• Tableau\n• Inverseur"
 			}
 		],
 		"Image": "",
@@ -82,15 +82,15 @@
 		"Title": "Paramètres",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Lorsque le Modèle Comportemental du Lumy de vérifie les conditions pour exécuter une action, ou qu'il est en train effectuer une action, il lui faut extraire des informations précises du contexte de la partie en cours. Ce sont les paramètres des arbres syntaxiques. Il en existe six catégories. A chaque catégorie de paramètres est attachée une couleur qui apparaît sur la transition entre ce paramètre et la node qui lui est reliée. Ce code couleur facilite grandement la lecture des Modèles Comportementaux."
+				"Content": "Lorsque le Modèle Comportemental du Lumy vérifie les conditions pour exécuter une action, ou que ce dernier est déjà en train d'exécuter une action, il est nécessaire d'extraire des informations précises : ce sont les paramètres des arbres syntaxiques. Il en existe six catégories ; à chaque catégorie de paramètres est associée une couleur, qui apparaît sur la transition entre le paramètre en question et le node qui lui est relié. Ce code couleur facilite grandement la lecture des Modèles Comportementaux."
 			},
 			{
 				"SubTitle": "Booléen",
-				"Content": "C’est un élément binaire pouvant prendre comme valeur VRAI ou FAUX. La couleur des transitions pour les booléens est le bleu."
+				"Content": "Un élément binaire pouvant prendre comme valeur VRAI ou FAUX. La couleur des transitions pour les booléens est le <color=#4da0d9ff>bleu</color>."
 			},
 			{
 				"SubTitle": "Couleur",
-				"Content": "Un paramètre propre au jeu possédant six valeurs : ROUGE, VERT, BLEU, CYAN, MAGENTA, JAUNE. La couleur des transitions pour les Couleurs est le <color=#564b6fff>chocolat</color>."
+				"Content": "Un paramètre propre au jeu possédant six valeurs : ROUGE, VERT, BLEU, CYAN, MAGENTA, JAUNE. La couleur des transitions pour les couleurs est le <color=#564b6fff>chocolat</color>."
 			},
 			{
 				"SubTitle": "Scalaire",
@@ -98,19 +98,19 @@
 			},
 			{
 				"SubTitle": "Vecteur",
-				"Content": "Un couple de Scalaire, utiliser pour repérer une position sur la carte. La couleur des transitions pour les vecteurs est le <color=#a869b9ff>violet</color>."
+				"Content": "Un couple de scalaires, utilisé pour repérer une position sur la carte. La couleur des transitions pour les vecteurs est le <color=#a869b9ff>violet</color>."
 			},
 			{
 				"SubTitle": "Texte",
-				"Content": "Une chaîne de caractère. La couleur des transitions pour les textes est le <color=#4da0a9ff>turquoise</color>."
+				"Content": "Une chaîne de caractères. La couleur des transitions pour les textes est le <color=#4da0a9ff>turquoise</color>."
 			},
 			{
 				"SubTitle": "Référence",
-				"Content": "Une référence est un paramètre regroupant des attributs, qui peuvent être utilisé séparément comme paramètre. La couleur des transitions pour les références est le <color=#b4426bff>rouge</color>."
+				"Content": "Un paramètre regroupant des attributs, qui peuvent être utilisés séparément en tant que paramètres. La couleur des transitions pour les références est le <color=#b4426bff>rouge</color>."
 			},
 			{
 				"SubTitle": "Tableau",
-				"Content": "Tout paramètre autre que le Texte peut exister sous la forme de tableau de ce paramètre. Les transitions vers les tableaux sont de la couleur qui correspond au contenu du tableau."
+				"Content": "Tout paramètre autre que les textes peut exister sous la forme d'un tableau de ce paramètre. La couleur des transitions pour les tableaux est celle correspondant au type de paramètre contenu par ceux-ci."
 			}
 		],
 		"Image": "",
@@ -121,35 +121,35 @@
 		"Title": "Références",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Une référence est un paramètre regroupant des attributs, qui peuvent être utilisé séparément comme paramètre. Les références sont instanciées au cours de la partie, les valeurs des attributs d'une même référence peuvent donc varier d'une partie à l'autre, ou même au cours d'une partie."
+				"Content": "Une référence est un paramètre regroupant des attributs, qui peuvent être utilisés séparément en tant que paramètres. Les références sont instanciées au cours de la partie ; les valeurs des attributs pour une même référence peuvent donc varier d'une partie à l'autre, voire au cours d'une même partie."
 			},
 			{
 				"SubTitle": "Game",
-				"Content": "Relatif à la partie en cours, Game donne des informations générales\ntime (scalaire) : temps écoulé depuis le début de la partie\ntotalTime(scalaire) : durée maximale d’une partie\nmaxPop (scalaire) : population Maximale\nseamSize (scalaire) : taille des gisements\ncaveMultiplier (scalaire) : coefficient multiplicateur de la quantité de ressources aux départ."
+				"Content": "Des informations générales relatives à la partie en cours :\n• time (scalaire) : temps écoulé depuis le début de la partie\n• totalTime(scalaire) : durée maximale d’une partie\n• maxPop (scalaire) : population maximale\n• seamSize (scalaire) : taille des gisements\n• caveMultiplier (scalaire) : coefficient multiplicateur de la quantité de ressources au départ"
 			},
 			{
 				"SubTitle": "Home",
-				"Content": "Renvoie à la base du Lumy qui exécute le MC\npos (vecteur) : position du Prysme\nrRes (scalaire) : quantité de ressources rouges possédées\ngRes\n(scalaire) : quantité de ressources vertes possédées\nvRes (scalaire) : quantité de ressources bleues possédées\npopulation (reference) :\npopulation de la nuée en fonction des castes selon le modèle suivant\ncasteName1 (scalaire) : nombre de Lumys de la caste casteName1\n…\ncasteNameN(scalaire) : nombre de Lumys de la caste casteNameN\ncost (reference) : Coût des différentes castes selon le modèle suivant\ncasteName1 (reference) : Lumy de la caste casteName1\nRed (scalaire) : coût en ressources rouges\nGreen (scalaire) : coût en ressources vertes\nBlue (scalaire) : coût en ressources bleues\n...\ncasteNameN (reference) : Lumy de la caste casteNameN\nRed (scalaire) : coût en ressources rouges\nGreen (scalaire) : coût en ressources vertes\nBlue (scalaire) : coût en ressources bleues."
+				"Content": "Des informations relatives à la base du Lumy exécutant le MC\n• pos (vecteur) : position du Prysme\n• rRes (scalaire) : quantité de ressources rouges possédées\n• gRes\n• (scalaire) : quantité de ressources vertes possédées\n• vRes (scalaire) : quantité de ressources bleues possédées\n• population (référence) : population de la nuée en fonction des castes selon le modèle suivant :\n\t• casteName1 (scalaire) : nombre de Lumys de \n\tla caste casteName1\n\t...\n\t• casteNameN(scalaire) : nombre de Lumys de \n\tla caste casteNameN\n• cost (référence) : Coût des différentes castes selon le modèle suivant :\n\t• casteName1 (référence) : Lumy de la caste \n\tcasteName1\n\t\t• red (scalaire) : coût en ressources rouges\n\t\t• green (scalaire) : coût en ressources \n\t\tvertes\n\t\t• blue (scalaire) : coût en ressources bleues\n\t...\n\t• casteNameN (reference) : Lumy de la caste \n\tcasteNameN\n\t\t• red (scalaire) : coût en ressources rouges\n\t\t• green (scalaire) : coût en ressources \n\t\tvertes\n\t\t• blue (scalaire) : coût en ressources bleues"
 			},
 			{
 				"SubTitle": "Self",
-				"Content": "L’ensemble des informations propre au Lumy exécutant le MC\ncast (text) : nom de la caste du Lumy\ncurPos (vecteur) : position du Lumy\ntrgPos (vecteur) : destination du Lumy\nvitalityMax (scalaire) : Vitalité max du Lumy\nvitality (scalaire) : Vitalité actuelle du Lumy\nstrength (scalaire) : Force du Lumy\nstamina (scalaire) : Endurance du Lumy\nactSpd (scalaire) : Vitesse d’action du Lumy\nmoveSpd (scalaire) : Vitesse de déplacement du Lumy\nnbItemMax (scalaire) : Quantité maximale de ressources transportées\nnbItem (scalaire) : Quantité de ressources transportées\natkRange (scalaire) : Portée d’attaque du Lumy\npickRange (scalaire) : Portée de saisie du Lumy\nprodCost ( ? ) : \nlayTimeCost (scalaire) : Temps de production du Lumy\nvisionRange (scalaire) : Portée visuelle du Lumy."
+				"Content": "L’ensemble des informations propres au Lumy exécutant le MC\n• cast (text) : nom de la caste du Lumy\n• curPos (vecteur) : position du Lumy\n• trgPos (vecteur) : destination du Lumy\n• vitalityMax (scalaire) : vitalité max du Lumy\n• vitality (scalaire) : vitalité actuelle du Lumy\n• strength (scalaire) : force du Lumy\n• stamina (scalaire) : endurance du Lumy\n• actSpd (scalaire) : vitesse d’action du Lumy\n• moveSpd (scalaire) : vitesse de déplacement du Lumy\n• nbItemMax (scalaire) : quantité maximale de ressources transportées\n• nbItem (scalaire) : quantité de ressources transportées\n• atkRange (scalaire) : portée d’attaque du Lumy\n• pickRange (scalaire) : portée de saisie du Lumy\n<color=#ff0000ff>• prodCost ( ? ) : </color>\n• layTimeCost (scalaire) : temps de production du Lumy\n• visionRange (scalaire) : portée visuelle du Lumy"
 			},
 			{
-				"SubTitle": "Allies[]",
-				"Content": "Ce tableau contient les références Self des Lumy Alliés présent dans le champ de vision du Lumy exécutant le MC\nlumy1 (Référence : Self) : le Self de lumy1\n…\nlumyN (Référence : Self) : le Self de lumyN."
+				"SubTitle": "Allies[ ]",
+				"Content": "Ce tableau contient les références Self des Lumy alliés présents dans le champ de vision du Lumy exécutant le MC :\n\tlumy1 (référence : Self) : le Self de lumy1\n\t...\n\tlumyN (référence : Self) : le Self de lumyN"
 			},
 			{
-				"SubTitle": "Enemies[]",
-				"Content": "Un autre tableau qui prend les références Self des Lumy Ennemis dans le champ de vision. Il contient les mêmes informations qu'Allies[], mais pour les Lumys de l'adversaire."
+				"SubTitle": "Enemies[ ]",
+				"Content": "Un tableau contenant les références Self des Lumy ennemis dans le champ de vision du Lumy exécutant le MC. Il contient les mêmes informations que Allies[ ], mais pour les Lumys de l'adversaire."
 			},
 			{
-				"SubTitle": "Ressources[]",
-				"Content": "Un tableau de références qui regroupe les ressources dans le champs de vision du Lumy exécutant le MC.\nRessource (Référence) :\nstock (scalaire) : quantité de ressources restantes\npos (vecteur) : position de la ressource\ncolor (couleur) : couleur de la ressource."
+				"SubTitle": "Ressources[ ]",
+				"Content": "Un tableau de références regroupant les ressources dans le champ de vision du Lumy exécutant le MC :\n• resource (référence) :\n\t• stock (scalaire) : quantité de ressources \n\trestantes\n\t• pos (vecteur) : position de la ressource\n\t• color (couleur) : couleur de la ressource"
 			},
 			{
-				"SubTitle": "Trace[]",
-				"Content": "Un tableau de références qui regroupe les traces dans le champ de vision du Lumy exécutant le MC.\nTrace (Référence) :\npoints (vecteur[]) : Liste des points définissant la trace\ncolor (couleur) : Couleur de la trace\nage (scalaire) :  âge de la trace, le temps écoulé depuis sa création."
+				"SubTitle": "Trace[ ]",
+				"Content": "Un tableau de références regroupant les traces dans le champ de vision du Lumy exécutant le MC :\n• trace (référence) :\n\t• points (vecteur[ ]) : liste des points \n\tdéfinissant la trace\n\t• color (couleur) : couleur de la trace\n\t• age (scalaire) : temps écoulé depuis la \n\tcréation de la trace"
 			}
 		],
 		"Image": "",
@@ -160,7 +160,7 @@
 		"Title": "Composite",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "Composant hétéroclite, un composite est un rassemblement de paramètres et d’opérateurs prédéfinis. Ils permettent de simplifier le Modèle Comportemental d’un Lumy. Les Composites sont des fonctions complexe ne nécessitant pas forcément de paramètres en entrée mais renvoyant un paramètre en sortie. Ils sont utilisés pour améliorer la lisibilité dans l'éditeur de Modèle Comportemental. Il existe un total de x composites, ils sont triés dans l'éditeur en fonction du type de référence qu'ils interrogent."
+				"Content": "Composant hétéroclite, un composite est un rassemblement de paramètres et d’opérateurs prédéfinis. Les composites permettent de simplifier le Modèle Comportemental d’un Lumy. Ce sont des fonctions complexes, ne nécessitant pas forcément de paramètres en entrée, mais renvoyant un paramètre en sortie. Ils sont utilisés pour améliorer la lisibilité dans l'éditeur de Modèle Comportemental. Il existe un total de <color=#ff0000ff>x</color> composites, triés dans l'éditeur selon le type de leurs arguments."
 			}
 		],
 		"Image": "",
