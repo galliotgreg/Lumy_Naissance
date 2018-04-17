@@ -3,7 +3,7 @@
 		"Title": "Présentation du Jeu",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "Notre ambition avec <color=#19b5feff>Lumy Naissance</color> est de faire de vous un maître tacticien en mettant à l'épreuve vos capacités de réflexion et votre connaissance des lois de l'algorithmique. \n\nLe but du jeu relativement simple : faire s'affronter vos armées de bots et celles programmées par les développeurs, ou par d'autres joueurs, dans des affrontements inspirés par des jeux de stratégie en temps réel comme StarCraft ou Age of Empires. \nMême s'il est conseillé d'avoir quelques notions de programmation pour aborder le jeu, nous avons voulu le rendre accessible aux néophytes en élaborant un système de programmation visuelle intuitif et lisible. \nAinsi, si vous êtes un passionné de stratégie et que la perspective de programmer un bot intelligent vous intrigue, <color=#19b5feff>Lumy Naissance</color> est fait pour vous, que vous sachiez coder ou non !",
+				"Content": "Notre ambition avec LumyNaissance est de faire de vous un maître tacticien en mettant à l'épreuve vos capacités de réflexion et votre connaissance des lois de l'algorithmique. Le but du jeu relativement simple : faire s'affronter vos armées de bots et celles programmées par les développeurs, ou par d'autres joueurs, dans des affrontements inspirés par des jeux de stratégie en temps réel comme StarCraft ou Age Of Empire. Même si il est conseillé d'avoir quelques notions de programmation pour aborder le jeu, nous avons voulu le rendre accessible aux néophytes en élaborant un système de programmation visuelle intuitif et lisible. Ainsi, si vous êtes un passioné de stratégie et que la perspective de programmer un bot intelligent vous intrigue, LumyNaissance est fait pour vous, que vous sachiez coder ou non !",
 			}
 		],
 		"Image": "",
@@ -14,50 +14,50 @@
 		"Title": "Les Nuées",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Les armées que vous créez sont appelées des <color=#adf778ff><b>Nuées</b></color>. Chaque Nuée se compose de plusieurs Castes, qui correspondent aux différents types de comportements associés à vos Lumys. L'objectif d'une Nuée est de <color=#f65354ff><b>détruire le Prysme adverse</b></color>."
+				"Content": "Les armées que vous créez sont appelées des Nuées. Chaque Nuée se compose de plusieurs Castes, qui correspondent aux différents types de comportements associés à vos Lumys. L'objectif d'une Nuée est de détruire le Prysme adverse."
 			},
 			{
 				"SubTitle": "Les Lumys",
-				"Content": "Ce sont les unités qui composent une Nuée. Ces petits êtres de lumière se répartissent en différentes <color=#adf778ff><b>Castes</b></color>, qui remplissent différents rôles au cours d'un affrontement."
+				"Content": "Ce sont les unités qui composent une Nuée. Ces petits êtres de lumière se répartissent en différentes Castes, qui remplissent différents rôles au cours d'un affrontement."
 			},
 			{
 				"SubTitle": "Les Castes",
-				"Content": "Les Castes sont en quelque sorte des catégories de Lumys. Chaque classe correspond à un type d'unité : il peut y avoir des <color=#19b5feff>éclaireurs</color>, des <color=#adf778ff>ouvriers</color>, des <color=#f65354ff>soldats</color>. C'est à vous de personnaliser vos Castes en choisissant les différents types d'unités qui composent votre armée, et en modifiant le comportement et les caractéristiques d'une Caste dans les éditeurs. Vos choix s'appliqueront à tous les Lumys d'une même Caste."
+				"Content": "Les Castes sont en quelques sorte des catégories de Lumys. Chaque classe correspond à un type d'unité : il peut y avoir des éclaireurs, des ouvriers, des soldats. C'est à vous de personnaliser vos Castes en choisissant les différents types d'unités qui composent votre armée, en modifiant le comportement et les caractéristiques d'une Caste dans les éditeurs. Vos choix s'appliqueront à tous les Lumys d'une même Caste. "
 			},
 			{
 				"SubTitle": "Le Prysme",
-				"Content": "Le Prysme est l'élément le plus important d'une Nuée. Il fait à la fois office de dépôt de ressources et de centre de production des unités. Il ne peut ni se déplacer, ni attaquer. De sa survie dépend votre victoire. Si votre Prysme est détruit, l'affrontement est perdu, et réciproquement pour votre adversaire. Lorsque vous modifiez le comportement de votre Prysme, vous définissez la stratégie de votre Nuée en déterminant l'ordre de production des unités. Cette étape est indispensable pour créer une Nuée fonctionnelle : en effet, si vous omettez d'inclure une Caste dans le comportement du Prysme, elle ne sera pas produite durant l'affrontement."
+				"Content": "Le Prysme est l'élément le plus important d'une Nuée. Il fait à la fois office de dépôt de ressource et de centre de production des unités. Il ne peut ni se déplacer, ni attaquer. De sa survie dépend votre victoire. Si votre Prysme est détruit l'affrontement est perdu, et il en va de même pour votre adversaire. Lorsque vous modifiez le comportement de votre Prysme, vous définissez la stratégie de votre Nuée en déterminant l'ordre de production des unités. Cette étape est indispensable pour créer une Nuée fonctionnelle: en effet, si vous omettez d'inclure une Caste dans le comportement de Prysme, elle ne sera pas produite en affrontement."
 			}
 		],
-		"Image": "",
+		"Image": "DEBUG_image.png",
 		"Video": ""
 	},
 	{
 		"ID": 2,
-		"Title": "Boucle de Jeu Standard",
+		"Title": "Boucle de jeu standard",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Si vous vous sentez un peu perdu, et ne savez pas par où commencer, voici un exemple d'une session de jeu type de Lumy Naissance."
+				"Content": "Si vous vous sentez un peu perdu, et ne savez pas pour où commencer, voici un exemple d'une session de jeu type de LumyNaissance."
 			},
 			{
-				"SubTitle": "Création et édition d'une Nuée",
-				"Content": "Commencez par créer une nouvelle Nuée. Vous pouvez le faire ex nihilo, ou créer une copie d'une Nuée existante si vous préférez partir d'un modèle."
+				"SubTitle": "Création / édition d'une Nuée",
+				"Content": "Commencez par créer une nouvelle Nuée. Vous pouvez le faire ex nihilo ou créer une copie d'une Nuée existante si vous préférez partir d'un modèle."
 			},
 			{
-				"SubTitle": "Création et édition d'une Caste",
-				"Content": "Une fois votre Nuée créée et baptisée, créez autant de Castes que vous le souhaitez, chaque Caste correspondant à un type d'unité."
+				"SubTitle": "Création / édition d'une Caste",
+				"Content": "Une fois votre Nuée créée et baptisée, créez autant de Castes que vous le souhaitez, chaque Caste correspondant à un type d'uité."
 			},
 			{
-				"SubTitle": "Édition du comportement",
-				"Content": "Créez ensuite les arbres décisionnels qui vont déterminer le comportement de vos Castes. Une fois que vous êtes satisfait du profil de vos différentes castes, modifiez le comportement de votre Prysme de façon à ce qu'il produise celles-ci dans l'ordre que vous jugez adéquat. "
+				"SubTitle": "Edition du comportement",
+				"Content": "Ensuite, créez les arbres décisionnels qui vont déterminer le comportement de vos Castes. Une fois que vous êtes satisfait du profil de vos différentes castes, modifiez le comportement de votre Prysme de façon à ce qu'il les produise dans l'ordre que vous jugez adéquat. "
 			},
 			{
 				"SubTitle": "Répartition des caractéristiques",
-				"Content": "Vos Castes sont programmées et prêtes à l'emploi. Vous pouvez désormais modifier leurs caractéristiques de façon à les corréler avec le comportement de vos Castes. Vous avez par exemple tout intérêt à conférer plus de puissance d'attaque à une Caste de soldats, plus de vitesse à une Caste d'éclaireurs, etc."
+				"Content": "Vos Castes sont programmées et prètes à l'emploi. Vous pouvez désormais modifier leur caractéristiques de façon à ce qu'elles complimentent le comportement de vos Castes. Par exemple, vous avez tout intérêt à conférer plus de puissance d'attaque à une Caste de sldats, plus de vitesse à des éclaireurs, etc..."
 			},
 			{
-				"SubTitle": "Test en affrontement",
-				"Content": "Votre Nuée est désormais prête au combat. Testez ses capacités et la viabilité de votre stratégie en la confrontant aux Nuées des développeurs ou d'autres joueurs dans le mode affrontement. Vous serez sûrement confrontés à des imprévus, et même si vous êtes victorieux, rien ne garantit qu'une Nuée soit efficace dans toutes les situations. Selon le résultat de l'affrontement, il vous faudra sûrement revoir votre stratégie, soit en éditant votre Nuée, soit en en créant une nouvelle. Il n'y a pas de limite au nombre de Nuées que vous pouvez créer, alors n'hésitez pas à être créatif !"
+				"SubTitle": "Test en Affrontement",
+				"Content": "Votre Nuée est désormais prête au combat. Testez ses capacités et la viabilité de votre stratégie en la confrontant à des Nuées des développeurs ou d'autres joueurs dans le mode affrontement. Vous serez sûrement confrontés à des imprévus, et même si vous êtes victorieux, rien ne garantit qu'une Nuée soit efficace dans toutes les situations. En fonction du résultat de l'affrontement, il vous faudra sûrement revoir votre stratégie, sot en éditant votre Nuée, soit en en créant une nouvelle. Il n'y a pas de limite au nombre de Nuées que vous pouvez crée, alors n'hésitez pas à être créatif!"
 			}
 		],
 		"Image": "DEBUG_image.png",
@@ -68,47 +68,47 @@
 		"Title": "Caractéristiques des Lumys",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Les caractéristiques influent sur les capacités du Lumy. Il existe un total de dix caractéristiques. Il est important de savoir quels sont leurs effets afin de pouvoir investir efficacement, de façon à ce que les capacités du Lumy correspondent au rôle qui lui est assigné."
+				"Content": "Les caractéristiques influent sur les capacités du Lumy. Il y a un total de dix caractéristiques. Il est important de savoir quels sont leurs effets, afin d'investir efficacement pour produire un Lumy dont les capaictés correspondent au rôle qu'on lui assigne."
 			},
 			{
 				"SubTitle": "Force",
-				"Content": "Cette caractéristique détermine les dégâts infligés par le Lumy lorsqu'il attaque."
+				"Content": "Cette caractéristique détermine les dégâts infliger par le Lumy lors de l'attaque"
 			},
 			{
 				"SubTitle": "Vitalité",
-				"Content": "Cette caractéristique détermine le nombre de points de vie du Lumy."
+				"Content": "Cette caractéristique détermine les points de vie du Lumy"
 			},
 			{
 				"SubTitle": "Champ de vision",
-				"Content": "Cette caractéristique détermine la distance de vision du Lumy."
+				"Content": "Cette caractéristique détermine la distance de visibilité du Lumy"
 			},
 			{
 				"SubTitle": "Endurance",
-				"Content": "Cette caractéristique détermine la quantité de ressource transportable par le Lumy."
+				"Content": "Cette caractéristique détermine la quantité de ressource transportable"
 			},
 			{
 				"SubTitle": "Portée de récolte",
-				"Content": "Cette caractéristique détermine la distance depuis laquelle un Lumy peut récolter une ressource."
+				"Content": "Cette caractéristique détermine la distance depuis laquelle un Lumy peut récolter une ressource"
 			},
 			{
 				"SubTitle": "Vitesse",
-				"Content": "Cette caractéristique détermine la vitesse de déplacement du Lumy."
+				"Content": "Cette caractéristique détermine la vitesse de déplacement du Lumy"
 			},
 			{
 				"SubTitle": "Portée d'attaque",
-				"Content": "Cette caractéristique détermine la distance depuis laquelle un Lumy peut attaquer."
+				"Content": "Cette caractéristique détermine la distance de visibilité du Lumy"
 			},
 			{
 				"SubTitle": "Vitesse d'action",
-				"Content": "Cette caractéristique détermine la vitesse d'action du Lumy."
+				"Content": "Cette caractéristique détermine la vitesse d'action du Lumy"
 			},
 			{
 				"SubTitle": "Coût de production",
-				"Content": "Cette caractéristique détermine le coût en ressource nécessaire à la production du Lumy."
+				"Content": "Cette caractéristique détermine le coût en ressource nécessaire à la production du Lumy"
 			},
 			{
 				"SubTitle": "Temps de production",
-				"Content": "Cette caractéristique détermine le temps requis pour produire le Lumy."
+				"Content": "Cette caractéristique détermine le temps requis pour générer le Lumy"
 			}
 		],
 		"Image": "",

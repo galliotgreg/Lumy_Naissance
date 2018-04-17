@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
-    private bool oneIsMain = true;
+    public bool oneIsMain = true;
     public float fadeOutFactor = 2f;
     public float fadeInFactor = 50f;
+    public float volumeJoueur = 1f;
 
     #region Audio Source
     public AudioSource lumyFxSource;
@@ -391,7 +392,7 @@ public class SoundManager : MonoBehaviour
     //FADE OUT
     public IEnumerator FadeTheFuckOut(AudioSource audioSource, float FadeTime)
     {
-        float startVolume = audioSource.volume;
+        float startVolume = volumeJoueur;
 
         while (audioSource.volume > 0f)
         {
@@ -410,13 +411,13 @@ public class SoundManager : MonoBehaviour
         audioSource.volume = 0.01f;
         float startVolume = audioSource.volume;
 
-        while (audioSource.volume < 1)
+        while (audioSource.volume < volumeJoueur)
         {
             audioSource.volume += startVolume * Time.deltaTime * FadeTime;
 
             yield return null;
         }
 
-        audioSource.volume = 1f;
+        audioSource.volume = volumeJoueur;
     }
 }
