@@ -28,6 +28,8 @@ public class OptionSceneManager : MonoBehaviour {
     private Slider general;
     [SerializeField]
     private Slider music;
+    [SerializeField]
+    private float SFXmax = 0.09f;
     #endregion
     #endregion
 
@@ -48,10 +50,18 @@ public class OptionSceneManager : MonoBehaviour {
         quality.value = QualitySettings.GetQualityLevel();
         Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreen);
 
-        music.value = SoundManager.instance.musicSource.volume;
         sfx.value = SoundManager.instance.menuFxSource.volume;
-        general.value = Mathf.Max(SoundManager.instance.musicSource.volume, SoundManager.instance.menuFxSource.volume);
-
+        if (SoundManager.instance.oneIsMain)
+        {
+            music.value = SoundManager.instance.musicSource.volume;
+            general.value = Mathf.Max(SoundManager.instance.musicSource.volume, SoundManager.instance.menuFxSource.volume);
+        }
+        if (!SoundManager.instance.oneIsMain)
+        {
+            music.value = SoundManager.instance.musicSource2.volume;
+            general.value = Mathf.Max(SoundManager.instance.musicSource2.volume, SoundManager.instance.menuFxSource.volume);
+        }
+        
         resolution.onValueChanged.AddListener(delegate { SetResolution(); });
         windowed.onValueChanged.AddListener((on) => { SetWindowed(); });
         quality.onValueChanged.AddListener(delegate{ SetQuality(); });
@@ -136,6 +146,8 @@ public class OptionSceneManager : MonoBehaviour {
     private void SetVolumeMusic()
     {
         SoundManager.instance.musicSource.volume = music.value;
+        SoundManager.instance.musicSource2.volume = music.value;
+        SoundManager.instance.volumeJoueur = music.value;
     }
 
     public void SetVolumeGeneral()
@@ -144,8 +156,9 @@ public class OptionSceneManager : MonoBehaviour {
         SoundManager.instance.lumyFxSource.volume = general.value;
         SoundManager.instance.menuFxSource.volume = general.value;
         SoundManager.instance.musicSource.volume = general.value;
+        SoundManager.instance.musicSource2.volume = general.value;
 
-        sfx.value = general.value/5.0f;
+        sfx.value = general.value * SFXmax;
         SetVolumeFX();
         music.value = general.value;
         SetVolumeMusic();
