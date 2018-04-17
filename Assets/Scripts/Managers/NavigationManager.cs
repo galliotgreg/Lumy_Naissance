@@ -310,35 +310,35 @@ public class NavigationManager : MonoBehaviour {
         switch (currentScene)
         {
             case "MenuPrincipalScene":
-                Debug.Log("Menu Principal !");
                 SoundManager.instance.PlayMenuPrincipalTheme();
                 break;
             case "PartiePersoScene":
-                Debug.Log("Partie Personnalisée");
                 SoundManager.instance.PlayPartiePersoTheme();
                 break;
             case "EditeurCastesScene":
-                Debug.Log("Editeur de Castes !");
-                SoundManager.instance.PlayEditorTheme();
+                string sceneAvant = previousScene[previousScene.Count - 1];
+                if (sceneAvant != "EditeurMCScene")
+                {
+                    SoundManager.instance.PlayEditorTheme();
+                }
                 break;
             case "EditeurMCScene":
-                Debug.Log("Editeur de MC !");
-                SoundManager.instance.PlayEditorTheme();
+                string sceneAvant2 = previousScene[previousScene.Count - 1];
+                if (sceneAvant2 != "EditeurCastesScene")
+                {
+                    SoundManager.instance.PlayEditorTheme();
+                }
                 break;
             case "OptionScene":
-                Debug.Log("Options !");
                 SoundManager.instance.PlayOptionsTheme();
                 break;
             case "GlossaireScene":
-                Debug.Log("Glossaire !");
                 SoundManager.instance.PlayGlossaireTheme();
                 break;
             case "MapTutoInteResized":
-                Debug.Log("Map Tuto Inte Resized !");
                 SoundManager.instance.PlayInGameMap1Theme();
                 break;
             case "Map2.1":
-                Debug.Log("Map 2 point 1");
                 SoundManager.instance.PlayInGameMap2Theme();
                 break;
             default:
