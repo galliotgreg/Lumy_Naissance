@@ -8,6 +8,8 @@ public class PlayThenLoadVideo : MonoBehaviour {
 
     public string target;
     public GameObject player;
+    public AudioSource sonVideo;
+    public float fadeoutIntro = 0.8f;
     //public Button skip;
 
     private bool alreadyClick = false;
@@ -48,6 +50,7 @@ public class PlayThenLoadVideo : MonoBehaviour {
     {
         NavigationManager.instance.ActivateFadeToBlack();
         NavigationManager.instance.SwapScenesWithoutZoom(target);
+        StartCoroutine(SoundManager.instance.FadeTheFuckOut(sonVideo, fadeoutIntro));
         StopCoroutine(WaitForLengthCo(player.GetComponent<VideoPlayer>().clip.length));
     }
 }
