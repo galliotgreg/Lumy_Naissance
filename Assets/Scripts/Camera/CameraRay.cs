@@ -22,6 +22,13 @@ public class CameraRay : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if(InGameUIController.instance == null) {
+            return; 
+        }
+        if(InGameUIController.instance.WinState == true)
+        {
+            return; 
+        }
 		if(Input.GetMouseButtonDown (0) && camera != null)
         {
             drawRayOnMouse(); 
