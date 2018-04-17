@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -783,6 +783,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentLayer: MenuLayer
+--- !u!1 &330238842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 330238843}
+  - component: {fileID: 330238844}
+  m_Layer: 5
+  m_Name: TutoAccueil
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &330238843
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 330238842}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 977294375}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &330238844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 330238842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd7e24bf0710c2c4db7ad8f8349f0f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btn_ok: {fileID: 1426609008}
+  keyTuto: tutoAccueil
+  panelAccueil: {fileID: 1426609009}
 --- !u!1001 &389649511
 Prefab:
   m_ObjectHideFlags: 0
@@ -883,10 +931,9 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 42f516d9759751f4aa59fc1b735f6b33, type: 2}
   m_IsPrefabParent: 0
---- !u!224 &389649512 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224893763657929548, guid: 42f516d9759751f4aa59fc1b735f6b33,
-    type: 2}
+--- !u!4 &389649512 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 389649511}
 --- !u!1 &508176639
 GameObject:
@@ -5382,6 +5429,7 @@ RectTransform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_Children:
   - {fileID: 820445169}
+  - {fileID: 330238843}
   m_Father: {fileID: 326512254}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5776,6 +5824,149 @@ Prefab:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114462847048075080, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700550924243508, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700550924243508, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114232593845227160, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114232593845227160, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_FontData.m_MaxSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700550924243508, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 847
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700550924243508, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700347421951338, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700347421951338, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926515996750754, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700347421951338, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 33.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700347421951338, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 62.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700347421951338, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 1186.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 224700347421951338, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 336.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926515996750754, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_Text
+      value: "Cr\xE9ez vos Lumys dans le menu <color=#19b5fe>Construction de nu\xE9es,</color>
+        puis param\xE9trez leur comportement dans <color=#19b5fe>l'\xE9diteur de Mod\xE8le
+        Comportemental.</color>"
+      objectReference: {fileID: 0}
+    - target: {fileID: 114417609550382072, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 224024890187551620, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224024890187551620, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224024890187551620, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -62
+      objectReference: {fileID: 0}
+    - target: {fileID: 224024890187551620, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 137.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 224024890187551620, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -18.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 224024890187551620, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 966.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926515996750754, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926515996750754, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926515996750754, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926515996750754, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_FontData.m_RichText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926515996750754, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114417609550382072, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_Text
+      value: "Une fois que votre arm\xE9e est pr\xEAte, lancez la dans la bataille
+        via le menu <color=#19b5fe>Affrontement.</color>"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fbcd0f057218eed46a403a9413dd20b4, type: 2}
   m_IsPrefabParent: 0
@@ -5784,6 +5975,35 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224806325871928578, guid: fbcd0f057218eed46a403a9413dd20b4,
     type: 2}
   m_PrefabInternal: {fileID: 1426609006}
+--- !u!114 &1426609008 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114046173797132662, guid: fbcd0f057218eed46a403a9413dd20b4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1426609006}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!1 &1426609009 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1413010001251086, guid: fbcd0f057218eed46a403a9413dd20b4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1426609006}
+--- !u!1 &1426609010 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1049987284207888, guid: fbcd0f057218eed46a403a9413dd20b4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1426609006}
+--- !u!114 &1426609011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1426609010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
 --- !u!1 &1527021370
 GameObject:
   m_ObjectHideFlags: 0
