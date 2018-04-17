@@ -9,11 +9,14 @@ public class Accueil : MonoBehaviour {
     Button btn_ok;
     [SerializeField]
     string keyTuto;
-	// Use this for initialization
-	void Start () {
+    [SerializeField]
+    GameObject panelAccueil;
+
+    // Use this for initialization
+    void Start () {
         //Check View
-        this.gameObject.SetActive(false);
-        
+        panelAccueil.SetActive(false);
+
         //Check Key
         if (keyTuto.Length == 0)
         {
@@ -25,7 +28,7 @@ public class Accueil : MonoBehaviour {
         //Enable Tuto 
         if (SwapManager.instance.getTutorielState(keyTuto))
         {
-            this.gameObject.SetActive(true);
+            panelAccueil.SetActive(true);
 
             SwapManager.instance.SetTutorielKey(!SwapManager.instance.getTutorielState(keyTuto), keyTuto);
         }
@@ -36,7 +39,7 @@ public class Accueil : MonoBehaviour {
 
     private void CloseAccueil()
     {
-        this.gameObject.SetActive(false);
+        panelAccueil.SetActive(false);
     }
 
 }
