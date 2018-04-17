@@ -28,6 +28,8 @@ public class OptionSceneManager : MonoBehaviour {
     private Slider general;
     [SerializeField]
     private Slider music;
+    [SerializeField]
+    private float SFXmax = 0.09f;
     #endregion
     #endregion
 
@@ -145,7 +147,7 @@ public class OptionSceneManager : MonoBehaviour {
         SoundManager.instance.menuFxSource.volume = general.value;
         SoundManager.instance.musicSource.volume = general.value;
 
-        sfx.value = general.value/5.0f;
+        sfx.value = general.value * SFXmax;
         SetVolumeFX();
         music.value = general.value;
         SetVolumeMusic();
