@@ -1410,7 +1410,7 @@ public class SwarmEditUIController : MonoBehaviour
             }
 
             //int i = 1;
-            
+
             /* Greg's code for text display :
              * 
             // Find Action Lumy canvas and put the right text in actions list
@@ -1432,57 +1432,60 @@ public class SwarmEditUIController : MonoBehaviour
             */
 
             // Find Action Lumy canvas and put the right image in actions list
-            GameObject listActionsCanvas = GameObject.Find("Liste_Actions");
-            Image[] imageAction = listActionsCanvas.GetComponentsInChildren<Image>();
-            foreach (Image image in imageAction)
+            if (lumyPanel.activeSelf)
             {
-                image.color = new Color32(70,70,70,255);
-            }
-
-            //Set Panel Color
-            imageAction[0].color = new Color32(0, 0, 0, 0);
-           
-            // Find Action Lumy canvas and put the right text in actions list
-            Text[] textAction = listActionsCanvas.GetComponentsInChildren<Text>();
-            foreach (Text text in textAction)
-            {
-                text.color = new Color32(70, 70, 70, 255);
-            }
-            
-            foreach (string actionText in actionsList)
-            {
-      
-                if (String.Compare(actionText,"goto") == 0)
+                GameObject listActionsCanvas = GameObject.Find("Liste_Actions");
+                Image[] imageAction = listActionsCanvas.GetComponentsInChildren<Image>();
+                foreach (Image image in imageAction)
                 {
-                    imageAction[1].color = new Color32(255, 255, 255, 255);
-                    textAction[0].color = new Color32(255, 255, 255, 255);
-                }
-                if (String.Compare(actionText, "strike") == 0)
-                {
-                    imageAction[2].color = new Color32(255, 255, 255, 255);
-                    textAction[1].color = new Color32(255, 255, 255, 255);
-                }
-                if (String.Compare(actionText, "pick") == 0)
-                {
-                    imageAction[3].color = new Color32(255, 255, 255, 255);
-                    textAction[2].color = new Color32(255, 255, 255, 255);
-                }
-                if (String.Compare(actionText, "roaming") == 0)
-                {
-                    imageAction[4].color = new Color32(255, 255, 255, 255);
-                    textAction[3].color = new Color32(255, 255, 255, 255);
-                }
-                if (String.Compare(actionText, "trace") == 0)
-                {
-                    imageAction[5].color = new Color32(255, 255, 255, 255);
-                    textAction[4].color = new Color32(255, 255, 255, 255);
-                }
-                if (String.Compare(actionText, "drop") == 0)
-                {
-                    imageAction[6].color = new Color32(255, 255, 255, 255);
-                    textAction[5].color = new Color32(255, 255, 255, 255);
+                    image.color = new Color32(70, 70, 70, 255);
                 }
 
+                //Set Panel Color
+                imageAction[0].color = new Color32(0, 0, 0, 0);
+
+                // Find Action Lumy canvas and put the right text in actions list
+                Text[] textAction = listActionsCanvas.GetComponentsInChildren<Text>();
+                foreach (Text text in textAction)
+                {
+                    text.color = new Color32(70, 70, 70, 255);
+                }
+
+                foreach (string actionText in actionsList)
+                {
+
+                    if (String.Compare(actionText, "goto") == 0)
+                    {
+                        imageAction[1].color = new Color32(255, 255, 255, 255);
+                        textAction[0].color = new Color32(255, 255, 255, 255);
+                    }
+                    if (String.Compare(actionText, "strike") == 0)
+                    {
+                        imageAction[2].color = new Color32(255, 255, 255, 255);
+                        textAction[1].color = new Color32(255, 255, 255, 255);
+                    }
+                    if (String.Compare(actionText, "pick") == 0)
+                    {
+                        imageAction[3].color = new Color32(255, 255, 255, 255);
+                        textAction[2].color = new Color32(255, 255, 255, 255);
+                    }
+                    if (String.Compare(actionText, "roaming") == 0)
+                    {
+                        imageAction[4].color = new Color32(255, 255, 255, 255);
+                        textAction[3].color = new Color32(255, 255, 255, 255);
+                    }
+                    if (String.Compare(actionText, "trace") == 0)
+                    {
+                        imageAction[5].color = new Color32(255, 255, 255, 255);
+                        textAction[4].color = new Color32(255, 255, 255, 255);
+                    }
+                    if (String.Compare(actionText, "drop") == 0)
+                    {
+                        imageAction[6].color = new Color32(255, 255, 255, 255);
+                        textAction[5].color = new Color32(255, 255, 255, 255);
+                    }
+
+                }
             }
             reader.Close();
         }
