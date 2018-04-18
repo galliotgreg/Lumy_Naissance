@@ -6,6 +6,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class SwarmEditUIController : MonoBehaviour
 {
@@ -47,6 +48,8 @@ public class SwarmEditUIController : MonoBehaviour
     private GameObject delSwarmConfirmationPanel;
     [SerializeField]
     private GameObject delCastConfirmationPanel;
+    [SerializeField]
+    private GameObject importSwarmConfirmationPanel;
     [SerializeField]
     private Text swarmName;
     [SerializeField]
@@ -1816,6 +1819,8 @@ public class SwarmEditUIController : MonoBehaviour
         //Desactive other confirmation panels
         confirmationPanelsList[0].SetActive(false);
         confirmationPanelsList[2].SetActive(false);
+        confirmationPanelsList[3].SetActive(false);
+
         //Get Swarm name
         swarmName.text = AppContextManager.instance.ActiveSpecie.Name;
     }
@@ -1826,13 +1831,34 @@ public class SwarmEditUIController : MonoBehaviour
         confirmationPanelsList.Add(resetConfirmationPanel);
         confirmationPanelsList.Add(delSwarmConfirmationPanel);
         confirmationPanelsList.Add(delCastConfirmationPanel);
+        confirmationPanelsList.Add(importSwarmConfirmationPanel);
+
         //Active Delete Cast Panel
         confirmationPanelsList[2].SetActive(!confirmationPanelsList[2].activeSelf);
         //Desactive other confirmation panels
         confirmationPanelsList[0].SetActive(false);
         confirmationPanelsList[1].SetActive(false);
+        confirmationPanelsList[3].SetActive(false);
         //Get Cast name
         castName.text = AppContextManager.instance.ActiveCast.Name;
+    }
+
+    public void ToggleImportSwarmConfirmationPanel()
+    {
+        List<GameObject> confirmationPanelsList = new List<GameObject>();
+        confirmationPanelsList.Add(resetConfirmationPanel);
+        confirmationPanelsList.Add(delSwarmConfirmationPanel);
+        confirmationPanelsList.Add(delCastConfirmationPanel);
+        confirmationPanelsList.Add(importSwarmConfirmationPanel);
+        
+        //Active Delete Cast Panel
+        confirmationPanelsList[3].SetActive(!confirmationPanelsList[3].activeSelf);
+        //Desactive other confirmation panels
+        confirmationPanelsList[0].SetActive(false);
+        confirmationPanelsList[1].SetActive(false);
+        confirmationPanelsList[2].SetActive(false);
+        //Get Cast name
+        
     }
 
     public void SelectLumy(string lumyName)
@@ -1930,6 +1956,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool ValidateName(string newName)
     {
+        string pattern = "[^a-zA-Z0-9\\(\\)_]";
+        Regex r = new Regex(pattern);
+        Match m = r.Match(newName);
+        if (m.Success)
+        {
+            return false;
+        }
         foreach (string curName in AppContextManager.instance.ActiveSpecie.Casts.Keys)
         {
             string lowerCurName = curName.ToLower();
