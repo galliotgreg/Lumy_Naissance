@@ -8,8 +8,8 @@ using Crosstales.FB;
 
 
 public class ImportController : MonoBehaviour {
-
     public static string filePath = Application.dataPath + @"/Inputs/Species";
+
 
     // Use this for initialization
     void Start()
@@ -21,11 +21,11 @@ public class ImportController : MonoBehaviour {
         string checking_folder = filePath + "\\" + name;
         if (Directory.Exists(checking_folder))
         {
-            Debug.Log("OMG");
             return true;
         }
         return false;
     }
+
     public static void ImportSpecie()
     {
              //string filePath = Application.dataPath + @"/Inputs/Species";
@@ -37,6 +37,7 @@ public class ImportController : MonoBehaviour {
             name = (Path.GetFileName(path)).Split('.')[0];
             if (SwarmIsExisting(name))
             {
+                SwarmEditUIController.instance.ToggleImportSwarmConfirmationPanel();
                 return;
             } 
             string new_folder = filePath + "\\" + name;
