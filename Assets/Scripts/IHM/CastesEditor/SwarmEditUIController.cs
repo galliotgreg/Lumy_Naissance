@@ -6,6 +6,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class SwarmEditUIController : MonoBehaviour
 {
@@ -1955,6 +1956,13 @@ public class SwarmEditUIController : MonoBehaviour
 
     private bool ValidateName(string newName)
     {
+        string pattern = "[^a-zA-Z0-9\\(\\)_]";
+        Regex r = new Regex(pattern);
+        Match m = r.Match(newName);
+        if (m.Success)
+        {
+            return false;
+        }
         foreach (string curName in AppContextManager.instance.ActiveSpecie.Casts.Keys)
         {
             string lowerCurName = curName.ToLower();
