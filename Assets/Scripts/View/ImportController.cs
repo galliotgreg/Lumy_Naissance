@@ -9,29 +9,41 @@ using Crosstales.FB;
 
 public class ImportController : MonoBehaviour {
 
-    //private string filePath = Application.dataPath + @"/Inputs/Species";
+    public static string filePath = Application.dataPath + @"/Inputs/Species";
 
     // Use this for initialization
     void Start()
     {
         //this.gameObject.GetComponent<Button>().onClick.AddListener(ImportSpecie);
     }
-
+    public static bool SwarmIsExisting(string name)
+    {
+        string checking_folder = filePath + "\\" + name;
+        if (Directory.Exists(checking_folder))
+        {
+            Debug.Log("OMG");
+            return true;
+        }
+        return false;
+    }
     public static void ImportSpecie()
     {
+             //string filePath = Application.dataPath + @"/Inputs/Species";
 
-        string filePath = Application.dataPath + @"/Inputs/Species";
         string name = "";
         string path = FileBrowser.OpenSingleFile("Open Folder", "","zip");        
         if (path != null && path!= ""){
           
             name = (Path.GetFileName(path)).Split('.')[0];
-            
+            if (SwarmIsExisting(name))
+            {
+                return;
+            } 
             string new_folder = filePath + "\\" + name;
-            ZipUtil.Unzip(path, new_folder);            
+            ZipUtil.Unzip(path, new_folder);
+            AppContextManager.instance.UpdateSpeciesFoldersNames();
+            SwarmEditUIController.instance.SelectSwarm(name);
         }
-        AppContextManager.instance.UpdateSpeciesFoldersNames();
-        SwarmEditUIController.instance.SelectSwarm(name);
     }
     public static void ResetSpecie()
     {
