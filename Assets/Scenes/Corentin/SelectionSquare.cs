@@ -49,12 +49,17 @@ public class SelectionSquare : MonoBehaviour
     bool isHoldingDown;
 
     [System.NonSerialized]
-    public List<GameObject> selectedUnits;
+    public List<GameObject> selectedUnits = null;
 
     //The selection squares 4 corner positions
     Vector3 HG, HD, BG, BD;
 
     public bool MultipleSelection;
+
+    Color regularState = new Color(255.0f, 255.0f, 255.0f, 255.0f) / 255.0f; //blanc
+    Color regularAction = new Color(133.0f,255.0f, 134.0f, 255.0f) / 255.0f; //vert
+    Color regularParam = new Color(251.0f, 255.0f, 0.0f, 255.0f) / 255.0f; //jaune
+    Color regularOper = new Color(85.0f, 219.0f, 255.0f, 255.0f) / 255.0f; //bleu 
 
     void Start()
     {
@@ -77,6 +82,7 @@ public class SelectionSquare : MonoBehaviour
         //Click the mouse button
         if (Input.GetMouseButtonDown(0)  )// && !EventSystem.current.IsPointerOverGameObject()) 
         {
+
             //Debug.Log("zizi");
             clickTime = Time.time;
 
@@ -120,22 +126,27 @@ public class SelectionSquare : MonoBehaviour
                 for (int i = 0; i < allUnits.Length; i++)
                 {
                     GameObject currentUnit = allUnits[i];
-
+                    //origColor = currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.GetColor("_node_4083");
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
                         //Debug.Log("is within polygon");
-                        if (currentUnit.GetComponent<MeshRenderer>() != null) {
-                            //Shader caca = Shader.(currentUnit.GetComponent<MeshRenderer>().material.shader , Shader.Find("Outlined/Silhouetted Bumped Diffuse") );
-                            //currentUnit.GetComponent<MeshRenderer>().material.shader.= Shader.Find("Outlined/Silhouetted Bumped Diffuse");
-                            currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
-                        }
+                        //if (currentUnit.GetComponent<MeshRenderer>() != null) {
+
+                        //Shader caca = Shader.(currentUnit.GetComponent<MeshRenderer>().material.shader , Shader.Find("Outlined/Silhouetted Bumped Diffuse") );
+                        //currentUnit.GetComponent<MeshRenderer>().material.shader.= Shader.Find("Outlined/Silhouetted Bumped Diffuse");
+                        //currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
+                        //currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+                        //origColor = currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.GetColor("_node_4083");
+                        currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+                        currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", Color.red);
+                        //}
                         selectedUnits.Add(currentUnit);
                     }
                     //Otherwise deselect the unit if it's not in the square
                     else
                     {
-                        if (currentUnit.GetComponent<MeshRenderer>() != null)
+                        /*if (currentUnit.GetComponent<MeshRenderer>() != null)
                         {
                             if (currentUnit.GetComponent<ProxyABOperator>())//if(currentUnit.GetType().ToString().Contains("Macro"))
                             {
@@ -147,11 +158,32 @@ public class SelectionSquare : MonoBehaviour
                                 else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
                             }
                             else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                        }*/
+
+                        // currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", );
+                        if (currentUnit.GetComponent<ProxyABAction>())
+                        {
+                            currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularAction);
+                            currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularAction);
+                        }
+                        if (currentUnit.GetComponent<ProxyABState>())
+                        {
+                            currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularState);
+                            currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularState);
+                        }
+                        if (currentUnit.GetComponent<ProxyABParam>())
+                        {
+                            currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularParam);
+                            currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularParam);
+                        }
+                        if (currentUnit.GetComponent<ProxyABOperator>())
+                        {
+                            currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularOper);
+                            currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularOper);
                         }
                     }
                 }
             }
-
         }
         //Holding down the mouse button
         if (Input.GetMouseButton(0))
@@ -169,18 +201,39 @@ public class SelectionSquare : MonoBehaviour
             //Deselect all units
             for (int i = 0; i < selectedUnits.Count; i++)
             {
-                if (selectedUnits[i].GetComponent<MeshRenderer>() != null)
+                /* if (selectedUnits[i].GetComponent<MeshRenderer>() != null)
+                 {
+                     if (selectedUnits[i].GetComponent<ProxyABOperator>()) //if (selectedUnits[i].GetType().ToString().Contains("Macro"))
+                     {
+                         if (selectedUnits[i].GetComponent<ProxyABOperator>().isMacroComposant)
+                         {
+                             selectedUnits[i].GetComponent<Renderer>().material.shader = Shader.Find("Specular");
+                             selectedUnits[i].GetComponent<Renderer>().material.SetColor("_SpecColor", Color.red);
+                         }
+                         else selectedUnits[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                     }
+                     else selectedUnits[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                 }*/
+                if (selectedUnits[i].GetComponent<ProxyABAction>())
                 {
-                    if (selectedUnits[i].GetComponent<ProxyABOperator>()) //if (selectedUnits[i].GetType().ToString().Contains("Macro"))
-                    {
-                        if (selectedUnits[i].GetComponent<ProxyABOperator>().isMacroComposant)
-                        {
-                            selectedUnits[i].GetComponent<Renderer>().material.shader = Shader.Find("Specular");
-                            selectedUnits[i].GetComponent<Renderer>().material.SetColor("_SpecColor", Color.red);
-                        }
-                        else selectedUnits[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
-                    }
-                    else selectedUnits[i].GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                    selectedUnits[i].transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularAction);
+                    selectedUnits[i].transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularAction);
+                }
+                if (selectedUnits[i].GetComponent<ProxyABState>())
+                {
+                    selectedUnits[i].transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularState);
+                    selectedUnits[i].transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularState);
+                }
+                if (selectedUnits[i].GetComponent<ProxyABParam>())
+                {
+                    selectedUnits[i].transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularParam);
+                    selectedUnits[i].transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularParam);
+                }
+
+                if (selectedUnits[i].GetComponent<ProxyABOperator>())
+                {
+                    selectedUnits[i].transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularOper);
+                    selectedUnits[i].transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularOper);
                 }
             }
 
@@ -197,8 +250,11 @@ public class SelectionSquare : MonoBehaviour
                 {
                     GameObject activeUnit = hit.collider.gameObject;
                     //Set this unit to selected
-                    if (activeUnit.GetComponent<MeshRenderer>() != null)
-                        activeUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
+                    //if (activeUnit.GetComponent<MeshRenderer>() != null)
+                    //{
+                    activeUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+                    activeUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", Color.red);
+                    //}
                     //Add it to the list of selected units, which is now just 1 unit
                     selectedUnits.Add(activeUnit);
                 }
@@ -208,6 +264,7 @@ public class SelectionSquare : MonoBehaviour
         //Drag the mouse to select all units within the square
         if (isHoldingDown)
         {
+            selectedUnits.Clear();
             //Debug.Log("is holding down = " + isHoldingDown);
             //Activate the square selection image
             if (!selectionSquareImage.gameObject.activeInHierarchy)
@@ -227,29 +284,52 @@ public class SelectionSquare : MonoBehaviour
                 for (int i = 0; i < allUnits.Length; i++)
                 {
                     GameObject currentUnit = allUnits[i];
-
+                    
                     //Is this unit within the square
                     if (IsWithinPolygon(currentUnit.transform.position))
                     {
-                        if (currentUnit.GetComponent<MeshRenderer>() != null)
-                            currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Outlined/Silhouetted Bumped Diffuse");
+                        // if (currentUnit.GetComponent<MeshRenderer>() != null)
+                        // {
+                        currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+                        currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", Color.red);
+                        // }
 
                     }
                     //Otherwise desactivate
                     else
                     {
-                        if (currentUnit.GetComponent<MeshRenderer>() != null)
+                        /* if (currentUnit.GetComponent<MeshRenderer>() != null)
+                         {
+                             if (currentUnit.GetComponent<ProxyABOperator>())
+                             {
+                                 if (currentUnit.GetComponent<ProxyABOperator>().isMacroComposant) //if (currentUnit.GetType().ToString().Contains("Macro"))
+                                 {
+                                     currentUnit.GetComponent<Renderer>().material.shader = Shader.Find("Specular");
+                                     currentUnit.GetComponent<Renderer>().material.SetColor("_SpecColor", Color.red);
+                                 }
+                                 else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                             }
+                             else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                         }*/
+                        if (currentUnit.GetComponent<ProxyABAction>())
                         {
-                            if (currentUnit.GetComponent<ProxyABOperator>())
-                            {
-                                if (currentUnit.GetComponent<ProxyABOperator>().isMacroComposant) //if (currentUnit.GetType().ToString().Contains("Macro"))
-                                {
-                                    currentUnit.GetComponent<Renderer>().material.shader = Shader.Find("Specular");
-                                    currentUnit.GetComponent<Renderer>().material.SetColor("_SpecColor", Color.red);
-                                }
-                                else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
-                            }
-                            else currentUnit.GetComponent<MeshRenderer>().material.shader = Shader.Find("Standard");
+                            currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularAction);
+                            currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularAction);
+                        }
+                        if (currentUnit.GetComponent<ProxyABState>())
+                        {
+                            currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularState);
+                            currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularState);
+                        }
+                        if (currentUnit.GetComponent<ProxyABParam>())
+                        {
+                            currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularParam);
+                            currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularParam);
+                        }
+                        if (currentUnit.GetComponent<ProxyABOperator>())
+                        {
+                            currentUnit.transform.Find("InternSphere").GetComponent<MeshRenderer>().material.SetColor("_Color", regularOper);
+                            currentUnit.transform.Find("ExternSphere").GetComponent<MeshRenderer>().material.SetColor("_node_4083", regularOper);
                         }
                     }
                 }
