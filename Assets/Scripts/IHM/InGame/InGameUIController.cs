@@ -152,6 +152,14 @@ public class InGameUIController : MonoBehaviour {
     private Button Caste_Menu;
     [SerializeField]
     private Button quitVictory;
+    [SerializeField]
+    private Text J1_scoreUnitCost;
+    [SerializeField]
+    private Text J2_scoreUnitCost;
+    [SerializeField]
+    private Text J1_ScoreFinal;
+    [SerializeField]
+    private Text J2_ScoreFinal; 
 
     #endregion
 
@@ -623,8 +631,19 @@ public class InGameUIController : MonoBehaviour {
 
                 J2_Icon.sprite = spritePictoJ2;
 
+                //Score 
+                J1_scoreUnitCost.text = "Détails : \r\n " +
+                    "Unités(en vie) : " + gameManager.Score(PlayerAuthority.Player1).ToString() + " \r\n" + 
+                    "Ressources : " + gameManager.sumResources(PlayerAuthority.Player1).ToString();
+                J2_scoreUnitCost.text = "Détails :  \r\n" +
+                   "Unités(en vie) : " + gameManager.Score(PlayerAuthority.Player2).ToString() + " \r\n" + 
+                   "Ressources : " + gameManager.sumResources(PlayerAuthority.Player2).ToString();
+
+                J1_ScoreFinal.text = "   SCORE : " + (gameManager.Score(PlayerAuthority.Player1) + gameManager.sumResources(PlayerAuthority.Player1)).ToString();
+                J2_ScoreFinal.text = "   SCORE : " + (gameManager.Score(PlayerAuthority.Player2) + gameManager.sumResources(PlayerAuthority.Player2)).ToString();
+
                 //Destroy pictPrefabs
-                foreach(GameObject pict in swarmPictos) {
+                foreach (GameObject pict in swarmPictos) {
                     Destroy(pict);
                 }
 
