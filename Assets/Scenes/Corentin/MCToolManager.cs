@@ -181,7 +181,7 @@ public class MCToolManager : MonoBehaviour
         {
             RaycastHit hitInfo;
             getTarget = ReturnClickedObject(out hitInfo);
-            if (getTarget.name == "pin(Clone)" || getTarget.name == "pinOut(Clone)" || getTarget.name == "transition(Clone)")
+            if (getTarget.name == "PinPrefab(Clone)" || getTarget.name == "PinInPrefab(Clone)" || getTarget.name == "transition(Clone)")
             {
                 SelectionSquare.instance.enabled = false;
                 isMouseDragging = false;
