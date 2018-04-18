@@ -687,7 +687,15 @@ public class SwarmEditUIController : MonoBehaviour
     #region Set Swarm Image
     public void OpenSwarmImageDialog()
     {
-        swarmImageDialog.SetActive(!swarmImageDialog.activeSelf);
+        if (swarmImageDialog.activeSelf)
+        {
+            swarmImageDialog.SetActive(false);
+        }
+        else
+        {
+            swarmImageDialog.SetActive(true);
+        }
+      
         RefreshView();
     }
 
@@ -803,7 +811,14 @@ public class SwarmEditUIController : MonoBehaviour
 
     public void OpenCastImageDialog()
     {
-        castImageDialog.SetActive(!castImageDialog.activeSelf);
+        if (castImageDialog.activeSelf)
+        {
+            castImageDialog.SetActive(false);
+        }
+        else
+        {
+            castImageDialog.SetActive(true);
+        }
         RefreshView();
     }
 
