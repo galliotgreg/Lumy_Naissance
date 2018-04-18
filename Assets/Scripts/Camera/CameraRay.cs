@@ -22,6 +22,13 @@ public class CameraRay : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        if(InGameUIController.instance == null) {
+            return; 
+        }
+        if(InGameUIController.instance.WinState == true)
+        {
+            return; 
+        }
 		if(Input.GetMouseButtonDown (0) && camera != null)
         {
             drawRayOnMouse(); 
@@ -55,7 +62,6 @@ public class CameraRay : MonoBehaviour {
                  InGameUIController.instance.ShowStatLumy();
                
             }
-
             //Hit PrysmeJ1
             else if(hit.transform.name == "p1_hive")
             {
@@ -74,7 +80,6 @@ public class CameraRay : MonoBehaviour {
                 InGameUIController.instance.ShowStatPrysme(PlayerAuthority.Player1);
 
             }
-
             //Hit PrysmeJ2
             else if(hit.transform.name == "p2_hive")
             {

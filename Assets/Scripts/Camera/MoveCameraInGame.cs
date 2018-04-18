@@ -8,10 +8,8 @@ public class MoveCameraInGame : MonoBehaviour {
     [SerializeField]
     private GameObject camera;
 
-
     [SerializeField]
     private float speedCamera = 10;
-
 
     [SerializeField]
     private float maxX = 27;
@@ -67,6 +65,15 @@ public class MoveCameraInGame : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        if(InGameUIController.instance == null)
+        {
+            return; 
+        }
+        if (InGameUIController.instance.WinState == true)
+        {
+            return; 
+        }
+
         cameraPos = gameObject.transform.position;
 
         //MoveCamera

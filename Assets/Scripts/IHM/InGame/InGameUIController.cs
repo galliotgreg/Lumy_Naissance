@@ -328,6 +328,10 @@ public class InGameUIController : MonoBehaviour {
 
     private bool panelOpened = true;
 
+    private bool statePlayPause = true;
+
+    private bool isLumy; 
+
     #region Instance
     /// <summary>
     /// Enforce Singleton properties
@@ -387,6 +391,58 @@ public class InGameUIController : MonoBehaviour {
         set
         {
             color = value;
+        }
+    }
+
+    public GameObject PanelOptionsDebug
+    {
+        get
+        {
+            return panelOptionsDebug;
+        }
+
+        set
+        {
+            panelOptionsDebug = value;
+        }
+    }
+
+    public bool StatePlayPause
+    {
+        get
+        {
+            return statePlayPause;
+        }
+
+        set
+        {
+            statePlayPause = value;
+        }
+    }
+
+    public bool IsLumy
+    {
+        get
+        {
+            return isLumy;
+        }
+
+        set
+        {
+            isLumy = value;
+        }
+    }
+
+    public bool WinState
+    {
+        get
+        {
+            return winState;
+        }
+
+        set
+        {
+            winState = value;
         }
     }
     #endregion
@@ -452,9 +508,10 @@ public class InGameUIController : MonoBehaviour {
         }
     
     }
-    private bool statePlayPause = true;
+ 
     public void PauseGame()
     {
+    
         Image pp = playPause.GetComponent<Image>();
         if (statePlayPause)
         {
@@ -609,7 +666,13 @@ public class InGameUIController : MonoBehaviour {
     {
         //Get Resources values in game Manager
         if (gameManager == null)
-            return;
+        {
+            return; 
+        }
+        if(winState == true)
+        {
+            return; 
+        }
         //*** UPPER UI *** 
         //Set the resources for each Players
         SetResources();
@@ -1002,8 +1065,6 @@ public class InGameUIController : MonoBehaviour {
             {
                 agent.gameObject.transform.GetChild(1).GetComponent<AgentScript>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
             }
-
-            return;
         }
 
         //Clean Stats 
@@ -1291,7 +1352,7 @@ public class InGameUIController : MonoBehaviour {
                 OperatorHelper.Instance.transform.parent = GameManager.instance.transform;
             }
             CloseAllOthersMsgPanel(panelOptionsDebug);
-            panelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
+            PanelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
         }
     }
 
@@ -1371,8 +1432,8 @@ private void DisplayUnits(Dictionary<string, int> units)
             if (unit.Value != 0) {
                 GameObject go = Instantiate(unitGoJ2);
                 castUiListJ2.Add(go);
-                go.transform.GetChild(0).GetComponent<Text>().color = new Color(118, 68, 139);
-                go.transform.GetChild(1).GetComponent<Text>().color = new Color(118, 68, 139);
+                go.transform.GetChild(0).GetComponent<Text>().color = new Color(102f/255f, 27f/255f, 109f/255f);
+                go.transform.GetChild(1).GetComponent<Text>().color = new Color(102f / 255f, 27f / 255f, 109f / 255f);
                 go.transform.GetChild(0).GetComponent<Text>().text = unit.Key;
                 go.transform.GetChild(1).GetComponent<Text>().text = unit.Value.ToString();
                 //go.transform.SetParent(unitGoJ2.transform.parent.gameObject.transform);
@@ -1480,6 +1541,10 @@ private void DisplayInSight() {
     /// </summary>
     private void SwitchFocus()
     {
+        if(winState == true)
+        {
+            return; 
+        }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Tab))
         {
             indiceFocus--;
@@ -1526,6 +1591,21 @@ private void DisplayInSight() {
         {
             this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
         }
+        if (self.Cast == "prysme")
+        {
+            if (self.gameObject.GetComponentInParent<AgentContext>().Home.name == "p2_hive")
+            {
+                ShowStatPrysme(PlayerAuthority.Player2);
+            }
+            else
+            {
+                ShowStatPrysme(PlayerAuthority.Player1);
+            }
+        }
+        else
+        {
+            ShowStatLumy();
+        }
         updateFocus(agentList);
     }
 
@@ -1547,6 +1627,21 @@ private void DisplayInSight() {
         {
             this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
         }
+        if (self.Cast == "prysme")
+        {
+            if (self.gameObject.GetComponentInParent<AgentContext>().Home.name == "p2_hive")
+            {
+                ShowStatPrysme(PlayerAuthority.Player2);
+            }
+            else
+            {
+                ShowStatPrysme(PlayerAuthority.Player1);
+            }
+        }
+        else
+        {
+            ShowStatLumy();
+        }
         updateFocus(agentList);
     }
 
@@ -1558,7 +1653,7 @@ private void DisplayInSight() {
         }
         else if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2)
         {
-            this.color = new Color(118, 68, 139);
+            this.color = new Color(102f / 255f, 27f / 255f, 109f / 255f);
         }
         else
         {

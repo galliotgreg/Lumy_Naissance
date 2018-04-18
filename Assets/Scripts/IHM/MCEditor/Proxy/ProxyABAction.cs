@@ -127,7 +127,7 @@ public class ProxyABAction : MCEditor_Proxy
     // Update is called once per frame 
     void Update()
     {
-
+		base.Update();
     }
 
     public Pin getParamPin(int index)

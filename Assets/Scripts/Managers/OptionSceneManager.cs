@@ -7,6 +7,12 @@ public class OptionSceneManager : MonoBehaviour {
     public static OptionSceneManager instance = null;
 
     #region UI Variables
+    
+    //public Button credits;
+    //public Button credits2;
+    //public Button options;
+    //public Button options2;
+    
     #region Video
     [SerializeField]
     private Dropdown resolution;
@@ -22,24 +28,44 @@ public class OptionSceneManager : MonoBehaviour {
     private Slider general;
     [SerializeField]
     private Slider music;
+    [SerializeField]
+    private float SFXmax = 0.09f;
     #endregion
     #endregion
 
     // Use this for initialization
     void Start () {
+        /*
+        Button btn_credits = credits.GetComponent<Button>();
+        Button btn_credits2 = credits2.GetComponent<Button>();
+        Button btn_options = options.GetComponent<Button>();
+        Button btn_options2 = options2.GetComponent<Button>();
+        btn_credits.onClick.AddListener(SoundManager.instance.PlayCreditsTheme);
+        btn_credits2.onClick.AddListener(SoundManager.instance.PlayCreditsTheme);
+        btn_options.onClick.AddListener(SoundManager.instance.PlayOptionsTheme);
+        btn_options2.onClick.AddListener(SoundManager.instance.PlayOptionsTheme);
+        */
+
         windowed.isOn = Screen.fullScreen;
         quality.value = QualitySettings.GetQualityLevel();
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreen);
 
-        music.value = SoundManager.instance.musicSource.volume;
         sfx.value = SoundManager.instance.menuFxSource.volume;
-        general.value = Mathf.Max(SoundManager.instance.musicSource.volume, SoundManager.instance.menuFxSource.volume);
-
+        if (SoundManager.instance.oneIsMain)
+        {
+            music.value = SoundManager.instance.musicSource.volume;
+            general.value = Mathf.Max(SoundManager.instance.musicSource.volume, SoundManager.instance.menuFxSource.volume);
+        }
+        if (!SoundManager.instance.oneIsMain)
+        {
+            music.value = SoundManager.instance.musicSource2.volume;
+            general.value = Mathf.Max(SoundManager.instance.musicSource2.volume, SoundManager.instance.menuFxSource.volume);
+        }
+        
         resolution.onValueChanged.AddListener(delegate { SetResolution(); });
         windowed.onValueChanged.AddListener((on) => { SetWindowed(); });
         quality.onValueChanged.AddListener(delegate{ SetQuality(); });
-        
-        //sfx.onValueChanged.AddListener(delegate { SetVolumeFX(); });        
-        general.onValueChanged.AddListener(delegate { SetVolumeGeneral(); });
+
         music.onValueChanged.AddListener(delegate { SetVolumeMusic(); });
     }
 	
@@ -120,16 +146,19 @@ public class OptionSceneManager : MonoBehaviour {
     private void SetVolumeMusic()
     {
         SoundManager.instance.musicSource.volume = music.value;
+        SoundManager.instance.musicSource2.volume = music.value;
+        SoundManager.instance.volumeJoueur = music.value;
     }
 
-    private void SetVolumeGeneral(bool changeOthers = false)
+    public void SetVolumeGeneral()
     {
         SoundManager.instance.inGameFXSource.volume = general.value;
         SoundManager.instance.lumyFxSource.volume = general.value;
         SoundManager.instance.menuFxSource.volume = general.value;
         SoundManager.instance.musicSource.volume = general.value;
+        SoundManager.instance.musicSource2.volume = general.value;
 
-        sfx.value = general.value/5.0f;
+        sfx.value = general.value * SFXmax;
         SetVolumeFX();
         music.value = general.value;
         SetVolumeMusic();
