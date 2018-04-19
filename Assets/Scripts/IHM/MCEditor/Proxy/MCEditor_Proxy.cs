@@ -167,12 +167,56 @@ public abstract class MCEditor_Proxy : MonoBehaviour {
 	{
 		if (lastClick > 0 && Time.time - lastClick < doubleClickIntervalMseconds/1000f) {
 			doubleClick ();
-
-			Debug.Log ( "MCEditor : Selected proxy => "+this.GetProxyName() );
 			doubleClicked = this;
 		}
 		lastClick = Time.time;
 	}
 
+	#endregion
+
+	#region IsConnected
+	public bool isConnected(){
+		// TODO consider operator loop
+
+		// is Init or null
+		bool isState = containsStateProxy ();
+		if (!isState) {
+			System.Object connectedTo = resultConnection ();
+
+			return (connectedTo != null);
+		} else {
+			return true;
+		}
+	}
+	bool containsStateProxy(){
+		return this is ProxyABState || this is ProxyABAction;
+	}
+
+	// Return proxy or conditionTransition
+	System.Object resultConnection ()
+	{
+		Pin pin = resultPin ();
+		if (pin != null){
+			if (pin.AssociatedTransitions.Count > 0) {
+				MCEditor_Proxy proxy = pin.AssociatedTransitions [0].oppositeSide (this);
+				// Proxy or Condition
+				if (proxy != null) {
+					return proxy;
+				} else {
+					// Search Condition
+					Pin condition = pin.AssociatedTransitions [0].oppositePin (this);
+					if (condition.AssociatedTransitions.Count > 0) {
+						return condition.AssociatedTransitions [0];
+					}
+				}
+			}
+		}
+		return null;
+	}
+	/// <summary>
+	/// Gets the pin that represents the result of the proxy
+	/// </summary>
+	/// <returns>The pin that represents the result of the proxy</returns>
+	protected abstract Pin resultPin ();
 	#endregion
 }

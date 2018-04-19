@@ -167,6 +167,15 @@ public class ProxyABParam : MCEditor_Proxy, IProxyABParam{
 		MCEditorManager.instance.deleteProxy ( this );
 	}
 
+	protected override Pin resultPin ()
+	{
+		List<Pin> pins = getPins (Pin.PinType.Param);
+		if (pins.Count > 0) {
+			return pins [0];
+		}
+		return null;
+	}
+
 	#endregion
 
 	public IABParam Clone ()
