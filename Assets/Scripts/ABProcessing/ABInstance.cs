@@ -52,23 +52,27 @@ public class ABInstance {
     }*/
 
 	public Tracing Evaluate(ABContext context){
-		return EvaluateRec (context, model.getState ( model.InitStateId ));
+		return EvaluateRec (context, model.getState ( model.InitStateId ), maxTransitionFires);
 	}
 
-	public Tracing EvaluateRec(ABContext context, ABState currentState){
-		if (model.HasAction (currentState.Id)) {
+	public Tracing EvaluateRec(ABContext context, ABState currentState, int nbFireLeft){
+        if (model.HasAction (currentState.Id)) {
 			return new Terminal_Tracing (new TracingInfo (currentState));
 		} else {
 			int nextStateId = model.FireTransition(currentState.Id, context);
 
-			if (nextStateId == -1) {
-				// No active transition
-				return new Terminal_Tracing (new TracingInfo (currentState));
-			} else {
-				// Next state
-				ABState nextState = model.getState( nextStateId );
-				return new Intermediate_Tracing( EvaluateRec( context, model.getState( nextStateId ) ), new TracingInfo( currentState ) );
-			}
+            if (nextStateId == -1) {
+                // No active transition
+                return new Terminal_Tracing(new TracingInfo(currentState));
+            } else if (nbFireLeft == 0) {
+                return new Terminal_Tracing(new TracingInfo(currentState));
+            } else {
+                // Next state
+                ABState nextState = model.getState(nextStateId);
+                return new Intermediate_Tracing(
+                    EvaluateRec(context, model.getState(nextStateId), nbFireLeft - 1), 
+                    new TracingInfo(currentState));
+            }
 		}
 	}
 }
