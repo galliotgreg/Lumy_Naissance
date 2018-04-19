@@ -1036,8 +1036,7 @@ public class SwarmEditUIController : MonoBehaviour
     private void LayLumyInGame(string castName)
     {
         //find spawn pos
-        HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
-        Vector3 spawnPos = homeScript.transform.position;
+        Vector3 spawnPos = new Vector3(10f, 0f, -4.5f);
         Quaternion spawnRot = Quaternion.identity;
         if (editedInGameLumy != null)
         {
@@ -1057,6 +1056,7 @@ public class SwarmEditUIController : MonoBehaviour
         editedInGameLumy.name = editedLumyEntity.CastName;
         editedLumyEntity.GameParams =
         GameManager.instance.GameParam.GetComponent<GameParamsScript>();
+        HomeScript homeScript = GameManager.instance.GetHome(PlayerAuthority.Player1);
         Unit_GameObj_Manager.instance.addUnit(editedLumyEntity, homeScript);
 
         //Hide lumy on menu scene

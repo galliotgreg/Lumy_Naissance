@@ -219,6 +219,9 @@ public class ABModel {
 		if (indexA >= 0 && indexB >= 0) {
 			transitions [indexA] = transB;
 			transitions [indexB] = transA;
+
+			transA.Id = indexB;
+			transB.Id = indexA;
 		}
 	}
 

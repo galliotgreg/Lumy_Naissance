@@ -286,4 +286,19 @@ public class ProxyABTransition : IsolatedSelectableProxyGameObject {
     }
 
     #endregion
+
+	#region Outils
+	public MCEditor_Proxy oppositeSide( MCEditor_Proxy oneSide ){
+		return oppositePin( oneSide ).ProxyParent;
+	}
+	public Pin oppositePin( MCEditor_Proxy oneSide ){
+		if (this.StartPosition.ProxyParent == oneSide) {
+			return this.EndPosition;
+		}
+		if (this.EndPosition.ProxyParent == oneSide) {
+			return this.StartPosition;
+		}
+		return null;
+	}
+	#endregion
 }

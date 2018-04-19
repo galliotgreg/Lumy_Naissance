@@ -294,6 +294,15 @@ public class ProxyABOperator: MCEditor_Proxy, IProxyABOperator{
 		MCEditorManager.instance.deleteProxy ( this );
 	}
 
+	protected override Pin resultPin ()
+	{
+		List<Pin> pins = getPins (Pin.PinType.OperatorOut);
+		if (pins.Count > 0) {
+			return pins [0];
+		}
+		return null;
+	}
+
 	#endregion
 
 	public System.Type getOutcomeType ()
