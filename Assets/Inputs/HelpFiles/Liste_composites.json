@@ -3,7 +3,7 @@
 		"Title": "Généralités",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "Composant hétéroclite, un composite est un rassemblement de paramètres et d’opérateurs prédéfinis. Ils permettent de simplifier le Modèle Comportemental d’un Lumy. Les Composites sont des fonctions complexe ne nécessitant pas forcément de paramètres en entrée mais renvoyant un paramètre en sortie. Ils sont utilisés pour améliorer la lisibilité dans l'éditeur de Modèle Comportemental"
+				"Content": "Les composites sont des composants hétéroclites, rassemblant des paramètres et des opérateurs prédéfinis. Ce sont des fonctions complexes, ne nécessitant pas forcément de paramètres en entrée, mais renvoyant un paramètre en sortie. Les composites permettent de simplifier le Modèle Comportemental d’un Lumy, afin d'améliorer la lisibilité dans l'éditeur de Modèle Comportemental."
 			}
 		],
 		"Image": "",
@@ -11,26 +11,26 @@
 	},
 	{
 		"ID": 1,
-		"Title": "Enemy",
+		"Title": "Enemies",
 		"Content": [{
 				"SubTitle": "enemiesCarringResource",
-				"Content": "Retour : bool\nDescription : Vrai si un ennemi visible transporte des ressources, sinon faux."
+				"Content": "Retour : bool\nDescription : Renvoie vrai si un ennemi visible transporte des ressources, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "enemyInRange",
-				"Content": "Retour : bool\nDescription : Vrai si un ennemi est à portée d’attaque du Lumy."
+				"Content": "Retour : bool\nDescription : Renvoie vrai si un ennemi est à portée d’attaque du Lumy, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "enemyPrysme",
-				"Content": "Retour : ref[]\nDescription : Retourne une liste de références correspondant au Prysme ennemi."
+				"Content": "Retour : ref[ ]\nDescription : Renvoie une liste de références dont l'unique élément correspond au Prysme ennemi."
 			},
 			{
 				"SubTitle": "getClosestEnemy",
-				"Content": "Retour : ref\nDescription : Parmi tous les ennemis visibles, retourne l’ennemi le plus proche."
+				"Content": "Retour : ref\nDescription : Parmi tous les ennemis visibles, renvoie la référence de l’ennemi le plus proche."
 			},
 			{
 				"SubTitle": "getEnemiesCrraingResource",
-				"Content": "Retour : ref[]\nDescription : Parmi tous les ennemis, retourne un tableau de références de tous les lumys transportant des ressources."
+				"Content": "Retour : ref[ ]\nDescription : Parmi tous les ennemis, renvoie un tableau contenant les références de tous les Lumys transportant des ressources."
 			}
 		],
 		"Image": "",
@@ -41,27 +41,27 @@
 		"Title": "Game",
 		"Content": [{
 				"SubTitle": "populationLower",
-				"Content": "Retour : bool\nArgument 1 : txt\nArgument 2 : scal\nDescription : Vrai si le nombre de Lumys de la caste \"Arg1\" est moins important que \"Arg2\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : txt\nArgument 2 : scal\nDescription : Renvoie vrai si le nombre de Lumys de la caste \"arg1\" est moins important que \"arg2\", renvoie faux dans le cas contraire."
 			},
 			{
 				"SubTitle": "populationUpper",
-				"Content": "Retour : bool\nArgument 1 : txt\nArgument 2 : scal\nDescription : Vrai si le nombre de Lumys de la caste \"Arg1\" est plus important que \"Arg2\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : txt\nArgument 2 : scal\nDescription : Renvoie vrai si le nombre de Lumys de la caste \"arg1\" est plus important que \"arg2\", renvoie faux dans le cas contraire."
 			},
 			{
 				"SubTitle": "timeLower",
-				"Content": "Retour : bool\nArgument 1 : scal\nDescription : Vrai si le temps écoulé depuis le début de la partie est inférieur à \"Arg1\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : scal\nDescription : Renvoie vrai si le temps écoulé depuis le début de la partie est inférieur à \"arg1\", renvoie faux dans le cas contraire."
 			},
 			{
 				"SubTitle": "timeUpper",
-				"Content": "Retour : bool\nArgument 1 : scal\nDescription : Vrai si le temps écoulé depuis le début de la partie est supérieur à \"Arg1\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : scal\nDescription : Renvoie vrai si le temps écoulé depuis le début de la partie est supérieur à \"arg1\", renvoie faux dans le cas contraire."
 			},
 			{
 				"SubTitle": "resourceLower",
-				"Content": "Retour : bool\nArgument 1 : color\nArgument 2 : scal\nDescription : Vrai si le nombre de ressources de Couleur \"Arg1\", est inférieur à \"Arg2\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : color\nArgument 2 : scal\nDescription : Renvoie vrai si le nombre de ressources de couleur \"arg1\", est inférieur à \"arg2\", renvoie faux dans le cas contraire."
 			},
 			{
 				"SubTitle": "resourceUpper",
-				"Content": "Retour : bool\nArgument 1 : color\nArgument 2 : scal\nDescription : Vrai si le nombre de ressources de Couleur \"Arg1\", est supérieur à \"Arg2\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : color\nArgument 2 : scal\nDescription : Renvoie vrai si le nombre de ressources de couleur \"arg1\", est supérieur à \"arg2\", renvoie faux dans le cas contraire."
 			}
 		],
 		"Image": "",
@@ -69,26 +69,26 @@
 	},
 	{
 		"ID": 3,
-		"Title": "Ressources",
+		"Title": "Resources",
 		"Content": [{
 				"SubTitle": "anyResourceInRange",
-				"Content": "Retour : bool\nDescription : Vrai si des ressources sont à portée de Pick du Lumy, sinon Faux."
+				"Content": "Retour : bool\nDescription : Renvoie vrai si des ressources sont à portée de saisie du Lumy, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "getAnyClosestResource",
-				"Content": "Retour : ref\nDescription : Parmi toutes les ressources visibles, retourne la référence de la ressource la plus proche."
+				"Content": "Retour : ref\nDescription : Parmi toutes les ressources visibles, renvoie la référence de la ressource la plus proche."
 			},
 			{
 				"SubTitle": "getClosestResource",
-				"Content": "Retour : ref\nArgument 1 : color\nDescription : Parmi tous les ressources de couleur \"Arg1\" visibles, retourne celle qui est la plus proche."
+				"Content": "Retour : ref\nArgument 1 : color\nDescription : Parmi toutes les ressources de couleur \"arg1\" visibles, renvoie la référence de la plus proche."
 			},
 			{
 				"SubTitle": "resourceInRange",
-				"Content": "Retour : bool\nArgument 1 : color\nDescription : Vrai si une ressource de couleur \"Arg1\" est dans la portée de saisie du Lumy, retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : color\nDescription : Renvoie vrai si une ressource de couleur \"arg1\" est à portée de saisie du Lumy, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "resourcesColor",
-				"Content": "Retour : ref[]\nArgument 1 : color\nDescription : Parmi toutes les ressources visibles, retourne le tableau des ressources de couleur \"Arg1\"."
+				"Content": "Retour : ref[ ]\nArgument 1 : color\nDescription : Parmi toutes les ressources visibles, renvoie un tableau contenant les références des ressources de couleur \"arg1\"."
 			}
 		],
 		"Image": "",
@@ -99,35 +99,35 @@
 		"Title": "Self",
 		"Content": [{
 				"SubTitle": "SomethingInSight",
-				"Content": "Retour : bool\nArgument 1 : ref[]\nDescription : Vrai si au moins un objet est présent dans la liste \"Arg1\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : ref[ ]\nDescription : Renvoie vrai si au moins un objet est présent dans la liste \"arg1\", renvoie faux dans le cas contraire."
 			},
 			{
 				"SubTitle": "SomethingNotInSight",
-				"Content": "Retour : bool\nArgument 1 : ref[]\nDescription : Vrai si aucun objet n'est présent dans la liste \"Arg1\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : ref[ ]\nDescription : Renvoie vrai si aucun objet n'est présent dans la liste \"arg1\", renvoie faux dans le cas contraire."
 			},
 			{
 				"SubTitle": "StateFull",
-				"Content": "Retour : bool\nArgument 1 : txt\nArgument 2 : txt\nDescription : Vrai si la stat \"Arg1\" a atteint sa valeur maximale définie par \"Arg2\", retourne faux dans le cas contraire."
+				"Content": "Retour : bool\nArgument 1 : txt\nArgument 2 : txt\nDescription : Renvoie vrai si la statistique \"arg1\" a atteint sa valeur maximale définie par \"arg2\", renvoie faux dans le cas contraire."
 			},
 			{
 				"SubTitle": "isNearOf",
-				"Content": "Retour : bool\nArgument 1 : vec\nDescription : Vrai si le lumy est à proximité de la position \"Arg1\"."
+				"Content": "Retour : bool\nArgument 1 : vec\nDescription : Renvoie vrai si le Lumy est à proximité de la position \"arg1\"."
 			},
 			{
 				"SubTitle": "isAtHome",
-				"Content": "Retour : bool\nDescription : Vrai si le lumy est à proximité de la position du prysme alié."
+				"Content": "Retour : bool\nDescription : Renvoie vrai si le Lumy est à proximité de la position du Prysme allié."
 			},
 			{
 				"SubTitle": "isAtTarget",
-				"Content": "Retour : bool\nDescription : Vrai si le lumy est à proximité de sa destination."
+				"Content": "Retour : bool\nDescription : Renvoie vrai si le Lumy est à proximité de sa destination."
 			},
 			{
 				"SubTitle": "allyCaste",
-				"Content": "Retour : ref[]\nArgument 1 : txt\nDescription : Retourne la liste d’alliés de la caste \"Arg1\" qui sont dans le champ de vision du Lumy sous la forme d’un tableau de références."
+				"Content": "Retour : ref[ ]\nArgument 1 : txt\nDescription : Renvoie la liste d’alliés de la caste \"arg1\" présents dans le champ de vision du Lumy, sous la forme d’un tableau de références."
 			},
 			{
 				"SubTitle": "getClosestUnit",
-				"Content": "Retour : ref\nArgument 1 : ref[]\nDescription : Parmi tous les Lumys dans \"Arg1\", retourne la référence du plus proche."
+				"Content": "Retour : ref\nArgument 1 : ref[ ]\nDescription : Parmi tous les Lumys dont la référence est contenue dans \"arg1\", renvoie la référence du plus proche."
 			}
 		],
 		"Image": "",
@@ -138,23 +138,23 @@
 		"Title": "Trace",
 		"Content": [{
 				"SubTitle": "getAnyOldestTrace",
-				"Content": "Retour : ref\nDescription : Parmi toutes les Traces visibles, retourne la référence de la trace la plus vieille."
+				"Content": "Retour : ref\nDescription : Parmi toutes les traces visibles, renvoie la référence de la plus ancienne."
 			},
 			{
 				"SubTitle": "getAnyYoungestTrace",
-				"Content": "Retour : ref\nDescription : Parmi toutes les Traces visibles, retourne la référence de la trace la plus récente."
+				"Content": "Retour : ref\nDescription : Parmi toutes les traces visibles, renvoie la référence de la plus récente."
 			},
 			{
 				"SubTitle": "GetOldestTrace",
-				"Content": "Retour : ref\nArgument 1 : color\nDescription : Parmi les traces visibles de la couleur \"Arg1\", retourne la référence de la plus vieille."
+				"Content": "Retour : ref\nArgument 1 : color\nDescription : Parmi les traces visibles de la couleur \"arg1\", renvoie la référence de la plus ancienne."
 			},
 			{
 				"SubTitle": "GetYoungestTrace",
-				"Content": "Retour : ref\nArgument 1 : color\nDescription : Parmi les traces visibles de la couleur \"Arg1\", retourne la référence de la plus récente."
+				"Content": "Retour : ref\nArgument 1 : color\nDescription : Parmi les traces visibles de la couleur \"arg1\", renvoie la référence de la plus récente."
 			},
 			{
 				"SubTitle": "traceColor",
-				"Content": "Retour : ref[]\nDescription : Retourne un tableau des références des traces de couleur \"Arg1\" parmi toute les traces visibles."
+				"Content": "Retour : ref[ ]\nDescription : Renvoie un tableau contenant les références des traces de couleur \"arg1\" parmi toutes les traces visibles."
 			}
 		],
 		"Image": "",
