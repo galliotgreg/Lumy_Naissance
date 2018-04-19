@@ -123,8 +123,11 @@ public class MoveCameraInGame : MonoBehaviour {
             bool upZ = Input.GetKey(KeyCode.Z);
             bool downW = Input.GetKey(KeyCode.S);
             bool rightD = Input.GetKey(KeyCode.D);
-            bool leftQ = Input.GetKey(KeyCode.Q); 
-
+            bool leftQ = Input.GetKey(KeyCode.Q);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                return; 
+            }
             if ((up || upZ) && cameraPos.z < maxY)
             {
                 camera.transform.Translate(Vector3.forward * Time.unscaledDeltaTime * SpeedCamera, Space.World);

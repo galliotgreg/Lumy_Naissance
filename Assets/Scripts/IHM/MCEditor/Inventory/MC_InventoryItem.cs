@@ -126,7 +126,7 @@ public class MC_InventoryItem : MonoBehaviour, IDragObjectActivator, IPointerEnt
 	{
 		MCToolManager.instance.CancelInventory ();
 		inventory.DropItem ( droppedObject, this );
-        MCToolManager.instance.TemporarySave();
+        MCToolManager.instance.checkSave();
 	}
 
     #endregion

@@ -1404,6 +1404,12 @@ public class InGameUIController : MonoBehaviour {
             }
             CloseAllOthersMsgPanel(panelOptionsDebug);
             PanelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
+            if (Time.timeScale == 1)
+            {
+                PauseGame();
+            }
+          
+
         }
     }
 
