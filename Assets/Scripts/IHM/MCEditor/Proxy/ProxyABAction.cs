@@ -202,5 +202,10 @@ public class ProxyABAction : MCEditor_Proxy
         MCEditorManager.instance.deleteProxy(this);
     }
 
+	protected override Pin resultPin ()
+	{
+		return null;
+	}
+
     #endregion
 }
