@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 public class SoundManager : MonoBehaviour
 {
     public bool oneIsMain = true;
-    public float fadeOutFactor = 2f;
-    public float fadeInFactor = 50f;
+    public float fadeOutFactor = 1f;
+    public float fadeInFactor = 100f;
     public float volumeJoueur = 1f;
+    string currentScene;
+    List<string> previousScene;
 
     #region Audio Source
     public AudioSource lumyFxSource;
@@ -160,8 +162,6 @@ public class SoundManager : MonoBehaviour
 
     public void PlayEditorTheme()
     {
-        // Ajouter if scene d'avant != MC/Nuée, faire la fonction, sinon ne rien faire
-
         string thisScene = NavigationManager.instance.GetCurrentScene();
 
         musicSource.loop = false;
@@ -180,14 +180,14 @@ public class SoundManager : MonoBehaviour
         SwapTracks(optionCreditThemeClips[0]);
     }
 
-    public void PlayInGameMap1Theme()   // Ajouter choix 3 5 7 min
+    public void PlayInGameMap1Theme()
     {
         musicSource.loop = true;
         musicSource2.loop = true;
 
         SwapTracks(inGameMap1ThemeClips[0]);
     }
-    public void PlayInGameMap2Theme()   // Ajouter choix 3 5 7 min  +  Changer pour ingame2
+    public void PlayInGameMap2Theme()
     {
         musicSource.loop = true;
         musicSource2.loop = true;
@@ -420,4 +420,50 @@ public class SoundManager : MonoBehaviour
 
         audioSource.volume = volumeJoueur;
     }
+
+    public void MusicOnScene()
+    {
+        currentScene = NavigationManager.instance.GetCurrentScene();
+        previousScene = NavigationManager.instance.GetPreviousScene();
+
+        switch (currentScene)
+        {
+            case "MenuPrincipalScene":
+                PlayMenuPrincipalTheme();
+                break;
+            case "PartiePersoScene":
+                PlayPartiePersoTheme();
+                break;
+            case "EditeurCastesScene":
+                string sceneAvant = previousScene[previousScene.Count - 1];
+                if (sceneAvant != "EditeurMCScene")
+                {
+                    PlayEditorTheme();
+                }
+                break;
+            case "EditeurMCScene":
+                string sceneAvant2 = previousScene[previousScene.Count - 1];
+                if (sceneAvant2 != "EditeurCastesScene")
+                {
+                    PlayEditorTheme();
+                }
+                break;
+            case "OptionScene":
+                PlayOptionsTheme();
+                break;
+            case "GlossaireScene":
+                PlayGlossaireTheme();
+                break;
+            case "MapTutoInteResized":
+                PlayInGameMap1Theme();
+                break;
+            case "Map2.1":
+                PlayInGameMap2Theme();
+                break;
+            default:
+                Debug.Log("PAS DE SCENE ?!");
+                break;
+        }
+    }
+
 }
