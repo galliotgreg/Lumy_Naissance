@@ -69,6 +69,10 @@ public class NavigationManager : MonoBehaviour {
     {
         return this.currentScene;
     }
+    public List<string> GetPreviousScene()
+    {
+        return this.previousScene;
+    }
     public Camera GetCurrentCamera()
     {
         if(this.camera != null)
@@ -307,44 +311,7 @@ public class NavigationManager : MonoBehaviour {
         }
 
         // Jouer la musique correspondant à la scène
-        switch (currentScene)
-        {
-            case "MenuPrincipalScene":
-                SoundManager.instance.PlayMenuPrincipalTheme();
-                break;
-            case "PartiePersoScene":
-                SoundManager.instance.PlayPartiePersoTheme();
-                break;
-            case "EditeurCastesScene":
-                string sceneAvant = previousScene[previousScene.Count - 1];
-                if (sceneAvant != "EditeurMCScene")
-                {
-                    SoundManager.instance.PlayEditorTheme();
-                }
-                break;
-            case "EditeurMCScene":
-                string sceneAvant2 = previousScene[previousScene.Count - 1];
-                if (sceneAvant2 != "EditeurCastesScene")
-                {
-                    SoundManager.instance.PlayEditorTheme();
-                }
-                break;
-            case "OptionScene":
-                SoundManager.instance.PlayOptionsTheme();
-                break;
-            case "GlossaireScene":
-                SoundManager.instance.PlayGlossaireTheme();
-                break;
-            case "MapTutoInteResized":
-                SoundManager.instance.PlayInGameMap1Theme();
-                break;
-            case "Map2.1":
-                SoundManager.instance.PlayInGameMap2Theme();
-                break;
-            default:
-                Debug.Log("PAS DE SCENE ?!");
-                break;
-        }
+        SoundManager.instance.MusicOnScene();
 
         // Faire apparaître le canvas en fondu
         /*canvas.GetComponent<CanvasGroup>().alpha = 0f;

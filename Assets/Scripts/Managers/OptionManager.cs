@@ -156,7 +156,10 @@ public class OptionManager : MonoBehaviour {
         {
             return;
         }
-
+        if(InGameUIController.instance.WinState == true)
+        {
+            return; 
+        }
         DebugGisement();
         DebugLifebarJ1();
         DebugLifebarJ2();
