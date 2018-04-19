@@ -9,6 +9,8 @@ public class SoundManager : MonoBehaviour
     public float fadeOutFactor = 1f;
     public float fadeInFactor = 100f;
     public float volumeJoueur = 1f;
+    string currentScene;
+    List<string> previousScene;
 
     #region Audio Source
     public AudioSource lumyFxSource;
@@ -418,4 +420,50 @@ public class SoundManager : MonoBehaviour
 
         audioSource.volume = volumeJoueur;
     }
+
+    public void MusicOnScene()
+    {
+        currentScene = NavigationManager.instance.GetCurrentScene();
+        previousScene = NavigationManager.instance.GetPreviousScene();
+
+        switch (currentScene)
+        {
+            case "MenuPrincipalScene":
+                PlayMenuPrincipalTheme();
+                break;
+            case "PartiePersoScene":
+                PlayPartiePersoTheme();
+                break;
+            case "EditeurCastesScene":
+                string sceneAvant = previousScene[previousScene.Count - 1];
+                if (sceneAvant != "EditeurMCScene")
+                {
+                    PlayEditorTheme();
+                }
+                break;
+            case "EditeurMCScene":
+                string sceneAvant2 = previousScene[previousScene.Count - 1];
+                if (sceneAvant2 != "EditeurCastesScene")
+                {
+                    PlayEditorTheme();
+                }
+                break;
+            case "OptionScene":
+                PlayOptionsTheme();
+                break;
+            case "GlossaireScene":
+                PlayGlossaireTheme();
+                break;
+            case "MapTutoInteResized":
+                PlayInGameMap1Theme();
+                break;
+            case "Map2.1":
+                PlayInGameMap2Theme();
+                break;
+            default:
+                Debug.Log("PAS DE SCENE ?!");
+                break;
+        }
+    }
+
 }
