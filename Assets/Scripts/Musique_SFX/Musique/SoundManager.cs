@@ -50,8 +50,7 @@ public class SoundManager : MonoBehaviour
 
     //MC Editor
     public AudioClip[] selectNodeClips;
-    public AudioClip[] transitionOKClips; // Creation of a valid transition  
-    public AudioClip[] LoadingMcClips;
+    public AudioClip[] transitionOKClips; // Creation of a valid transition
     
     //InGame
     public AudioClip[] playGameClips;
@@ -63,7 +62,6 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] swarmIsAttackedClips;
 
     public AudioClip[] victoryResourcesClips;
-    public AudioClip[] victoryPrysmeDestroyedClips;
 
     public AudioClip[] lumyMovementClips;
     public AudioClip[] lumyAttackClips;
@@ -73,7 +71,6 @@ public class SoundManager : MonoBehaviour
     //Menu
     public AudioClip[] onHoverMenuClips;
     public AudioClip[] onClickMenuClips;
-    public AudioClip[] onLoadingSceneClips; // Sound for the transition between 2 menus
     public AudioClip[] addStatSwarmClips;
     public AudioClip[] removeStatSwarmClips;
 
@@ -219,10 +216,6 @@ public class SoundManager : MonoBehaviour
     {
         RandomizeClips(transitionOKClips, menuFxSource, true, true);
     }
-    public void PlayLoadingMcSFX()
-    {
-        RandomizeClips(LoadingMcClips, menuFxSource, true, true);
-    }
     #endregion
 
     #region InGame SFX
@@ -250,10 +243,6 @@ public class SoundManager : MonoBehaviour
     {
         RandomizeClips(victoryResourcesClips, menuFxSource, true, true);
     }
-    public void PlayVictoryPrysmeDestroyedSFX()
-    {
-        RandomizeClips(victoryPrysmeDestroyedClips, menuFxSource, true, true);
-    }
     public void PlayLumyMovementSFX()
     {
         RandomizeClips(lumyMovementClips, lumyFxSource, true, true);
@@ -280,10 +269,6 @@ public class SoundManager : MonoBehaviour
     public void PlayOnClickMenuSFX()
     {
         RandomizeClips(onClickMenuClips, menuFxSource, true);
-    }
-    public void PlayOnLoadingSceneSFX()
-    {
-        RandomizeClips(onLoadingSceneClips, menuFxSource, true, true);
     }
     public void PlayAddSwarmSFX()
     {
