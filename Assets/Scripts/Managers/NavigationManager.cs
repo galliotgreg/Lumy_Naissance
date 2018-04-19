@@ -40,7 +40,9 @@ public class NavigationManager : MonoBehaviour {
     public float zoomEndDistance = 0.0f;
     public float zoomStep = 0.1f;
     public float fadeStep = 0.05f;
+
     private int wCount = 0;
+    private string loadingString = "Chargement";
 
     private bool layerUnloaded = true;
     private bool layerLoaded = true;
@@ -48,11 +50,7 @@ public class NavigationManager : MonoBehaviour {
     private bool sceneLoaded = false;
     private bool zoomOnCanvas = true;
     private bool fadeToBlack = false;
-
-    // loading text
-    bool isDots1 = true;
-    bool isDots2 = false;
-    bool isDots3 = false;
+    private bool loopDots = false;
 
     // Use this for initialization
     void Start () {
@@ -156,56 +154,13 @@ public class NavigationManager : MonoBehaviour {
 
     }
 
-    private string dotLoadingText()
-    {
-        string dots1 = "<color=grey>.</color>..";
-        string dots2 = ".<color=grey>.</color>.";
-        string dots3 = "..<color=grey>.</color>";
-
-        if (isDots1)
-        {
-            isDots1 = false;
-            isDots2 = true;
-            isDots3 = false;
-
-            return dots1;
-        }
-        else if (isDots2)
-        {
-            isDots1 = false;
-            isDots2 = false;
-            isDots3 = true;
-
-            return dots2;
-        }
-        else if (isDots3)
-        {
-            isDots1 = true;
-            isDots2 = false;
-            isDots3 = false;
-
-            return dots3;
-        } else
-        {
-            return "";
-        }
-    }
-
-    IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
+        IEnumerator SwapScenesCo(string nextScene, Vector3 sightPoint)
     {
         GameObject root = SceneManager.GetSceneByName(currentScene).GetRootGameObjects()[0];
         
         // Faire disparaître le canvas en fondu
         GameObject canvas = GameObject.Find(currentScene + "Canvas");
         canvas.GetComponent<CanvasGroup>().blocksRaycasts = false;
-
-        /*float alpha = canvas.GetComponent<CanvasGroup>().alpha;
-        while (alpha > 0.0f)
-        {
-            alpha = canvas.GetComponent<CanvasGroup>().alpha;
-            canvas.GetComponent<CanvasGroup>().alpha -= fadeStep;
-            yield return true;
-        }*/
 
         // Fondre au noir
         GameObject darkScreen = GameObject.Find("DarkScreen");
@@ -221,9 +176,9 @@ public class NavigationManager : MonoBehaviour {
         // Afficher le texte de chargement        
         GameObject loadText = GameObject.Find("LoadingText");
 
-        setWText(loadText);        
+        setWText(loadText);
+        loadText.GetComponent<DotLoop>().CallDotLoop(loadingString);
         loadText.GetComponent<Text>().color = new Color(1f, 1f, 1f, 1f);
-        loadText.GetComponent<Text>().text = "Chargement";
         
 
         // Attendre la fin du chargement de la scène de destination
@@ -231,7 +186,6 @@ public class NavigationManager : MonoBehaviour {
         AsyncOperation load = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
         while (!load.isDone)
         {
-            loadText.GetComponent<Text>().text = "Chargement" + dotLoadingText();
             yield return null;
         }
 
@@ -260,7 +214,6 @@ public class NavigationManager : MonoBehaviour {
         AsyncOperation unload = SceneManager.UnloadSceneAsync(currentScene);
         while (!unload.isDone)
         {
-            loadText.GetComponent<Text>().text = "Chargement" + dotLoadingText();
             yield return null;
         }
 
@@ -277,7 +230,6 @@ public class NavigationManager : MonoBehaviour {
 
         while (!layerUnloaded)
         {
-            loadText.GetComponent<Text>().text = "Chargement" + dotLoadingText();
             yield return null;
         }
 
@@ -285,7 +237,6 @@ public class NavigationManager : MonoBehaviour {
 
         while (!layerLoaded)
         {
-            loadText.GetComponent<Text>().text = "Chargement" + dotLoadingText();
             yield return null;
         }
 
@@ -299,8 +250,8 @@ public class NavigationManager : MonoBehaviour {
         currentScene = nextScene;
 
         // Cacher le texte de chargement
+        loadText.GetComponent<DotLoop>().StopDotLoop();
         loadText.GetComponent<Text>().color = new Color(1f, 1f, 1f, 0f);
-        loadText.GetComponent<Text>().text = "Chargement";        
 
         // Fondre depuis le noir
         while (darkAlpha > 0f)
@@ -313,19 +264,6 @@ public class NavigationManager : MonoBehaviour {
         // Jouer la musique correspondant à la scène
         SoundManager.instance.MusicOnScene();
 
-        // Faire apparaître le canvas en fondu
-        /*canvas.GetComponent<CanvasGroup>().alpha = 0f;
-        alpha = canvas.GetComponent<CanvasGroup>().alpha;
-
-        canvas.SetActive(true);
-
-        while (alpha < 1.0f)
-        {
-            alpha = canvas.GetComponent<CanvasGroup>().alpha;
-            canvas.GetComponent<CanvasGroup>().alpha += fadeStep;
-            yield return true;
-        }*/
-
         // Réactiver l'interactabilité du nouveau canvas
         canvas.GetComponent<CanvasGroup>().blocksRaycasts = true;
 
@@ -334,6 +272,7 @@ public class NavigationManager : MonoBehaviour {
 
         // Mettre à jour les indicateurs
         wCount = 0;
+        loadingString = "Chargement";
         addToPreviousList = true;
         lastPanelLoaded = null;
         sceneLoaded = true;
@@ -406,7 +345,7 @@ public class NavigationManager : MonoBehaviour {
     void setWText(GameObject text)
     {
         if (wCount >= 29)
-            text.GetComponent<Text>().text = "WAIT4BABA...";
+            loadingString = "WAIT4BABA";
     }
 
     void findPriorityCamera()
