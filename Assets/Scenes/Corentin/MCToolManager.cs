@@ -47,7 +47,7 @@ public class MCToolManager : MonoBehaviour
         Coller,
         None
     };
-
+    public ConfirmationPanel confirmPan;
     public List<GameObject> SelectedNodes = new List<GameObject>();
     public GameObject getTarget;
     [SerializeField]
@@ -88,6 +88,8 @@ public class MCToolManager : MonoBehaviour
     public MCEditor_Proxy[] allUnits;
     string sourceFilePath;
 
+    bool found_not_connex = false;
+
     #region PROPERTIES
     public ToolType CurrentTool
     {
@@ -107,7 +109,7 @@ public class MCToolManager : MonoBehaviour
         currentTool = ToolType.None;
         btn_Selection.onClick.AddListener(() => { CurrentTool = ToolType.Selection; CancelInventory(); SelectionSquare.instance.enabled = true; });
         btn_Main.onClick.AddListener(() => { CurrentTool = ToolType.Hand; CancelInventory(); neverCalculated = true; });
-        btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); ToolUndo(); });
+        btn_Undo.onClick.AddListener(() => { CurrentTool = ToolType.Undo; CancelInventory(); ToggleUndoConfirmationPanel(); });
         btn_Redo.onClick.AddListener(() => { CurrentTool = ToolType.Redo; CancelInventory(); ToolRedo(); });
         btn_Copier.onClick.AddListener(() => { CurrentTool = ToolType.Copier; CancelInventory(); ToolCopier(); });
         btn_Coller.onClick.AddListener(() => { CurrentTool = ToolType.Coller; CancelInventory(); ToolColler(); });
@@ -147,7 +149,7 @@ public class MCToolManager : MonoBehaviour
                 btn_Undo.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
                 CurrentTool = ToolType.Undo;
                 CancelInventory();
-                ToolUndo();
+                ToggleUndoConfirmationPanel();
             }
         
 
@@ -181,7 +183,7 @@ public class MCToolManager : MonoBehaviour
         {
             RaycastHit hitInfo;
             getTarget = ReturnClickedObject(out hitInfo);
-            if (getTarget.name == "PinPrefab(Clone)" || getTarget.name == "PinInPrefab(Clone)" || getTarget.name == "transition(Clone)")
+            if (getTarget.name == "PinPrefab(Clone)" || getTarget.name == "PinInPrefab(Clone)" || getTarget.name == "transition(Clone)" || getTarget.name == "pinOut(Clone)")
             {
                 SelectionSquare.instance.enabled = false;
                 isMouseDragging = false;
@@ -283,7 +285,7 @@ public class MCToolManager : MonoBehaviour
             else
             {
                 ToolMain_ConsolidateNodes();
-                TemporarySave();
+                checkSave();
             }
         }
 
@@ -292,7 +294,7 @@ public class MCToolManager : MonoBehaviour
         {
             DeleteNodes();
             SelectedNodes.Clear();
-            TemporarySave();
+            checkSave();
         }
     }
     void DeleteTemporary_Backup()
@@ -389,28 +391,67 @@ public class MCToolManager : MonoBehaviour
     void ToolColler()
     {
         Vector3 CopyPos = new Vector3();
-        Vector3 Offset = new Vector3(1.5f, -1.5f, 0.0f);
+        Vector3 Offset = new Vector3(2.0f, -2.0f, 0.0f);
 
         foreach (GameObject b in CopyNodes)
         {
             CopyPos = b.transform.position + Offset;
             if (b.GetComponent<ProxyABParam>())
             {
-                IABParam newParam = b.GetComponent<ProxyABParam>().AbParam;
+                IABParam newParam = b.GetComponent<ProxyABParam>().AbParam.Clone();
                 ProxyABParam result = MCEditor_Proxy_Factory.instantiateParam(newParam, false);
                 result.gameObject.transform.position = b.gameObject.transform.position + Offset;
+                MCEditorManager.positioningProxy(result.GetComponent<MCEditor_Proxy>());
             }
             if (b.GetComponent<ProxyABOperator>())
             {
-                IABOperator newOperator = b.GetComponent<ProxyABOperator>().AbOperator;
+                IABOperator newOperator = b.GetComponent<ProxyABOperator>().AbOperator.Clone();
                 ProxyABOperator result = MCEditor_Proxy_Factory.instantiateOperator(newOperator, false);
                 result.gameObject.transform.position = b.gameObject.transform.position + Offset;
+                MCEditorManager.positioningProxy(result.GetComponent<MCEditor_Proxy>());
             }
         }
-        CopyNodes.Clear();
-        SelectedNodes.Clear();
+        //CopyNodes.Clear();
+        //SelectedNodes.Clear();
         hasBeenAdded = false;
-        TemporarySave();
+        checkSave(); 
+    }
+
+
+    public void checkSave()
+    {
+        foreach(MCEditor_Proxy b in allUnits)
+        {
+            if (!b.isConnected())
+            {
+                found_not_connex = true;
+                break;
+            }
+            found_not_connex = false;
+
+        }
+        if (found_not_connex)
+        {
+            btn_Undo.GetComponent<Image>().color = Color.red;
+            btn_Redo.GetComponent<Image>().color = Color.red;
+
+        }
+        else
+        {
+            btn_Undo.GetComponent<Image>().color = Color.white;
+            btn_Redo.GetComponent<Image>().color = Color.white;
+            TemporarySave();
+        }
+
+    }
+
+    public void ToggleUndoConfirmationPanel()
+    {
+        if (found_not_connex)
+        {
+            confirmPan.TogglePanel(3);
+        }
+        else ToolUndo();
     }
 
     #endregion
@@ -439,19 +480,44 @@ public class MCToolManager : MonoBehaviour
                 SelectedNodes.Clear();
             }
         }
-        TemporarySave();
+        checkSave();
     }
     #endregion
 
     #region UNDO
-    private void ToolUndo()
+    public void ToolUndo()
     {
         /*if (id == idmax)
         {
             idmax++;
             MCEditorManager.instance.Temporary_Save_MC_Behavior(cast_name, idmax.ToString());
         }*/
+        if (id == 0)
+        {
+            string destinationFolderPath = AppContextManager.instance.ActiveSpecieFolderPath;
+            string sourcePosition = sourceFilePath + "_POSITION_" + id.ToString() + ".csv";
+            string sourceBehavior = sourceFilePath + "_" + id.ToString() + ".csv";
+            List<MCEditor_Proxy> allProxies = new List<MCEditor_Proxy>();
+            MCEditor_Proxy initToDestroy = null;
+            foreach (MCEditor_Proxy b in allUnits)
+            {
+                if (b.GetComponent<ProxyABState>() && b.GetComponent<ProxyABState>().AbState.Id == MCEditorManager.instance.AbModel.InitStateId)
+                {
+                    initToDestroy = b;
+                }
+                else
+                {
+                    allProxies.Add(b.GetComponent<MCEditor_Proxy>());
+                }
+            }
+            MCEditorManager.instance.deleteSelectedProxies(allProxies);
+            MCEditorManager.instance.forcedeleteProxy((ProxyABState)initToDestroy);
 
+            SelectedNodes.Clear();
+            MCEditorManager.instance.TemporarySetupModel(cast_name, id.ToString());
+        }
+        btn_Undo.GetComponent<Image>().color = Color.white;
+        btn_Redo.GetComponent<Image>().color = Color.white;
         if (!IdExists(id - 1))
         {
             return;
@@ -496,6 +562,7 @@ public class MCToolManager : MonoBehaviour
             MCEditorManager.instance.TemporarySetupModel(cast_name, id.ToString());
             //Debug.Log("LOAD: " + cast_name + "_" + id.ToString());
         }
+
     }
     #endregion
 
