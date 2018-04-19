@@ -650,16 +650,16 @@ public class InGameUIController : MonoBehaviour {
 
                 //Score 
                 J1_scoreUnitCost.text = "Détails : \r\n " +
-                    "Unités(en vie) : " + gameManager.Score(PlayerAuthority.Player1).ToString() + " \r\n" + 
+                    "Unités(en vie) : " + gameManager.SumProdCost(PlayerAuthority.Player1).ToString() + " \r\n" + 
                     "Ressources : " + gameManager.sumResources(PlayerAuthority.Player1).ToString();
                 J1_scoreUnitCost.color = colorPlayer1; 
                 J2_scoreUnitCost.text = "Détails :  \r\n" +
-                   "Unités(en vie) : " + gameManager.Score(PlayerAuthority.Player2).ToString() + " \r\n" + 
+                   "Unités(en vie) : " + gameManager.SumProdCost(PlayerAuthority.Player2).ToString() + " \r\n" + 
                    "Ressources : " + gameManager.sumResources(PlayerAuthority.Player2).ToString();
                 J2_scoreUnitCost.color = colorPlayer2; 
-                J1_ScoreFinal.text = "   SCORE : " + (gameManager.Score(PlayerAuthority.Player1) + gameManager.sumResources(PlayerAuthority.Player1)).ToString();
-                J1_ScoreFinal.color = colorPlayer1; 
-                J2_ScoreFinal.text = "   SCORE : " + (gameManager.Score(PlayerAuthority.Player2) + gameManager.sumResources(PlayerAuthority.Player2)).ToString();
+                J1_ScoreFinal.text = "   SCORE : " + gameManager.Score(PlayerAuthority.Player1).ToString();
+                J1_ScoreFinal.color = colorPlayer1;
+                J2_ScoreFinal.text = "   SCORE : " + gameManager.Score(PlayerAuthority.Player2).ToString() ;
                 J2_ScoreFinal.color = colorPlayer2; 
 
                 //Destroy pictPrefabs
