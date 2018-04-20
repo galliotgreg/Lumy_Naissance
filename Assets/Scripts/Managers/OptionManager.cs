@@ -118,8 +118,8 @@ public class OptionManager : MonoBehaviour {
             sliderMovementSensitivity.value = SwapManager.instance.getPlayerMouseSensitivity();
         }
         sliderMovementSensitivity.onValueChanged.AddListener(ChangeSensitivity);
-
         closePanel.onClick.AddListener(quitPause); 
+        
     }
 
     private void quitPause()
@@ -178,8 +178,10 @@ public class OptionManager : MonoBehaviour {
         DebugTraceJ2();
     }
     private void DebugDirectionJ1() {
-        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha1)) {
+
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha1)) {
             directionLumy.isOn = !directionLumy.isOn;
+           
         }
         if (directionLumy.isOn)
         {
@@ -188,6 +190,15 @@ public class OptionManager : MonoBehaviour {
         else
         {
             toutActiver.isOn = false;
+        }
+
+        AgentScript[] agents = FindObjectsOfType<AgentScript>();
+        foreach (AgentScript ag in agents)
+        {
+            if (ag.GetComponentInParent<AgentContext>().Home.name == "p1_hive")
+            {
+                ag.GetComponentInChildren<LineRenderer>().enabled = directionLumy.isOn;
+            }
         }
     }
 
@@ -203,19 +214,40 @@ public class OptionManager : MonoBehaviour {
         {
             toutActiver.isOn = false;
         }
+
+        AgentScript[] agents = FindObjectsOfType<AgentScript>();
+        foreach(AgentScript ag in agents)
+        {
+            if(ag.GetComponentInParent<AgentContext>().Home.name == "p2_hive")
+            {
+                ag.GetComponentInChildren<LineRenderer>().enabled = directionLumyJ2.isOn;
+            } 
+        }
     }
 
     private void DebugTraceJ1() {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.T) && Input.GetKeyDown(KeyCode.Alpha1)) {
             trace.isOn = !trace.isOn;
+            
         }
         if (Trace.isOn)
         {
+
             toutDesactiver.isOn = false;
         }
         else
         {
             toutActiver.isOn = false;
+        }
+
+        TraceUnitGameObject[] traceUnitObject = FindObjectsOfType<TraceUnitGameObject>();
+
+        foreach (TraceUnitGameObject tug in traceUnitObject)
+        {
+            if(tug.gameObject.GetComponentInParent<TraceScript>().Authority== PlayerAuthority.Player1)
+            {
+                tug.gameObject.GetComponent<MeshRenderer>().enabled = trace.isOn; 
+            }
         }
     }
 
@@ -231,6 +263,17 @@ public class OptionManager : MonoBehaviour {
         {
             toutActiver.isOn = false;
         }
+
+        TraceUnitGameObject[] traceUnitObject = FindObjectsOfType<TraceUnitGameObject>();
+
+        foreach (TraceUnitGameObject tug in traceUnitObject)
+        {
+            if (tug.gameObject.GetComponentInParent<TraceScript>().Authority == PlayerAuthority.Player2)
+            {
+                tug.gameObject.GetComponent<MeshRenderer>().enabled = traceJ2.isOn;
+            }
+        }
+
     }
 
     private void DebugGisement()
