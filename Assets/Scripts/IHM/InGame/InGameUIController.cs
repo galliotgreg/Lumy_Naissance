@@ -541,8 +541,16 @@ public class InGameUIController : MonoBehaviour {
         else if (statePlayPause == false)
         {
             pp.sprite = pause;
+        } 
+        if(Time.timeScale == 0)
+        {
+            SoundManager.instance.PlayPlayGameSFX();
         }
-
+        else
+        {
+            SoundManager.instance.PlayPauseGameSFX(); 
+        }
+        
         GameManager.instance.PauseGame();
         statePlayPause = !statePlayPause;
     }
