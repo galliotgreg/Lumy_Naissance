@@ -8,7 +8,7 @@ public class SoundManager : MonoBehaviour
     public bool oneIsMain = true;
     public float fadeOutFactor = 1f;
     public float fadeInFactor = 100f;
-    public float volumeJoueur = 1f;
+    public float volumeJoueur;
     string currentScene;
     List<string> previousScene;
 
@@ -80,8 +80,18 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] onClickButtonClips;
     #endregion
 
-    public bool isAllreadyPlaying = false;
+    public bool isAllreadyPlaying = false;  
 
+    private void Start()
+    {
+        inGameFXSource.volume = SwapManager.instance.getPlayerPrefSFX();
+        lumyFxSource.volume = SwapManager.instance.getPlayerPrefSFX();
+        menuFxSource.volume = SwapManager.instance.getPlayerPrefSFX();
+
+        musicSource.volume = SwapManager.instance.getPlayerPrefMusic();
+        musicSource2.volume = SwapManager.instance.getPlayerPrefMusic();
+        volumeJoueur = SwapManager.instance.getPlayerPrefMusic();
+    }
     void Awake()
     {
         //Check if there is already an instance of SoundManager

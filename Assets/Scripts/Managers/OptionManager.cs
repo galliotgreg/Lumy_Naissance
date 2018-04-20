@@ -719,7 +719,7 @@ public class OptionManager : MonoBehaviour {
 
     public void getPlayerPreferencesDebug()
     {
-        #region set Player preference General
+        #region get Player preference General
         gisements.isOn = SwapManager.instance.getPlayerGisementKey();
         toutDesactiver.isOn = SwapManager.instance.getPlayerToutDesactiverKey();
         toutActiver.isOn = SwapManager.instance.getPlayerToutAfficherKey();
