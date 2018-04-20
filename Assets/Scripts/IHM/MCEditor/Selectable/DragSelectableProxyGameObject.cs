@@ -46,7 +46,7 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 
 	// Update is called once per frame
 	protected void Update () {
-		if (mouseOver) {
+		if (mouseOver && MCEditor_Proxy_Factory.instance.InteractableZone.IsHover) {
 			setColor (hoverColor);            
 		} else {            
             if (selected) {
@@ -87,7 +87,9 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
 
 			clicked = false;
 		} else {
-			clicked = true;
+			if( MCEditor_Proxy_Factory.instance.InteractableZone.IsHover ){
+				clicked = true;
+			}
 		}
 	}        
 
@@ -136,9 +138,11 @@ public abstract class DragSelectableProxyGameObject : MonoBehaviour {
     }
 
     protected void OnMouseDown(){
-		firstSelected = this;
+		if (MCEditor_Proxy_Factory.instance.InteractableZone.IsHover) {
+			firstSelected = this;
 
-		selectGameObject ();
+			selectGameObject ();
+		}
 	}
 
    protected void ShowToolTip()
