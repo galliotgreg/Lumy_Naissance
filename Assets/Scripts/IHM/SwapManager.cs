@@ -23,8 +23,17 @@ public class SwapManager : MonoBehaviour
     private string KeyPlayerGisement = "GisementKey";
     private string KeyPlayerToutAfficher = "ToutAfficherKey";
     private string KeyPlayerToutDesactiver = "ToutDesactiverKey";
+    private string KeyMouseSensitivity = "SensitivityKey";
 
-    private string KeyMouseSensitivity = "SensitivityKey"; 
+    //Player preferences Sound
+    private string keyPlayerSFXVolume = "SFXVolumeKey";
+    private string keyPlayerMusicVolume = "MusicVolumeKey";
+    private string keyPlayerGeneralVolume = "GeneralVolumeKey";
+
+    //player preferences Video
+    private string keyPlayerResolution = "ResolutionKey";
+    private string keyWindowedPref = "WindowedPrefKey";
+    private string keyQualityVideo = "QualityVideoKey";
 
     // The static instance of the Singleton for external access
     public static SwapManager instance = null;
@@ -76,9 +85,6 @@ public class SwapManager : MonoBehaviour
 
 
     }
-
-
-
     /// <summary>
     /// Set the amount of resources that each player will start
     /// </summary>
@@ -505,6 +511,75 @@ public class SwapManager : MonoBehaviour
         {
             return false;
         }
+    }
+    #endregion
+
+    #region set player Video preferences
+    public void setPlayerPrefResolution(int resolution)
+    {
+        PlayerPrefs.SetInt(keyPlayerResolution, resolution);
+    }
+    public void setPlayerPrefWindowed(bool state)
+    {
+        PlayerPrefs.SetInt(keyWindowedPref, state ? 0 : 1);
+    }
+    public void setPlayerPrefQuality(int quality)
+    {
+        PlayerPrefs.SetInt(keyQualityVideo, quality);
+    }
+    #endregion
+
+    #region get player video preferences
+    public int getPlayerPrefResolution()
+    {
+        return PlayerPrefs.GetInt(keyPlayerResolution);
+
+    }
+    public bool getPlayerPrefWindowed()
+    {
+        int value = PlayerPrefs.GetInt(keyWindowedPref);
+        if (value == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public int getPlayerPrefQuality()
+    {
+        return PlayerPrefs.GetInt(keyQualityVideo);
+    }
+    #endregion
+
+    #region set Player Audio preferences
+    public void setPlayerPrefMusic(float volume)
+    {
+        PlayerPrefs.SetFloat(keyPlayerMusicVolume, volume);
+    }
+    public void setPlayerPrefSFX(float volume)
+    {
+        PlayerPrefs.SetFloat(keyPlayerSFXVolume, volume);
+    }
+    public void setPlayerPrefVolumeGeneral(float volume)
+    {
+        PlayerPrefs.SetFloat(keyPlayerGeneralVolume, volume);
+    }
+    #endregion
+
+    #region get Player Audio preferences
+    public float getPlayerPrefMusic()
+    {
+        return PlayerPrefs.GetFloat(keyPlayerMusicVolume);
+    }
+    public float getPlayerPrefSFX()
+    {
+        return PlayerPrefs.GetFloat(keyPlayerSFXVolume);
+    }
+    public float getPlayerPrefGeneral()
+    {
+        return PlayerPrefs.GetFloat(keyPlayerGeneralVolume);
     }
     #endregion
 }

@@ -44,6 +44,10 @@ public class PickAction : GameAction {
 			// Carry it
 			GameObject res = this.agentAttr.addResource(item);
 			res.transform.parent = this.agentEntity.transform;
+            if(InGameUIController.instance.Self == this.agentAttr)
+            {
+                SoundManager.instance.PlayLumyPickupSFX(); 
+            }
 		}
 		else
 		{
