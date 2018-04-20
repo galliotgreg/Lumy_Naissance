@@ -19,6 +19,7 @@ public class MCEditor_BringToFront_Camera : MonoBehaviour {
         CanvasCamera = canvasCam;
 
 		canvas.planeDistance = Mathf.Abs( canvasCam.transform.position.z / 2 );
+		//canvas.planeDistance = Mathf.Abs( canvasCam.transform.position.z + 2 );
 	}
 	
 	// Update is called once per frame

@@ -41,6 +41,7 @@ public class DragObject : MonoBehaviour {
 
 			// Bring Object to front
 			mouse.z = trackingCamera.transform.position.z+2f;
+			//mouse.z = -2.5f; // the canvas is at a distance of 1 from the nodes (the proxy will be in front of the canvas)
 
 			_objectToDrag.transform.position = mouse;
 		}
