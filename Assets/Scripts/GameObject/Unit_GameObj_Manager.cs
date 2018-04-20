@@ -261,7 +261,12 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
 	public void KillUnit( AgentEntity unit ){
-        //add fx 
+
+        if (InGameUIController.instance.Self == unit.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>())
+        {
+            SoundManager.instance.PlayLumyDeathSFX();
+        }
+
         GameObject explosion = Instantiate(Deathexplosion, unit.Context.Model.transform.position, Quaternion.identity);
         //Move behind GameManager (avoid conflict with swapping scene) 
         explosion.transform.SetParent(GameManager.instance.transform);
