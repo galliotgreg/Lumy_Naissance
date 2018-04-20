@@ -158,28 +158,35 @@ public class ProxyABAction : MCEditor_Proxy
     {
         return instantiate(state, calculateActionPosition(parent), parent);
     }
-    public static ProxyABAction instantiate(ABState state, Vector3 position, Transform parent)
+	public static ProxyABAction instantiate(ABState state, Vector3 position, Transform parent){
+		return instantiate(state, calculateActionPosition(parent), parent, MCEditor_Proxy_Factory.instance.ActionPrefab);
+	}
+	public static ProxyABAction instantiateSimple(ABState state, Transform parent, ProxyABAction prefab)
+	{
+		return instantiate(state, calculateActionPosition(parent), parent, prefab, false);
+	}
+	public static ProxyABAction instantiate(ABState state, Vector3 position, Transform parent, ProxyABAction prefab, bool createPin = true)
     {
-        ProxyABAction result = Instantiate<ProxyABAction>(MCEditor_Proxy_Factory.instance.ActionPrefab, parent);
+		ProxyABAction result = Instantiate<ProxyABAction>(prefab, parent);
         result.IsLoaded = true;
         result.transform.position = position;
 
         result.AbState = state;
 
         // Create Pins
-        if (state.Action.Parameters != null)
-        {
-            for (int i = 0; i < state.Action.Parameters.Length; i++)
-            {
-                IABGateOperator param = state.Action.Parameters[i];
-                Pin p = Pin.instantiate(Pin.PinType.ActionParam, Pin.calculatePinPosition(result, Pin.PinType.ActionParam, result), result.transform);
-                p.Pin_order.OrderPosition = i + 1;
-                p.SetPinColor();
-            }
-        }
+		if (createPin) {
+			if (state.Action.Parameters != null) {
+				for (int i = 0; i < state.Action.Parameters.Length; i++) {
+					IABGateOperator param = state.Action.Parameters [i];
+					Pin p = Pin.instantiate (Pin.PinType.ActionParam, Pin.calculatePinPosition (result, Pin.PinType.ActionParam, result), result.transform);
+					p.Pin_order.OrderPosition = i + 1;
+					p.SetPinColor ();
+				}
+			}
 
-        // Income
-        Pin.instantiate(Pin.PinType.TransitionIn, Pin.calculatePinPosition(result, Pin.PinType.TransitionIn, result), result.transform).Pin_order.OrderPosition = 0;
+			// Income
+			Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result, Pin.PinType.TransitionIn, result), result.transform).Pin_order.OrderPosition = 0;
+		}
 
         return result;
     }

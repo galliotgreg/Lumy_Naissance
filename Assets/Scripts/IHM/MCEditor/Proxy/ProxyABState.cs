@@ -168,7 +168,13 @@ public class ProxyABState : MCEditor_Proxy {
 		return instantiate (state, init, calculateStatePosition (parent), parent);
 	}
 	public static ProxyABState instantiate( ABState state, bool init, Vector3 position, Transform parent ){
-		ProxyABState result = Instantiate<ProxyABState>( MCEditor_Proxy_Factory.instance.StatePrefab, parent);
+		return instantiate (state, init, position, parent, MCEditor_Proxy_Factory.instance.StatePrefab);
+	}
+	public static ProxyABState instantiateSimple( ABState state, bool init, Transform parent, ProxyABState prefab ){
+		return instantiate (state, init, calculateStatePosition (parent), parent, prefab, false);
+	}
+	public static ProxyABState instantiate( ABState state, bool init, Vector3 position, Transform parent, ProxyABState prefab, bool createPin = true ){
+		ProxyABState result = Instantiate<ProxyABState>( prefab, parent);
 		result.IsLoaded = true;
 		result.transform.position = position;
 		result.AbState = state;
@@ -177,15 +183,17 @@ public class ProxyABState : MCEditor_Proxy {
 		result.GetComponent<ProxyABState>().AbState = state;
 
 		// Income Pin
-		if (!init) {
-			Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result), result.transform);
+		if (createPin) {
+			if (!init) {
+				Pin.instantiate (Pin.PinType.TransitionIn, Pin.calculatePinPosition (result), result.transform);
+			}
+
+			// Extra Outcome Pin : other outcomes will be created with transitions
+			Pin pin = MCEditor_Proxy_Factory.instantiatePin (Pin.PinType.TransitionOut, Pin.calculatePinPosition (state, result.gameObject, true, 1), result.transform);
+			result.ExtraPin = pin;
+
+			result.checkPins ();
 		}
-
-		// Extra Outcome Pin : other outcomes will be created with transitions
-		Pin pin = MCEditor_Proxy_Factory.instantiatePin(Pin.PinType.TransitionOut, Pin.calculatePinPosition(state, result.gameObject, true, 1), result.transform);
-		result.ExtraPin = pin;
-
-		result.checkPins ();
 
 		return result;
 	}

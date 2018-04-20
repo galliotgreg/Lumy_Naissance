@@ -115,15 +115,15 @@ public class MC_Debugger_Manager : MonoBehaviour {
 	void instantiateTracing( Tracing tracing, ABModel model ){
 		if (tracing != null && model != null) {
 			List<TracingInfo> tracingList = tracing.getTracingInfo ();
-			List<Debugger_Node> proxies = new List<Debugger_Node> ();
+			//List<Debugger_Node> proxies = new List<Debugger_Node> ();
+			List<MC_Proxy_Debugger_Image> proxies = new List<MC_Proxy_Debugger_Image> ();
 			for (int i = 0; i < tracingList.Count; i++) {
 				// State
-				proxies.Add (tracingList [i].InfoProxy (model, container.transform));
+				//proxies.Add (tracingList [i].InfoProxy (model, container.transform));
+				proxies.Add (tracingList [i].InfoProxy_Image (model, container.transform));
 				UnityEngine.UI.LayoutElement layoutElement = proxies [i].gameObject.AddComponent<UnityEngine.UI.LayoutElement> ();
-				layoutElement.flexibleHeight = 70;
+				layoutElement.flexibleHeight = 120;
 				//proxies [i].transform.position = new Vector3 (0, (tracingList.Count - i) * 1.5f, 0);
-
-				// Transition
 			}
 		}
 	}
