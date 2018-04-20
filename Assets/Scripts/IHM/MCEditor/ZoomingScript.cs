@@ -15,6 +15,44 @@ public class ZoomingScript : MonoBehaviour
     [SerializeField]
     private DropArea zommingZone;
 
+	[SerializeField]
+	Camera zoomingCam;
+	[SerializeField]
+	float initialHeight;
+
+	#region Properties
+
+	private Camera ZoomingCam {
+		set{
+			zoomingCam = value;
+			initialHeight = CurrentHeight;
+		}
+	}
+
+	public float InitialHeight {
+		get {
+			return initialHeight;
+		}
+	}
+
+	public float CurrentHeight {
+		get {
+			return zoomingCam.orthographicSize*2;
+		}
+	}
+
+	public float CurrentWidth {
+		get {
+			return CurrentHeight * zoomingCam.aspect;
+		}
+	}
+
+	#endregion
+
+	void Start(){
+		ZoomingCam = GameObject.Find("Camera").GetComponent<Camera>();
+	}
+
     void Update()
     {
         if (GameObject.FindGameObjectWithTag("MCEditor_DialogBox"))
@@ -23,12 +61,12 @@ public class ZoomingScript : MonoBehaviour
         }
         else isZoomable = true;
 
-        if (isZoomable && zommingZone.CanDrop)
+		if (isZoomable && zommingZone.IsHover)
         {
-            float prev_size = GameObject.Find("Camera").GetComponent<Camera>().orthographicSize;
+			float prev_size = zoomingCam.orthographicSize;
             float new_size = prev_size - Input.GetAxis("Mouse ScrollWheel") * sensitivity;
             new_size = Mathf.Clamp(new_size, minSize, maxSize);
-            GameObject.Find("Camera").GetComponent<Camera>().orthographicSize = new_size;
+			zoomingCam.orthographicSize = new_size;
         }
 
         /*dialogBox = GameObject.FindGameObjectWithTag("MCEditor_DialogBox");

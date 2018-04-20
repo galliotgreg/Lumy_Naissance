@@ -567,6 +567,8 @@ MonoBehaviour:
   minSize: 1
   maxSize: 40
   zommingZone: {fileID: 1988578283}
+  zoomingCam: {fileID: 0}
+  initialHeight: 0
 --- !u!114 &61961876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1547,7 +1549,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1789716051}
   m_HandleRect: {fileID: 1789716050}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1663,7 +1665,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2110574396}
   m_HandleRect: {fileID: 2110574395}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4864,6 +4866,11 @@ Prefab:
       propertyPath: container
       value: 
       objectReference: {fileID: 473562053}
+    - target: {fileID: 114954168902088938, guid: 5c9828609c145334ea730ef0a1511375,
+        type: 2}
+      propertyPath: camHandler
+      value: 
+      objectReference: {fileID: 61961875}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5c9828609c145334ea730ef0a1511375, type: 2}
   m_IsPrefabParent: 0
@@ -17864,7 +17871,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 245449303}
   m_HandleRect: {fileID: 245449302}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

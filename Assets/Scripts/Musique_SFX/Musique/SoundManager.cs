@@ -73,6 +73,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] onClickMenuClips;
     public AudioClip[] addStatSwarmClips;
     public AudioClip[] removeStatSwarmClips;
+    public AudioClip[] launchGame;
 
     //General
     public AudioClip[] onHoverButtonClips;
@@ -278,17 +279,21 @@ public class SoundManager : MonoBehaviour
     {
         RandomizeClips(removeStatSwarmClips, menuFxSource, true);
     }
+    public void PlayLaunchGameSFX()
+    {
+        RandomizeClips(launchGame, menuFxSource, true);
+    }
 
     #endregion
 
     #region General    
     public void PlayOnHoverButtonSFX()
     {
-        RandomizeClips(removeStatSwarmClips, menuFxSource, true, true);
+        RandomizeClips(onHoverButtonClips, menuFxSource, true, false);
     }    
     public void PlayOnClickButtonSFX()
     {
-        RandomizeClips(removeStatSwarmClips, menuFxSource, true, true);
+        RandomizeClips(onClickButtonClips, menuFxSource);
     }
     #endregion
 
