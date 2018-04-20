@@ -262,20 +262,29 @@ public class GameManager : MonoBehaviour {
         if (timerLeft <= 0) {
             gameNotOver = false;
             int scoreJ1 = (int) Score(PlayerAuthority.Player1);
-            int scoreJ2 = (int) Score(PlayerAuthority.Player2); 
-
-            if (scoreJ1 >scoreJ2)
+            int scoreJ2 = (int) Score(PlayerAuthority.Player2);
+            Debug.Log(scoreJ1 + " | " + scoreJ2);
+            if (scoreJ1 > scoreJ2)
+            {
                 winnerPlayer = Winner.Player1E;
+            }
             else if (scoreJ2 > scoreJ1)
+            {
                 winnerPlayer = Winner.Player2E;
+            }
             else
+            {
                 winnerPlayer = Winner.Equality;
+            }
+
         }
 
     }
 
     public float Score(PlayerAuthority authority) {
+       
         return sumResources(authority) + SumProdCost(authority);
+
     }
 
     public float SumProdCost(PlayerAuthority authority) {

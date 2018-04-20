@@ -16,17 +16,16 @@ public class MoveCamera : MonoBehaviour
 
     void Update()
     {
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            isMovable = !isMovable;
-        }
-
         if (GameObject.FindGameObjectWithTag("MCEditor_DialogBox"))
         {
             noDialogBox = false;
         }
         else noDialogBox = true;
+
+        if (Input.GetMouseButtonDown(1) && noDialogBox)
+        {
+            isMovable = !isMovable;
+        }
 
         if (isMovable && noDialogBox)
         {
