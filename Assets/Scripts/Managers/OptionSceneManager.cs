@@ -30,6 +30,45 @@ public class OptionSceneManager : MonoBehaviour {
     private Slider music;
     [SerializeField]
     private float SFXmax = 0.09f;
+
+    public Slider Sfx
+    {
+        get
+        {
+            return sfx;
+        }
+
+        set
+        {
+            sfx = value;
+        }
+    }
+
+    public Slider General
+    {
+        get
+        {
+            return general;
+        }
+
+        set
+        {
+            general = value;
+        }
+    }
+
+    public Slider Music
+    {
+        get
+        {
+            return music;
+        }
+
+        set
+        {
+            music = value;
+        }
+    }
     #endregion
     #endregion
 
@@ -114,6 +153,7 @@ public class OptionSceneManager : MonoBehaviour {
             default:
                 break;
         }
+        SwapManager.instance.setPlayerPrefResolution(resolution.value);
     }
 
     private void SetWindowed()
@@ -126,12 +166,14 @@ public class OptionSceneManager : MonoBehaviour {
         {
             Screen.fullScreen = true;
         }
+        SwapManager.instance.setPlayerPrefWindowed(windowed.isOn);
     }
 
     private void SetQuality()
     {
         QualitySettings.SetQualityLevel(quality.value);
-        Debug.Log(QualitySettings.GetQualityLevel());
+        //Debug.Log(QualitySettings.GetQualityLevel());
+        SwapManager.instance.setPlayerPrefQuality(quality.value);
     }
 
     public void SetVolumeFX()
@@ -140,7 +182,10 @@ public class OptionSceneManager : MonoBehaviour {
         SoundManager.instance.lumyFxSource.volume = sfx.value;
         SoundManager.instance.menuFxSource.volume = sfx.value;
 
-        SoundManager.instance.PlayFeebackSFXVolumeSFX();     
+        SoundManager.instance.PlayFeebackSFXVolumeSFX();
+
+        //Player Pref
+        SwapManager.instance.setPlayerPrefSFX(sfx.value);
     }
 
     private void SetVolumeMusic()
@@ -148,6 +193,8 @@ public class OptionSceneManager : MonoBehaviour {
         SoundManager.instance.musicSource.volume = music.value;
         SoundManager.instance.musicSource2.volume = music.value;
         SoundManager.instance.volumeJoueur = music.value;
+        //Player Pref
+        SwapManager.instance.setPlayerPrefMusic(music.value);
     }
 
     public void SetVolumeGeneral()
@@ -162,5 +209,8 @@ public class OptionSceneManager : MonoBehaviour {
         SetVolumeFX();
         music.value = general.value;
         SetVolumeMusic();
+        //Player Pref
+        SwapManager.instance.setPlayerPrefVolumeGeneral(general.value);
     }
+
 }
