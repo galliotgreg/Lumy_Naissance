@@ -204,7 +204,7 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayPopUpDialogueSFX()
     {
-        RandomizeClips(popUpDialogueClips, menuFxSource, true, true);
+        RandomizeClips(popUpDialogueClips, menuFxSource);
     }
     #endregion
 
