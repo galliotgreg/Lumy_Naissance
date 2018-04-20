@@ -10,6 +10,7 @@ public class ButtonPartiePerso : MonoBehaviour {
     public Button editRight;
     public Button mapLeft;
     public Button mapRight;
+    public Button tuto;
 
     public Button play;
 
@@ -19,6 +20,7 @@ public class ButtonPartiePerso : MonoBehaviour {
         mapRight.onClick.AddListener(SoundManager.instance.PlayOnClickButtonSFX);
         editLeft.onClick.AddListener(SoundManager.instance.PlayOnClickButtonSFX);
         editRight.onClick.AddListener(SoundManager.instance.PlayOnClickButtonSFX);
+        tuto.onClick.AddListener(SoundManager.instance.PlayHintSFX);
 
         play.onClick.AddListener(SoundManager.instance.PlayLaunchGameSFX);
     }
