@@ -20,8 +20,8 @@ public class Unit_GameObj_Manager : MonoBehaviour {
     public int maxLights = 10;
 
     //Variables for timer
-    private float timerJ1 =5;
-    private float timerJ2 =5;
+    private float timerJ1 = 5;
+    private float timerJ2 = 5;
     private bool isJ1Damaged = false;
     private bool isJ2Damaged = false;
     private bool SoundJ1Played = false;
