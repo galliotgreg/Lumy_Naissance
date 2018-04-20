@@ -186,6 +186,16 @@ public class AgentBehavior : MonoBehaviour
 					case ABColor.Color.Blue:
 						traceAction.Color = Color.blue;
 						break;
+
+                    case ABColor.Color.Cyan:
+						traceAction.Color = Color.cyan;
+						break;
+                    case ABColor.Color.Magenta:
+						traceAction.Color = Color.magenta;
+						break;
+					case ABColor.Color.Yellow:
+						traceAction.Color = Color.yellow;
+						break;
 					}
 
 					// path
