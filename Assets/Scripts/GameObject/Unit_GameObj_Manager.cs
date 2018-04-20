@@ -262,7 +262,9 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	public void KillUnit( AgentEntity unit ){
 
-        if (InGameUIController.instance.Self == unit.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>())
+        if (InGameUIController.instance != null &&
+            InGameUIController.instance.Self 
+            == unit.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>())
         {
             SoundManager.instance.PlayLumyDeathSFX();
         }
