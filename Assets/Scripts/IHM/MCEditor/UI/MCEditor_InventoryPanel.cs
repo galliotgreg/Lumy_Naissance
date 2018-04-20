@@ -46,8 +46,8 @@ public class MCEditor_InventoryPanel : MonoBehaviour {
 		adjustItems ();
 
 		// trick for updating canvas
-		canvas.scaleFactor = 2;
-		canvas.scaleFactor = 1;
+		//canvas.scaleFactor = 2;
+		//canvas.scaleFactor = 1;
 	}
 
 	void adjustItems(){
