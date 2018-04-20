@@ -33,7 +33,7 @@ public class AB_RefTab_WhereLess_RefTab_Txt_Scal_Operator : ABOperator<ABTable<A
 
         for (int i = 0; i < tab.Values.Length; i++) {
 
-            if (tab.Values[i].GetAttr(text.Value) != null && ((ABScalar)tab.Values[i].GetAttr(text.Value)).Value > b1.Value) {
+            if (tab.Values[i].GetAttr(text.Value) != null && ((ABScalar)tab.Values[i].GetAttr(text.Value)).Value < b1.Value) {
                 listResult.Add(tab.Values[i]);
             }
         }
