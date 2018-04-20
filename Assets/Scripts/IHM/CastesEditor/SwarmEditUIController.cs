@@ -1858,7 +1858,6 @@ public class SwarmEditUIController : MonoBehaviour
         confirmationPanelsList[1].SetActive(false);
         confirmationPanelsList[2].SetActive(false);
         //Get Cast name
-        
     }
 
     public void SelectLumy(string lumyName)
