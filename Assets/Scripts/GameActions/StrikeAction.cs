@@ -35,7 +35,7 @@ public class StrikeAction : GameAction {
 				projectile.transform.SetParent(GameManager.instance.transform);
 			}
 
-            if(InGameUIController.instance.Self == this.agentAttr)
+            if(InGameUIController.instance != null && InGameUIController.instance.Self == this.agentAttr)
             {
                 SoundManager.instance.PlayLumyAttackSFX(); 
             }
