@@ -35,18 +35,18 @@ public class ProxyABAction : MCEditor_Proxy
         }
         set
         {
-            GameObject picto = MCPictFactory.instance.InstanciatePict(abState.Action.Type.ToString());
-            UnityEngine.UI.Text text = GetComponentInChildren<UnityEngine.UI.Text>();
-            if (picto != null)
-            {
-                picto.transform.SetParent(this.transform, false);
-                text.enabled = false;
-            }
-            else
-            {
-                text.text = value;
-                text.enabled = true;
-            }
+            
+			GameObject picto = setImage();
+
+			if (picto != null)
+			{
+				text.gameObject.SetActive (false);
+			}
+			else
+			{
+				Text.text = name;
+			}
+
             abState.Name = value;
             name = value;
         }
@@ -65,6 +65,7 @@ public class ProxyABAction : MCEditor_Proxy
             if (value != null)
             {
                 Name = value.Name;
+				setImage();
             }
         }
     }
@@ -201,6 +202,11 @@ public class ProxyABAction : MCEditor_Proxy
     {
         MCEditorManager.instance.deleteProxy(this);
     }
+
+	protected override Pin resultPin ()
+	{
+		return null;
+	}
 
     #endregion
 }

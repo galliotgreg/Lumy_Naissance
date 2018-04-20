@@ -3,7 +3,7 @@
 		"Title": "Généralités",
 		"Content": [{
 				"SubTitle": "",
-				"Content": " Vous trouverez ici une liste exhaustive de tous les opérateurs classés selon la fonction qu'ils exécutent."
+				"Content": "Vous trouverez ici une liste exhaustive de tous les opérateurs, classés selon leur fonction."
 			}
 		],
 		"Image": "",
@@ -14,19 +14,19 @@
 		"Title": "Opérateurs Logiques",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Les Opérateurs Logiques permettent d'établir des liens logiques entre les deux attributs qu'ils prennent en entrée. Ils renvoient un booléen."
+				"Content": "Les opérateurs logiques permettent d'établir des liens logiques entre leurs deux arguments. Ils renvoient un booléen."
 			},
 			{
 				"SubTitle": "Bool_And_Bool_Bool",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : B&&BB\nArgument 1 : <color=#4142c3ff>bool</color>\n\nArgument 2 : <color=#4142c3ff>bool</color>\n\nDescription : Opérateur logique \"And\""
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B&&BB\nArgument 1 : <color=#4142c3ff>bool</color>\nArgument 2 : <color=#4142c3ff>bool</color>\nDescription : Opérateur logique \"and\""
 			},
 			{
 				"SubTitle": "Bool_Not_Bool",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : B!B\nArgument 1 : <color=#4142c3ff>bool</color>\n\nDescription : Opérateur logique \"Not\""
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!B\nArgument 1 : <color=#4142c3ff>bool</color>\nDescription : Opérateur logique \"not\""
 			},
 			{
 				"SubTitle": "Bool_Or_Bool_Bool",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : B||BB\nArgument 1 : <color=#4142c3ff>bool</color>\n\nArgument 2 : <color=#4142c3ff>bool</color>\n\nDescription : Opérateur logique \"Or\""
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B||BB\nArgument 1 : <color=#4142c3ff>bool</color>\nArgument 2 : <color=#4142c3ff>bool</color>\nDescription : Opérateur logique \"or\""
 			}
 		],
 		"Image": "",
@@ -37,31 +37,31 @@
 		"Title": "Opérateurs de Définition",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Les Opérateurs de définition sont utilisés pour vérifier si un paramètre est bien défini, afin d'éviter des erreurs en utilisant des opérateurs prenant en entrée des paramètres non existants."
+				"Content": "Les opérateurs de définition permettent de vérifier si un paramètre est bien défini, afin d'éviter des erreurs résultant d'opérateurs prenant en entrée des paramètres non-existants."
 			},
 			{
 				"SubTitle": "Bool_IsSet_Bool",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : BisSetB\nArgument 1 : <color=#4142c3ff>bool</color>\n\nDescription : Vrai si l'argument \"arg1\" en paramètre est un booleen défini, sinon retourne faux."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BisSetB\nArgument 1 : <color=#4142c3ff>bool</color>\nDescription : Renvoie vrai si l'argument \"arg1\" en paramètre est un booleen défini, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "Bool_IsSet_Color",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : BisSetC\nArgument 1 : <color=#564b6fff>color</color>\nDescription : Vrai si l'argument \"arg1\" en paramètre est une couleur définie, sinon retourne faux."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BisSetC\nArgument 1 : <color=#564b6fff>color</color>\nDescription : Renvoie vrai si l'argument \"arg1\" en paramètre est une couleur définie, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "Bool_IsSet_Ref",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : BisSetR\nArgument 1 : <color=#b4426bff>ref</color>\nDescription : Vrai si l'argument \"arg1\" en paramètre est une reference définie, sinon retourne faux."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BisSetR\nArgument 1 : <color=#b4426bff>ref</color>\nDescription : Renvoie vrai si l'argument \"arg1\" en paramètre est une référence définie, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "Bool_IsSet_Scal",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : BisSetS\nArgument 1 : <color=#816d7bff>scal</color>\nDescription : Vrai si l'argument \"arg1\" en paramètre est un scalaire défini, sinon retourne faux."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BisSetS\nArgument 1 : <color=#816d7bff>scal</color>\nDescription : Renvoie vrai si l'argument \"arg1\" en paramètre est un scalaire défini, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "Bool_IsSet_Txt",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : BisSetT\nArgument 1 : <color=#4da0a9ff>txt</color>\nDescription : Vrai si l'argument \"arg1\" en paramètre est un texte défini, sinon retourne faux."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BisSetT\nArgument 1 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie vrai si l'argument \"arg1\" en paramètre est un texte défini, sinon renvoie faux."
 			},
 			{
 				"SubTitle": "Bool_IsSet_Vec",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : BisSetV\nArgument 1 : <color=#a869b9ff>vec</color>\nDescription : Vrai si l'argument \"arg1\" en paramètre est un vecteur défini, sinon retourne faux."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BisSetV\nArgument 1 : <color=#a869b9ff>vec</color>\nDescription : Renvoie vrai si l'argument \"arg1\" en paramètre est un vecteur défini, sinon renvoie faux."
 			}
 		],
 		"Image": "",
@@ -72,23 +72,23 @@
 		"Title": "Opérateurs Mathématiques",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Les Opérateurs mathématiques regroupent les calculs possibles entre des nombres ou des vecteurs."
+				"Content": "Les opérateurs mathématiques regroupent les calculs possibles entre des nombres ou des vecteurs."
 			},
 			{
 				"SubTitle": "Scal_Div_Scal_Scal",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S/SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Division de 2 scalaires."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S/SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Effectue la division de 2 scalaires."
 			},
 			{
 				"SubTitle": "Scal_Prod_Scal_Scal",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S*SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Produit de 2 scalaires."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S*SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Effectue le produit de 2 scalaires."
 			},
 			{
 				"SubTitle": "Scal_Sub_Scal_Scal",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S-SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Soustraction de 2 scalaires."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S-SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Effectue la soustraction de 2 scalaires."
 			},
 			{
 				"SubTitle": "Scal_Sum_Scal_Scal",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S+SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Addition de 2 scalaires."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S+SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Effectue l'addition de 2 scalaires."
 			},
 			{
 				"SubTitle": "Scal_Dist_Vec_Vec",
@@ -96,35 +96,35 @@
 			},
 			{
 				"SubTitle": "ScalTab_Dist_VecTab_Vec",
-				"Content": "Retour : <color=#816d7bff>scal</color>[ ]\nSymbole : S[]distV[]V\nArgument 1 : <color=#a869b9ff>vec</color>[ ]\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Retourne un tableau de distance à partir du tableau de position \"arg1\" et de la position \"arg2\"."
+				"Content": "Retour : scal[ ]\nSymbole : S[ ]distV[ ]V\nArgument 1 : vec[ ]\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Renvoie un tableau de distances à partir du tableau de positions \"arg1\" et de la position \"arg2\"."
 			},
 			{
 				"SubTitle": "Scal_Dot_Vec_Vec",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S.VV\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Produit scalaire de 2 vecteurs."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : S.VV\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Effectue le produit scalaire de 2 vecteurs."
 			},
 			{
 				"SubTitle": "Vec_Prod_Scal_Vec",
-				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V*SV\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Produit d'un scalaire par un vecteur."
+				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V*SV\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Effectue le produit d'un scalaire par un vecteur."
 			},
 			{
 				"SubTitle": "Vec_Prod_Vec_Scal",
-				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V*VS\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Produit d'un vecteur par un scalaire."
+				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V*VS\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Effectue le produit d'un vecteur par un scalaire."
 			},
 			{
 				"SubTitle": "Vec_Sub_Vec_Vec",
-				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V-VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Soustraction de 2 vecteurs."
+				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V-VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Effectue la soustraction de 2 vecteurs."
 			},
 			{
 				"SubTitle": "Vec_Sum_Vec_Vec",
-				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V+VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Addition de 2 vecteurs."
+				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V+VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Effectue l'addition de 2 vecteurs."
 			},
 			{
 				"SubTitle": "Vec_Prod_Vec_Vec",
-				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V*VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Multiplication terme à terme de 2 vecteurs."
+				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V*VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Effectue le produit terme à terme de 2 vecteurs."
 			},
 			{
 				"SubTitle": "Vec_TermDiv_Vec_Vec",
-				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V/VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Division terme à terme de 2 vecteurs."
+				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : V/VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Effectue la division terme à terme de 2 vecteurs."
 			},
 			{
 				"SubTitle": "Vec_RandCircle_Vec_Scal",
@@ -139,66 +139,66 @@
 		"Title": "Opérateurs Comparateurs",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Les Opérateurs Comparateurs examinent l'égalité ou la différence entre deux paramètres de même type. Ils renvoient un booléen."
+				"Content": "Les opérateurs comparateurs contrôlent l'égalité ou la différence entre deux paramètres de même type. Ils renvoient un booléen."
 			},
 			{
 				"SubTitle": "Bool_LessThan_Scal_Scal",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : B<SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Vérifie si arg1 < arg2."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B<SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Vérifie si arg1 est inférieur à arg2."
 			},
 			{
 				"SubTitle": "Bool_GreaterThan_Scal_Scal",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : B>SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Vérifie si arg1 > arg2."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B>SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Vérifie si arg1 est supérieur à arg2."
 			},
 			{
 				"SubTitle": "Bool_Equals_Bool_Bool",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : B==BB\nArgument 1 : <color=#4142c3ff>bool</color>\n\nArgument 2 : <color=#4142c3ff>bool</color>\n\nDescription : Teste l'égalité entre deux booléens."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==BB\nArgument 1 : <color=#4142c3ff>bool</color>\nArgument 2 : <color=#4142c3ff>bool</color>\nDescription : Vérifie l'égalité entre deux booléens."
 			},
 			{
 				"SubTitle": "Bool_Equals_Color_Color",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\n\nSymbole : B==CC\nArgument 1 : <color=#564b6fff>color</color>\nArgument 2 : <color=#564b6fff>color</color>\nDescription : Teste l'égalité entre deux couleurs."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==CC\nArgument 1 : <color=#564b6fff>color</color>\nArgument 2 : <color=#564b6fff>color</color>\nDescription : Vérifie l'égalité entre deux couleurs."
 			},
 			{
 				"SubTitle": "Bool_RefEquals_Ref_Ref",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==RR\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#b4426bff>ref</color>\nDescription : Teste l'égalité entre deux rférences instanciées durant une partie."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==RR\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#b4426bff>ref</color>\nDescription : Vérifie l'égalité entre deux références instanciées durant une partie."
 			},
 			{
 				"SubTitle": "Bool_Equals_Scal_Scal",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Teste l'égalité entre deux scalaires."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Vérifie l'égalité entre deux scalaires."
 			},
 			{
 				"SubTitle": "Bool_Equals_Txt_Txt",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==TT\nArgument 1 : <color=#4da0a9ff>txt</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Teste l'égalité entre deux chaines de caractères."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==TT\nArgument 1 : <color=#4da0a9ff>txt</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Vérifie l'égalité entre deux chaînes de caractères."
 			},
 			{
 				"SubTitle": "Bool_Equals_Vec_Vec",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Teste l'égalité entre deux vecteurs."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B==VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Vérifie l'égalité entre deux vecteurs."
 			},
 			{
 				"SubTitle": "Bool_NotEquals_Bool_Bool",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=BB\nArgument 1 : <color=#4142c3ff>bool</color>\nArgument 2 : <color=#4142c3ff>bool</color>\nDescription : Teste l'inégalité entre deux booléens."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=BB\nArgument 1 : <color=#4142c3ff>bool</color>\nArgument 2 : <color=#4142c3ff>bool</color>\nDescription : Vérifie la différence entre deux booléens."
 			},
 			{
 				"SubTitle": "Bool_NotEquals_Color_Color",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=CC\nArgument 1 : <color=#564b6fff>color</color>\nArgument 2 : <color=#564b6fff>color</color>\nDescription : Teste l'inégalité entre deux couleurs."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=CC\nArgument 1 : <color=#564b6fff>color</color>\nArgument 2 : <color=#564b6fff>color</color>\nDescription : Vérifie la différence entre deux couleurs."
 			},
 			{
 				"SubTitle": "Bool_NotEquals_Ref_Ref",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=RR\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#b4426bff>ref</color>\nDescription : Teste l'inégalité entre deux références instanciées durant une partie."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=RR\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#b4426bff>ref</color>\nDescription : Vérifie la différence entre deux références instanciées durant une partie."
 			},
 			{
 				"SubTitle": "Bool_NotEquals_Scal_Scal",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Teste l'inégalité entre deux scalaires."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=SS\nArgument 1 : <color=#816d7bff>scal</color>\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Vérifie la différence entre deux scalaires."
 			},
 			{
 				"SubTitle": "Bool_NotEquals_Txt_Txt",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=TT\nArgument 1 : <color=#4da0a9ff>txt</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Teste l'inégalité entre deux chaines de caractères."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=TT\nArgument 1 : <color=#4da0a9ff>txt</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Vérifie la différence entre deux chaînes de caractères."
 			},
 			{
 				"SubTitle": "Bool_NotEquals_Vec_Vec",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Teste l'inégalité entre deux vecteurs."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : B!=VV\nArgument 1 : <color=#a869b9ff>vec</color>\nArgument 2 : <color=#a869b9ff>vec</color>\nDescription : Vérifie la différence entre deux vecteurs."
 			}
 		],
-		"Image": "Operator_2_Equals.png",
+		"Image": "",
 		"Video": ""
 	},
 	{
@@ -210,27 +210,27 @@
 			},
 			{
 				"SubTitle": "Bool_Get_BoolTab_Scal",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BgetB[]S\nArgument 1 :  <color=#4142c3ff>bool</color>[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de booléens. Retourne l'élément \"Arg2\" du tableau \"Arg1\"."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BgetB[ ]S\nArgument 1 : bool[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de booléens. Renvoie l'élément \"arg2\" du tableau \"arg1\"."
 			},
 			{
 				"SubTitle": "Color_Get_ColorTab_Scal",
-				"Content": "Retour : <color=#564b6fff>color</color>\nSymbole : CgetC[]S\nArgument 1 : col[]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de couleurs. Retourne l'élément \"Arg2\" du tableau \"Arg1\"."
+				"Content": "Retour : <color=#564b6fff>color</color>\nSymbole : CgetC[ ]S\nArgument 1 : col[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de couleurs. Renvoie l'élément \"arg2\" du tableau \"arg1\"."
 			},
 			{
 				"SubTitle": "Ref_Get_RefTab_Scal",
-				"Content": "Retour : <color=#b4426bff>ref</color>\nSymbole : RgetR[]S\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de références. Retourne l'élément \"Arg2\" du tableau \"Arg1\"."
+				"Content": "Retour : <color=#b4426bff>ref</color>\nSymbole : RgetR[ ]S\nArgument 1 : ref[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de références. Renvoie l'élément \"arg2\" du tableau \"arg1\"."
 			},
 			{
 				"SubTitle": "Scal_Get_ScalTab_Scal",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SgetS[]S\nArgument 1 : <color=#816d7bff>scal</color>[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de scalaires. Retourne l'élément \"Arg2\" du tableau \"Arg1\"."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SgetS[ ]S\nArgument 1 : scal[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de scalaires. Renvoie l'élément \"arg2\" du tableau \"arg1\"."
 			},
 			{
 				"SubTitle": "Txt_Get_TxtTab_Scal",
-				"Content": "Retour : <color=#4da0a9ff>txt</color>\nSymbole : TgetT[]S\nArgument 1 : <color=#4da0a9ff>txt</color>[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de chaines de caractères. Retourne l'élément \"Arg2\" du tableau \"Arg1\"."
+				"Content": "Retour : <color=#4da0a9ff>txt</color>\nSymbole : TgetT[ ]S\nArgument 1 : txt[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de chaînes de caractères. Renvoie l'élément \"arg2\" du tableau \"arg1\"."
 			},
 			{
 				"SubTitle": "Vec_Get_VecTab_Scal",
-				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : VgetV[]S\nArgument 1 : <color=#a869b9ff>vec</color>[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de vecteurs. Retourne l'élément \"Arg2\" du tableau \"Arg1\"."
+				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : VgetV[ ]S\nArgument 1 : vec[ ]\nArgument 2 : <color=#816d7bff>scal</color>\nDescription : Accesseur d'un tableau de vecteurs. Renvoie l'élément \"arg2\" du tableau \"arg1\"."
 			}
 		],
 		"Image": "",
@@ -241,43 +241,43 @@
 		"Title": "Extracteurs",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Les extracteurs ont pour fonction de récupérer un attribut propre à une référence. Le nom de l'attribut doit être indiqué en texte en tant qu' \"arg2\"."
+				"Content": "Les extracteurs ont pour fonction de récupérer un attribut propre à une référence. Le nom de l'attribut doit être indiqué sous forme d'un texte passé en \"arg2\"."
 			},
 			{
 				"SubTitle": "Vec_Get_Ref_Txt",
-				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : VgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un vecteur."
+				"Content": "Retour : <color=#a869b9ff>vec</color>\nSymbole : VgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un vecteur."
 			},
 			{
 				"SubTitle": "Bool_Get_Ref_Txt",
-				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un booléen."
+				"Content": "Retour : <color=#4142c3ff>bool</color>\nSymbole : BgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un booléen."
 			},
 			{
 				"SubTitle": "Color_Get_Ref_Txt",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : CgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être une couleur."
+				"Content": "Retour : <color=#564b6fff>color</color>\nSymbole : CgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être une couleur."
 			},
 			{
 				"SubTitle": "Scal_Get_Ref_Txt",
-				"Content": "Retour : <color=#4da0a9ff>txt</color>\nSymbole : VgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un scalaire."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un scalaire."
 			},
 			{
 				"SubTitle": "Txt_Get_Ref_Txt",
-				"Content": "Retour : <color=#4da0a9ff>txt</color>\nSymbole : VgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un texte."
+				"Content": "Retour : <color=#4da0a9ff>txt</color>\nSymbole : TgetRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un texte."
 			},
 			{
 				"SubTitle": "BoolTab_Get_Ref_Txt",
-				"Content": "Retour :  <color=#4142c3ff>bool</color>[ ]\nSymbole : B[]getRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un tableau de booléens."
+				"Content": "Retour : bool[ ]\nSymbole : B[ ]getRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un tableau de booléens."
 			},
 			{
 				"SubTitle": "VecTab_Get_Ref_Txt",
-				"Content": "Retour : <color=#a869b9ff>vec</color>[ ]\nSymbole : V[]getRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un tableau de vecteurs."
+				"Content": "Retour : vec[ ]\nSymbole : V[ ]getRT\nArgument 1 : <color=#b4426bff>ref</color>\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie l'attribut \"arg2\" de la référence \"arg1\". Cet attribut doit être un tableau de vecteurs."
 			},
 			{
 				"SubTitle": "ScalTab_Get_RefTab_Txt",
-				"Content": "Retour : <color=#816d7bff>scal</color>[ ]\nSymbole : S[]getR[]T\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne un tableau de scalaires en extrayant l'attribut \"arg2\" de chaque référence dans le tableau \"arg1\"."
+				"Content": "Retour : scal[ ]\nSymbole : S[ ]getR[ ]T\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie un tableau de scalaires en extrayant l'attribut \"arg2\" de chaque référence dans le tableau \"arg1\"."
 			},
 			{
 				"SubTitle": "VecTab_Get_RefTab_Txt",
-				"Content": "Retour : <color=#a869b9ff>vec</color>[ ]\nSymbole : V[]getR[]T\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Retourne un tableau de vecteurs en extrayant l'attribut \"arg2\" de chaque référence dans le tableau \"arg1\"."
+				"Content": "Retour : vec[ ]\nSymbole : V[ ]getR[ ]T\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nDescription : Renvoie un tableau de vecteurs en extrayant l'attribut \"arg2\" de chaque référence dans le tableau \"arg1\"."
 			}
 		],
 		"Image": "",
@@ -288,31 +288,31 @@
 		"Title": "Agrégateurs",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Un Agrégateur permet de créer un tableau à partir d'éléments simples ou bien de tableaux déjà existants. Contrairement aux autres opérateurs, un agrégateur prend autant d’arguments en entrée que nécessaire."
+				"Content": "Les agrégateurs permettent de créer un tableau à partir d'éléments simples ou de tableaux déjà existants. Contrairement aux autres opérateurs, un agrégateur peut prendre autant d’arguments en entrée que nécessaire."
 			},
 			{
 				"SubTitle": "BoolTab_Agg_BoolStar",
-				"Content": "Retour :  <color=#4142c3ff>bool</color>[ ]\nSymbole : B[]aggB*\nArgument 1 : <color=#4142c3ff>bool*</color>\n\nDescription : Agrégateur de booléens. Il prend n arguments en entrée et les agrège en un tableau qu'il retourne en sortie. Les arguments peuvent être des bool ou des bool[]."
+				"Content": "Retour : bool[ ]\nSymbole : B[ ]aggB*\nArgument 1 : <color=#4142c3ff>bool</color>*\nDescription : Agrégateur de booléens. Il prend n arguments en entrée, et les agrège en un tableau qu'il renvoie en sortie. Les arguments peuvent être des bool ou des bool[ ]."
 			},
 			{
 				"SubTitle": "ColorTab_Agg_ColorStar",
-				"Content": "Retour : <color=#564b6fff>color</color>[ ]\nSymbole : C[]aggC*\nArgument 1 : <color=#564b6fff>color*</color>\nDescription : Agrégateur de couleurs. Il prend n arguments en entrée et les agrège en un tableau qu'il retourne en sortie. Les arguments peuvent être des color ou des color[]."
+				"Content": "Retour : color[ ]\nSymbole : C[ ]aggC*\nArgument 1 : <color=#564b6fff>color</color>*\nDescription : Agrégateur de couleurs. Il prend n arguments en entrée, et les agrège en un tableau qu'il renvoie en sortie. Les arguments peuvent être des color ou des color[ ]."
 			},
 			{
 				"SubTitle": "RefTab_Agg_RefStar",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]aggR*\nArgument 1 : ref*\nDescription : Agrégateur de références. Il prend n arguments en entrée et les agrège en un tableau qu'il retourne en sortie. Les arguments peuvent être des ref ou des ref[]."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]aggR*\nArgument 1 : <color=#b4426bff>ref</color>*\nDescription : Agrégateur de références. Il prend n arguments en entrée, et les agrège en un tableau qu'il renvoie en sortie. Les arguments peuvent être des ref ou des ref[ ]."
 			},
 			{
 				"SubTitle": "ScalTab_Agg_ScalStar",
-				"Content": "Retour : <color=#816d7bff>scal</color>[ ]\nSymbole : S[]aggS*\nArgument 1 : <color=#816d7bff>scal*</color>\nDescription : Agrégateur de scalaires. Il prend n arguments en entrée et les agrège en un tableau qu'il retourne en sortie. Les arguments peuvent être des scal ou des scal[]."
+				"Content": "Retour : scal[ ]\nSymbole : S[ ]aggS*\nArgument 1 : <color=#816d7bff>scal</color>*\nDescription : Agrégateur de scalaires. Il prend n arguments en entrée, et les agrège en un tableau qu'il renvoie en sortie. Les arguments peuvent être des scal ou des scal[ ]."
 			},
 			{
 				"SubTitle": "TxtTab_Agg_TxtStar",
-				"Content": "Retour : <color=#4da0a9ff>txt</color>[ ]\nSymbole : T[]aggT*\nArgument 1 : <color=#4da0a9ff>txt*</color>\nDescription : Agrégateur de textes. Il prend n arguments en entrée et les agrège en un tableau qu'il retourne en sortie. Les arguments peuvent être des txt ou des txt[]."
+				"Content": "Retour : txt[ ]\nSymbole : T[ ]aggT*\nArgument 1 : <color=#4da0a9ff>txt</color>*\nDescription : Agrégateur de textes. Il prend n arguments en entrée, et les agrège en un tableau qu'il renvoie en sortie. Les arguments peuvent être des txt ou des txt[ ]."
 			},
 			{
 				"SubTitle": "VecTab_Agg_VecStar",
-				"Content": "Retour : <color=#a869b9ff>vec</color>[ ]\nSymbole : V[]aggV*\nArgument 1 : <color=#a869b9ff>vec*</color>\nDescription : Agrégateur de vecteurs. Il prend n arguments en entrée et les agrège en un tableau qu'il retourne en sortie. Les arguments peuvent être des vec ou des vec[]."
+				"Content": "Retour : vec[ ]\nSymbole : V[ ]aggV*\nArgument 1 : <color=#a869b9ff>vec</color>*\nDescription : Agrégateur de vecteurs. Il prend n arguments en entrée, et les agrège en un tableau qu'il renvoie en sortie. Les arguments peuvent être des vec ou des vec[ ]."
 			}
 
 
@@ -325,63 +325,63 @@
 		"Title": "Opérateurs Filtres",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Les Opérateurs filtres trient un tableau pris en entrée pour retourner un tableau qui possède uniquement les valeurs répondant à des critères spécifiques."
+				"Content": "Les opérateurs filtres trient un tableau passé en entrée, et renvoient un tableau contenant uniquement les valeurs répondant à des critères spécifiques."
 			},
 			{
 				"SubTitle": "RefTab_WhereEquals_RefTab_Txt_Bool",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where==R[]TB\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#4142c3ff>bool</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (booleen)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where==R[ ]TB\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#4142c3ff>bool</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (booléen)."
 			},
 			{
 				"SubTitle": "RefTab_WhereEquals_RefTab_Txt_Color",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where==R[]TC\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#564b6fff>color</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (color)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where==R[ ]TC\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#564b6fff>color</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (couleur)."
 			},
 			{
 				"SubTitle": "RefTab_WhereEquals_RefTab_Txt_Ref",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where==R[]TR\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#b4426bff>ref</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (référence)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where==R[ ]TR\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#b4426bff>ref</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (référence)."
 			},
 			{
 				"SubTitle": "RefTab_WhereEquals_RefTab_Txt_Scal",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where==R[]TS\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#816d7bff>scal</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (scalaire)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where==R[ ]TS\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#816d7bff>scal</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (scalaire)."
 			},
 			{
 				"SubTitle": "RefTab_WhereEquals_RefTab_Txt_Txt",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where==R[]TT\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#4da0a9ff>txt</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (texte)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where==R[ ]TT\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#4da0a9ff>txt</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (texte)."
 			},
 			{
 				"SubTitle": "RefTab_WhereEquals_RefTab_Txt_Vec",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where==R[]TV\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#a869b9ff>vec</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (vecteur)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where==R[ ]TV\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#a869b9ff>vec</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant l'égalité entre l'attribut \"arg2\" et la valeur \"arg3\" (vecteur)."
 			},
 			{
 				"SubTitle": "RefTab_WhereNotEquals_RefTab_Txt_Bool",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where!=R[]R[]TB\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#4142c3ff>bool</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (booleen)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where!=R[ ]R[ ]TB\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#4142c3ff>bool</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (booléen)."
 			},
 			{
 				"SubTitle": "RefTab_WhereNotEquals_RefTab_Txt_Color",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where!=R[]R[]TC\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#564b6fff>color</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (color)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where!=R[ ]R[ ]TC\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#564b6fff>color</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (couleur)."
 			},
 			{
 				"SubTitle": "RefTab_WhereNotEquals_RefTab_Txt_Ref",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where!=R[]R[]TR\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#b4426bff>ref</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (référence)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where!=R[ ]R[ ]TR\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#b4426bff>ref</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (référence)."
 			},
 			{
 				"SubTitle": "RefTab_WhereNotEquals_RefTab_Txt_Scal",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where!=R[]R[]TS\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#816d7bff>scal</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (scalaire)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where!=R[ ]R[ ]TS\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#816d7bff>scal</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (scalaire)."
 			},
 			{
 				"SubTitle": "RefTab_WhereNotEquals_RefTab_Txt_Txt",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where!=R[]R[]TT\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#4da0a9ff>txt</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (texte)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where!=R[ ]R[ ]TT\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#4da0a9ff>txt</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (texte)."
 			},
 			{
 				"SubTitle": "RefTab_WhereNotEquals_RefTab_Txt_Vec",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where!=R[]R[]TV\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#a869b9ff>vec</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (vecteur)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where!=R[ ]R[ ]TV\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#a869b9ff>vec</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant la différence entre l'attribut \"arg2\" et la valeur \"arg3\" (vecteur)."
 			},
 			{
 				"SubTitle": "RefTab_Wherelesser_RefTab_Txt_Vec",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where<R[]R[]TS\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#816d7bff>scal</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant l'inégalité  entre l'attribut \"arg2\" et la valeur \"arg3\" (scalaire)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where<R[ ]R[ ]TS\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#816d7bff>scal</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant l'infériorité de l'attribut \"arg2\" par rapport à la valeur \"arg3\" (scalaire)."
 			},
 			{
 				"SubTitle": "RefTab_WhereGreater_RefTab_Txt_Vec",
-				"Content": "Retour : <color=#b4426bff>ref</color>[ ]\nSymbole : R[]where>R[]R[]TS\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#816d7bff>scal</color>\nDescription : Filtre les références présentes dans \"arg1\" respectant l'inégalité  entre l'attribut \"arg2\" et la valeur \"arg3\" (scalaire)."
+				"Content": "Retour : ref[ ]\nSymbole : R[ ]where>R[ ]R[ ]TS\nArgument 1 : ref[ ]\nArgument 2 : <color=#4da0a9ff>txt</color>\nArgument 3 : <color=#816d7bff>scal</color>\nDescription : Filtre les références présentes dans \"arg1\" vérifiant la supériorité de l'attribut \"arg2\" par rapport à la valeur \"arg3\" (scalaire)."
 			}
 		],
 		"Image": "",
@@ -389,50 +389,50 @@
 	},
 	{
 		"ID": 9,
-		"Title": "Opérateurs Tableaux",
+		"Title": "Opérateurs de Tableaux",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": " Ces opérateurs permettent de récupérer des informations importantes sur les tableaux et leur contenu."
+				"Content": "Les opérateurs de tableaux permettent de récupérer des informations sur les tableaux et leur contenu."
 			},
 			{
 				"SubTitle": "Scal_MaxId_ScalTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SmaxIdS[]\nArgument 1 : <color=#816d7bff>scal</color>[ ]\nDescription : Retourne l'indice de la plus grande valeur contenue dans le tableau passé en paramètre."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SmaxIdS[ ]\nArgument 1 : scal[ ]\nDescription : Renvoie l'indice de la plus grande valeur contenue dans le tableau passé en paramètre."
 			},
 			{
 				"SubTitle": "Scal_MinId_ScalTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SminIdS[]\nArgument 1 : <color=#816d7bff>scal</color>[ ]\nDescription : Retourne l'indice de la plus petite valeur contenue dans le tableau passé en paramètre."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SminIdS[ ]\nArgument 1 : scal[ ]\nDescription : Renvoie l'indice de la plus petite valeur contenue dans le tableau passé en paramètre."
 			},
 			{
 				"SubTitle": "Scal_MaxVal_ScalTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SmaxValS[]\nArgument 1 : <color=#816d7bff>scal</color>[ ]\nDescription : Retourne la plus grande valeur contenue dans le tableau passé en paramètre."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SmaxValS[ ]\nArgument 1 : scal[ ]\nDescription : Renvoie la plus grande valeur contenue dans le tableau passé en paramètre."
 			},
 			{
 				"SubTitle": "Scal_MinVal_ScalTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SminValS[]\nArgument 1 : <color=#816d7bff>scal</color>[ ]\nDescription : Retourne la plus petite valeur contenue dans le tableau passé en paramètre."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SminValS[ ]\nArgument 1 : scal[ ]\nDescription : Renvoie la plus petite valeur contenue dans le tableau passé en paramètre."
 			},
 			{
 				"SubTitle": "Scal_Size_BoolTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeB[]\nArgument 1 :  <color=#4142c3ff>bool</color>[ ]\nDescription : Retourne la taille du tableau de booleens passé en argument."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeB[ ]\nArgument 1 : bool[ ]\nDescription : Renvoie la taille du tableau de booleens passé en argument."
 			},
 			{
 				"SubTitle": "Scal_Size_ColorTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeC[]\nArgument 1 : <color=#564b6fff>color</color>[ ]\nDescription : Retourne la taille du tableau de couleurs passé en argument."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeC[ ]\nArgument 1 : color[ ]\nDescription : Renvoie la taille du tableau de couleurs passé en argument."
 			},
 			{
 				"SubTitle": "Scal_Size_RefTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeR[]\nArgument 1 : <color=#b4426bff>ref</color>[ ]\nDescription : Retourne la taille du tableau de références passé en argument."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeR[ ]\nArgument 1 : ref[ ]\nDescription : Renvoie la taille du tableau de références passé en argument."
 			},
 			{
 				"SubTitle": "Scal_Size_ScalTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeS[]\nArgument 1 : <color=#816d7bff>scal</color>[ ]\nDescription : Retourne la taille du tableau de scalaires passé en argument."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeS[ ]\nArgument 1 : scal[ ]\nDescription : Renvoie la taille du tableau de scalaires passé en argument."
 			},
 			{
 				"SubTitle": "Scal_Size_TxtTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeT[]\nArgument 1 : <color=#4da0a9ff>txt</color>[ ]\nDescription : Retourne la taille du tableau de textes passé en argument."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeT[ ]\nArgument 1 : txt[ ]\nDescription : Renvoie la taille du tableau de textes passé en argument."
 			},
 			{
 				"SubTitle": "Scal_Size_VecTab",
-				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeV[]\nArgument 1 : <color=#a869b9ff>vec</color>[ ]\nDescription : Retourne la taille du tableau de vecteurs passé en argument."
+				"Content": "Retour : <color=#816d7bff>scal</color>\nSymbole : SsizeV[ ]\nArgument 1 : vec[ ]\nDescription : Renvoie la taille du tableau de vecteurs passé en argument."
 			}
 		],
 		"Image": "",
@@ -443,11 +443,11 @@
 		"Title": "Inverseurs",
 		"Content": [{
 				"SubTitle": "Description",
-				"Content": "Un Inverseur prend un tableau et change l’ordre des éléments, le début devient la fin et inversement."
+				"Content": "Les inverseurs prennent un tableau en argument et modifient l’ordre de ses éléments : le premier élément devient le dernier, et vice-versa."
 			},
 			{
 				"SubTitle": "VecTab_Reverse_VecTab",
-				"Content": "Retour : <color=#a869b9ff>vec</color>[ ]\nSymbole : V[]reverseV[]\nArgument 1 : <color=#a869b9ff>vec</color>[ ]\nDescription : Inverse la liste de vecteurs passée en argument."
+				"Content": "Retour : vec[ ]\nSymbole : V[ ]reverseV[ ]\nArgument 1 : vec[ ]\nDescription : Inverse la liste de vecteurs passée en argument."
 			}
 		],
 		"Image": "",

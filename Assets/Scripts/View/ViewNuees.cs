@@ -22,6 +22,5 @@ public class ViewNuees : MonoBehaviour {
     void SwitchMenu()
     {
         subMenu.SetActive(!subMenu.activeSelf);
-
     }
 }

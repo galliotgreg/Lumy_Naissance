@@ -13,6 +13,9 @@ public class InGameUIController : MonoBehaviour {
     public static InGameUIController instance = null;
     public static OpenClosePanel instanceOpenClose = null;
 
+    private static Color colorPlayer1 = Color.white;
+    private static Color colorPlayer2 = new Color(102f / 255f, 27f / 255f, 109f / 255f); 
+
     private float startTime = 2.0f;
     private bool winState = false;
     private bool alreadyClosed = false;
@@ -152,6 +155,14 @@ public class InGameUIController : MonoBehaviour {
     private Button Caste_Menu;
     [SerializeField]
     private Button quitVictory;
+    [SerializeField]
+    private Text J1_scoreUnitCost;
+    [SerializeField]
+    private Text J2_scoreUnitCost;
+    [SerializeField]
+    private Text J1_ScoreFinal;
+    [SerializeField]
+    private Text J2_ScoreFinal; 
 
     #endregion
 
@@ -330,6 +341,8 @@ public class InGameUIController : MonoBehaviour {
 
     private bool statePlayPause = true;
 
+    private bool isLumy; 
+
     #region Instance
     /// <summary>
     /// Enforce Singleton properties
@@ -417,6 +430,32 @@ public class InGameUIController : MonoBehaviour {
             statePlayPause = value;
         }
     }
+
+    public bool IsLumy
+    {
+        get
+        {
+            return isLumy;
+        }
+
+        set
+        {
+            isLumy = value;
+        }
+    }
+
+    public bool WinState
+    {
+        get
+        {
+            return winState;
+        }
+
+        set
+        {
+            winState = value;
+        }
+    }
     #endregion
 
     // Use this for initialization
@@ -465,7 +504,7 @@ public class InGameUIController : MonoBehaviour {
         Cancel_Exit_PartiePersoMenu.onClick.AddListener(unvalidatedGoToPersonnalisedMap); 
 
         valider.onClick.AddListener(OptionManager.instance.setPlayerPreferencesDebug);
-        playPause.onClick.AddListener(PauseGame);
+        playPause.onClick.AddListener(playPauseButton);
 
         //Player Species 
         J1_Species.text = SwapManager.instance.GetPlayer1Name();
@@ -480,10 +519,19 @@ public class InGameUIController : MonoBehaviour {
         }
     
     }
+
+    private void playPauseButton()
+    {
+        if (winState == true)
+        {
+            return;
+        }
+        PauseGame(); 
+    }
  
     public void PauseGame()
     {
-    
+        
         Image pp = playPause.GetComponent<Image>();
         if (statePlayPause)
         {
@@ -559,24 +607,29 @@ public class InGameUIController : MonoBehaviour {
                 if (winner == GameManager.Winner.Player1E)
                 {
                     victory.text = SwapManager.instance.GetPlayer1Name();
+                    victory.color = colorPlayer1; 
                     winCondition.text = "Victoire Economique";
                 }
                 if (winner == GameManager.Winner.Player2E) {
 
                     victory.text = SwapManager.instance.GetPlayer2Name();
+                    victory.color = colorPlayer2; 
                     winCondition.text = "Victoire Economique";
                 }
                 if (winner == GameManager.Winner.Player1Q) {
                     victory.text = SwapManager.instance.GetPlayer1Name();
+                    victory.color = colorPlayer1;
                     winCondition.text = "Domination";
                 }
                 if (winner == GameManager.Winner.Player2Q) {
                     victory.text = SwapManager.instance.GetPlayer2Name();
+                    victory.color = colorPlayer2;
                     winCondition.text = "Domination";
                 }
                 if (winner == GameManager.Winner.Equality)
                 {
                     victory.text = "Egalité ! ";
+                    victory.color = Color.white; 
                     winCondition.text = "";
                 }
 
@@ -595,23 +648,49 @@ public class InGameUIController : MonoBehaviour {
 
                 J2_Icon.sprite = spritePictoJ2;
 
+                //Score 
+                J1_scoreUnitCost.text = "Détails : \r\n " +
+                    "Unités(en vie) : " + gameManager.SumProdCost(PlayerAuthority.Player1).ToString() + " \r\n" + 
+                    "Ressources : " + gameManager.sumResources(PlayerAuthority.Player1).ToString();
+                J1_scoreUnitCost.color = colorPlayer1; 
+                J2_scoreUnitCost.text = "Détails :  \r\n" +
+                   "Unités(en vie) : " + gameManager.SumProdCost(PlayerAuthority.Player2).ToString() + " \r\n" + 
+                   "Ressources : " + gameManager.sumResources(PlayerAuthority.Player2).ToString();
+                J2_scoreUnitCost.color = colorPlayer2; 
+                J1_ScoreFinal.text = "   SCORE : " + gameManager.Score(PlayerAuthority.Player1).ToString();
+                J1_ScoreFinal.color = colorPlayer1;
+                J2_ScoreFinal.text = "   SCORE : " + gameManager.Score(PlayerAuthority.Player2).ToString() ;
+                J2_ScoreFinal.color = colorPlayer2; 
+
                 //Destroy pictPrefabs
-                foreach(GameObject pict in swarmPictos) {
+                foreach (GameObject pict in swarmPictos) {
                     Destroy(pict);
                 }
-
+               
                 J1_Nuee.text = SwapManager.instance.GetPlayer1Name();
+                J1_Nuee.color = colorPlayer1;
                 J2_Nuee.text = SwapManager.instance.GetPlayer2Name();
+                J2_Nuee.color = colorPlayer2;
                 J1_unitCost.text = gameManager.Score(PlayerAuthority.Player1).ToString();
+                J1_unitCost.color = colorPlayer1;
                 J2_unitCost.text = gameManager.Score(PlayerAuthority.Player2).ToString();
+                J2_unitCost.color = colorPlayer2;
                 J1_Resources.text = gameManager.sumResources(PlayerAuthority.Player1).ToString();
+                J1_Resources.color = colorPlayer1;
                 J2_Resources.text = gameManager.sumResources(PlayerAuthority.Player2).ToString();
+                J2_Resources.color = colorPlayer2; 
                 J1_EnemiesDetruis.text = Unit_GameObj_Manager.instance.unitPlayer2Destroyed.ToString();
+                J1_EnemiesDetruis.color = colorPlayer1; 
                 J2_EnemiesDetruis.text = Unit_GameObj_Manager.instance.unitPlayer1Destroyed.ToString();
+                J2_EnemiesDetruis.color = colorPlayer2;
                 J1_AlliesCrees.text = Unit_GameObj_Manager.instance.unitPlayer1Created.ToString();
+                J1_AlliesCrees.color = colorPlayer1; 
                 J2_AlliesCrees.text = Unit_GameObj_Manager.instance.unitPlayer2Created.ToString();
+                J2_AlliesCrees.color = colorPlayer2; 
                 J1_AlliesDetruits.text = Unit_GameObj_Manager.instance.unitPlayer1Destroyed.ToString();
+                J1_AlliesDetruits.color = colorPlayer1; 
                 J2_AlliesDetruits.text = Unit_GameObj_Manager.instance.unitPlayer2Destroyed.ToString();
+                J2_AlliesDetruits.color = colorPlayer2; 
 
                 J1_ressourcesSlider.fillAmount = (gameManager.sumResources(PlayerAuthority.Player1) + SwapManager.instance.GetPlayerResources()) / (SwapManager.instance.GetPlayerStock() *3);
                 J2_ressourcesSlider.fillAmount = (gameManager.sumResources(PlayerAuthority.Player2) + SwapManager.instance.GetPlayerResources()) / (SwapManager.instance.GetPlayerStock() *3);
@@ -638,7 +717,13 @@ public class InGameUIController : MonoBehaviour {
     {
         //Get Resources values in game Manager
         if (gameManager == null)
-            return;
+        {
+            return; 
+        }
+        if(winState == true)
+        {
+            return; 
+        }
         //*** UPPER UI *** 
         //Set the resources for each Players
         SetResources();
@@ -1319,6 +1404,12 @@ public class InGameUIController : MonoBehaviour {
             }
             CloseAllOthersMsgPanel(panelOptionsDebug);
             PanelOptionsDebug.SetActive(!panelOptionsDebug.activeSelf);
+            if (Time.timeScale == 1)
+            {
+                PauseGame();
+            }
+          
+
         }
     }
 
@@ -1507,6 +1598,10 @@ private void DisplayInSight() {
     /// </summary>
     private void SwitchFocus()
     {
+        if(winState == true)
+        {
+            return; 
+        }
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Tab))
         {
             indiceFocus--;
@@ -1553,6 +1648,21 @@ private void DisplayInSight() {
         {
             this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
         }
+        if (self.Cast == "prysme")
+        {
+            if (self.gameObject.GetComponentInParent<AgentContext>().Home.name == "p2_hive")
+            {
+                ShowStatPrysme(PlayerAuthority.Player2);
+            }
+            else
+            {
+                ShowStatPrysme(PlayerAuthority.Player1);
+            }
+        }
+        else
+        {
+            ShowStatLumy();
+        }
         updateFocus(agentList);
     }
 
@@ -1574,6 +1684,21 @@ private void DisplayInSight() {
         {
             this.self = agentList[indiceFocus].Self.GetComponent<AgentScript>();
         }
+        if (self.Cast == "prysme")
+        {
+            if (self.gameObject.GetComponentInParent<AgentContext>().Home.name == "p2_hive")
+            {
+                ShowStatPrysme(PlayerAuthority.Player2);
+            }
+            else
+            {
+                ShowStatPrysme(PlayerAuthority.Player1);
+            }
+        }
+        else
+        {
+            ShowStatLumy();
+        }
         updateFocus(agentList);
     }
 
@@ -1581,11 +1706,11 @@ private void DisplayInSight() {
     {
         if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player1)
         {
-            this.color = Color.white;
+            this.color = colorPlayer1;
         }
         else if (agentScript.GetComponentInParent<AgentContext>().Home.gameObject.GetComponent<HomeScript>().Authority == PlayerAuthority.Player2)
         {
-            this.color = new Color(102f / 255f, 27f / 255f, 109f / 255f);
+            this.color = colorPlayer2; 
         }
         else
         {
