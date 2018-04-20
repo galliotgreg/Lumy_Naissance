@@ -26,8 +26,9 @@ public class InGameUIController : MonoBehaviour {
     private Color color; 
     GameManager gameManager;
     GameObject[] openClosePanelList;
-    private int indiceFocus = 0; 
+    private int indiceFocus = 0;
 
+    ActionType oldActiontype = ActionType.None; 
     #region UIVariables
     #region PlayerInfosPanel
     /// <summary>
@@ -554,7 +555,15 @@ public class InGameUIController : MonoBehaviour {
         CheckKeys(); 
         UpdateUI();
         SwitchFocus();
-       
+        playFX(); 
+    }
+
+    /// <summary>
+    /// Play all FX for the Lumy Selected (based on self) 
+    /// </summary>
+    private void playFX()
+    {
+        playFXOnMove(); 
     }
 
     /// <summary>
@@ -762,7 +771,21 @@ public class InGameUIController : MonoBehaviour {
         lumyMinimapIconColor();
     }
 
+    private void playFXOnMove()
+    {
+        ActionType curAction = this.self.gameObject.GetComponentInParent<AgentBehavior>().CurActionType;
+        if (curAction == oldActiontype)
+        {
+            return; 
+        }
+       if(curAction == ActionType.Roaming || curAction == ActionType.Goto)
+        {
+            SoundManager.instance.PlayLumyMovementSFX();
+            oldActiontype = curAction; 
+        }
+    }
 
+  
     #region UpdateFunctionOfUI
     private void SetResources()
     {
