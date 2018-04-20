@@ -235,10 +235,11 @@ public class GameManager : MonoBehaviour {
             }
           
         }
-        
 
     }
-#endregion
+
+
+    #endregion
 
     private void WinCondition()
     {
@@ -487,9 +488,19 @@ public class GameManager : MonoBehaviour {
         //   p1_queen.GetComponent<AgentEntity>().
         p1_queen.name = "p1_queen";
         p1_queen.transform.parent = gameObject.transform;
+        Light [] light = p1_queen.GetComponentsInChildren<Light>();
+        foreach(Light li in light)
+        {
+            li.enabled = false;
+        }
         p2_queen = Instantiate(p2_unitTemplates[0], p2_home.transform.position, Quaternion.identity);
         p2_queen.name = "p2_queen";
         p2_queen.transform.parent = gameObject.transform;
+        light = p2_queen.GetComponentsInChildren<Light>();
+        foreach (Light li in light)
+        {
+            li.enabled = false;
+        }
         p1_queen.SetActive(true);
         p2_queen.SetActive(true);
         p1_queen.GetComponent<AgentEntity>().GameParams =
