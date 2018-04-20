@@ -133,7 +133,7 @@ public class MCEditorManager : MonoBehaviour
         SetupModel();
 
         //Temporary_Save_MC_Behavior(AppContextManager.instance.ActiveCast.Name + "_behavior", "0");
-        MCToolManager.instance.TemporarySave();
+        MCToolManager.instance.checkSave();
     }
 
     private void Update()
@@ -147,7 +147,7 @@ public class MCEditorManager : MonoBehaviour
         {
             this.deleteSelectedTransition();
             MCToolManager.instance.hasBeenAdded = false;
-            MCToolManager.instance.TemporarySave();
+            MCToolManager.instance.checkSave();
         }
 
     }
@@ -913,7 +913,7 @@ public class MCEditorManager : MonoBehaviour
             File.AppendAllText(csvpath, csvcontent.ToString());
         }
 
-        Debug.Log("Temporary Saved MC Position");
+       // Debug.Log("Temporary Saved MC Position");
     }
     public void Temporary_Save_MC_Behavior(string cast_name, string id)
     {
@@ -997,7 +997,7 @@ public class MCEditorManager : MonoBehaviour
         {
             File.AppendAllText(csvpath, content.ToString());
         }
-        Debug.Log("Save MC");
+        //Debug.Log("Save MC");
         Temporary_Save_MC_Position(cast_name, id);
     }
 
@@ -1832,7 +1832,7 @@ public class MCEditorManager : MonoBehaviour
             {
                 ((ProxyABState)end.ProxyParent).checkPins();
             }
-            MCToolManager.instance.TemporarySave();
+            MCToolManager.instance.checkSave();
         }
         else
         {
