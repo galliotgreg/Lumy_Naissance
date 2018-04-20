@@ -567,6 +567,8 @@ MonoBehaviour:
   minSize: 1
   maxSize: 40
   zommingZone: {fileID: 1988578283}
+  zoomingCam: {fileID: 0}
+  initialHeight: 0
 --- !u!114 &61961876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -887,6 +889,7 @@ RectTransform:
   - {fileID: 751028276}
   - {fileID: 1596266288}
   - {fileID: 2009740107}
+  - {fileID: 1006956799}
   m_Father: {fileID: 1725846085}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1546,7 +1549,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1789716051}
   m_HandleRect: {fileID: 1789716050}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1662,7 +1665,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2110574396}
   m_HandleRect: {fileID: 2110574395}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3624,7 +3627,6 @@ RectTransform:
   m_Children:
   - {fileID: 2129924038}
   - {fileID: 1988578281}
-  - {fileID: 1006956799}
   m_Father: {fileID: 149024345}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4864,6 +4866,11 @@ Prefab:
       propertyPath: container
       value: 
       objectReference: {fileID: 473562053}
+    - target: {fileID: 114954168902088938, guid: 5c9828609c145334ea730ef0a1511375,
+        type: 2}
+      propertyPath: camHandler
+      value: 
+      objectReference: {fileID: 61961875}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5c9828609c145334ea730ef0a1511375, type: 2}
   m_IsPrefabParent: 0
@@ -7758,12 +7765,12 @@ RectTransform:
   - {fileID: 32244673}
   - {fileID: 1159847555}
   - {fileID: 1876821414}
-  m_Father: {fileID: 473562053}
-  m_RootOrder: 2
+  m_Father: {fileID: 149024345}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000076293945, y: 0}
+  m_AnchoredPosition: {x: -48.000008, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1006956800
@@ -12314,7 +12321,7 @@ Prefab:
     - target: {fileID: 224013641188456930, guid: ee580f777fb40004086d0e73eb35eccf,
         type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 224013641188456930, guid: ee580f777fb40004086d0e73eb35eccf,
         type: 2}
@@ -16164,7 +16171,7 @@ Prefab:
     - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
         type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 224331075662900182, guid: db2b2a18293baec49ac32f5748742cb9,
         type: 2}
@@ -17864,7 +17871,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 245449303}
   m_HandleRect: {fileID: 245449302}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
