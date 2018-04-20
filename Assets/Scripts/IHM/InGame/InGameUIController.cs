@@ -781,6 +781,10 @@ public class InGameUIController : MonoBehaviour {
 
     private void playFXOnMove()
     {
+        if(this.self == null)
+        {
+            return; 
+        }
         ActionType curAction = this.self.gameObject.GetComponentInParent<AgentBehavior>().CurActionType;
         if (curAction == oldActiontype)
         {
