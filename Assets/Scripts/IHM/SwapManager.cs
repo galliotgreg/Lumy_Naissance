@@ -571,14 +571,26 @@ public class SwapManager : MonoBehaviour
     #region get Player Audio preferences
     public float getPlayerPrefMusic()
     {
+        if(!PlayerPrefs.HasKey(keyPlayerMusicVolume))
+        {
+            PlayerPrefs.SetFloat(keyPlayerMusicVolume, 1); 
+        }
         return PlayerPrefs.GetFloat(keyPlayerMusicVolume);
     }
     public float getPlayerPrefSFX()
     {
+        if (!PlayerPrefs.HasKey(keyPlayerSFXVolume))
+        {
+            PlayerPrefs.SetFloat(keyPlayerSFXVolume, 1);
+        }
         return PlayerPrefs.GetFloat(keyPlayerSFXVolume);
     }
     public float getPlayerPrefGeneral()
     {
+        if (!PlayerPrefs.HasKey(keyPlayerGeneralVolume))
+        {
+            PlayerPrefs.SetFloat(keyPlayerGeneralVolume, 1);
+        }
         return PlayerPrefs.GetFloat(keyPlayerGeneralVolume);
     }
     #endregion
