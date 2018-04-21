@@ -200,7 +200,7 @@ public class SoundManager : MonoBehaviour
         musicSource.loop = true;
         musicSource2.loop = true;
 
-        SwapTracks(inGameMap1ThemeClips[0]);
+        SwapTracks(inGameMap2ThemeClips[0]);
     }
     
     #endregion
@@ -210,53 +210,53 @@ public class SoundManager : MonoBehaviour
     #region Tuto SFX
     public void PlayHintSFX()
     {
-        RandomizeClips(hintClips, menuFxSource, true, true);
+        RandomizeClips(hintClips, menuFxSource, true);
     }
     public void PlayPopUpDialogueSFX()
     {
-        RandomizeClips(popUpDialogueClips, menuFxSource);
+        RandomizeClips(popUpDialogueClips, menuFxSource, true);
     }
     #endregion
 
     #region MCEditor SFX
     public void PlaySelectNodeSFX()
     {
-        RandomizeClips(selectNodeClips, menuFxSource, true, true);
+        RandomizeClips(selectNodeClips, menuFxSource, true);
     }
     public void PlayTransitionOKSFX()
     {
-        RandomizeClips(transitionOKClips, menuFxSource, true, true);
+        RandomizeClips(transitionOKClips, menuFxSource, true);
     }
     #endregion
 
     #region InGame SFX
     public void PlayPlayGameSFX()
     {
-        RandomizeClips(playGameClips, inGameFXSource, true, false);
+        RandomizeClips(playGameClips, inGameFXSource, true);
     }
     public void PlayPauseGameSFX()
     {
-        RandomizeClips(pauseGameClips, inGameFXSource, true, false);
+        RandomizeClips(pauseGameClips, inGameFXSource, true);
     }
     public void PlayLumySelectedSFX()
     {
-        RandomizeClips(lumySelectedClips, lumyFxSource, true, true);
+        RandomizeClips(lumySelectedClips, lumyFxSource, true);
     }
     public void PlayPrysmeSelectedSFX()
     {
-        RandomizeClips(prysmeSelectedClips, lumyFxSource, true, true);
+        RandomizeClips(prysmeSelectedClips, lumyFxSource, true);
     }
     public void PlayPrysmeIsAttackedSFX()
     {
-        RandomizeClips(prysmeIsAttackedClips, inGameFXSource, true, true);
+        RandomizeClips(prysmeIsAttackedClips, inGameFXSource, true);
     }
     public void PlaySwarmIsAttackedSFX()
     {
-        RandomizeClips(swarmIsAttackedClips, inGameFXSource, true, true);
+        RandomizeClips(swarmIsAttackedClips, inGameFXSource, true);
     }
     public void PlayVictoryResourcesSFX()
     {
-        RandomizeClips(victoryResourcesClips, menuFxSource, true, true);
+        RandomizeClips(victoryResourcesClips, menuFxSource, true);
     }
     public void PlayLumyMovementSFX()
     {
@@ -272,7 +272,7 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayLumyDeathSFX()
     {
-        RandomizeClips(lumyDeathClips, lumyFxSource, true, true);
+        RandomizeClips(lumyDeathClips, lumyFxSource, true);
     }
     #endregion
 
@@ -303,11 +303,11 @@ public class SoundManager : MonoBehaviour
     #region General    
     public void PlayOnHoverButtonSFX()
     {
-        RandomizeClips(onHoverButtonClips, menuFxSource, true, false);
+        RandomizeClips(onHoverButtonClips, menuFxSource, true);
     }    
     public void PlayOnClickButtonSFX()
     {
-        RandomizeClips(onClickButtonClips, menuFxSource);
+        RandomizeClips(onClickButtonClips, menuFxSource, true);
     }
     #endregion
 
