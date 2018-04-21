@@ -26,8 +26,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
     private bool isJ2Damaged = false;
     private bool SoundJ1Played = false;
     private bool SoundJ2Played = false;
-    private bool SwarmSoundPlayed = false; 
-    private bool isLumyDamaged = false;
+
     private float timerLumy= 5;
     /// <summary>
     /// Enforce Singleton properties
@@ -105,39 +104,19 @@ public class Unit_GameObj_Manager : MonoBehaviour {
             if (target.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>().Cast == "prysme" &&
              target.gameObject.GetComponent<AgentContext>().Home.name == "p1_hive")
             {
-                prysmeAlert(PlayerAuthority.Player1);
+                isJ1Damaged = true;
             }
             if (target.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>().Cast == "prysme" &&
                target.gameObject.GetComponent<AgentContext>().Home.name == "p2_hive")
             {
-                prysmeAlert(PlayerAuthority.Player2);
-            }
-            else
-            {
-                lumyAlert();
+                isJ2Damaged = true;
             }
         }
   
         return damageResult;
 	}
 
-    private void prysmeAlert(PlayerAuthority player)
-    {
-        if(player == PlayerAuthority.Player1)
-        {
-            isJ1Damaged = true;
-        }
-        else
-        {
-            isJ2Damaged = true; 
-        }
 
-    }
-
-    private void lumyAlert()
-    {
-        isLumyDamaged = true; 
-    }
 
     public void addPrysme( AgentEntity prysme, HomeScript home ){ 
 		home.addPrysmeToHome (prysme); 
@@ -403,22 +382,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
             }
         }
 
-        if(isLumyDamaged)
-        {
-            timerLumy -= Time.deltaTime; 
-            if(timerLumy <= 0)
-            {
-                isLumyDamaged = false;
-                timerLumy = 5;
-                SwarmSoundPlayed = false;
-            }
-            else if(!SwarmSoundPlayed)
-            {
-                SoundManager.instance.PlaySwarmIsAttackedSFX();
-                SwarmSoundPlayed = true; 
-            }
-        }
-
+       
 
 
     }
