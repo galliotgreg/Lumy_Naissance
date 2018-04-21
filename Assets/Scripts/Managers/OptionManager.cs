@@ -118,8 +118,7 @@ public class OptionManager : MonoBehaviour {
             sliderMovementSensitivity.value = SwapManager.instance.getPlayerMouseSensitivity();
         }
         sliderMovementSensitivity.onValueChanged.AddListener(ChangeSensitivity);
-        closePanel.onClick.AddListener(quitPause); 
-        
+        closePanel.onClick.AddListener(quitPause);
     }
 
     private void quitPause()
@@ -151,15 +150,85 @@ public class OptionManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
         if (!IsInGameSceneLoaded())
         {
             return;
         }
-        if(InGameUIController.instance.WinState == true)
+        if (InGameUIController.instance.WinState == true)
         {
-            return; 
+            return;
         }
+
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.G))
+        {
+            gisements.isOn = !gisements.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            lifeBar.isOn = !lifeBar.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            lifeBarJ2.isOn = !lifeBarJ2.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            atkRange.isOn = !atkRange.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            atkRangeJ2.isOn = !atkRangeJ2.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            visionRange.isOn = !visionRange.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            visionRangeJ2.isOn = !visionRangeJ2.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            pickRange.isOn = !pickRange.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            pickRangeJ2.isOn = !pickRangeJ2.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.N) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            lumyName.isOn = !lumyName.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.N) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            lumyNameJ2.isOn = !lumyNameJ2.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            directionLumy.isOn = !directionLumy.isOn;
+
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            directionLumyJ2.isOn = !directionLumyJ2.isOn;
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.T) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            trace.isOn = !trace.isOn;
+
+        }
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.T) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            traceJ2.isOn = !traceJ2.isOn;
+        }
+
+        RefreshDebugView();
+    }
+
+    private void RefreshDebugView()
+    {
         DebugGisement();
         DebugLifebarJ1();
         DebugLifebarJ2();
@@ -177,12 +246,10 @@ public class OptionManager : MonoBehaviour {
         DebugTraceJ1();
         DebugTraceJ2();
     }
+
     private void DebugDirectionJ1() {
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha1)) {
-            directionLumy.isOn = !directionLumy.isOn;
-           
-        }
+        
         if (directionLumy.isOn)
         {
             toutDesactiver.isOn = false;
@@ -203,9 +270,7 @@ public class OptionManager : MonoBehaviour {
     }
 
     private void DebugDirectionJ2() {
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.Alpha2)) {
-            directionLumyJ2.isOn = !directionLumyJ2.isOn;
-        }
+        
         if (directionLumyJ2.isOn)
         {
             toutDesactiver.isOn = false;
@@ -226,10 +291,7 @@ public class OptionManager : MonoBehaviour {
     }
 
     private void DebugTraceJ1() {
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.T) && Input.GetKeyDown(KeyCode.Alpha1)) {
-            trace.isOn = !trace.isOn;
-            
-        }
+       
         if (Trace.isOn)
         {
 
@@ -252,9 +314,7 @@ public class OptionManager : MonoBehaviour {
     }
 
     private void DebugTraceJ2() {
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.T) && Input.GetKeyDown(KeyCode.Alpha2)) {
-            traceJ2.isOn = !traceJ2.isOn;
-        }
+       
         if (TraceJ2.isOn)
         {
             toutDesactiver.isOn = false;
@@ -280,10 +340,6 @@ public class OptionManager : MonoBehaviour {
     {
 
        GameObject[] minerais = GameObject.FindGameObjectsWithTag("minerais");
-
-        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.G)) {
-            gisements.isOn = !gisements.isOn;
-        }
 
         if (gisements.isOn == true)
         {
@@ -316,9 +372,7 @@ public class OptionManager : MonoBehaviour {
         Image lifeSteps;
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha1)) {
-            lifeBar.isOn = !lifeBar.isOn;
-        }
+        
 
         if (lifeBar.isOn == true)
         {
@@ -365,9 +419,7 @@ public class OptionManager : MonoBehaviour {
         Material mLifeBar;
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.L) && Input.GetKeyDown(KeyCode.Alpha2)) {
-            lifeBarJ2.isOn = !lifeBarJ2.isOn;
-        }
+       
 
         if (lifeBarJ2.isOn == true) {
             toutDesactiver.isOn = false;
@@ -404,9 +456,7 @@ public class OptionManager : MonoBehaviour {
 
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.N) && Input.GetKeyDown(KeyCode.Alpha1)) {
-            lumyName.isOn = !lumyName.isOn;
-        }
+        
 
         if (lumyName.isOn == true) {
             toutDesactiver.isOn = false;
@@ -438,9 +488,7 @@ public class OptionManager : MonoBehaviour {
 
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.N) && Input.GetKeyDown(KeyCode.Alpha2)) {
-            lumyNameJ2.isOn = !lumyNameJ2.isOn;
-        }
+       
 
         if (lumyNameJ2.isOn == true) {
             toutDesactiver.isOn = false;
@@ -472,9 +520,7 @@ public class OptionManager : MonoBehaviour {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha1)) {
-            visionRange.isOn = !visionRange.isOn;
-        }
+       
 
 
         if (visionRange.isOn == true)
@@ -510,9 +556,7 @@ public class OptionManager : MonoBehaviour {
     private void DebugVisionRangeJ2() {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.V) && Input.GetKeyDown(KeyCode.Alpha2)) {
-            visionRangeJ2.isOn = !visionRangeJ2.isOn;
-        }
+        
 
 
         if (visionRangeJ2.isOn == true) {
@@ -546,10 +590,7 @@ public class OptionManager : MonoBehaviour {
     {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha1)) {
-            atkRange.isOn = !atkRange.isOn;
-            
-        }
+        
 
         if (atkRange.isOn == true)
         {
@@ -584,9 +625,7 @@ public class OptionManager : MonoBehaviour {
     private void DebugAtkRangeJ2() {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.Alpha2)) {
-            atkRangeJ2.isOn = !atkRangeJ2.isOn;
-        }
+       
 
         if (atkRangeJ2.isOn == true) {
             toutDesactiver.isOn = false;
@@ -619,9 +658,7 @@ public class OptionManager : MonoBehaviour {
     {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha1)) {
-            pickRange.isOn = !pickRange.isOn;
-        }
+       
 
 
         if (pickRange.isOn == true)
@@ -657,9 +694,7 @@ public class OptionManager : MonoBehaviour {
     private void DebugPickRangeJ2() {
         GameObject[] lumys = GameObject.FindGameObjectsWithTag("Agent");
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.M) && Input.GetKeyDown(KeyCode.Alpha2)) {
-            pickRangeJ2.isOn = !pickRangeJ2.isOn;
-        }
+        
 
 
         if (pickRangeJ2.isOn == true) {
