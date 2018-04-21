@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,16 @@ public class Unit_GameObj_Manager : MonoBehaviour {
     public int nbLights = 0;
     public int maxLights = 10;
 
+    //Variables for timer
+    private float timerJ1 = 5;
+    private float timerJ2 = 5;
+    private bool isJ1Damaged = false;
+    private bool isJ2Damaged = false;
+    private bool SoundJ1Played = false;
+    private bool SoundJ2Played = false;
+    private bool SwarmSoundPlayed = false; 
+    private bool isLumyDamaged = false;
+    private float timerLumy= 5;
     /// <summary>
     /// Enforce Singleton properties
     /// </summary>
@@ -40,8 +51,9 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	List<ResourceScript> resources = new List<ResourceScript>();
 	Dictionary<PlayerAuthority, List<TraceScript>> traces = new Dictionary<PlayerAuthority, List<TraceScript>>();
 
-	#region Properties
-	public List<HomeScript> Homes {
+
+    #region Properties
+    public List<HomeScript> Homes {
 		set {
 			homes = new Dictionary<PlayerAuthority, HomeScript>();
 
@@ -80,15 +92,54 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		float damageResult = target.Context.Model.Vitality - vitalityResult;
 		target.Context.Model.Vitality -= damageResult;
 
+
 		// Kill unit
 		if( target.Context.Model.Vitality <= 0 ){
 			// Reduce enemmies
 			KillUnit( target );
 		}
 
-		return damageResult;
+        //Play SFX on prysme attacked
+        if(InGameUIController.instance != null)
+        {
+            if (target.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>().Cast == "prysme" &&
+             target.gameObject.GetComponent<AgentContext>().Home.name == "p1_hive")
+            {
+                prysmeAlert(PlayerAuthority.Player1);
+            }
+            if (target.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>().Cast == "prysme" &&
+               target.gameObject.GetComponent<AgentContext>().Home.name == "p2_hive")
+            {
+                prysmeAlert(PlayerAuthority.Player2);
+            }
+            else
+            {
+                lumyAlert();
+            }
+        }
+  
+        return damageResult;
 	}
-	public void addPrysme( AgentEntity prysme, HomeScript home ){ 
+
+    private void prysmeAlert(PlayerAuthority player)
+    {
+        if(player == PlayerAuthority.Player1)
+        {
+            isJ1Damaged = true;
+        }
+        else
+        {
+            isJ2Damaged = true; 
+        }
+
+    }
+
+    private void lumyAlert()
+    {
+        isLumyDamaged = true; 
+    }
+
+    public void addPrysme( AgentEntity prysme, HomeScript home ){ 
 		home.addPrysmeToHome (prysme); 
 	}
 	public void addUnit( AgentEntity unit, HomeScript home ) {
@@ -262,7 +313,9 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 
 	public void KillUnit( AgentEntity unit ){
 
-        if (InGameUIController.instance.Self == unit.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>())
+        if (InGameUIController.instance != null &&
+            InGameUIController.instance.Self 
+            == unit.gameObject.GetComponent<AgentContext>().Self.GetComponent<AgentScript>())
         {
             SoundManager.instance.PlayLumyDeathSFX();
         }
@@ -312,6 +365,61 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+        //Incase not in game
+        if (InGameUIController.instance == null) {
+            return; 
+        }
+
+        //Timer for Alert Prysme
+        if(isJ1Damaged)
+        {
+            timerJ1 -= Time.deltaTime; 
+            if(timerJ1 <= 0)
+            {
+                isJ1Damaged = false;
+                timerJ1 = 5;
+                SoundJ1Played = false;
+            }
+            else if(!SoundJ1Played) {
+                SoundManager.instance.PlayPrysmeIsAttackedSFX();
+                SoundJ1Played = true; 
+            }
+        }
+
+        if (isJ2Damaged)
+        {
+            timerJ2 -= Time.deltaTime;
+            if (timerJ2 <= 0)
+            {
+                isJ2Damaged = false;
+                timerJ2 = 5;
+                SoundJ2Played = false;
+            }
+            else if (!SoundJ2Played)
+            {
+                SoundManager.instance.PlayPrysmeIsAttackedSFX();
+                SoundJ2Played = true;
+            }
+        }
+
+        if(isLumyDamaged)
+        {
+            timerLumy -= Time.deltaTime; 
+            if(timerLumy <= 0)
+            {
+                isLumyDamaged = false;
+                timerLumy = 5;
+                SwarmSoundPlayed = false;
+            }
+            else if(!SwarmSoundPlayed)
+            {
+                SoundManager.instance.PlaySwarmIsAttackedSFX();
+                SwarmSoundPlayed = true; 
+            }
+        }
+
+
+
+    }
 }

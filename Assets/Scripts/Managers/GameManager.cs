@@ -246,12 +246,14 @@ public class GameManager : MonoBehaviour {
         //WIN CONDITION PRYSME
         if (p1_queen == null)
         {
+            SoundManager.instance.PlayVictoryResourcesSFX();
             gameNotOver = false;
             winnerPlayer = Winner.Player2Q;
             return;
         }
         else if (p2_queen == null)
         {
+            SoundManager.instance.PlayVictoryResourcesSFX();
             gameNotOver = false;
             winnerPlayer = Winner.Player1Q;
             return;
@@ -261,10 +263,10 @@ public class GameManager : MonoBehaviour {
         timerLeft -= Time.deltaTime;
 
         if (timerLeft <= 0) {
+            SoundManager.instance.PlayVictoryResourcesSFX(); 
             gameNotOver = false;
             int scoreJ1 = (int) Score(PlayerAuthority.Player1);
             int scoreJ2 = (int) Score(PlayerAuthority.Player2);
-            Debug.Log(scoreJ1 + " | " + scoreJ2);
             if (scoreJ1 > scoreJ2)
             {
                 winnerPlayer = Winner.Player1E;

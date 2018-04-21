@@ -232,7 +232,11 @@ public class SoundManager : MonoBehaviour
     #region InGame SFX
     public void PlayPlayGameSFX()
     {
-        RandomizeClips(playGameClips, inGameFXSource, true, true);
+        RandomizeClips(playGameClips, inGameFXSource, true, false);
+    }
+    public void PlayPauseGameSFX()
+    {
+        RandomizeClips(pauseGameClips, inGameFXSource, true, false);
     }
     public void PlayLumySelectedSFX()
     {

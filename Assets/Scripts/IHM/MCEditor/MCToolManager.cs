@@ -119,9 +119,9 @@ public class MCToolManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt))
+       if (Input.GetKey(KeyCode.LeftControl)) 
         {
-            if (Input.GetKeyDown(KeyCode.S)) //Shortcut Selection ctrl + alt + S
+            if (Input.GetKeyDown(KeyCode.W)) //Shortcut Selection ctrl + w
             {
                 CurrentTool = ToolType.Selection;
                 btn_Selection.GetComponent<ChangeCursorToDefault>().OnClickChangeCursor();
@@ -130,10 +130,8 @@ public class MCToolManager : MonoBehaviour
                 CancelInventory();
 
             }
-        }
-        else if (Input.GetKey(KeyCode.LeftControl)) //Shortcut Main ctrl+m
-        {
-            if (Input.GetKeyDown(KeyCode.M))
+
+            if (Input.GetKeyDown(KeyCode.X)) //Shortcut Main ctrl+x
             {
                 CurrentTool = ToolType.Hand;
                 btn_Main.GetComponent<ChangeCursorToHand>().OnClickChangeCursor();
