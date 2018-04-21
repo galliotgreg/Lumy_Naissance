@@ -688,9 +688,9 @@ public class InGameUIController : MonoBehaviour {
                 J1_Nuee.color = colorPlayer1;
                 J2_Nuee.text = SwapManager.instance.GetPlayer2Name();
                 J2_Nuee.color = colorPlayer2;
-                J1_unitCost.text = gameManager.Score(PlayerAuthority.Player1).ToString();
+                J1_unitCost.text = gameManager.SumProdCost(PlayerAuthority.Player1).ToString();
                 J1_unitCost.color = colorPlayer1;
-                J2_unitCost.text = gameManager.Score(PlayerAuthority.Player2).ToString();
+                J2_unitCost.text = gameManager.SumProdCost(PlayerAuthority.Player2).ToString();
                 J2_unitCost.color = colorPlayer2;
                 J1_Resources.text = gameManager.sumResources(PlayerAuthority.Player1).ToString();
                 J1_Resources.color = colorPlayer1;
