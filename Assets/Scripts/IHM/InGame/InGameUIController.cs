@@ -14,7 +14,7 @@ public class InGameUIController : MonoBehaviour {
     public static OpenClosePanel instanceOpenClose = null;
 
     private static Color colorPlayer1 = Color.white;
-    private static Color colorPlayer2 = new Color(0f / 255f, 255f / 255f, 244f / 255f); 
+    private static Color colorPlayer2 = new Color(195f / 255f, 91f / 255f, 169f / 255f); 
 
     private float startTime = 2.0f;
     private bool winState = false;
