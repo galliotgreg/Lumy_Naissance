@@ -273,21 +273,21 @@ public class PartiePersoUIController : MonoBehaviour {
         for (int i=0; i< castStatsList.Count;i++)
         {
             //Bars
-            Image bckStatBar = Instantiate(bckStatBarPrefab, new Vector3(160f, -i * barHeight, 0f), Quaternion.identity);
+            Image bckStatBar = Instantiate(bckStatBarPrefab, new Vector3(130f, -i * barHeight, 0f), Quaternion.identity);
             bckStatBar.transform.SetParent(GameObject.Find("PanelJoueur1").transform, false);
             player1StatsBarToDestroyList.Add(bckStatBar.gameObject);
 
-            Image statBar = Instantiate(statBarPrefab, new Vector3(160f, -i* barHeight, 0f), Quaternion.identity);
+            Image statBar = Instantiate(statBarPrefab, new Vector3(130f, -i* barHeight, 0f), Quaternion.identity);
             statBar.transform.SetParent(GameObject.Find("PanelJoueur1").transform, false);
             statBar.fillAmount = castStatsList[i] / maxStat ;
             player1StatsBarToDestroyList.Add(statBar.gameObject);
 
             //Texts
-            player1StatsNamesList[i].transform.localPosition = new Vector3(-150f, statBar.transform.localPosition.y,0f) ;
+            player1StatsNamesList[i].transform.localPosition = new Vector3(-180f, statBar.transform.localPosition.y,0f) ;
             player1StatsNamesList[i].gameObject.SetActive(true);
             
             //Percentage
-            Text percentage = Instantiate(percentagePrefab, new Vector3(330f, statBar.transform.localPosition.y, 0f), Quaternion.identity);
+            Text percentage = Instantiate(percentagePrefab, new Vector3(300f, statBar.transform.localPosition.y, 0f), Quaternion.identity);
             percentage.transform.SetParent(GameObject.Find("PanelJoueur1").transform, false);
             percentage.text = Mathf.Floor(statBar.fillAmount*100).ToString() + "%";
             percentage.font = percentageFont;
@@ -376,20 +376,20 @@ public class PartiePersoUIController : MonoBehaviour {
         for (int i = 0; i < castStatsList.Count; i++)
         {
             //Bars
-            Image bckStatBar = Instantiate(bckStatBarPrefab, new Vector3(160f, -i * barHeight, 0f), Quaternion.identity);
+            Image bckStatBar = Instantiate(bckStatBarPrefab, new Vector3(130f, -i * barHeight, 0f), Quaternion.identity);
             bckStatBar.transform.SetParent(GameObject.Find("PanelJoueur2").transform, false);
             player2StatsBarToDestroyList.Add(bckStatBar.gameObject);
 
-            Image statBar = Instantiate(statBarPrefab, new Vector3(160f, -i * barHeight, 0f), Quaternion.identity);
+            Image statBar = Instantiate(statBarPrefab, new Vector3(130f, -i * barHeight, 0f), Quaternion.identity);
             statBar.transform.SetParent(GameObject.Find("PanelJoueur2").transform, false);
             statBar.fillAmount = castStatsList[i] / maxStat;
             player2StatsBarToDestroyList.Add(statBar.gameObject);
             //Texts
-            player2StatsNamesList[i].transform.localPosition = new Vector3(-150f, statBar.transform.localPosition.y, 0f);
+            player2StatsNamesList[i].transform.localPosition = new Vector3(-180f, statBar.transform.localPosition.y, 0f);
             player2StatsNamesList[i].gameObject.SetActive(true);
             
             //Percentage
-            Text percentage = Instantiate(percentagePrefab, new Vector3(330f, statBar.transform.localPosition.y, 0f), Quaternion.identity);
+            Text percentage = Instantiate(percentagePrefab, new Vector3(300f, statBar.transform.localPosition.y, 0f), Quaternion.identity);
             percentage.transform.SetParent(GameObject.Find("PanelJoueur2").transform, false);
             percentage.text = Mathf.Floor(statBar.fillAmount * 100).ToString() + "%";
             player2PercentageToDestroyList.Add(percentage);
