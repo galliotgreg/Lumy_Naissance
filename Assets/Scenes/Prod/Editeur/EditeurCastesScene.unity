@@ -1733,6 +1733,7 @@ GameObject:
   - component: {fileID: 139441470}
   - component: {fileID: 139441469}
   - component: {fileID: 139441468}
+  - component: {fileID: 139441471}
   m_Layer: 5
   m_Name: Btn_Prysme
   m_TagString: Untagged
@@ -1845,6 +1846,36 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 139441466}
+--- !u!114 &139441471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 139441466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 746001578}
+          m_MethodName: PlayHoverSFX
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!1 &148408251
 GameObject:
   m_ObjectHideFlags: 0
@@ -5756,6 +5787,8 @@ RectTransform:
   - {fileID: 292691283}
   - {fileID: 218024372}
   - {fileID: 746001577}
+  - {fileID: 2101700263}
+  - {fileID: 1115711604}
   m_Father: {fileID: 1725846085}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12691,6 +12724,75 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!1001 &1115711603
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 452089240}
+    m_Modifications:
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 368
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 198526687011403894, guid: 27646d0d88fb0974598cefff8c533fe9,
+        type: 2}
+      propertyPath: randomSeed
+      value: 1523311203
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327164006988558, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_Name
+      value: Particles_menu (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 198526687011403894, guid: 27646d0d88fb0974598cefff8c533fe9,
+        type: 2}
+      propertyPath: InitialModule.maxNumParticles
+      value: 25
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &1115711604 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1115711603}
 --- !u!1 &1119290177
 GameObject:
   m_ObjectHideFlags: 0
@@ -16972,15 +17074,15 @@ RectTransform:
   m_GameObject: {fileID: 1487294842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 731425229}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 625, y: 0}
-  m_SizeDelta: {x: 761.6, y: 245.9}
+  m_AnchoredPosition: {x: 638, y: 0}
+  m_SizeDelta: {x: 1401.4, y: 783}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1487294844
 MonoBehaviour:
@@ -17003,7 +17105,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 48f0693a12d5d4046aa40de199678188, type: 3}
-    m_FontSize: 20
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -17014,11 +17116,13 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.5
-  m_Text: "H\xE9ritier du Premier, le Prysme est \xE0 la base d\u2019une Nu\xE9e.
-    \n\nIl erre dans un monde oubli\xE9 pour le prot\xE9ger de la corruption ayant
-    touch\xE9 d\u2019autres Prysmes. \n\nIl invoque des Lumys pour accomplir sa mission,
-    r\xE9cup\xE9rer un maximum d\u2019\xC9clat, vestige du premier, et repousser les
-    Prysmes corrompus. "
+  m_Text: "Immuables, les Prysmes errent dans le monde, conscients d\u2019avoir un
+    jour appartenu \xE0 une seule et m\xEAme entit\xE9. \n\nAujourd\u2019hui divis\xE9s
+    entre volont\xE9 d\u2019ind\xE9pendance et d\xE9sir de r\xE9unification, les Prysmes
+    se font la guerre. \n\nPour vaincre son adversaire, chaque Prysme engendre une
+    nu\xE9e de Lumys qu\u2019il envoie r\xE9colter des ressources ou attaquer le Prysme
+    ennemi. Seul le Prysme qui aura la meilleure Nu\xE9e pourra \xE9liminer son adversaire
+    ou r\xE9colter le plus grand nombre de ressources avant la fin du temps imparti."
 --- !u!222 &1487294845
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19512,7 +19616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 771, y: 0}
+  m_AnchoredPosition: {x: 771, y: 1.9999952}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1761551042
@@ -20745,7 +20849,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -420, y: -30}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1863938261
 MonoBehaviour:
@@ -20811,7 +20915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.978}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -23034,7 +23138,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 671, y: 0}
+  m_AnchoredPosition: {x: 671, y: 7.3}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2032801657
@@ -23922,6 +24026,63 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2076318789}
+--- !u!1001 &2101700262
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 452089240}
+    m_Modifications:
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -560
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -280
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 198526687011403894, guid: 27646d0d88fb0974598cefff8c533fe9,
+        type: 2}
+      propertyPath: InitialModule.maxNumParticles
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 198526687011403894, guid: 27646d0d88fb0974598cefff8c533fe9,
+        type: 2}
+      propertyPath: randomSeed
+      value: 1839446463
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 27646d0d88fb0974598cefff8c533fe9, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &2101700263 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4238833606446192, guid: 27646d0d88fb0974598cefff8c533fe9,
+    type: 2}
+  m_PrefabInternal: {fileID: 2101700262}
 --- !u!1 &2107368515
 GameObject:
   m_ObjectHideFlags: 0
@@ -24385,6 +24546,17 @@ MonoBehaviour:
         - m_Target: {fileID: 1177656130}
           m_MethodName: SetActive
           m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 746001578}
+          m_MethodName: PlayHoverSFX
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

@@ -107,7 +107,12 @@ public class MCEditor_DialogBox_Param_String : MCEditor_DialogBox_Param {
 
 	protected override void confirmParam ()
 	{
-		((ABTextParam)this.paramProxy.AbParam).Value.Value = valueText.text;
+        if (!ValidateChars(valueText.text))
+        {
+            return;
+        }
+
+        ((ABTextParam)this.paramProxy.AbParam).Value.Value = valueText.text;
 	}
 
 	protected override void configParam ()

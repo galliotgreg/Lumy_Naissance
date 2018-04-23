@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -5694,6 +5694,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1915216731}
     m_Modifications:
+    - target: {fileID: 114046173797132662, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224806325871928578, guid: fbcd0f057218eed46a403a9413dd20b4,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -5857,7 +5862,7 @@ Prefab:
     - target: {fileID: 224700550924243508, guid: fbcd0f057218eed46a403a9413dd20b4,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 224700347421951338, guid: fbcd0f057218eed46a403a9413dd20b4,
         type: 2}
@@ -5967,6 +5972,31 @@ Prefab:
       value: "Une fois que votre arm\xE9e est pr\xEAte, lancez la dans la bataille
         via le menu <color=#19b5fe>Affrontement.</color>"
       objectReference: {fileID: 0}
+    - target: {fileID: 114046173797132662, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046173797132662, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046173797132662, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1426609013}
+    - target: {fileID: 114046173797132662, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayWelcomeOnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046173797132662, guid: fbcd0f057218eed46a403a9413dd20b4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fbcd0f057218eed46a403a9413dd20b4, type: 2}
   m_IsPrefabParent: 0
@@ -6004,6 +6034,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!1 &1426609012 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1735892294731296, guid: fbcd0f057218eed46a403a9413dd20b4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1426609006}
+--- !u!114 &1426609013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1426609012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a0e385a99cef754e8ea02a7ff606004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1527021370
 GameObject:
   m_ObjectHideFlags: 0
