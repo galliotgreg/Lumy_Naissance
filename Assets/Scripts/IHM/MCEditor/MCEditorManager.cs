@@ -2618,7 +2618,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (((IABParam)proxy).Identifier.Contains("trace"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "Trace[]")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Traces[]")
                         {
                             index_j = j;
                             index_i = i;
@@ -2626,7 +2626,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (((IABParam)proxy).Identifier.Contains("resources"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "Ressources[]")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Resources[]")
                         {
                             index_j = j;
                             index_i = i;
