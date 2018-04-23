@@ -362,9 +362,9 @@ public class SoundManager : MonoBehaviour
         if (currentScene == initialScene)
         {
             source.clip = waitingClip;
-            source.Play();
-            source.loop = true;
+            source.Play();            
         }
+        source.loop = true;
     }
 
     void SwapTracks(AudioClip clip)

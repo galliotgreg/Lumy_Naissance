@@ -2456,6 +2456,10 @@ public class MCEditorManager : MonoBehaviour
         {
             FillActionToolTip(((ProxyABAction)proxy).AbState);
         }
+        else if (type.Contains("State"))
+        {
+            FillStateToolTip(((ProxyABState)proxy).AbState);
+        }
         else if (type.Contains("Param"))
         {
             FillParamToolTip((IABParam)((ProxyABParam)proxy).AbParam);
@@ -2478,6 +2482,8 @@ public class MCEditorManager : MonoBehaviour
         {
             if (((ABState)item).Action != null)
                 FillActionToolTip((ABState)item);
+            else
+                FillStateToolTip((ABState)item);
         }
         else if (item is IABParam)
         {
@@ -2486,6 +2492,31 @@ public class MCEditorManager : MonoBehaviour
         else if (item is IABOperator)
         {
             FillOperatorToolTip((IABOperator)item);
+        }
+    }
+
+    private void FillStateToolTip(ABState proxy)
+    {
+        int index_i = -1;
+        int index_j = -1;
+        for (int i = 0; i < databaseActions_Params.Count; i++)
+        {
+            if (databaseActions_Params[i].Title == "États Intermédiaires")
+            {
+                for (int j = 0; j < databaseActions_Params[i].Content.Count; j++)
+                {
+                    if (databaseActions_Params[i].Content[j].SubTitle == "State")
+                    {
+                        index_j = j;
+                        index_i = i;
+                    }
+                }
+            }
+        }
+        if (index_i > -1 && index_j > -1)
+        {
+            toolTipTextTab[0].text = databaseActions_Params[index_i].Content[index_j].SubTitle;
+            toolTipTextTab[1].text = databaseActions_Params[index_i].Content[index_j].Content;
         }
     }
 
@@ -2501,7 +2532,7 @@ public class MCEditorManager : MonoBehaviour
                 {
                     if (proxy.Action.GetType().ToString().Contains("Goto"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "goto")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "GoTo")
                         {
                             index_j = j;
                             index_i = i;
@@ -2509,7 +2540,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (proxy.Action.GetType().ToString().Contains("Strike"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "strike")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Strike")
                         {
                             index_j = j;
                             index_i = i;
@@ -2517,7 +2548,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (proxy.Action.GetType().ToString().Contains("Pick"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "pick")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Pick")
                         {
                             index_j = j;
                             index_i = i;
@@ -2525,7 +2556,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (proxy.Action.GetType().ToString().Contains("Drop"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "drop")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Drop")
                         {
                             index_j = j;
                             index_i = i;
@@ -2533,7 +2564,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (proxy.Action.GetType().ToString().Contains("Lay"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "lay")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Lay")
                         {
                             index_j = j;
                             index_i = i;
@@ -2541,7 +2572,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (proxy.Action.GetType().ToString().Contains("Trace"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "trace")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Trace")
                         {
                             index_j = j;
                             index_i = i;
@@ -2549,7 +2580,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (proxy.Action.GetType().ToString().Contains("Roaming"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "random roaming")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Roaming")
                         {
                             index_j = j;
                             index_i = i;
@@ -2618,7 +2649,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (((IABParam)proxy).Identifier.Contains("trace"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "Trace[]")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Traces[]")
                         {
                             index_j = j;
                             index_i = i;
@@ -2626,7 +2657,7 @@ public class MCEditorManager : MonoBehaviour
                     }
                     else if (((IABParam)proxy).Identifier.Contains("resources"))
                     {
-                        if (databaseActions_Params[i].Content[j].SubTitle == "Ressources[]")
+                        if (databaseActions_Params[i].Content[j].SubTitle == "Resources[]")
                         {
                             index_j = j;
                             index_i = i;
