@@ -48,7 +48,7 @@
 		"ID": 2,
 		"Title": "États Intermédiaires",
 		"Content": [{
-				"SubTitle": "",
+				"SubTitle": "State",
 				"Content": "Utilisés pour rendre un Modèle Comportemental compréhensible, les états intermédiaires n’influent pas directement sur l'arbre décisionnel, mais ils permettent de l'organiser. Ce sont des embranchements qui structurent le MC, depuis l'INIT jusqu'aux nœuds d'actions en extrémité de branche."
 			}
 		],
@@ -136,19 +136,19 @@
 				"Content": "L’ensemble des informations propres au Lumy exécutant le MC\n• cast (text) : nom de la caste du Lumy\n• curPos (vecteur) : position du Lumy\n• trgPos (vecteur) : destination du Lumy\n• vitalityMax (scalaire) : vitalité max du Lumy\n• vitality (scalaire) : vitalité actuelle du Lumy\n• strength (scalaire) : force du Lumy\n• stamina (scalaire) : endurance du Lumy\n• actSpd (scalaire) : vitesse d’action du Lumy\n• moveSpd (scalaire) : vitesse de déplacement du Lumy\n• nbItemMax (scalaire) : quantité maximale de ressources transportées\n• nbItem (scalaire) : quantité de ressources transportées\n• atkRange (scalaire) : portée d’attaque du Lumy\n• pickRange (scalaire) : portée de saisie du Lumy\n• prodCost (scalaire) : coût de production du Lumy \n• layTimeCost (scalaire) : temps de production du Lumy\n• visionRange (scalaire) : portée visuelle du Lumy"
 			},
 			{
-				"SubTitle": "Allies[ ]",
+				"SubTitle": "Allies[]",
 				"Content": "Ce tableau contient les références Self des Lumy alliés présents dans le champ de vision du Lumy exécutant le MC :\n\tlumy1 (référence : Self) : le Self de lumy1\n\t...\n\tlumyN (référence : Self) : le Self de lumyN"
 			},
 			{
-				"SubTitle": "Enemies[ ]",
+				"SubTitle": "Enemies[]",
 				"Content": "Un tableau contenant les références Self des Lumys ennemis dans le champ de vision du Lumy exécutant le MC. Il contient les mêmes informations que Allies[ ], mais pour les Lumys de l'adversaire."
 			},
 			{
-				"SubTitle": "Ressources[ ]",
+				"SubTitle": "Resources[]",
 				"Content": "Un tableau de références regroupant les ressources dans le champ de vision du Lumy exécutant le MC :\n• resource (référence) :\n\t• stock (scalaire) : quantité de ressources \n\trestantes\n\t• pos (vecteur) : position de la ressource\n\t• color (couleur) : couleur de la ressource"
 			},
 			{
-				"SubTitle": "Trace[ ]",
+				"SubTitle": "Traces[]",
 				"Content": "Un tableau de références regroupant les traces dans le champ de vision du Lumy exécutant le MC :\n• trace (référence) :\n\t• points (vecteur[ ]) : liste des points \n\tdéfinissant la trace\n\t• color (couleur) : couleur de la trace\n\t• age (scalaire) : temps écoulé depuis la \n\tcréation de la trace"
 			}
 		],
