@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public abstract class MCEditor_DialogBox_Proxy : MCEditor_DialogBox {
@@ -40,8 +41,20 @@ public abstract class MCEditor_DialogBox_Proxy : MCEditor_DialogBox {
 		}
 	}
 
-	#region implemented abstract members of MCEditor_DialogBox
-	protected override void deactivate (){
+    protected bool ValidateChars(string newName)
+    {
+        string pattern = "[^a-zA-Z0-9\\(\\)_]";
+        Regex r = new Regex(pattern);
+        Match m = r.Match(newName);
+        if (m.Success)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    #region implemented abstract members of MCEditor_DialogBox
+    protected override void deactivate (){
 		deactivateProxy ();
 	}
 

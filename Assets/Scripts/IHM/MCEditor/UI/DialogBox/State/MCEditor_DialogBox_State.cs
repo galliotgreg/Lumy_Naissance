@@ -23,6 +23,10 @@ public abstract class MCEditor_DialogBox_State : MCEditor_DialogBox_Proxy {
 	protected override void confirmProxy ()
 	{
 		confirmState();
+        if (!ValidateChars(stateProxy.GetProxyName()))
+        {
+            return;
+        }
 		stateProxy.SetProxyName ( stateProxy.GetProxyName() );
 	}
 

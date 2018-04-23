@@ -1740,20 +1740,6 @@ public class SwarmEditUIController : MonoBehaviour
         OpenEditSwarmDialog();
     }
 
-    private bool ValidateSwarmInfo(string newName)
-    {
-        foreach (string curName in AppContextManager.instance.GetSpeciesFolderNames())
-        {
-            string lowerCurName = curName.ToLower();
-            string lowerNewName = newName.ToLower();
-            if (lowerCurName == lowerNewName)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public void OpenImportSwarmDialog()
     {
         ImportController.ImportSpecie();
@@ -1953,7 +1939,26 @@ public class SwarmEditUIController : MonoBehaviour
         imagePrysme.gameObject.SetActive(true);
     }
 
-    private bool ValidateName(string newName)
+    private bool ValidateSwarmInfo(string newName)
+    {
+        if (!ValidateChars(newName))
+        {
+            return false;
+        }
+
+        foreach (string curName in AppContextManager.instance.GetSpeciesFolderNames())
+        {
+            string lowerCurName = curName.ToLower();
+            string lowerNewName = newName.ToLower();
+            if (lowerCurName == lowerNewName)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool ValidateChars(string newName)
     {
         string pattern = "[^a-zA-Z0-9\\(\\)_]";
         Regex r = new Regex(pattern);
@@ -1962,6 +1967,16 @@ public class SwarmEditUIController : MonoBehaviour
         {
             return false;
         }
+        return true;
+    }
+
+    private bool ValidateName(string newName)
+    {
+        if (!ValidateChars(newName))
+        {
+            return false;
+        }
+
         foreach (string curName in AppContextManager.instance.ActiveSpecie.Casts.Keys)
         {
             string lowerCurName = curName.ToLower();

@@ -30,6 +30,10 @@ public class MCEditor_DialogBox_Action_Name : MCEditor_DialogBox_Action {
 
 	protected override void confirmAction ()
 	{
+        if (!ValidateChars(value.text))
+        {
+            return;
+        }
 		if (MCEditorManager.instance.changeModelActionName (this.actionProxy, value.text)) {
 			this.actionProxy.AbState.Name = value.text;
 		}

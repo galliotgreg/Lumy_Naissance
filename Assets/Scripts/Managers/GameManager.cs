@@ -304,7 +304,7 @@ public class GameManager : MonoBehaviour {
 
         foreach (GameObject unit in playerUnits) {
 
-            Dictionary<string, int> costs = unit.transform.FindChild("Self").GetComponent<AgentScript>().ProdCost;
+            Dictionary<string, int> costs = unit.transform.Find("Self").GetComponent<AgentScript>().ProdCost;
             foreach (KeyValuePair<string, int> cost in costs) {
                 costProd += cost.Value;
             }
