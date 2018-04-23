@@ -277,6 +277,11 @@ public class SwapManager : MonoBehaviour
     
     public int getPlayerMouseSensitivity()
     {
+        if (!PlayerPrefs.HasKey(keyPlayerMusicVolume))
+        {
+            PlayerPrefs.SetInt(KeyMouseSensitivity, 17);
+            return PlayerPrefs.GetInt(KeyMouseSensitivity);
+        }
         return PlayerPrefs.GetInt(KeyMouseSensitivity); 
     }
 
