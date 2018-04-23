@@ -363,15 +363,39 @@ public class ABParamFactory
         for (int i = 0; i < r.Length; i++)
         {
             ABColor colorVal = TypeFactory.CreateEmptyColor();
-            ABColor.Color color = ABColor.Color.Red;
-            if (g[i] > r[i] && g[i] > b[i])
+
+            /**/
+            ABColor.Color color = ABColor.Color.None;
+            if (r[i] == 255 && g[i] == 0 && b[i] == 0)
+            {
+                color = ABColor.Color.Red;
+            }
+            else if (r[i] == 0 && g[i] == 255 && b[i] == 0)
             {
                 color = ABColor.Color.Green;
             }
-            else if (b[i] > r[i] && b[i] > g[i])
+            else if (r[i] == 0 && g[i] == 0 && b[i] == 255)
             {
                 color = ABColor.Color.Blue;
             }
+            else if (r[i] == 255 && g[i] == 255 && b[i] == 0)
+            {
+                color = ABColor.Color.Yellow;
+            }
+            else if (r[i] == 255 && g[i] == 0 && b[i] == 255)
+            {
+                color = ABColor.Color.Magenta;
+            }
+            else if (r[i] == 0 && g[i] == 255 && b[i] == 255)
+            {
+                color = ABColor.Color.Cyan;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
+            /**/
             colorVal.Value = color;
             colorTab.Values[i] = colorVal;
         }
@@ -527,15 +551,41 @@ public class ABParamFactory
         else if (field.FieldType == typeof(Color32))
         {
             Color32 value = (Color32)field.GetValue(obj);
-            ABColor.Color color = ABColor.Color.Red;
-            if (value.g > value.r && value.g > value.b)
+
+            /**/
+
+            ABColor.Color color = ABColor.Color.None;
+            if (value.r == 255 && value.g == 0 && value.b == 0)
+            {
+                color = ABColor.Color.Red;
+            }
+            else if (value.r == 0 && value.g == 255 && value.b == 0)
             {
                 color = ABColor.Color.Green;
             }
-            else if (value.b > value.r && value.b > value.g)
+            else if (value.r == 0 && value.g == 0 && value.b == 255)
             {
                 color = ABColor.Color.Blue;
             }
+            else if (value.r == 255 && value.g == 255 && value.b == 0)
+            {
+                color = ABColor.Color.Yellow;
+            }
+            else if (value.r == 255 && value.g == 0 && value.b == 255)
+            {
+                color = ABColor.Color.Magenta;
+            }
+            else if (value.r == 0 && value.g == 255 && value.b == 255)
+            {
+                color = ABColor.Color.Cyan;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
+            /**/
+
             type = TypeFactory.CreateEmptyColor();
             ((ABColor)type).Value = color;
         }

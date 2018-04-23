@@ -194,7 +194,7 @@ public class AgentBehavior : MonoBehaviour
 						traceAction.Color = Color.magenta;
 						break;
 					case ABColor.Color.Yellow:
-						traceAction.Color = Color.yellow;
+                        traceAction.Color = new Color(1, 1, 0, 1);
 						break;
 					}
 
