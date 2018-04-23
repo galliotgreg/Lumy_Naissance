@@ -3,7 +3,7 @@
 		"Title": "Généralités",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "L'éditeur de Modèle Comportemental est l'écran permettant de créer des Modèles Comportementaux, c'est-à-dire des arbres décisionnels qui vont déterminer le comportement de vos Lumys en fonction du rôle que vous souhaitez qu'ils adoptent durant l'affrontement. \n\nPour ce faire, vous avez à votre disposition une variété d'éléments de logique algorithmique, appelés nodes. Il en existe cinq types différents : les <color=#adf778ff><b>états</b></color>, les <color=#adf778ff><b>actions</b></color>, les <color=#adf778ff><b>opérateurs</b></color>, les <color=#adf778ff><b>paramètres</b></color> et les <color=#adf778ff><b>composites</b></color>. \nC'est en reliant ces nodes par des transitions que vous créez un Modèle Comportemental."
+				"Content": "L'éditeur de Modèle Comportemental est l'écran permettant de créer des Modèles Comportementaux, c'est-à-dire des arbres décisionnels qui vont déterminer le comportement de vos Lumys en fonction du rôle que vous souhaitez qu'ils adoptent durant l'affrontement. \n\nPour ce faire, vous avez à votre disposition une variété d'éléments de logique algorithmique, appelés nodes. Il en existe cinq types différents : les <color=#adf778ff><b>états</b></color>, les <color=#adf778ff><b>actions</b></color>, les <color=#adf778ff><b>opérateurs</b></color>, les <color=#adf778ff><b>paramètres</b></color> et les <color=#adf778ff><b>macro operators</b></color>. \nC'est en reliant ces nodes par des transitions que vous créez un Modèle Comportemental."
 			}
 		],
 		"Image": "",
@@ -13,31 +13,31 @@
 		"ID": 1,
 		"Title": "Actions",
 		"Content": [{
-				"SubTitle": "goto",
+				"SubTitle": "GoTo",
 				"Content": "L’unité se déplace suivant le tableau de vecteurs passé en argument. Si le tableau de vecteurs ne contient qu'un seul élément, l'agent se déplace en évitant les obstacles."
 			},
 			{
-				"SubTitle": "strike",
+				"SubTitle": "Strike",
 				"Content": "L’unité utilise son attaque de base sur la cible passée en argument."
 			},
 			{
-				"SubTitle": "pick",
+				"SubTitle": "Pick",
 				"Content": "L’unité ramasse la ressource passée en argument."
 			},
 			{
-				"SubTitle": "drop",
+				"SubTitle": "Drop",
 				"Content": "L’unité lâche la ressource qu’elle transporte. Si le <i>drop</i> est effectué à proximité du Prysme, alors la ressource est collectée."
 			},
 			{
-				"SubTitle": "lay",
+				"SubTitle": "Lay",
 				"Content": "Le prysme génère une unité de la caste désignée par le nom <i><cast></i> donné."
 			},
 			{
-				"SubTitle": "trace",
+				"SubTitle": "Trace",
 				"Content": "L'unité trace un chemin passant par toutes les positions correspondant aux vecteurs passés en argument. Le chemin ainsi tracé a une durée de vie de 12 secondes, et les différents points qui le composent sont espacés d'une distance de 1."
 			},
 			{
-				"SubTitle": "random roaming",
+				"SubTitle": "Roaming",
 				"Content": "L’unité se déplace vers un point situé à une distance passée en second argument, choisi dans un champ de vision dont l'angle est passé en premier argument."
 			}
 		],
@@ -68,10 +68,10 @@
 	},
 	{
 		"ID": 4,
-		"Title": "Operateurs",
+		"Title": "Opérateurs",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "Les opérateurs sont des fonctions algorithmiques renvoyant un paramètre, et prenant jusqu'à trois paramètres en entrée. Ces opérateurs servent à constituer les arbres syntaxiques. Il en existe dix grands types :\n• Logique\n• Définition\n• Mathématique\n• Comparateur\n• Accesseur\n• Extracteur\n• Agregateur\n• Filtre\n• Tableau\n• Inverseur"
+				"Content": "Les opérateurs sont des fonctions algorithmiques renvoyant un paramètre, et prenant jusqu'à trois paramètres en entrée. Ces opérateurs servent à constituer les arbres syntaxiques. Il en existe dix grands types :\n• Logique\n• Définition\n• Mathématique\n• Comparateur\n• Accesseur\n• Extracteur\n• Agrégateur\n• Filtre\n• Tableau\n• Inverseur"
 			}
 		],
 		"Image": "",
@@ -90,11 +90,11 @@
 			},
 			{
 				"SubTitle": "Couleur",
-				"Content": "Un paramètre propre au jeu possédant six valeurs : ROUGE, VERT, BLEU, CYAN, MAGENTA, JAUNE. La couleur des transitions pour les couleurs est le <color=#564b6fff>chocolat</color>."
+				"Content": "Un paramètre propre au jeu possédant six valeurs : ROUGE, VERT, BLEU, CYAN, MAGENTA, JAUNE. La couleur des transitions pour les couleurs est le <color=#834b1bff>chocolat</color>."
 			},
 			{
 				"SubTitle": "Scalaire",
-				"Content": "Un nombre entier ou à virgule. La couleur des transitions pour les scalaires est le sépia."
+				"Content": "Un nombre entier ou à virgule. La couleur des transitions pour les scalaires est le <color=#ead8a1ff>sépia</color>."
 			},
 			{
 				"SubTitle": "Vecteur",
@@ -133,7 +133,7 @@
 			},
 			{
 				"SubTitle": "Self",
-				"Content": "L’ensemble des informations propres au Lumy exécutant le MC\n• cast (text) : nom de la caste du Lumy\n• curPos (vecteur) : position du Lumy\n• trgPos (vecteur) : destination du Lumy\n• vitalityMax (scalaire) : vitalité max du Lumy\n• vitality (scalaire) : vitalité actuelle du Lumy\n• strength (scalaire) : force du Lumy\n• stamina (scalaire) : endurance du Lumy\n• actSpd (scalaire) : vitesse d’action du Lumy\n• moveSpd (scalaire) : vitesse de déplacement du Lumy\n• nbItemMax (scalaire) : quantité maximale de ressources transportées\n• nbItem (scalaire) : quantité de ressources transportées\n• atkRange (scalaire) : portée d’attaque du Lumy\n• pickRange (scalaire) : portée de saisie du Lumy\n<color=#ff0000ff>• prodCost ( ? ) : </color>\n• layTimeCost (scalaire) : temps de production du Lumy\n• visionRange (scalaire) : portée visuelle du Lumy"
+				"Content": "L’ensemble des informations propres au Lumy exécutant le MC\n• cast (text) : nom de la caste du Lumy\n• curPos (vecteur) : position du Lumy\n• trgPos (vecteur) : destination du Lumy\n• vitalityMax (scalaire) : vitalité max du Lumy\n• vitality (scalaire) : vitalité actuelle du Lumy\n• strength (scalaire) : force du Lumy\n• stamina (scalaire) : endurance du Lumy\n• actSpd (scalaire) : vitesse d’action du Lumy\n• moveSpd (scalaire) : vitesse de déplacement du Lumy\n• nbItemMax (scalaire) : quantité maximale de ressources transportées\n• nbItem (scalaire) : quantité de ressources transportées\n• atkRange (scalaire) : portée d’attaque du Lumy\n• pickRange (scalaire) : portée de saisie du Lumy\n• prodCost (scalaire) : coût de production du Lumy \n• layTimeCost (scalaire) : temps de production du Lumy\n• visionRange (scalaire) : portée visuelle du Lumy"
 			},
 			{
 				"SubTitle": "Allies[ ]",
@@ -141,7 +141,7 @@
 			},
 			{
 				"SubTitle": "Enemies[ ]",
-				"Content": "Un tableau contenant les références Self des Lumy ennemis dans le champ de vision du Lumy exécutant le MC. Il contient les mêmes informations que Allies[ ], mais pour les Lumys de l'adversaire."
+				"Content": "Un tableau contenant les références Self des Lumys ennemis dans le champ de vision du Lumy exécutant le MC. Il contient les mêmes informations que Allies[ ], mais pour les Lumys de l'adversaire."
 			},
 			{
 				"SubTitle": "Ressources[ ]",
@@ -157,10 +157,10 @@
 	},
 	{
 		"ID": 7,
-		"Title": "Composite",
+		"Title": "Macro Operators",
 		"Content": [{
 				"SubTitle": "",
-				"Content": "Composant hétéroclite, un composite est un rassemblement de paramètres et d’opérateurs prédéfinis. Les composites permettent de simplifier le Modèle Comportemental d’un Lumy. Ce sont des fonctions complexes, ne nécessitant pas forcément de paramètres en entrée, mais renvoyant un paramètre en sortie. Ils sont utilisés pour améliorer la lisibilité dans l'éditeur de Modèle Comportemental. Il existe un total de <color=#ff0000ff>x</color> composites, triés dans l'éditeur selon le type de leurs arguments."
+				"Content": "Composant hétéroclite, un macro operator est un rassemblement de paramètres et d’opérateurs prédéfinis. Les macro operators permettent de simplifier le Modèle Comportemental d’un Lumy. Ce sont des fonctions complexes, ne nécessitant pas forcément de paramètres en entrée, mais renvoyant un paramètre en sortie. Ils sont utilisés pour améliorer la lisibilité dans l'éditeur de Modèle Comportemental. Il existe un total de 36 macro operators, triés dans l'éditeur selon le type de leurs arguments."
 			}
 		],
 		"Image": "",

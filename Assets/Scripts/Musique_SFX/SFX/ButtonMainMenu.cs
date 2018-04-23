@@ -15,6 +15,9 @@ public class ButtonMainMenu : MonoBehaviour {
         SoundManager.instance.PlayOnHoverMenuSFX();
     }
     
-    
+    public void PlayWelcomeOnClick()
+    {
+        SoundManager.instance.PlayLaunchGameSFX();
+    }
 
 }
