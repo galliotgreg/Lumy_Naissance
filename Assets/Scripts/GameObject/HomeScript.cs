@@ -11,13 +11,13 @@ public class HomeScript : MonoBehaviour {
     [AttrName(Identifier = "pos")]
     [SerializeField]
     private Vector2 location;
-    [AttrName(Identifier = "bRes")]
-    [SerializeField]
-    private float redResAmout;
     [AttrName(Identifier = "rRes")]
     [SerializeField]
-    private float greenResAmout;
+    private float redResAmout;
     [AttrName(Identifier = "gRes")]
+    [SerializeField]
+    private float greenResAmout;
+    [AttrName(Identifier = "bRes")]
     [SerializeField]
     private float blueResAmout;
     [AttrName(Identifier = "population")]
