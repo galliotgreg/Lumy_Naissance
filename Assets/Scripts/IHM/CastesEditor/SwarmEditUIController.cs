@@ -1800,6 +1800,7 @@ public class SwarmEditUIController : MonoBehaviour
         confirmationPanelsList.Add(resetConfirmationPanel);
         confirmationPanelsList.Add(delSwarmConfirmationPanel);
         confirmationPanelsList.Add(delCastConfirmationPanel);
+        confirmationPanelsList.Add(importSwarmConfirmationPanel);
         //Active Delete Swarm Panel
         confirmationPanelsList[1].SetActive(!confirmationPanelsList[1].activeSelf);
         //Desactive other confirmation panels
