@@ -17,6 +17,7 @@ public class InGame_MessageItem_Line : MonoBehaviour {
 		set {
 			line = value;
 			text.text = line;
+            text.color = Color.red;
 		}
 	}
 
