@@ -7,7 +7,7 @@ public class TraceScript : MonoBehaviour {
 	// GameObject Identification
 	[AttrName(Identifier = "key")]
 	[SerializeField]
-	private int key;
+	private string key;
 
 	[AttrName(Identifier = "color")]
 	[SerializeField]
@@ -67,7 +67,7 @@ public class TraceScript : MonoBehaviour {
 		}
 	}
 
-	public int Key {
+	public string Key {
 		get {
 			return key;
 		}
@@ -75,7 +75,7 @@ public class TraceScript : MonoBehaviour {
 	#endregion
 
 	void Awake(){
-		key = this.GetHashCode();
+		key = this.GetHashCode().ToString();
 		this.age = 0;
 		this.lifeTime = 1;
 	}

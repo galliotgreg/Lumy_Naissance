@@ -6,7 +6,7 @@ public class AgentScript : MonoBehaviour {
 	// GameObject Identification
 	[AttrName(Identifier = "key")]
 	[SerializeField]
-	private int key;
+	private string key;
 
     [AttrName(Identifier = "cast")]
     [SerializeField]
@@ -260,7 +260,7 @@ public class AgentScript : MonoBehaviour {
 		}
 	}
 
-	public int Key {
+	public string Key {
 		get {
 			return key;
 		}
@@ -324,7 +324,7 @@ public class AgentScript : MonoBehaviour {
 	}
 
 	void Awake(){
-		key = this.GetHashCode();
+		key = this.GetHashCode().ToString();
 	}
 
     // Use this for initialization
