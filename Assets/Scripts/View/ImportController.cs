@@ -8,12 +8,13 @@ using Crosstales.FB;
 
 
 public class ImportController : MonoBehaviour {
-    public static string filePath = Application.dataPath + @"/Inputs/Species";
+    public static string filePath;// = Application.dataPath + @"/Inputs/Species";
 
 
     // Use this for initialization
     void Start()
     {
+        filePath = Application.dataPath + @"/Inputs/Species";
         //this.gameObject.GetComponent<Button>().onClick.AddListener(ImportSpecie);
     }
     public static bool SwarmIsExisting(string name)

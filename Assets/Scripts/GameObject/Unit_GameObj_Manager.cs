@@ -281,13 +281,22 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 		}
 		return null;
 	}
+
+    //TODO : Refacto, use string instead of int/float for key/hash
 	public GameObject getResource( int key ){
 		foreach( ResourceScript resource in resources ){
-			if( resource.Key == key ){
+			if( ((int)(resource.Key/10000)) == ((int)(key/10000)) ){
 				return resource.gameObject;
-			}
+			} 
 		}
-		return null;
+        Debug.LogError("Key is not find " + key);
+        Debug.LogError("==================== " );
+        foreach (ResourceScript resource in resources) {
+            Debug.LogError(resource.Key.ToString());
+        }
+        Debug.LogError("==================== ");
+
+        return null;
 	}
 
 	public void KillUnit( AgentEntity unit ){
