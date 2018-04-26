@@ -28,7 +28,7 @@ public class SpawnPoints : MonoBehaviour {
            
         }
         //Choose a Random Point
-        chooseSpawnPoint = UnityEngine.Random.Range(0, nbSpawnPoints - 1);
+        chooseSpawnPoint = UnityEngine.Random.Range(0, nbSpawnPoints);
 
         //Get the List of the Minerai Objects 
         List<Transform> spawnMinJ1 = MineraiJ1.SpawnPoints;
