@@ -6,7 +6,7 @@ public class HomeScript : MonoBehaviour {
 	// GameObject Identification
 	[AttrName(Identifier = "key")]
 	[SerializeField]
-	private int key;
+	private string key;
 
     [AttrName(Identifier = "pos")]
     [SerializeField]
@@ -120,7 +120,7 @@ public class HomeScript : MonoBehaviour {
 		}
 	}
 
-	public int Key {
+	public string Key {
 		get {
 			return key;
 		}
@@ -188,7 +188,7 @@ public class HomeScript : MonoBehaviour {
 	}
 
 	void Awake(){
-		key = this.GetHashCode();
+		key = this.GetHashCode().ToString();
 		populationGameObj = new Dictionary<string, List<AgentEntity>>();
 	}
 

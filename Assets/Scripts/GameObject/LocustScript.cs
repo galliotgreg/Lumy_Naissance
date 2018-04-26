@@ -6,7 +6,7 @@ public class LocustScript : MonoBehaviour {
 	// GameObject Identification
 	[AttrName(Identifier = "key")]
 	[SerializeField]
-	private int key;
+	private string key;
 
     [AttrName(Identifier = "pos")]
     [SerializeField]
@@ -21,14 +21,14 @@ public class LocustScript : MonoBehaviour {
 		}
 	}
 
-	public int Key {
+	public string Key {
 		get {
 			return key;
 		}
 	}
 
 	void Awake(){
-		key = this.GetHashCode();
+		key = this.GetHashCode().ToString();
 	}
 
 	// Use this for initialization

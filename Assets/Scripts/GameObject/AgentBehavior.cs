@@ -166,7 +166,7 @@ public class AgentBehavior : MonoBehaviour
 					break;
 				case ActionType.Pick:
 					ABRef item = ((ABRef)curActionParams[0]);
-					pickAction.Item = Unit_GameObj_Manager.instance.getResource( Mathf.FloorToInt( ((ABScalar)item.GetAttr( "key" )).Value ) );
+					pickAction.Item = Unit_GameObj_Manager.instance.getResource( ((ABText)item.GetAttr( "key" )).Value );
 
 					pickAction.activate();
 					break;
@@ -213,7 +213,7 @@ public class AgentBehavior : MonoBehaviour
 				case ActionType.Strike:
 					ABRef target = ((ABRef)curActionParams [0]);
 					if (target != null) {
-						strikeAction.Target = Unit_GameObj_Manager.instance.getUnit (Mathf.FloorToInt (((ABScalar)target.GetAttr ("key")).Value));
+						strikeAction.Target = Unit_GameObj_Manager.instance.getUnit ( ((ABText)target.GetAttr ("key")).Value );
 					}
 
 					strikeAction.activate();

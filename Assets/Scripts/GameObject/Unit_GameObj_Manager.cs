@@ -268,7 +268,7 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 	#endregion
 
-	public GameObject getUnit( int key ){
+	public GameObject getUnit( string key ){
 		foreach( AgentEntity unit in homes[ PlayerAuthority.Player1 ].getPopulation() ){
 			if( unit.Context.Model.Key == key ){
 				return unit.gameObject;
@@ -283,9 +283,9 @@ public class Unit_GameObj_Manager : MonoBehaviour {
 	}
 
     //TODO : Refacto, use string instead of int/float for key/hash
-	public GameObject getResource( int key ){
+	public GameObject getResource( string key ){
 		foreach( ResourceScript resource in resources ){
-			if( ((int)(resource.Key/10000)) == ((int)(key/10000)) ){
+			if( resource.Key == key ){
 				return resource.gameObject;
 			} 
 		}
